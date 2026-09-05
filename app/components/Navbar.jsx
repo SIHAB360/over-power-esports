@@ -10,7 +10,7 @@ export default function Navbar() {
           src="/logo.png"
           width={45}
           height={45}
-          alt="Over Power Esports Logo"
+          alt="OP Logo"
           className="logo"
         />
 
