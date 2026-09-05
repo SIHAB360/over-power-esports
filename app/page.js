@@ -1,3 +1,5 @@
+import Image from "next/image";
+import logo from "./assets/logo.png";
 import Navbar from "./components/Navbar";
 
 export default function Home() {
@@ -10,7 +12,14 @@ export default function Home() {
       <section className="hero">
 
         <div className="hero-logo">
-          OP
+
+          <Image
+            src={logo}
+            width={110}
+            height={110}
+            alt="Over Power Esports Logo"
+          />
+
         </div>
 
 
@@ -51,7 +60,6 @@ export default function Home() {
           <h2>🔥 Our Team</h2>
           <p>Power. Skill. Victory.</p>
         </div>
-
 
       </section>
 
