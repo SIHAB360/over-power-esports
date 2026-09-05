@@ -7,11 +7,13 @@ export default function Navbar() {
       <div className="logo-area">
 
         <Image
-  src="/logo.png"
-  width={45}
-  height={45}
-  alt="OP Logo"
-/>
+          src="/logo.png"
+          width={50}
+          height={50}
+          alt="Over Power Esports Logo"
+          className="logo"
+          priority
+        />
 
         <h2>
           OVER POWER <span>ESPORTS</span>
@@ -21,17 +23,20 @@ export default function Navbar() {
 
 
       <div className="nav-links">
-        <a>Home</a>
-        <a>Players</a>
-        <a>Teams</a>
-        <a>Tournaments</a>
-        <a>Rankings</a>
+
+        <a href="#">Home</a>
+        <a href="#">Players</a>
+        <a href="#">Teams</a>
+        <a href="#">Tournaments</a>
+        <a href="#">Rankings</a>
+
       </div>
 
 
-      <button>
+      <button className="join-btn">
         Join Team
       </button>
+
 
     </nav>
   );
