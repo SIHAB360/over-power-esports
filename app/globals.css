@@ -50,32 +50,31 @@ main {
 
   animation: premiumTitle 4s ease infinite;
 
-  filter: drop-shadow(0 0 15px rgba(255,0,0,0.8));
+  filter: drop-shadow(0 0 15px rgba(255,0,0,.8));
 }
 
 
 @keyframes premiumTitle {
 
   0% {
-    background-position: 0%;
+    background-position:0%;
   }
 
   50% {
-    background-position: 100%;
+    background-position:100%;
   }
 
   100% {
-    background-position: 0%;
+    background-position:0%;
   }
 
 }
 
 
-
 .hero p {
-  margin-top: 25px;
-  font-size: 26px;
-  color: #ddd;
+  margin-top:25px;
+  font-size:26px;
+  color:#ddd;
 }
 
 
@@ -83,13 +82,16 @@ main {
 /* BUTTON */
 
 button {
-  margin-top: 35px;
-  padding: 16px 45px;
 
-  border: none;
-  border-radius: 40px;
+  margin-top:35px;
 
-  background: linear-gradient(
+  padding:16px 45px;
+
+  border:none;
+
+  border-radius:40px;
+
+  background:linear-gradient(
     45deg,
     #ff0000,
     #ff5555
@@ -98,6 +100,7 @@ button {
   color:white;
 
   font-size:18px;
+
   font-weight:bold;
 
   cursor:pointer;
@@ -105,7 +108,8 @@ button {
   transition:.3s;
 
   box-shadow:
-    0 0 25px rgba(255,0,0,.6);
+  0 0 25px rgba(255,0,0,.6);
+
 }
 
 
@@ -114,7 +118,7 @@ button:hover {
   transform:scale(1.1);
 
   box-shadow:
-    0 0 45px red;
+  0 0 45px red;
 
 }
 
@@ -125,8 +129,11 @@ button:hover {
 .cards {
 
   display:flex;
+
   justify-content:center;
+
   gap:30px;
+
   flex-wrap:wrap;
 
 }
@@ -158,7 +165,7 @@ button:hover {
   border-color:#ff1a1a;
 
   box-shadow:
-    0 0 30px rgba(255,0,0,.5);
+  0 0 30px rgba(255,0,0,.5);
 
 }
 
@@ -195,7 +202,6 @@ button:hover {
 }
 
 
-
 .players {
 
   display:flex;
@@ -207,7 +213,6 @@ button:hover {
   flex-wrap:wrap;
 
 }
-
 
 
 .player {
@@ -227,7 +232,6 @@ button:hover {
 }
 
 
-
 .player:hover {
 
   transform:translateY(-15px);
@@ -235,10 +239,9 @@ button:hover {
   border-color:red;
 
   box-shadow:
-    0 0 30px rgba(255,0,0,.5);
+  0 0 30px rgba(255,0,0,.5);
 
 }
-
 
 
 .player h3 {
@@ -248,7 +251,6 @@ button:hover {
   margin-bottom:12px;
 
 }
-
 
 
 .player p {
@@ -282,7 +284,6 @@ button:hover {
 }
 
 
-
 .contact h2 {
 
   font-size:38px;
@@ -302,50 +303,6 @@ button:hover {
 
 
 
-/* MOBILE */
-
-@media(max-width:600px){
-
-
-.hero {
-
-  padding:60px 10px;
-
-}
-
-
-.hero h1 {
-
-  font-size:38px;
-
-  letter-spacing:2px;
-
-}
-
-
-.hero p {
-
-  font-size:18px;
-
-}
-
-
-.cards div,
-.player {
-
-  width:90%;
-
-}
-
-
-.team h2 {
-
-  font-size:32px;
-
-}
-
-
-}
 /* NAVBAR */
 
 .navbar {
@@ -369,8 +326,14 @@ button:hover {
   box-shadow:
   0 0 25px rgba(255,0,0,.25);
 
+  position:relative;
+
+  overflow:hidden;
+
 }
 
+
+/* TEXT LOGO */
 
 .logo {
 
@@ -381,6 +344,8 @@ button:hover {
   letter-spacing:2px;
 
   color:white;
+
+  animation:logoPulse 2s infinite alternate;
 
 }
 
@@ -418,7 +383,6 @@ button:hover {
 }
 
 
-
 .nav-links a:hover {
 
   color:#ff1a1a;
@@ -429,20 +393,82 @@ button:hover {
 }
 
 
-
 .nav-btn {
 
   margin-top:0;
 
   padding:12px 30px;
 
-  font-size:16px;
+}
+
+
+
+/* NAV LIGHT */
+
+.navbar::after {
+
+  content:"";
+
+  position:absolute;
+
+  bottom:0;
+
+  left:-100%;
+
+  width:100%;
+
+  height:2px;
+
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #ff0000,
+    #ffcc00,
+    #ff0000,
+    transparent
+  );
+
+  animation:navLight 4s linear infinite;
+
+}
+
+
+@keyframes navLight {
+
+  0% {
+    left:-100%;
+  }
+
+  100% {
+    left:100%;
+  }
 
 }
 
 
 
-/* MOBILE NAVBAR */
+@keyframes logoPulse {
+
+  from {
+
+    text-shadow:
+    0 0 5px red;
+
+  }
+
+  to {
+
+    text-shadow:
+    0 0 20px red,
+    0 0 35px red;
+
+  }
+
+}
+
+
+
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -467,102 +493,35 @@ button:hover {
 
 }
 
-}
-/* PREMIUM NAVBAR LIGHT EFFECT */
 
-.navbar {
-  position: relative;
-  overflow: hidden;
-}
+.hero h1 {
 
+  font-size:38px;
 
-.navbar::after {
-
-  content: "";
-
-  position: absolute;
-
-  bottom: 0;
-  left: -100%;
-
-  width: 100%;
-  height: 2px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #ff0000,
-    #ffcc00,
-    #ff0000,
-    transparent
-  );
-
-  animation: navLight 4s linear infinite;
+  letter-spacing:2px;
 
 }
 
 
-@keyframes navLight {
+.hero p {
 
-  0% {
-    left:-100%;
-  }
-
-  100% {
-    left:100%;
-  }
+  font-size:18px;
 
 }
 
 
+.cards div,
+.player {
 
-.logo {
-
-  animation: logoPulse 2s infinite alternate;
-
-}
-
-
-
-@keyframes logoPulse {
-
-  from {
-
-    text-shadow:
-    0 0 5px red;
-
-  }
-
-
-  to {
-
-    text-shadow:
-    0 0 20px red,
-    0 0 35px red;
-
-  }
+  width:90%;
 
 }
-.logo {
-  object-fit: contain;
-  filter:
-    drop-shadow(0 0 8px #ff0033)
-    drop-shadow(0 0 15px #8a2be2);
 
-  animation: logoGlow 2s infinite alternate;
+
+.team h2 {
+
+  font-size:32px;
+
 }
-
-
-@keyframes logoGlow {
-
-  from {
-    filter:
-    drop-shadow(0 0 5px red);
-  }
-
-  to {
-    filter:
-    drop-shadow(0 0 18px #8a2be2);
-  }
 
 }
