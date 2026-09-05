@@ -34,31 +34,37 @@ main {
   letter-spacing: 5px;
   text-transform: uppercase;
 
-  color: #ff1a1a;
+  background: linear-gradient(
+    90deg,
+    #ff0000,
+    #ffcc00,
+    #ffffff,
+    #ff1a1a,
+    #ff6600
+  );
+
+  background-size: 300%;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   text-shadow:
-    0 0 10px #ff0000,
-    0 0 30px #ff0000,
-    0 0 60px #ff0000;
+    0 0 10px rgba(255,0,0,.8),
+    0 0 30px rgba(255,0,0,.6),
+    0 0 60px rgba(255,0,0,.4);
 
-  animation: titleGlow 1.5s infinite alternate;
+  animation: titleGlow 3s infinite linear;
 }
 
 
 @keyframes titleGlow {
 
-  from {
-    opacity: 1;
-    text-shadow:
-      0 0 10px red,
-      0 0 30px red;
+  0% {
+    background-position:0%;
   }
 
-  to {
-    opacity: .7;
-    text-shadow:
-      0 0 30px red,
-      0 0 70px red;
+  100% {
+    background-position:300%;
   }
 
 }
