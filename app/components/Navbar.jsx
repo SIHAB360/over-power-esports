@@ -15,12 +15,6 @@ export default function Navbar() {
         <a href="#">Rankings</a>
       </div>
 
-
-      <button className="nav-btn">
-        Join Team
-      </button>
-
-
     </nav>
   );
 }
