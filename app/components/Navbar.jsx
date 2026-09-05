@@ -7,12 +7,11 @@ export default function Navbar() {
       <div className="logo-area">
 
         <Image
-          src="/logo.png"
-          width={45}
-          height={45}
-          alt="OP Logo"
-          className="logo"
-        />
+  src="/logo.png"
+  width={45}
+  height={45}
+  alt="OP Logo"
+/>
 
         <h2>
           OVER POWER <span>ESPORTS</span>
