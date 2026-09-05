@@ -543,3 +543,26 @@ button:hover {
   }
 
 }
+.logo {
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 8px #ff0033)
+    drop-shadow(0 0 15px #8a2be2);
+
+  animation: logoGlow 2s infinite alternate;
+}
+
+
+@keyframes logoGlow {
+
+  from {
+    filter:
+    drop-shadow(0 0 5px red);
+  }
+
+  to {
+    filter:
+    drop-shadow(0 0 18px #8a2be2);
+  }
+
+}
