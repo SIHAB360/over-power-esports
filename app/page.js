@@ -24,6 +24,35 @@ export default function Home() {
           <p>Power. Skill. Victory.</p>
         </div>
       </section>
+
+
+      <section className="team">
+        <h2>Our Players</h2>
+
+        <div className="players">
+          <div className="player">
+            <h3>Player One</h3>
+            <p>IGL / Captain</p>
+          </div>
+
+          <div className="player">
+            <h3>Player Two</h3>
+            <p>Sniper</p>
+          </div>
+
+          <div className="player">
+            <h3>Player Three</h3>
+            <p>Entry Fragger</p>
+          </div>
+        </div>
+      </section>
+
+
+      <section className="contact">
+        <h2>Ready To Join?</h2>
+        <p>Become part of Over Power Esports</p>
+      </section>
+
     </main>
   );
 }
