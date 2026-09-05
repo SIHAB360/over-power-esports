@@ -39,32 +39,33 @@ main {
     #ff0000,
     #ffcc00,
     #ffffff,
-    #ff1a1a,
-    #ff6600
+    #ff3300,
+    #ff0000
   );
 
-  background-size: 300%;
+  background-size: 400%;
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  text-shadow:
-    0 0 10px rgba(255,0,0,.8),
-    0 0 30px rgba(255,0,0,.6),
-    0 0 60px rgba(255,0,0,.4);
+  animation: premiumTitle 4s ease infinite;
 
-  animation: titleGlow 3s infinite linear;
+  filter: drop-shadow(0 0 15px rgba(255,0,0,0.8));
 }
 
 
-@keyframes titleGlow {
+@keyframes premiumTitle {
 
   0% {
-    background-position:0%;
+    background-position: 0%;
+  }
+
+  50% {
+    background-position: 100%;
   }
 
   100% {
-    background-position:300%;
+    background-position: 0%;
   }
 
 }
