@@ -17,6 +17,9 @@ main {
     radial-gradient(circle at top, #450000, #050505 45%);
 }
 
+
+/* HERO */
+
 .hero {
   text-align: center;
   padding: 80px 20px;
@@ -44,7 +47,16 @@ button {
   color: white;
   font-size: 18px;
   cursor: pointer;
+  transition: 0.3s;
 }
+
+button:hover {
+  transform: scale(1.05);
+  background: #ff3333;
+}
+
+
+/* CARDS */
 
 .cards {
   display: flex;
@@ -60,9 +72,98 @@ button {
   border: 1px solid #333;
   border-radius: 15px;
   text-align: center;
+  transition: 0.3s;
+}
+
+.cards div:hover {
+  transform: translateY(-10px);
+  border-color: #ff1a1a;
 }
 
 .cards h2 {
   color: #ff1a1a;
   margin-bottom: 15px;
+}
+
+
+/* TEAM */
+
+.team {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.team h2 {
+  font-size: 40px;
+  color: #ff1a1a;
+  margin-bottom: 30px;
+}
+
+.players {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.player {
+  width: 250px;
+  padding: 30px;
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.player:hover {
+  transform: translateY(-10px);
+  border-color: #ff1a1a;
+}
+
+.player h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.player p {
+  color: #ff1a1a;
+}
+
+
+/* CONTACT */
+
+.contact {
+  text-align: center;
+  margin-top: 80px;
+  padding: 40px;
+}
+
+.contact h2 {
+  font-size: 35px;
+  color: #ff1a1a;
+}
+
+.contact p {
+  margin-top: 15px;
+  color: #ddd;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .hero p {
+    font-size: 18px;
+  }
+
+  .cards div,
+  .player {
+    width: 90%;
+  }
+
 }
