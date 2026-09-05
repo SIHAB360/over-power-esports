@@ -525,3 +525,66 @@ button:hover {
 }
 
 }
+/* HERO CIRCULAR LOGO */
+
+.hero-logo {
+
+  width:110px;
+  height:110px;
+
+  margin:0 auto 35px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:3px;
+
+  color:white;
+
+  background:
+  radial-gradient(circle, #ff1a1a 0%, #111 65%);
+
+  border:3px solid #ff1a1a;
+
+  box-shadow:
+  0 0 20px #ff0000,
+  0 0 50px rgba(255,0,0,.7),
+  inset 0 0 25px #ff0000;
+
+  animation: heroLogoGlow 2s infinite alternate;
+
+}
+
+
+
+/* LOGO PULSE */
+
+@keyframes heroLogoGlow {
+
+  from {
+
+    transform:scale(1);
+
+    box-shadow:
+    0 0 15px red,
+    0 0 35px red;
+
+  }
+
+
+  to {
+
+    transform:scale(1.08);
+
+    box-shadow:
+    0 0 35px red,
+    0 0 70px red;
+
+  }
+
+}
