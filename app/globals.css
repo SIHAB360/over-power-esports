@@ -12,9 +12,9 @@ body {
 
 main {
   min-height: 100vh;
-  padding: 60px 20px;
+  padding: 40px 20px;
   background:
-    radial-gradient(circle at top, #450000, #050505 45%);
+    radial-gradient(circle at top, #650000, #050505 50%);
 }
 
 
@@ -22,148 +22,284 @@ main {
 
 .hero {
   text-align: center;
-  padding: 80px 20px;
+  padding: 100px 20px 80px;
 }
 
 .hero h1 {
-  font-size: 60px;
+  font-size: 65px;
   font-weight: 900;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   color: #ff1a1a;
+  text-shadow:
+    0 0 10px #ff0000,
+    0 0 30px #ff0000;
+  animation: glow 2s infinite alternate;
 }
 
 .hero p {
-  margin-top: 20px;
-  font-size: 24px;
+  margin-top: 25px;
+  font-size: 26px;
   color: #ddd;
 }
 
+
+/* BUTTON */
+
 button {
-  margin-top: 30px;
-  padding: 15px 40px;
+  margin-top: 35px;
+  padding: 16px 45px;
   border: none;
-  border-radius: 30px;
-  background: #ff1a1a;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.3s;
+  border-radius: 40px;
+  background: linear-gradient(45deg,#ff0000,#ff5555);
+  color:white;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 0 25px rgba(255,0,0,.6);
 }
 
 button:hover {
-  transform: scale(1.05);
-  background: #ff3333;
+  transform:scale(1.1);
+  box-shadow:0 0 45px red;
 }
 
 
 /* CARDS */
 
 .cards {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
 }
+
 
 .cards div {
-  width: 280px;
-  padding: 30px;
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 15px;
-  text-align: center;
-  transition: 0.3s;
+
+  width:300px;
+  padding:35px;
+
+  background:
+  rgba(20,20,20,.8);
+
+  border:1px solid #333;
+  border-radius:20px;
+
+  text-align:center;
+
+  backdrop-filter:blur(10px);
+
+  transition:.4s;
 }
+
 
 .cards div:hover {
-  transform: translateY(-10px);
-  border-color: #ff1a1a;
+
+  transform:
+  translateY(-15px);
+
+  border-color:#ff1a1a;
+
+  box-shadow:
+  0 0 30px rgba(255,0,0,.5);
+
 }
 
+
 .cards h2 {
-  color: #ff1a1a;
-  margin-bottom: 15px;
+
+color:#ff1a1a;
+margin-bottom:15px;
+
 }
+
 
 
 /* TEAM */
 
 .team {
-  text-align: center;
-  margin-top: 80px;
+
+text-align:center;
+margin-top:100px;
+
 }
+
 
 .team h2 {
-  font-size: 40px;
-  color: #ff1a1a;
-  margin-bottom: 30px;
+
+font-size:45px;
+color:#ff1a1a;
+margin-bottom:40px;
+
 }
+
+
 
 .players {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
+
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+
 }
+
+
 
 .player {
-  width: 250px;
-  padding: 30px;
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 15px;
-  transition: 0.3s;
+
+width:260px;
+padding:35px;
+
+background:#111;
+
+border:1px solid #333;
+
+border-radius:20px;
+
+transition:.4s;
+
 }
+
+
 
 .player:hover {
-  transform: translateY(-10px);
-  border-color: #ff1a1a;
+
+transform:translateY(-15px);
+
+border-color:red;
+
+box-shadow:
+0 0 30px rgba(255,0,0,.5);
+
 }
+
+
 
 .player h3 {
-  color: white;
-  margin-bottom: 10px;
+
+font-size:22px;
+margin-bottom:12px;
+
 }
 
+
 .player p {
-  color: #ff1a1a;
+
+color:#ff1a1a;
+font-weight:bold;
+
 }
+
 
 
 /* CONTACT */
 
 .contact {
-  text-align: center;
-  margin-top: 80px;
-  padding: 40px;
+
+max-width:700px;
+
+margin:100px auto 0;
+
+padding:45px;
+
+text-align:center;
+
+background:#111;
+
+border-radius:20px;
+
+border:1px solid #333;
+
 }
+
 
 .contact h2 {
-  font-size: 35px;
-  color: #ff1a1a;
+
+font-size:38px;
+
+color:#ff1a1a;
+
 }
 
+
 .contact p {
-  margin-top: 15px;
-  color: #ddd;
+
+margin-top:20px;
+
+color:#ddd;
+
 }
+
+
+
+/* ANIMATION */
+
+
+@keyframes glow {
+
+from {
+
+text-shadow:
+0 0 10px red;
+
+}
+
+to {
+
+text-shadow:
+0 0 40px red,
+0 0 70px red;
+
+}
+
+}
+
 
 
 /* MOBILE */
 
-@media (max-width: 600px) {
 
-  .hero h1 {
-    font-size: 38px;
-  }
+@media(max-width:600px){
 
-  .hero p {
-    font-size: 18px;
-  }
 
-  .cards div,
-  .player {
-    width: 90%;
-  }
+.hero {
+
+padding:60px 10px;
+
+}
+
+
+.hero h1 {
+
+font-size:38px;
+
+letter-spacing:2px;
+
+}
+
+
+.hero p {
+
+font-size:18px;
+
+}
+
+
+.cards div,
+.player {
+
+width:90%;
+
+}
+
+
+.team h2 {
+
+font-size:32px;
+
+}
+
 
 }
