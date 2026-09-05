@@ -428,39 +428,36 @@ button:hover {
 
 /* NAVBAR */
 
-.navbar {
-
-  width:100%;
+.nav-links {
 
   display:flex;
 
-  justify-content:space-between;
-
-  align-items:center;
-
-
-  padding:20px 50px;
-
-
-  background:rgba(10,10,10,.8);
-
-
-  border-bottom:1px solid rgba(255,0,0,.3);
-
-
-  backdrop-filter:blur(10px);
-
-
-  box-shadow:
-  0 0 25px rgba(255,0,0,.25);
-
-
-  position:relative;
-
-  overflow:hidden;
+  gap:30px;
 
 }
 
+
+.nav-links a {
+
+  color:white;
+
+  text-decoration:none;
+
+  font-weight:bold;
+
+  transition:.3s;
+
+}
+
+
+.nav-links a:hover {
+
+  color:#ff1a1a;
+
+  text-shadow:
+  0 0 15px red;
+
+}
 
 
 .logo {
