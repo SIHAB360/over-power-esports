@@ -1342,7 +1342,7 @@ animation:colorBlink 2.5s infinite;
 
 
 
-/* YELLOW + GREEN + PURPLE + BLUE */
+/* YELLOW + GREEN + WHITE + BLUE + PURPLE */
 
 @keyframes colorBlink{
 
@@ -1357,7 +1357,7 @@ border:2px solid #ffff00;
 
 
 
-25%{
+20%{
 
 color:#00ff00;
 
@@ -1367,21 +1367,31 @@ border:2px solid #00ff00;
 
 
 
-50%{
+40%{
 
-color:#8000ff;
+color:#ffffff;
 
-border:2px solid #8000ff;
+border:2px solid #ffffff;
 
 }
 
 
 
-75%{
+60%{
 
 color:#0066ff;
 
 border:2px solid #0066ff;
+
+}
+
+
+
+80%{
+
+color:#8000ff;
+
+border:2px solid #8000ff;
 
 }
 
@@ -1400,8 +1410,18 @@ border:2px solid #ffff00;
 
 
 
+.social-links a:nth-child(4){
+
+color:white;
+
+border:2px solid white;
+
+}
+
+
+
 .social-links a:hover{
 
-transform:scale(1.2);
+transform:translateY(-5px) scale(1.2);
 
 }
