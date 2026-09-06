@@ -1288,3 +1288,23 @@ color:white;
 }
 
 }
+.social-links a:nth-child(1){
+color:#1877f2;
+}
+
+.social-links a:nth-child(2){
+color:#e1306c;
+}
+
+.social-links a:nth-child(3){
+color:#ff0000;
+}
+
+.social-links a:nth-child(4){
+color:#00f2ea;
+}
+
+
+.social-links a:hover{
+transform:translateY(-5px) scale(1.2);
+}
