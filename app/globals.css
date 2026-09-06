@@ -1,17 +1,22 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+
+box-sizing:border-box;
+
+margin:0;
+
+padding:0;
+
 }
+
 
 
 body {
 
-  background:#050505;
+background:#050505;
 
-  color:white;
+color:white;
 
-  font-family:Arial, Helvetica, sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 
 }
 
@@ -19,12 +24,13 @@ body {
 
 main {
 
-  min-height:100vh;
+min-height:100vh;
 
-  padding:40px 20px;
+padding:40px 20px;
 
-  background:
-  radial-gradient(circle at top,#650000,#050505 50%);
+background:
+
+radial-gradient(circle at top,#650000,#050505 50%);
 
 }
 
@@ -34,15 +40,15 @@ main {
 
 .hero {
 
-  text-align:center;
+text-align:center;
 
-  padding:100px 20px 80px;
+padding:100px 20px 80px;
 
-  display:flex;
+display:flex;
 
-  flex-direction:column;
+flex-direction:column;
 
-  align-items:center;
+align-items:center;
 
 }
 
@@ -52,35 +58,33 @@ main {
 
 .hero-logo {
 
-  width:110px;
+width:110px;
 
-  height:110px;
+height:110px;
 
-  margin-bottom:35px;
+margin-bottom:35px;
 
-  border-radius:50%;
+border-radius:50%;
 
-  overflow:hidden;
+overflow:hidden;
 
-  display:flex;
+display:flex;
 
-  justify-content:center;
+justify-content:center;
 
-  align-items:center;
+align-items:center;
 
-  background:#111;
+background:#111;
 
-  border:3px solid #ff1a1a;
+border:3px solid #ff1a1a;
 
+box-shadow:
 
-  box-shadow:
+0 0 20px red,
 
-  0 0 20px red,
+0 0 50px rgba(255,0,0,.7);
 
-  0 0 50px rgba(255,0,0,.7);
-
-
-  animation:heroLogoGlow 2s infinite alternate;
+animation:heroLogoGlow 2s infinite alternate;
 
 }
 
@@ -88,13 +92,13 @@ main {
 
 .hero-logo img {
 
-  width:100%;
+width:100%;
 
-  height:100%;
+height:100%;
 
-  object-fit:contain;
+object-fit:contain;
 
-  border-radius:50%;
+border-radius:50%;
 
 }
 
@@ -102,7 +106,7 @@ main {
 
 @keyframes heroLogoGlow {
 
-from {
+from{
 
 box-shadow:
 
@@ -113,7 +117,7 @@ box-shadow:
 }
 
 
-to {
+to{
 
 box-shadow:
 
@@ -267,13 +271,15 @@ button:hover {
 
 transform:scale(1.1);
 
-
 box-shadow:
 
 0 0 45px red;
 
 }
-/* CARDS */
+
+
+
+/* FEATURE CARDS */
 
 
 .cards {
@@ -301,6 +307,7 @@ background:#111;
 
 
 border:1px solid #333;
+
 
 border-radius:20px;
 
@@ -337,107 +344,7 @@ color:#ff1a1a;
 margin-bottom:15px;
 
 }
-
-
-
-/* TEAM */
-
-
-.team {
-
-text-align:center;
-
-margin-top:100px;
-
-}
-
-
-
-.team h2 {
-
-font-size:45px;
-
-color:#ff1a1a;
-
-margin-bottom:40px;
-
-}
-
-
-
-.players {
-
-display:flex;
-
-justify-content:center;
-
-gap:25px;
-
-flex-wrap:wrap;
-
-}
-
-
-
-.player {
-
-width:260px;
-
-padding:35px;
-
-
-background:#111;
-
-
-border:1px solid #333;
-
-
-border-radius:20px;
-
-
-transition:.4s;
-
-}
-
-
-
-.player:hover {
-
-transform:translateY(-15px);
-
-
-border-color:red;
-
-
-box-shadow:
-
-0 0 30px rgba(255,0,0,.5);
-
-}
-
-
-
-.player h3 {
-
-font-size:22px;
-
-margin-bottom:12px;
-
-}
-
-
-
-.player p {
-
-color:#ff1a1a;
-
-font-weight:bold;
-
-}
-
-
-
-/* TOURNAMENT */
+/* TOURNAMENT SECTION */
 
 
 .tournaments{
@@ -535,6 +442,9 @@ color:#ff1e2d;
 font-weight:bold;
 
 }
+
+
+
 /* GAMES SECTION */
 
 
@@ -675,6 +585,7 @@ box-shadow:
 }
 
 
+
 /* CONTACT */
 
 
@@ -795,6 +706,8 @@ font-size:15px;
 
 font-weight:700;
 
+letter-spacing:1px;
+
 transition:.3s;
 
 }
@@ -808,169 +721,8 @@ color:#ffcc00;
 text-shadow:0 0 10px #ffcc00;
 
 }
-
-
-
-/* MOBILE */
-
-
-@media(max-width:700px){
-
-
-.navbar {
-
-flex-direction:column;
-
-gap:20px;
-
-padding:20px;
-
-}
-
-
-.nav-links {
-
-flex-wrap:wrap;
-
-justify-content:center;
-
-gap:15px;
-
-}
-
-
-
-.hero h1 {
-
-font-size:38px;
-
-letter-spacing:2px;
-
-}
-
-
-
-.hero p {
-
-font-size:18px;
-
-}
-
-
-
-.cards div,
-.player {
-
-width:90%;
-
-}
-
-
-
-.team h2 {
-
-font-size:32px;
-
-}
-
-
-}
-/* NAVBAR */
-
-.navbar {
-
-width:100%;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 50px;
-
-background:rgba(10,10,10,.85);
-
-border-bottom:1px solid rgba(255,0,0,.3);
-
-backdrop-filter:blur(10px);
-
-box-shadow:0 0 25px rgba(255,0,0,.25);
-
-position:relative;
-
-overflow:hidden;
-
-}
-
-
-
-.logo {
-
-font-size:24px;
-
-font-weight:900;
-
-letter-spacing:2px;
-
-color:white;
-
-}
-
-
-
-.logo span {
-
-color:#ff1a1a;
-
-text-shadow:
-
-0 0 15px red;
-
-}
-
-
-
-.nav-links {
-
-display:flex;
-
-align-items:center;
-
-gap:35px;
-
-}
-
-
-
-.nav-links a {
-
-color:#e6e6e6;
-
-text-decoration:none;
-
-font-size:15px;
-
-font-weight:700;
-
-letter-spacing:1px;
-
-transition:.3s;
-
-}
-
-
-
-.nav-links a:hover {
-
-color:#ffcc00;
-
-text-shadow:
-
-0 0 10px #ffcc00;
-
-}
 /* TEAMS SECTION */
+
 
 .teams{
 
@@ -979,6 +731,7 @@ padding:100px 20px;
 text-align:center;
 
 }
+
 
 
 .teams h2{
@@ -1047,7 +800,18 @@ width:230px;
 
 padding:30px;
 
-background:#111;
+background:
+
+linear-gradient(
+
+145deg,
+
+#151515,
+
+#050505
+
+);
+
 
 border:1px solid #ff1a1a;
 
@@ -1065,7 +829,9 @@ transition:.4s;
 
 transform:translateY(-15px);
 
-box-shadow:0 0 35px red;
+box-shadow:
+
+0 0 35px red;
 
 }
 
@@ -1085,7 +851,9 @@ background:#222;
 
 border:3px solid red;
 
-box-shadow:0 0 20px red;
+box-shadow:
+
+0 0 20px red;
 
 }
 
@@ -1117,63 +885,8 @@ font-weight:bold;
 
 
 
-.player-card button{
+/* SOCIAL ICONS */
 
-padding:10px 25px;
-
-font-size:13px;
-
-margin-top:10px;
-
-}
-/* SOCIAL LINKS */
-
-
-.social-links{
-
-display:flex;
-
-justify-content:center;
-
-gap:12px;
-
-margin:15px 0;
-
-}
-
-
-
-.social-links a{
-
-width:28px;
-
-height:28px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-border-radius:50%;
-
-background:#111;
-
-border:1px solid #ff1a1a;
-
-color:white;
-
-font-size:10px;
-
-text-decoration:none;
-
-transition:.3s;
-
-}
-
-
-
-/* SOCIAL LINKS */
 
 .social-links{
 
@@ -1205,15 +918,9 @@ border-radius:50%;
 
 background:#111;
 
-border:1px solid #ff1a1a;
-
-color:white;
-
-font-size:9px;
+font-size:14px;
 
 text-decoration:none;
-
-animation:socialBlink 2s infinite;
 
 transition:.3s;
 
@@ -1221,96 +928,150 @@ transition:.3s;
 
 
 
-.social-links a:hover{
+/* FACEBOOK */
 
-transform:translateY(-5px) scale(1.15);
-
-}
-
-
-
-/* BLINK EFFECT */
-
-@keyframes socialBlink{
-
-0%{
-
-border-color:#ff0000;
-
-box-shadow:0 0 5px red;
-
-color:white;
-
-}
-
-
-25%{
-
-border-color:#0066ff;
-
-box-shadow:0 0 15px #0066ff;
-
-color:#0066ff;
-
-}
-
-
-50%{
-
-border-color:#ff00cc;
-
-box-shadow:0 0 20px #ff00cc;
-
-color:#ff00cc;
-
-}
-
-
-75%{
-
-border-color:#00ff66;
-
-box-shadow:0 0 15px #00ff66;
-
-color:#00ff66;
-
-}
-
-
-100%{
-
-border-color:#ff0000;
-
-box-shadow:0 0 5px red;
-
-color:white;
-
-}
-
-}
 .social-links a:nth-child(1){
+
 color:#1877f2;
-border-color:#1877f2;
-box-shadow:0 0 15px #1877f2;
+
+border:1px solid #1877f2;
+
+box-shadow:
+
+0 0 15px #1877f2;
+
 }
 
+
+
+/* INSTAGRAM */
 
 .social-links a:nth-child(2){
+
 color:#e1306c;
-border-color:#e1306c;
-box-shadow:0 0 15px #e1306c;
+
+border:1px solid #e1306c;
+
+box-shadow:
+
+0 0 15px #e1306c;
+
 }
 
+
+
+/* YOUTUBE */
 
 .social-links a:nth-child(3){
+
 color:#ff0000;
-border-color:#ff0000;
-box-shadow:0 0 15px #ff0000;
+
+border:1px solid #ff0000;
+
+box-shadow:
+
+0 0 15px #ff0000;
+
 }
 
 
+
+/* TIKTOK */
+
 .social-links a:nth-child(4){
+
 color:#00f2ea;
-border-color:#00f2ea;
-box-shadow:0 0 15px #00f2ea;
+
+border:1px solid #00f2ea;
+
+box-shadow:
+
+0 0 15px #00f2ea;
+
+}
+
+
+
+.social-links a:hover{
+
+transform:
+
+translateY(-5px) scale(1.2);
+
+}
+
+
+
+/* MOBILE RESPONSIVE */
+
+
+@media(max-width:700px){
+
+
+.navbar{
+
+flex-direction:column;
+
+gap:20px;
+
+padding:20px;
+
+}
+
+
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:15px;
+
+}
+
+
+
+.hero h1{
+
+font-size:38px;
+
+letter-spacing:2px;
+
+}
+
+
+
+.hero p{
+
+font-size:18px;
+
+}
+
+
+
+.cards div,
+.player-card{
+
+width:90%;
+
+}
+
+
+
+.teams h2{
+
+font-size:32px;
+
+}
+
+
+
+.team-block h3{
+
+font-size:24px;
+
+}
+
+
 }
