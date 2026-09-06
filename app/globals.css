@@ -810,3 +810,88 @@ font-size:32px;
 
 
 }
+.tournaments{
+
+padding:70px 20px;
+text-align:center;
+
+}
+
+
+.tournaments h2{
+
+color:#ff1e2d;
+font-size:32px;
+margin-bottom:40px;
+
+}
+
+
+.tournament-container{
+
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+
+
+.tournament-card{
+
+width:250px;
+padding:25px;
+
+background:#111;
+
+border:1px solid #333;
+
+border-radius:15px;
+
+transition:0.3s;
+
+}
+
+
+
+.tournament-card:hover{
+
+transform:translateY(-10px);
+
+border-color:#ff1e2d;
+
+box-shadow:0 0 20px red;
+
+}
+
+
+
+.tournament-card h3{
+
+color:white;
+font-size:20px;
+
+}
+
+
+
+.tournament-card p{
+
+color:#ddd;
+
+}
+
+
+
+.tournament-card span{
+
+display:inline-block;
+
+margin-top:15px;
+
+color:#ff1e2d;
+
+font-weight:bold;
+
+}
