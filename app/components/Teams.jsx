@@ -103,24 +103,26 @@ team.players.map((player,i)=>(
 
 <div className="social-links">
 
+
 <a href="#">
-Facebook
+<i className="fa-brands fa-facebook-f"></i>
 </a>
 
 
 <a href="#">
-Instagram
+<i className="fa-brands fa-instagram"></i>
 </a>
 
 
 <a href="#">
-YouTube
+<i className="fa-brands fa-youtube"></i>
 </a>
 
 
 <a href="#">
-TikTok
+<i className="fa-brands fa-tiktok"></i>
 </a>
+
 
 </div>
 
