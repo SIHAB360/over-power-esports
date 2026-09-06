@@ -1290,21 +1290,27 @@ color:white;
 }
 .social-links a:nth-child(1){
 color:#1877f2;
+border-color:#1877f2;
+box-shadow:0 0 15px #1877f2;
 }
+
 
 .social-links a:nth-child(2){
 color:#e1306c;
+border-color:#e1306c;
+box-shadow:0 0 15px #e1306c;
 }
+
 
 .social-links a:nth-child(3){
 color:#ff0000;
+border-color:#ff0000;
+box-shadow:0 0 15px #ff0000;
 }
+
 
 .social-links a:nth-child(4){
 color:#00f2ea;
-}
-
-
-.social-links a:hover{
-transform:translateY(-5px) scale(1.2);
+border-color:#00f2ea;
+box-shadow:0 0 15px #00f2ea;
 }
