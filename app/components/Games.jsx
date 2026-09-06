@@ -5,7 +5,7 @@ return(
 <section className="games">
 
 <h2>
-Games We Dominate
+OP Believe in Domination 
 </h2>
 
 
