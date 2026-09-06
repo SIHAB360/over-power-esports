@@ -1,47 +1,55 @@
 export default function Games(){
 
-return(
+  return(
 
-<section className="games">
+    <section className="games">
 
-<h2>
-OP Believe in Domination 
-</h2>
-
-
-<div className="game-card">
+      <h2>
+        OP Believe in Domination
+      </h2>
 
 
-<h3>
-🔥 Free Fire
-</h3>
+      <div className="game-container">
+
+        <div className="game-card">
 
 
-<p>
-Free Fire Competitive Team
-</p>
+          <h3>
+            🔥 Free Fire
+          </h3>
 
 
-<p>
-🏆 Tournaments: 25+
-</p>
+          <p>
+            Free Fire Competitive Team
+          </p>
 
 
-<p>
-🥇 Wins: 15+
-</p>
+          <div className="game-stats">
+
+            <p>
+              🏆 Tournaments: 25+
+            </p>
 
 
-<span>
-Active Division
-</span>
+            <p>
+              🥇 Wins: 15+
+            </p>
+
+          </div>
 
 
-</div>
+          <span>
+            Active Division
+          </span>
 
 
-</section>
+        </div>
 
-)
+      </div>
+
+
+    </section>
+
+  )
 
 }
