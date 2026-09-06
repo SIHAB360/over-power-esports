@@ -4,14 +4,14 @@ const teams = [
 
 {
 name:"OVER POWER MAIN TEAM",
-slogan:"Power. Skill. Victory.",
+slogan:"Born To Dominate",
 
 players:[
-{name:"BLADE",role:"RUSHER"},
-{name:"FLICKER",role:"SNIPER"},
-{name:"NEJAD",role:"BOMBER"},
-{name:"KUTTUSH",role:"ALL ROUNDER"},
-{name:"PLAYER FIVE",role:"SUPPORT"}
+{name:"APPELO",role:"RUSHER"},
+{name:"OGGY",role:"SUPPORTER"},
+{name:"ITACHIx",role:"BOMBER"},
+{name:"REJWAN",role:"IGL+ALL ROUNDER"},
+{name:"FixFIRE",role:"SNIPER"}
 ]
 
 },
@@ -19,14 +19,14 @@ players:[
 
 {
 name:"OVER POWER ELITE",
-slogan:"Rise Beyond Limits.",
+slogan:"Victory Is Our Language",
 
 players:[
-{name:"PLAYER ONE",role:"RUSHER"},
-{name:"PLAYER TWO",role:"SNIPER"},
-{name:"PLAYER THREE",role:"SUPPORT"},
-{name:"PLAYER FOUR",role:"IGL"},
-{name:"PLAYER FIVE",role:"ASSAULTER"}
+{name:"RF NTC",role:"RUSHER"},
+{name:"JELLAL",role:"SUPPORTER"},
+{name:"PLAYER THREE",role:"BOMBER"},
+{name:"NAFIZ",role:"ALL ROUNDER"},
+{name:"BAYMAX",role:"SNIPER"}
 ]
 
 },
