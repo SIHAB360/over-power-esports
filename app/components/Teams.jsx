@@ -5,23 +5,13 @@ const teams = [
 {
 name:"OVER POWER MAIN TEAM",
 slogan:"Power. Skill. Victory.",
+
 players:[
-{
-name:"BLADE",
-role:"RUSHER"
-},
-{
-name:"FLICKER",
-role:"SNIPER"
-},
-{
-name:"NEJAD",
-role:"BOMBER"
-},
-{
-name:"KUTTUSH",
-role:"ALL ROUNDER"
-}
+{name:"BLADE",role:"RUSHER"},
+{name:"FLICKER",role:"SNIPER"},
+{name:"NEJAD",role:"BOMBER"},
+{name:"KUTTUSH",role:"ALL ROUNDER"},
+{name:"PLAYER FIVE",role:"SUPPORT"}
 ]
 
 },
@@ -30,23 +20,13 @@ role:"ALL ROUNDER"
 {
 name:"OVER POWER ELITE",
 slogan:"Rise Beyond Limits.",
+
 players:[
-{
-name:"PLAYER ONE",
-role:"RUSHER"
-},
-{
-name:"PLAYER TWO",
-role:"SNIPER"
-},
-{
-name:"PLAYER THREE",
-role:"SUPPORT"
-},
-{
-name:"PLAYER FOUR",
-role:"IGL"
-}
+{name:"PLAYER ONE",role:"RUSHER"},
+{name:"PLAYER TWO",role:"SNIPER"},
+{name:"PLAYER THREE",role:"SUPPORT"},
+{name:"PLAYER FOUR",role:"IGL"},
+{name:"PLAYER FIVE",role:"ASSAULTER"}
 ]
 
 },
@@ -55,23 +35,13 @@ role:"IGL"
 {
 name:"OVER POWER RISING",
 slogan:"Future Champions.",
+
 players:[
-{
-name:"PLAYER ONE",
-role:"RISING STAR"
-},
-{
-name:"PLAYER TWO",
-role:"ASSAULTER"
-},
-{
-name:"PLAYER THREE",
-role:"SNIPER"
-},
-{
-name:"PLAYER FOUR",
-role:"ALL ROUNDER"
-}
+{name:"PLAYER ONE",role:"RISING STAR"},
+{name:"PLAYER TWO",role:"ASSAULTER"},
+{name:"PLAYER THREE",role:"SNIPER"},
+{name:"PLAYER FOUR",role:"ALL ROUNDER"},
+{name:"PLAYER FIVE",role:"SUPPORT"}
 ]
 
 }
@@ -91,7 +61,6 @@ OUR TEAMS
 
 {
 teams.map((team,index)=>(
-
 
 <div className="team-block" key={index}>
 
@@ -148,7 +117,6 @@ VIEW PROFILE
 
 
 </div>
-
 
 ))
 
