@@ -1311,30 +1311,43 @@ animation:colorBlink 3s infinite;
 
 
 
-/* MIX 10 COLOR BLINK */
+/* 4 COLOR PREMIUM BLINK SOCIAL ICONS */
+
+
+.social-links a{
+
+width:34px;
+
+height:34px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border-radius:50%;
+
+background:#111;
+
+font-size:14px;
+
+text-decoration:none;
+
+color:white;
+
+animation:colorBlink 2.5s infinite;
+
+}
+
+
+
+/* YELLOW + GREEN + PURPLE + BLUE */
 
 @keyframes colorBlink{
 
 
 0%{
-
-color:#ff0000;
-
-border:2px solid #ff0000;
-
-}
-
-
-10%{
-
-color:#ff6600;
-
-border:2px solid #ff6600;
-
-}
-
-
-20%{
 
 color:#ffff00;
 
@@ -1343,7 +1356,8 @@ border:2px solid #ffff00;
 }
 
 
-30%{
+
+25%{
 
 color:#00ff00;
 
@@ -1352,65 +1366,32 @@ border:2px solid #00ff00;
 }
 
 
-40%{
-
-color:#00ffff;
-
-border:2px solid #00ffff;
-
-}
-
 
 50%{
 
-color:#0080ff;
+color:#8000ff;
 
-border:2px solid #0080ff;
-
-}
-
-
-60%{
-
-color:#0000ff;
-
-border:2px solid #0000ff;
+border:2px solid #8000ff;
 
 }
 
 
-70%{
 
-color:#9900ff;
+75%{
 
-border:2px solid #9900ff;
+color:#0066ff;
 
-}
-
-
-80%{
-
-color:#ff00ff;
-
-border:2px solid #ff00ff;
+border:2px solid #0066ff;
 
 }
 
-
-90%{
-
-color:#ff1493;
-
-border:2px solid #ff1493;
-
-}
 
 
 100%{
 
-color:#ff0000;
+color:#ffff00;
 
-border:2px solid #ff0000;
+border:2px solid #ffff00;
 
 }
 
