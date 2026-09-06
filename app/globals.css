@@ -970,3 +970,159 @@ text-shadow:
 0 0 10px #ffcc00;
 
 }
+/* TEAMS SECTION */
+
+.teams{
+
+padding:100px 20px;
+
+text-align:center;
+
+}
+
+
+.teams h2{
+
+font-size:45px;
+
+color:#ff1a1a;
+
+margin-bottom:60px;
+
+}
+
+
+
+.team-block{
+
+margin-bottom:100px;
+
+}
+
+
+
+.team-block h3{
+
+font-size:32px;
+
+color:white;
+
+letter-spacing:2px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.team-block p{
+
+color:#ff1a1a;
+
+font-weight:bold;
+
+margin-bottom:40px;
+
+}
+
+
+
+.team-players{
+
+display:flex;
+
+justify-content:center;
+
+gap:30px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+.player-card{
+
+width:230px;
+
+padding:30px;
+
+background:#111;
+
+border:1px solid #ff1a1a;
+
+border-radius:20px;
+
+text-align:center;
+
+transition:.4s;
+
+}
+
+
+
+.player-card:hover{
+
+transform:translateY(-15px);
+
+box-shadow:0 0 35px red;
+
+}
+
+
+
+.player-image{
+
+width:120px;
+
+height:120px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:#222;
+
+border:3px solid red;
+
+box-shadow:0 0 20px red;
+
+}
+
+
+
+.player-card h4{
+
+font-size:22px;
+
+margin-top:20px;
+
+color:white;
+
+}
+
+
+
+.player-card span{
+
+display:block;
+
+color:#ff1a1a;
+
+margin:10px 0 20px;
+
+font-weight:bold;
+
+}
+
+
+
+.player-card button{
+
+padding:10px 25px;
+
+font-size:13px;
+
+margin-top:10px;
+
+}
