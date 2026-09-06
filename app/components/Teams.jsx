@@ -23,7 +23,7 @@ slogan:"Victory Is Our Language",
 
 players:[
 {
-name:"RF NTC",
+name:"FOYSAL",
 role:"PRIMARY",
 image:"/players/rfntc.png"
 },
