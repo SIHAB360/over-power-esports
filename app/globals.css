@@ -895,3 +895,85 @@ color:#ff1e2d;
 font-weight:bold;
 
 }
+.games{
+
+padding:70px 20px;
+text-align:center;
+
+}
+
+
+.games h2{
+
+color:#ff1e2d;
+font-size:32px;
+margin-bottom:40px;
+
+}
+
+
+
+.game-card{
+
+width:280px;
+margin:auto;
+
+padding:30px;
+
+background:#111;
+
+border:1px solid #333;
+
+border-radius:15px;
+
+transition:0.3s;
+
+}
+
+
+
+.game-card:hover{
+
+transform:translateY(-10px);
+
+border-color:#ff1e2d;
+
+box-shadow:0 0 25px red;
+
+}
+
+
+
+.game-card h3{
+
+color:white;
+
+font-size:24px;
+
+margin-bottom:15px;
+
+}
+
+
+
+.game-card p{
+
+color:#ddd;
+
+margin:10px 0;
+
+}
+
+
+
+.game-card span{
+
+display:inline-block;
+
+margin-top:15px;
+
+color:#ff1e2d;
+
+font-weight:bold;
+
+}
