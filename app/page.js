@@ -49,73 +49,47 @@ export default function Home() {
 
         <div>
           <h2>🎮 Games</h2>
-          <p>Competitive Gaming & Tournaments</p>
+          <p>
+            Competitive Gaming & Tournaments
+          </p>
         </div>
 
-
-      <div>
-
-<h2>
-🏆 Achievements
-</h2>
-
-
-<p>
-Building Champions Worldwide
-</p>
-
-
-<a href="/achievements">
-
-<button>
-View Achievements
-</button>
-
-</a>
-
-
-</div>
 
 
         <div>
-          <h2>🔥 Our Team</h2>
-          <p>Power. Skill. Victory.</p>
+
+          <h2>
+            🏆 Achievements
+          </h2>
+
+
+          <p>
+            Building Champions Worldwide
+          </p>
+
+
+          <a href="/achievements">
+
+            <button>
+              View Achievements
+            </button>
+
+          </a>
+
+
         </div>
 
-      </section>
 
 
+        <div>
 
+          <h2>
+            🔥 Our Team
+          </h2>
 
-      <section className="team">
-
-        <h2>
-          Our Players
-        </h2>
-
-
-        <div className="players">
-
-
-          <div className="player">
-            <h3>Player One</h3>
-            <p>IGL / Captain</p>
-          </div>
-
-
-
-          <div className="player">
-            <h3>Player Two</h3>
-            <p>Sniper</p>
-          </div>
-
-
-
-          <div className="player">
-            <h3>Player Three</h3>
-            <p>Entry Fragger</p>
-          </div>
-
+          <p>
+            Power. Skill. Victory.
+          </p>
 
         </div>
 
@@ -125,9 +99,14 @@ View Achievements
 
 
       <Tournaments />
-              <Games />
-              <Teams />
 
+
+
+      <Games />
+
+
+
+      <Teams />
 
 
 
