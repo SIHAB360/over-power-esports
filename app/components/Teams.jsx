@@ -34,7 +34,7 @@ players:[
 
 {
 name:"OVER POWER RISING",
-slogan:"Future Champions.",
+slogan:"Future Champions",
 
 players:[
 {name:"PLAYER ONE",role:"RISING STAR"},
@@ -98,6 +98,32 @@ team.players.map((player,i)=>(
 <span>
 {player.role}
 </span>
+
+
+
+<div className="social-links">
+
+<a href="#">
+Facebook
+</a>
+
+
+<a href="#">
+Instagram
+</a>
+
+
+<a href="#">
+YouTube
+</a>
+
+
+<a href="#">
+TikTok
+</a>
+
+</div>
+
 
 
 <button>
