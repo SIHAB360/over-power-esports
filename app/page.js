@@ -3,6 +3,7 @@ import logo from "./assets/logo.png";
 import Navbar from "./components/Navbar";
 import Tournaments from "./components/Tournaments";
 import Games from "./components/Games";
+import Teams from "./components/Teams";
 
 export default function Home() {
   return (
@@ -125,6 +126,7 @@ View Achievements
 
       <Tournaments />
               <Games />
+              <Teams />
 
 
 
