@@ -2,6 +2,7 @@ import Image from "next/image";
 import logo from "./assets/logo.png";
 import Navbar from "./components/Navbar";
 import Tournaments from "./components/Tournaments";
+import Games from "./components/Games";
 
 export default function Home() {
   return (
