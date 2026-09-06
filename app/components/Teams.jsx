@@ -8,7 +8,7 @@ slogan:"Born To Dominate",
 
 players:[
 {name:"APPELO",role:"PRIMARY"},
-{name:"OGGY",role:"SECOUNDARY"},
+{name:"OGGY",role:"SECONDARY"},
 {name:"ITACHIx",role:"BOMBER"},
 {name:"REJWAN",role:"IGL+SUPPORTER"},
 {name:"FixFIRE",role:"SNIPER"}
@@ -23,8 +23,8 @@ slogan:"Victory Is Our Language",
 
 players:[
 {name:"RF NTC",role:"PRIMARY"},
-{name:"JELLAL",role:"SECOUNDARY"},
-{name:"PLAYER THREE",role:"BOMBER"},
+{name:"JELLAL",role:"SECONDARY"},
+{name:"SOJIB",role:"BOMBER"},
 {name:"NAFIZ",role:"SUPPORTER"},
 {name:"BAYMAX",role:"SNIPER"}
 ]
