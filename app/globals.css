@@ -922,7 +922,88 @@ font-size:14px;
 
 text-decoration:none;
 
+color:white;
+
+animation:socialBlink 2s infinite;
+
 transition:.3s;
+
+}
+
+
+
+/* MIX COLOR BLINK */
+
+
+@keyframes socialBlink{
+
+
+0%{
+
+border:1px solid #ff0000;
+
+box-shadow:0 0 15px #ff0000;
+
+color:#ff0000;
+
+}
+
+
+
+25%{
+
+border:1px solid #0066ff;
+
+box-shadow:0 0 20px #0066ff;
+
+color:#0066ff;
+
+}
+
+
+
+50%{
+
+border:1px solid #ff00cc;
+
+box-shadow:0 0 20px #ff00cc;
+
+color:#ff00cc;
+
+}
+
+
+
+75%{
+
+border:1px solid #00ff66;
+
+box-shadow:0 0 20px #00ff66;
+
+color:#00ff66;
+
+}
+
+
+
+100%{
+
+border:1px solid #ff0000;
+
+box-shadow:0 0 15px #ff0000;
+
+color:#ff0000;
+
+}
+
+
+}
+
+
+
+.social-links a:hover{
+
+transform:translateY(-5px) scale(1.2);
 
 }
 
