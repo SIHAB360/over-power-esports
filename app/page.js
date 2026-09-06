@@ -52,10 +52,28 @@ export default function Home() {
         </div>
 
 
-        <div>
-          <h2>🏆 Achievements</h2>
-          <p>Building Champions Worldwide</p>
-        </div>
+      <div>
+
+<h2>
+🏆 Achievements
+</h2>
+
+
+<p>
+Building Champions Worldwide
+</p>
+
+
+<a href="/achievements">
+
+<button>
+View Achievements
+</button>
+
+</a>
+
+
+</div>
 
 
         <div>
