@@ -576,17 +576,35 @@ flex-wrap:wrap;
 
 .game-card{
 
-width:280px;
+width:380px;
 
-padding:30px;
+padding:45px;
 
-background:#111;
 
-border:1px solid #333;
+background:
 
-border-radius:15px;
+linear-gradient(
 
-transition:0.3s;
+145deg,
+
+#151515,
+
+#050505
+
+);
+
+
+border:1px solid #ff1e2d;
+
+border-radius:20px;
+
+
+transition:.4s;
+
+
+box-shadow:
+
+0 0 20px rgba(255,0,0,.25);
 
 }
 
@@ -594,11 +612,12 @@ transition:0.3s;
 
 .game-card:hover{
 
-transform:translateY(-10px);
+transform:translateY(-15px);
 
-border-color:#ff1e2d;
 
-box-shadow:0 0 25px red;
+box-shadow:
+
+0 0 40px red;
 
 }
 
@@ -606,11 +625,11 @@ box-shadow:0 0 25px red;
 
 .game-card h3{
 
-color:white;
+font-size:32px;
 
-font-size:24px;
+color:#ff1e2d;
 
-margin-bottom:15px;
+margin-bottom:20px;
 
 }
 
@@ -618,9 +637,11 @@ margin-bottom:15px;
 
 .game-card p{
 
+font-size:18px;
+
 color:#ddd;
 
-margin:10px 0;
+margin:15px 0;
 
 }
 
@@ -630,22 +651,28 @@ margin:10px 0;
 
 display:inline-block;
 
-margin-top:15px;
+margin-top:20px;
 
-padding:8px 18px;
+padding:10px 25px;
 
-border-radius:20px;
+
+border-radius:30px;
+
 
 background:#ff1e2d;
 
+
 color:white;
+
 
 font-weight:bold;
 
-box-shadow:0 0 15px red;
+
+box-shadow:
+
+0 0 20px red;
 
 }
-
 
 
 /* CONTACT */
