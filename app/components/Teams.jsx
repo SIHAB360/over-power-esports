@@ -22,11 +22,35 @@ name:"OVER POWER ELITE",
 slogan:"Victory Is Our Language",
 
 players:[
-{name:"RF NTC",role:"PRIMARY"},
-{name:"JELLAL",role:"SECONDARY"},
-{name:"SOJIB",role:"BOMBER"},
-{name:"NAFIZ",role:"SUPPORTER"},
-{name:"BAYMAX",role:"SNIPER"}
+{
+name:"RF NTC",
+role:"PRIMARY",
+image:"/players/rfntc.png"
+},
+
+{
+name:"JELLAL",
+role:"SECONDARY",
+image:"/players/jellal.png"
+},
+
+{
+name:"SOJIB",
+role:"BOMBER",
+image:"/players/sojib.png"
+},
+
+{
+name:"NAFIZ",
+role:"SUPPORTER",
+image:"/players/nafiz.png"
+},
+
+{
+name:"BAYMAX",
+role:"SNIPER",
+image:"/players/baymax.png"
+}
 ]
 
 },
@@ -87,6 +111,12 @@ team.players.map((player,i)=>(
 
 
 <div className="player-image">
+
+<img 
+src={player.image}
+alt={player.name}
+/>
+
 </div>
 
 
