@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "./assets/logo.png";
 import Navbar from "./components/Navbar";
+import Tournaments from "./components/Tournaments";
 
 export default function Home() {
   return (
@@ -100,6 +101,10 @@ export default function Home() {
 
 
       </section>
+
+
+
+      <Tournaments />
 
 
 
