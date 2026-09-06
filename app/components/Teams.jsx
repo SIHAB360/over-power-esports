@@ -43,7 +43,7 @@ image:"/players/sojib.png"
 {
 name:"NAFIZ",
 role:"SUPPORTER",
-image:"/players/nafiz.png"
+image:"/players/nafiz.jpeg"
 },
 
 {
