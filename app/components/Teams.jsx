@@ -7,10 +7,10 @@ name:"OVER POWER MAIN TEAM",
 slogan:"Born To Dominate",
 
 players:[
-{name:"APPELO",role:"RUSHER"},
-{name:"OGGY",role:"SUPPORTER"},
+{name:"APPELO",role:"PRIMARY"},
+{name:"OGGY",role:"SECOUNDARY"},
 {name:"ITACHIx",role:"BOMBER"},
-{name:"REJWAN",role:"IGL+ALL ROUNDER"},
+{name:"REJWAN",role:"IGL+SUPPORTER"},
 {name:"FixFIRE",role:"SNIPER"}
 ]
 
@@ -22,10 +22,10 @@ name:"OVER POWER ELITE",
 slogan:"Victory Is Our Language",
 
 players:[
-{name:"RF NTC",role:"RUSHER"},
-{name:"JELLAL",role:"SUPPORTER"},
+{name:"RF NTC",role:"PRIMARY"},
+{name:"JELLAL",role:"SECOUNDARY"},
 {name:"PLAYER THREE",role:"BOMBER"},
-{name:"NAFIZ",role:"ALL ROUNDER"},
+{name:"NAFIZ",role:"SUPPORTER"},
 {name:"BAYMAX",role:"SNIPER"}
 ]
 
