@@ -25,31 +25,36 @@ players:[
 {
 name:"FOYSAL",
 role:"PRIMARY",
-image:"/players/rfntc.png"
+image:"/players/rfntc.png",
+position:"center top"
 },
 
 {
 name:"JELLAL",
 role:"SECONDARY",
-image:"/players/jellal.png"
+image:"/players/jellal.png",
+position:"center 15%"
 },
 
 {
 name:"SOJIB",
 role:"BOMBER",
-image:"/players/sojib.png"
+image:"/players/sojib.png",
+position:"center top"
 },
 
 {
 name:"NAFIZ",
 role:"SUPPORTER",
-image:"/players/nafiz.jpeg"
+image:"/players/nafiz.jpeg",
+position:"center 20%"
 },
 
 {
 name:"BAYMAX",
 role:"SNIPER",
-image:"/players/baymax.png"
+image:"/players/baymax.png",
+position:"center top"
 }
 ]
 
