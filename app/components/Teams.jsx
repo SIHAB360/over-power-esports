@@ -11,35 +11,65 @@ players:[
 name:"APPELO",
 role:"PRIMARY",
 image:"/players/appelo.png",
-position:"center top"
+position:"center top",
+social:{
+facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+instagram:"https://www.instagram.com/_appelo_ff?stkn=ZjBta2pzMmJodjU2&utm_source=qr",
+youtube:"https://youtube.com/@appelo_ff?si=xNMDlDdjx7jQ2Bqp",
+tiktok:"https://www.tiktok.com/@appelo_offical_?_r=1&_t=ZS-99XT4cbGFoj"
+}
 },
 
 {
 name:"OGGY",
 role:"SECONDARY",
 image:"/players/oggy.png",
-position:"center top"
+position:"center top",
+social:{
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:""
+}
 },
 
 {
 name:"ITACHIx",
 role:"BOMBER",
 image:"/players/itachix.png",
-position:"center top"
+position:"center top",
+social:{
+facebook:"https://www.facebook.com/profile.php?id=61590102347309",
+instagram:"",
+youtube:"https://youtube.com/@itachiontop-r2p?si=59-V9LBT1yH7d-L5",
+tiktok:"https://www.tiktok.com/@itachix074?_r=1&_t=ZS-99XT9LGrTPM"
+}
 },
 
 {
 name:"REJWAN",
 role:"IGL+SUPPORTER",
 image:"/players/rejwan.png",
-position:"center top"
+position:"center top",
+social:{
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:""
+}
 },
 
 {
 name:"FixFIRE",
 role:"SNIPER",
 image:"/players/fixfire.png",
-position:"center top"
+position:"center top",
+social:{
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+instagram:"https://www.instagram.com/xr_jisan09?stkn=b3d6a2Y4MTZuMXg1",
+youtube:"https://www.youtube.com/@fixfire09",
+tiktok:"tiktok.com/@fixfire09"
+}
 }
 ]
 
