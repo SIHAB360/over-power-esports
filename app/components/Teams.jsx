@@ -7,6 +7,7 @@ name:"OVER POWER MAIN TEAM",
 slogan:"Born To Dominate",
 
 players:[
+
 {
 name:"APPELO",
 role:"PRIMARY",
@@ -68,9 +69,10 @@ social:{
 facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
 instagram:"https://www.instagram.com/xr_jisan09?stkn=b3d6a2Y4MTZuMXg1",
 youtube:"https://www.youtube.com/@fixfire09",
-tiktok:"tiktok.com/@fixfire09"
+tiktok:"https://tiktok.com/@fixfire09"
 }
 }
+
 ]
 
 },
@@ -81,40 +83,47 @@ name:"OVER POWER ELITE",
 slogan:"Victory Is Our Language",
 
 players:[
+
 {
 name:"FOYSAL",
 role:"PRIMARY",
 image:"/players/rfntc.png",
-position:"center top"
+position:"center top",
+social:{}
 },
 
 {
 name:"JELLAL",
 role:"SECONDARY",
 image:"/players/jellal.png",
-position:"center 15%"
+position:"center 15%",
+social:{}
 },
 
 {
 name:"SOJIB",
 role:"BOMBER",
 image:"/players/sojib.png",
-position:"center top"
+position:"center top",
+social:{}
 },
 
 {
 name:"NAFIZ",
 role:"SUPPORTER",
 image:"/players/nafiz.jpeg",
-position:"center 20%"
+position:"center 20%",
+social:{}
 },
 
 {
 name:"BAYMAX",
 role:"SNIPER",
 image:"/players/baymax.png",
-position:"center top"
+position:"center top",
+social:{}
 }
+
 ]
 
 },
@@ -125,11 +134,35 @@ name:"OVER POWER RISING",
 slogan:"Future Champions",
 
 players:[
-{name:"PLAYER ONE",role:"RISING STAR"},
-{name:"PLAYER TWO",role:"ASSAULTER"},
-{name:"PLAYER THREE",role:"SNIPER"},
-{name:"PLAYER FOUR",role:"ALL ROUNDER"},
-{name:"PLAYER FIVE",role:"SUPPORT"}
+{
+name:"PLAYER ONE",
+role:"RISING STAR",
+social:{}
+},
+
+{
+name:"PLAYER TWO",
+role:"ASSAULTER",
+social:{}
+},
+
+{
+name:"PLAYER THREE",
+role:"SNIPER",
+social:{}
+},
+
+{
+name:"PLAYER FOUR",
+role:"ALL ROUNDER",
+social:{}
+},
+
+{
+name:"PLAYER FIVE",
+role:"SUPPORT",
+social:{}
+}
 ]
 
 }
@@ -163,7 +196,6 @@ teams.map((team,index)=>(
 </p>
 
 
-
 <div className="team-players">
 
 
@@ -179,6 +211,9 @@ team.players.map((player,i)=>(
 <img 
 src={player.image}
 alt={player.name}
+style={{
+objectPosition:player.position || "center top"
+}}
 />
 
 </div>
@@ -198,24 +233,60 @@ alt={player.name}
 <div className="social-links">
 
 
-<a href="#">
+{
+player.social?.facebook &&
+
+<a
+href={player.social.facebook}
+target="_blank"
+rel="noopener noreferrer"
+>
 <i className="fa-brands fa-facebook-f"></i>
 </a>
 
+}
 
-<a href="#">
+
+{
+player.social?.instagram &&
+
+<a
+href={player.social.instagram}
+target="_blank"
+rel="noopener noreferrer"
+>
 <i className="fa-brands fa-instagram"></i>
 </a>
 
+}
 
-<a href="#">
+
+{
+player.social?.youtube &&
+
+<a
+href={player.social.youtube}
+target="_blank"
+rel="noopener noreferrer"
+>
 <i className="fa-brands fa-youtube"></i>
 </a>
 
+}
 
-<a href="#">
+
+{
+player.social?.tiktok &&
+
+<a
+href={player.social.tiktok}
+target="_blank"
+rel="noopener noreferrer"
+>
 <i className="fa-brands fa-tiktok"></i>
 </a>
+
+}
 
 
 </div>
