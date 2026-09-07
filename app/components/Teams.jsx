@@ -7,11 +7,40 @@ name:"OVER POWER MAIN TEAM",
 slogan:"Born To Dominate",
 
 players:[
-{name:"APPELO",role:"PRIMARY"},
-{name:"OGGY",role:"SECONDARY"},
-{name:"ITACHIx",role:"BOMBER"},
-{name:"REJWAN",role:"IGL+SUPPORTER"},
-{name:"FixFIRE",role:"SNIPER"}
+{
+name:"APPELO",
+role:"PRIMARY",
+image:"/players/appelo.png",
+position:"center top"
+},
+
+{
+name:"OGGY",
+role:"SECONDARY",
+image:"/players/oggy.png",
+position:"center top"
+},
+
+{
+name:"ITACHIx",
+role:"BOMBER",
+image:"/players/itachix.png",
+position:"center top"
+},
+
+{
+name:"REJWAN",
+role:"IGL+SUPPORTER",
+image:"/players/rejwan.png",
+position:"center top"
+},
+
+{
+name:"FixFIRE",
+role:"SNIPER",
+image:"/players/fixfire.png",
+position:"center top"
+}
 ]
 
 },
