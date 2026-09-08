@@ -12,7 +12,7 @@ instagram:"https://www.instagram.com/_appelo_ff",
 youtube:"https://youtube.com/@appelo_ff",
 tiktok:"https://www.tiktok.com/@appelo_offical"
 },
-
+ 
 
 oggy:{
 name:"OGGY",
