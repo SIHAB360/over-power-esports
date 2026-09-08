@@ -27,10 +27,10 @@ role:"SECONDARY",
 image:"/players/oggy.png",
 position:"center top",
 social:{
-facebook:"",
-instagram:"",
-youtube:"",
-tiktok:""
+facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
+instagram:"https://www.instagram.com/being_ogggyy?stkn=MTRuemcwaDJjaWdvMg==",
+youtube:"https://youtube.com/@being_ogggyy?si=UHNwx-WcCr4kVwFz",
+tiktok:"tiktok.com/@being_ogggyy"
 }
 },
 
@@ -293,9 +293,11 @@ rel="noopener noreferrer"
 
 
 
+<a href={`/players/${player.name.toLowerCase().replace(" ","")}`}>
 <button>
 VIEW PROFILE
 </button>
+</a>
 
 
 </div>
