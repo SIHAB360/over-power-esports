@@ -1563,3 +1563,114 @@ color:#ddd;
 margin-top:15px;
 
 }
+/* =========================
+ PLAYER PROFILE CONTENT
+========================= */
+
+
+.player-profile h1,
+.player-profile h3,
+.player-profile h4{
+
+position:relative;
+
+}
+
+
+.player-profile div{
+
+position:relative;
+
+}
+
+
+/* SOCIAL BUTTONS */
+
+.player-profile a{
+
+display:inline-flex;
+
+align-items:center;
+justify-content:center;
+
+margin:20px 8px 0 0;
+
+padding:10px 18px;
+
+border-radius:30px;
+
+background:#111;
+
+color:white;
+
+text-decoration:none;
+
+border:1px solid #ff1a1a;
+
+font-size:14px;
+
+transition:.3s;
+
+}
+
+
+.player-profile a:hover{
+
+transform:translateY(-5px);
+
+background:#ff1a1a;
+
+box-shadow:
+0 0 20px red;
+
+}
+
+
+/* PLAYER TITLE GLOW */
+
+.player-profile h1{
+
+background:
+linear-gradient(
+90deg,
+#ff0000,
+#ffcc00
+);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+filter:
+drop-shadow(0 0 15px red);
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+.player-profile{
+
+grid-template-columns:1fr;
+
+margin:30px 15px;
+
+}
+
+
+.player-profile img{
+
+height:350px;
+
+}
+
+
+.player-profile h1{
+
+font-size:35px;
+
+}
+
+}
