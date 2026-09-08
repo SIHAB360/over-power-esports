@@ -1844,3 +1844,96 @@ box-shadow:
 0 0 25px rgba(255,204,0,.5);
 
 }
+/* =========================
+   PLAYER STATS PANEL
+========================= */
+
+
+.stats-panel{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:15px;
+
+margin-bottom:30px;
+
+}
+
+
+.stat-box{
+
+padding:20px;
+
+background:
+
+linear-gradient(
+145deg,
+#151515,
+#070707
+);
+
+border:1px solid rgba(255,0,0,.4);
+
+border-radius:15px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+
+
+.stat-box h2{
+
+font-size:30px;
+
+color:#ff1a1a;
+
+margin-bottom:8px;
+
+text-shadow:
+
+0 0 15px red;
+
+}
+
+
+
+.stat-box p{
+
+color:#aaa;
+
+font-size:12px;
+
+letter-spacing:2px;
+
+}
+
+
+
+.stat-box:hover{
+
+transform:translateY(-8px);
+
+border-color:#ffcc00;
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.5);
+
+}
+
+
+
+@media(max-width:800px){
+
+.stats-panel{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
