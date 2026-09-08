@@ -16,10 +16,7 @@ background:#050505;
 
 color:white;
 
-font-family:
-Arial,
-Helvetica,
-sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 
 }
 
@@ -43,7 +40,6 @@ circle at top,
 
 
 
-
 img{
 
 max-width:100%;
@@ -51,7 +47,6 @@ max-width:100%;
 display:block;
 
 }
-
 
 
 
@@ -141,7 +136,6 @@ color:red;
 
 
 
-
 /* =========================
 HERO
 ========================= */
@@ -151,7 +145,7 @@ HERO
 
 text-align:center;
 
-padding:60px 20px 40px;
+padding:70px 20px 50px;
 
 }
 
@@ -193,7 +187,7 @@ object-fit:contain;
 
 .hero h1{
 
-margin-top:25px;
+margin-top:30px;
 
 font-size:55px;
 
@@ -273,12 +267,11 @@ TEAM SECTION
 
 .teams{
 
-padding:60px 20px;
+padding:70px 20px;
 
 text-align:center;
 
 }
-
 
 
 .teams h2{
@@ -321,7 +314,7 @@ text-shadow:
 
 color:#aaa;
 
-margin-bottom:30px;
+margin-bottom:35px;
 
 }
 
@@ -336,13 +329,13 @@ PLAYER GRID
 
 .team-players{
 
-display:grid;
-
-grid-template-columns:repeat(5,230px);
+display:flex;
 
 justify-content:center;
 
 gap:25px;
+
+flex-wrap:wrap;
 
 }
 
@@ -398,16 +391,16 @@ box-shadow:
 
 
 /* =========================
-PLAYER IMAGE
-ELITE STYLE
+PLAYER CIRCLE
+ELITE TEAM STYLE
 ========================= */
 
 
 .player-image{
 
-width:100px;
+width:110px;
 
-height:100px;
+height:110px;
 
 border-radius:50%;
 
@@ -425,7 +418,7 @@ justify-content:center;
 
 box-shadow:
 
-0 0 15px red;
+0 0 20px red;
 
 }
 
@@ -437,11 +430,11 @@ width:100%;
 
 height:100%;
 
-object-fit:cover;
+object-fit:cover !important;
 
-object-position:center top;
+object-position:center 25% !important;
 
-transform:scale(1.05);
+transform:scale(1.15);
 
 }
 
@@ -476,7 +469,7 @@ font-weight:bold;
 
 
 /* =========================
-SOCIAL ICON RGB ROTATING GLOW
+SOCIAL ICON RGB ROTATING
 ========================= */
 
 
@@ -518,15 +511,11 @@ font-size:17px;
 
 position:relative;
 
-overflow:visible;
-
 z-index:1;
 
 }
 
 
-
-/* Rotating RGB Ring */
 
 .social-links a::before{
 
@@ -534,9 +523,7 @@ content:"";
 
 position:absolute;
 
-width:48px;
-
-height:48px;
+inset:-5px;
 
 border-radius:50%;
 
@@ -562,18 +549,16 @@ red
 
 animation:
 
-rotateRGB 2s linear infinite;
+socialRotate 2s linear infinite;
 
 
-z-index:-2;
+filter:blur(5px);
 
-filter:blur(6px);
+z-index:-1;
 
 }
 
 
-
-/* Inner black cover */
 
 .social-links a::after{
 
@@ -593,9 +578,7 @@ z-index:-1;
 
 
 
-/* Rotation */
-
-@keyframes rotateRGB{
+@keyframes socialRotate{
 
 0%{
 
@@ -614,27 +597,22 @@ transform:rotate(360deg);
 
 
 
-/* Extra pulse */
-
 .social-links a:hover{
 
 transform:scale(1.2);
-
-box-shadow:
-
-0 0 25px red;
 
 }
 
 
 
-/* Individual icon border */
+
 
 .facebook{
 
 border:1px solid #1877f2;
 
 }
+
 
 
 .instagram{
@@ -644,6 +622,7 @@ border:1px solid #e1306c;
 }
 
 
+
 .youtube{
 
 border:1px solid red;
@@ -651,11 +630,13 @@ border:1px solid red;
 }
 
 
+
 .tiktok{
 
 border:1px solid cyan;
 
 }
+
 
 
 
@@ -703,14 +684,9 @@ transform:scale(1.08);
 
 box-shadow:
 
-0 0 35px red;
+0 0 30px red;
 
 }
-
-
-
-
-
 /* =========================
 PROFILE PAGE
 ========================= */
@@ -732,12 +708,103 @@ linear-gradient(
 #050505
 );
 
+
 border:1px solid rgba(255,0,0,.5);
 
 border-radius:15px;
 
+box-shadow:
+
+0 0 40px rgba(255,0,0,.25);
+
 }
 
+
+
+
+.profile-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding-bottom:25px;
+
+border-bottom:1px solid #3b1111;
+
+}
+
+
+
+.player-heading h1{
+
+font-size:45px;
+
+color:#ff2020;
+
+font-weight:900;
+
+}
+
+
+
+.player-heading h3{
+
+margin-top:10px;
+
+color:#ffcc00;
+
+}
+
+
+
+.player-heading p{
+
+margin-top:15px;
+
+color:#aaa;
+
+}
+
+
+
+
+.winning-card{
+
+width:170px;
+
+padding:20px;
+
+text-align:center;
+
+background:#06150d;
+
+border:1px solid #00ff88;
+
+border-radius:12px;
+
+box-shadow:
+
+0 0 25px rgba(0,255,120,.4);
+
+}
+
+
+
+.winning-card h2{
+
+color:#00ff88;
+
+font-size:30px;
+
+}
+
+
+
+
+/* PROFILE BODY */
 
 
 .profile-layout{
@@ -798,6 +865,7 @@ gap:20px;
 
 
 
+
 .profile-table{
 
 background:#100404;
@@ -848,6 +916,8 @@ border-bottom:1px solid #301010;
 
 
 
+
+
 /* =========================
 RESPONSIVE
 ========================= */
@@ -855,36 +925,20 @@ RESPONSIVE
 
 @media(max-width:1200px){
 
+
 .team-players{
 
-grid-template-columns:repeat(4,230px);
+gap:20px;
 
 }
 
+
 }
+
 
 
 
 @media(max-width:900px){
-
-.team-players{
-
-grid-template-columns:repeat(2,230px);
-
-}
-
-
-.profile-layout{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-
-
-@media(max-width:600px){
 
 
 .navbar{
@@ -897,6 +951,42 @@ gap:20px;
 
 
 
+.profile-header{
+
+flex-direction:column;
+
+gap:20px;
+
+text-align:center;
+
+}
+
+
+
+.profile-layout{
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.player-heading h1{
+
+font-size:35px;
+
+}
+
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
 .hero h1{
 
 font-size:38px;
@@ -907,7 +997,11 @@ font-size:38px;
 
 .team-players{
 
-grid-template-columns:1fr;
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
 
 }
 
@@ -915,7 +1009,7 @@ grid-template-columns:1fr;
 
 .player-card{
 
-margin:auto;
+width:90%;
 
 }
 
@@ -927,57 +1021,14 @@ height:300px;
 
 }
 
-}
-/* =========================
-FINAL PLAYER CIRCLE SIZE
-========================= */
 
-.player-image{
 
-width:110px;
-height:110px;
+.nav-links{
 
-border-radius:50%;
-
-overflow:hidden;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:center;
+flex-wrap:wrap;
 
 justify-content:center;
 
-box-shadow:0 0 20px red;
-
 }
-
-
-.player-image img{
-
-width:100%;
-height:100%;
-
-object-fit:cover;
-
-transform:scale(1.15);
-
-}
-
-
-.player-image img{
-
-width:50%;
-
-height:100%;
-
-object-fit:cover !important;
-
-object-position:center 25% !important;
-
-transform:scale(1.25);
 
 }
