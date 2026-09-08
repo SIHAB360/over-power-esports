@@ -1,264 +1,106 @@
-export default async function PlayerProfile({params}){
-
-
-const players = {
-
-appelo:{
-name:"APPELO",
-role:"PRIMARY",
-team:"OVER POWER MAIN TEAM",
-image:"/players/appelo.png",
-facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
-instagram:"https://www.instagram.com/_appelo_ff",
-youtube:"https://youtube.com/@appelo_ff",
-tiktok:"https://www.tiktok.com/@appelo_offical"
-},
-
-
-oggy:{
-name:"OGGY",
-role:"SECONDARY",
-team:"OVER POWER MAIN TEAM",
-image:"/players/oggy.png",
-facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
-instagram:"https://www.instagram.com/being_ogggyy",
-youtube:"https://youtube.com/@being_ogggyy",
-tiktok:"https://www.tiktok.com/@being_ogggyy"
-},
-
-
-itachix:{
-name:"ITACHIx",
-role:"BOMBER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/itachix.png",
-facebook:"https://www.facebook.com/profile.php?id=61590102347309",
-instagram:"",
-youtube:"https://youtube.com/@itachiontop-r2p",
-tiktok:"https://www.tiktok.com/@itachix074"
-},
-
-
-rejwan:{
-name:"REJWAN",
-role:"IGL+SUPPORTER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/rejwan.png",
-facebook:"https://www.facebook.com/rejwan.ahammed11",
-instagram:"https://www.instagram.com/rahammed_",
-youtube:"https://youtube.com/@rejwan-ff6711",
-tiktok:"https://www.tiktok.com/@rejwanahammed"
-},
-
-
-fixfire:{
-name:"FixFIRE",
-role:"SNIPER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/fixfire.png",
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"https://www.instagram.com/xr_jisan09",
-youtube:"https://www.youtube.com/@fixfire09",
-tiktok:"https://tiktok.com/@fixfire09"
-}
-
-}
-
-
-
-const {id}=await params;
-
-const player=players[id];
-
-
-if(!player){
-
-return <h1>Player Not Found</h1>
-
-}
-
-
-
 return(
 
 <section className="player-profile premium">
 
 
-<div className="player-header">
+{/* TOP HEADER */}
+
+<div className="profile-top">
+
+
+<div>
+
+<h1>
+{player.name}
+</h1>
+
+<p>
+{player.name} is a professional esports player currently playing for Over Power Esports.
+</p>
+
+</div>
+
+
+
+<div className="winnings">
+
+<span>
+TOTAL WINNINGS
+</span>
+
+<h2>
+$16,015
+</h2>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="profile-body">
+
+
+
+{/* LEFT SIDEBAR */}
+
+<div className="profile-sidebar">
+
+
+<div className="player-image-box">
 
 <img
 src={player.image}
 alt={player.name}
 />
 
+</div>
 
-<div className="player-title">
 
-<span className="badge">
-PRO PLAYER
-</span>
 
-<h1>
+<h2>
+PLAYER INFORMATION
+</h2>
+
+
+<div className="info-row">
+<span>Name</span>
 {player.name}
-</h1>
+</div>
 
 
-<h3>
+<div className="info-row">
+<span>Nationality</span>
+🇧🇩 Bangladesh
+</div>
+
+
+<div className="info-row">
+<span>Status</span>
+Active
+</div>
+
+
+<div className="info-row">
+<span>Role</span>
 {player.role}
-</h3>
+</div>
 
 
-<h4>
+<div className="info-row">
+<span>Team</span>
 {player.team}
-</h4>
-
-</div>
-
 </div>
 
 
-
-
-<div className="stats-panel">
-
-
-<div className="stat-box">
-<h2>25+</h2>
-<p>MATCHES</p>
-</div>
-
-
-<div className="stat-box">
-<h2>12</h2>
-<p>WINS</p>
-</div>
-
-
-<div className="stat-box">
-<h2>5</h2>
-<p>MVP</p>
-</div>
-
-
-<div className="stat-box">
-<h2>#01</h2>
-<p>RANK</p>
-</div>
-
-
-</div>
-
-
-
-
-
-<div className="player-info">
-
-
-<p>
-<span>ROLE</span>
-{player.role}
-</p>
-
-
-<p>
-<span>TEAM</span>
-{player.team}
-</p>
-
-
-<p>
-<span>STATUS</span>
-ACTIVE PLAYER
-</p>
-
-
-<p>
-<span>COUNTRY</span>
-BANGLADESH
-</p>
-
-
-</div>
-
-
-
-
-
-
-<div className="awards">
 
 
 <h2>
-🏅 AWARDS
+LINKS
 </h2>
-
-
-<div className="award-card">
-
-<h3>
-ELITE PLAYER
-</h3>
-
-<p>
-Over Power Esports Official Roster
-</p>
-
-</div>
-
-
-<div className="award-card">
-
-<h3>
-TEAM WARRIOR
-</h3>
-
-<p>
-Competitive Gaming Specialist
-</p>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="achievements">
-
-
-<h2>
-🏆 ACHIEVEMENTS
-</h2>
-
-
-<ul>
-
-<li>
-Over Power Esports Main Team Player
-</li>
-
-<li>
-Competitive Tournament Participant
-</li>
-
-<li>
-Professional Free Fire Player
-</li>
-
-</ul>
-
-
-</div>
-
-
-
-
-
 
 
 <div className="social-links">
@@ -271,13 +113,11 @@ f
 }
 
 
-
 {player.instagram &&
 <a href={player.instagram} target="_blank">
 ◎
 </a>
 }
-
 
 
 {player.youtube &&
@@ -287,7 +127,6 @@ f
 }
 
 
-
 {player.tiktok &&
 <a href={player.tiktok} target="_blank">
 ♪
@@ -295,13 +134,131 @@ f
 }
 
 
+</div>
+
+
+
+<h2>
+TEAM HISTORY
+</h2>
+
+
+<p className="history">
+2026-06-18 - Present
+<br/>
+Over Power Main Team
+</p>
+
 
 </div>
 
 
 
+
+
+
+{/* RIGHT SIDE */}
+
+
+<div className="profile-content">
+
+
+
+<div className="table-card">
+
+
+<h2>
+🏆 ACHIEVEMENTS
+</h2>
+
+
+<table>
+
+<tbody>
+
+<tr>
+<td>2026-06-21</td>
+<td>A-Tier</td>
+<td>Free Fire MAX Asia Invitational</td>
+<td>$120</td>
+</tr>
+
+
+<tr>
+<td>2026-06-06</td>
+<td>A-Tier</td>
+<td>Free Fire World Series</td>
+<td>$181</td>
+</tr>
+
+
+<tr>
+<td>2026-05-30</td>
+<td>C-Tier</td>
+<td>Liquid Esports Invitational</td>
+<td>$48</td>
+</tr>
+
+
+</tbody>
+
+</table>
+
+
+</div>
+
+
+
+
+
+<div className="table-card">
+
+
+<h2>
+🏅 AWARDS
+</h2>
+
+
+<table>
+
+<tbody>
+
+<tr>
+
+<td>
+2026-01-30
+</td>
+
+<td>
+C-Tier
+</td>
+
+<td>
+Free Fire Road To Glory
+</td>
+
+<td>
+CONTENT LEGEND
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
 </section>
 
 )
-
-}
