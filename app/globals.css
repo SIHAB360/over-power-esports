@@ -1703,3 +1703,193 @@ box-shadow:
 0 0 35px red;
 
 }
+/* =========================
+PLAYER PROFILE FINAL POLISH
+========================= */
+
+
+.esports-profile{
+
+max-width:1200px;
+
+padding:35px;
+
+margin:50px auto;
+
+}
+
+
+
+.profile-layout{
+
+grid-template-columns:320px 1fr;
+
+gap:25px;
+
+}
+
+
+
+.profile-left{
+
+min-height:550px;
+
+}
+
+
+
+.profile-photo{
+
+height:360px;
+
+object-fit:cover;
+
+object-position:center top;
+
+}
+
+
+
+.profile-left h3{
+
+font-size:18px;
+
+color:#ff3333;
+
+padding:15px 20px;
+
+}
+
+
+
+.profile-row{
+
+padding:14px 20px;
+
+font-size:13px;
+
+}
+
+
+
+.profile-row span{
+
+color:#888;
+
+}
+
+
+
+.team-history{
+
+padding:20px;
+
+font-size:14px;
+
+color:white;
+
+}
+
+
+
+.profile-social,
+.social-links{
+
+padding:20px;
+
+display:flex;
+
+gap:15px;
+
+}
+
+
+
+.profile-social a,
+.social-links a{
+
+width:40px;
+
+height:40px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+border:1px solid red;
+
+background:#080808;
+
+color:white;
+
+font-size:18px;
+
+}
+
+
+
+.profile-social a:hover,
+.social-links a:hover{
+
+background:red;
+
+box-shadow:
+
+0 0 25px red;
+
+}
+
+
+
+/* RIGHT TABLE */
+
+.profile-table{
+
+padding:25px;
+
+}
+
+
+
+.profile-table h2{
+
+font-size:22px;
+
+margin-bottom:20px;
+
+}
+
+
+
+.profile-table td,
+.profile-table th{
+
+padding:16px;
+
+}
+
+
+
+
+
+@media(max-width:800px){
+
+
+.profile-layout{
+
+grid-template-columns:1fr;
+
+}
+
+
+.profile-photo{
+
+height:300px;
+
+}
+
+}
