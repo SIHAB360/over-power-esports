@@ -1637,3 +1637,69 @@ section{
 overflow:hidden;
 
 }
+/* =========================
+PROFILE BUTTON PREMIUM
+========================= */
+
+
+.profile-btn{
+
+margin-top:20px;
+
+width:130px;
+
+height:40px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+background:
+
+linear-gradient(
+90deg,
+#ff0000,
+#ff3030
+);
+
+
+border-radius:30px;
+
+
+color:white;
+
+font-size:12px;
+
+font-weight:900;
+
+
+text-decoration:none;
+
+
+letter-spacing:1px;
+
+
+box-shadow:
+
+0 0 15px red;
+
+
+transition:.3s;
+
+}
+
+
+
+.profile-btn:hover{
+
+transform:translateY(-3px) scale(1.05);
+
+
+box-shadow:
+
+0 0 35px red;
+
+}
