@@ -1,4 +1,3 @@
-
 export default function PlayerProfile({params}){
 
 const players = {
@@ -14,6 +13,20 @@ youtube:"https://youtube.com/@appelo_ff",
 tiktok:"https://www.tiktok.com/@appelo_offical"
 },
 
+
+oggy:{
+name:"OGGY",
+role:"SECONDARY",
+team:"OVER POWER MAIN TEAM",
+image:"/players/oggy.png",
+position:"center top",
+facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
+instagram:"https://www.instagram.com/being_ogggyy?stkn=MTRuemcwaDJjaWdvMg==",
+youtube:"https://youtube.com/@being_ogggyy?si=UHNwx-WcCr4kVwFz",
+tiktok:"https://www.tiktok.com/@being_ogggyy?_r=1&_t=ZS-99Z8hvW8Hxd"
+},
+
+
 itachix:{
 name:"ITACHIx",
 role:"BOMBER",
@@ -24,6 +37,20 @@ instagram:"",
 youtube:"https://youtube.com/@itachiontop-r2p",
 tiktok:"https://www.tiktok.com/@itachix074"
 },
+
+
+rejwan:{
+name:"REJWAN",
+role:"IGL+SUPPORTER",
+team:"OVER POWER MAIN TEAM",
+image:"/players/rejwan.png",
+position:"center top",
+facebook:"https://www.facebook.com/rejwan.ahammed11?mibextid=wwXIfr",
+instagram:"https://www.instagram.com/rahammed_",
+youtube:"https://youtube.com/@rejwan-ff6711",
+tiktok:"https://www.tiktok.com/@rejwanahammed"
+},
+
 
 fixfire:{
 name:"FixFIRE",
@@ -39,6 +66,7 @@ tiktok:"https://tiktok.com/@fixfire09"
 }
 
 
+
 const player = players[params.id];
 
 
@@ -51,6 +79,7 @@ Player Not Found
 )
 
 }
+
 
 
 return(
@@ -77,6 +106,7 @@ alt={player.name}
 <h4>
 {player.team}
 </h4>
+
 
 
 <div>
