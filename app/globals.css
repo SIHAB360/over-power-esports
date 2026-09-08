@@ -1,139 +1,340 @@
+/* =========================
+GLOBAL RESET
+========================= */
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
 
+
 body{
+
   background:#050505;
+
   color:white;
-  font-family:Arial, Helvetica, sans-serif;
+
+  font-family:
+  Arial,
+  Helvetica,
+  sans-serif;
+
 }
 
+
 main{
+
   min-height:100vh;
+
   padding:20px;
+
   background:
+
   radial-gradient(
     circle at top,
     #650000,
     #050505 55%
   );
+
 }
 
 
-/* =====================
+
+
+/* =========================
 NAVBAR
-===================== */
+========================= */
+
 
 .navbar{
+
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
+
   padding:20px 50px;
+
   background:rgba(10,10,10,.85);
-  border-bottom:1px solid rgba(255,0,0,.4);
+
+  border-bottom:
+  1px solid rgba(255,0,0,.4);
+
   backdrop-filter:blur(10px);
+
 }
+
+
 
 .logo{
+
   font-size:26px;
+
   font-weight:900;
+
 }
+
+
 
 .logo span{
+
   color:#ff1a1a;
-  text-shadow:0 0 15px red;
+
+  text-shadow:
+
+  0 0 15px red;
+
 }
+
+
 
 .nav-links{
+
   display:flex;
+
   gap:35px;
+
 }
+
+
 
 .nav-links a{
+
   color:white;
+
   text-decoration:none;
+
   font-weight:bold;
+
   transition:.3s;
+
 }
+
+
 
 .nav-links a:hover{
+
   color:red;
+
 }
 
 
-/* =====================
+
+
+/* =========================
 HERO
-===================== */
+========================= */
+
 
 .hero{
+
   text-align:center;
+
   padding:100px 20px;
+
 }
+
+
 
 .hero-logo{
+
   width:120px;
+
   height:120px;
+
   margin:auto;
+
   border-radius:50%;
-  border:3px solid red;
-  box-shadow:0 0 30px red;
+
   overflow:hidden;
+
+  border:3px solid red;
+
+  box-shadow:
+
+  0 0 30px red;
+
 }
+
+
 
 .hero-logo img{
+
   width:100%;
+
   height:100%;
+
   object-fit:contain;
+
 }
 
 
-/* =====================
+
+.hero h1{
+
+  margin-top:40px;
+
+  font-size:65px;
+
+  font-weight:900;
+
+  letter-spacing:5px;
+
+  background:
+
+  linear-gradient(
+    90deg,
+    red,
+    yellow,
+    white,
+    red
+  );
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+}
+
+
+
+.hero p{
+
+  margin-top:20px;
+
+  font-size:25px;
+
+  color:#ddd;
+
+}
+
+
+
+
+/* =========================
 TEAM SECTION
-===================== */
+========================= */
+
 
 .teams{
+
   padding:80px 20px;
+
   text-align:center;
+
 }
 
+
+
 .teams h2{
+
   font-size:40px;
+
   color:#ff1a1a;
-  margin-bottom:40px;
+
+  margin-bottom:50px;
+
 }
+
+
+
+.team-block{
+
+  margin-bottom:70px;
+
+}
+
+
+
+.team-block h3{
+
+  font-size:32px;
+
+  color:#ff2020;
+
+  margin-bottom:10px;
+
+  text-shadow:
+
+  0 0 15px red;
+
+}
+
+
+
+.team-block p{
+
+  color:#aaa;
+
+  margin-bottom:35px;
+
+}
+
+
 
 
 .team-players{
+
   display:flex;
+
   justify-content:center;
+
   gap:25px;
+
   flex-wrap:wrap;
+
 }
 
 
-/* =====================
-PLAYER CARD FIXED
-===================== */
+
+
+/* =========================
+PLAYER CARD
+========================= */
+
 
 .player-card{
 
   width:230px;
 
-  padding:30px;
+  min-height:330px;
+
+  padding:25px;
 
   background:#111;
 
-  border:1px solid red;
+  border:
+
+  1px solid red;
 
   border-radius:20px;
 
   text-align:center;
 
-  overflow:hidden;
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  transition:.3s;
 
 }
+
+
+
+.player-card:hover{
+
+  transform:translateY(-8px);
+
+  box-shadow:
+
+  0 0 30px red;
+
+}
+
 
 
 .player-image{
@@ -142,15 +343,13 @@ PLAYER CARD FIXED
 
   height:120px;
 
-  margin:auto;
-
   border-radius:50%;
 
   overflow:hidden;
 
-  border:3px solid red;
-
   background:#050505;
+
+  border:3px solid red;
 
   display:flex;
 
@@ -158,9 +357,12 @@ PLAYER CARD FIXED
 
   align-items:center;
 
-  box-shadow:0 0 15px red;
+  box-shadow:
+
+  0 0 15px red;
 
 }
+
 
 
 .player-image img{
@@ -169,773 +371,47 @@ PLAYER CARD FIXED
 
   height:100%;
 
-  object-fit:contain !important;
-
-  display:block;
-
-  opacity:1 !important;
-
-  filter:none !important;
+  object-fit:contain;
 
 }
+
 
 
 .player-card h4{
 
-  margin-top:20px;
+  margin-top:18px;
 
   font-size:22px;
 
 }
+
 
 
 .player-card span{
 
+  margin-top:5px;
+
   color:red;
 
   font-weight:bold;
 
-}
-/* =========================
-PREMIUM ESPORTS PROFILE
-========================= */
-
-
-.esports-profile{
-
-  max-width:1100px;
-
-  margin:50px auto;
-
-  padding:25px;
-
-  background:
-  linear-gradient(
-    145deg,
-    #150000,
-    #050505
-  );
-
-  border:1px solid rgba(255,0,0,.5);
-
-  border-radius:15px;
-
-  box-shadow:
-  0 0 40px rgba(255,0,0,.25);
-
-}
-
-
-
-/* HEADER */
-
-.profile-header{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  padding-bottom:25px;
-
-  border-bottom:1px solid #3b1111;
-
-}
-
-
-
-.player-heading h1{
-
-  font-size:50px;
-
-  color:#ff2020;
-
-  letter-spacing:3px;
-
-  font-weight:900;
-
-}
-
-
-
-.player-heading h3{
-
-  margin-top:10px;
-
-  color:#ffcc00;
-
-  font-size:22px;
-
-}
-
-
-
-.player-heading h4{
-
-  margin-top:10px;
-
-  color:white;
-
-  font-size:16px;
-
-}
-
-
-
-.player-heading p{
-
-  margin-top:15px;
-
-  color:#aaa;
-
-}
-
-
-
-
-/* WINNING CARD */
-
-
-.winning-card{
-
-  width:190px;
-
-  padding:20px;
-
-  text-align:center;
-
-  background:#06150d;
-
-  border:1px solid #00ff88;
-
-  border-radius:12px;
-
-  box-shadow:
-
-  0 0 25px rgba(0,255,120,.4);
-
-}
-
-
-
-.winning-card span{
-
-  font-size:11px;
-
-  color:#aaa;
-
-}
-
-
-
-.winning-card h2{
-
-  margin-top:10px;
-
-  font-size:32px;
-
-  color:#00ff88;
-
-}
-
-
-
-
-/* MAIN PROFILE */
-
-
-.profile-layout{
-
-  display:grid;
-
-  grid-template-columns:300px 1fr;
-
-  gap:20px;
-
-  margin-top:25px;
-
-}
-
-
-
-/* LEFT PANEL */
-
-
-.profile-left{
-
-  background:#100404;
-
-  border:1px solid #4a1111;
-
-  border-radius:12px;
-
-  overflow:hidden;
-
-}
-
-
-
-/* FIXED PLAYER PHOTO */
-
-
-.profile-photo{
-
-  width:100%;
-
-  height:330px;
-
-  object-fit:contain;
-
-  background:#050505;
-
-  border-bottom:2px solid red;
-
-  border-radius:15px;
-
-  border:3px solid red;
-
-  box-shadow:
-
-  0 0 20px red,
-
-  0 0 40px purple;
-
-}
-
-
-
-.profile-photo:hover{
-
-  transform:scale(1.03);
-
-}
-
-
-
-.profile-left h3{
-
-  padding:15px;
-
-  color:#ff3333;
-
-  font-size:16px;
-
-}
-
-
-
-
-/* INFO ROW */
-
-
-.profile-row{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  padding:12px 15px;
-
-  font-size:12px;
-
-  border-bottom:1px solid #251010;
-
-}
-
-
-
-.profile-row span{
-
-  color:#888;
-
-}
-
-
-
-
-/* SOCIAL */
-
-
-.profile-social,
-.social-links{
-
-  display:flex;
-
-  gap:12px;
-
-  padding:15px;
-
-  align-items:center;
-
-}
-
-
-
-.profile-social a,
-.social-links a{
-
-  width:38px;
-
-  height:38px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  border-radius:50%;
-
-  background:#111;
-
-  border:1px solid red;
-
-  color:white;
-
-  text-decoration:none;
-
-  font-weight:bold;
-
-  transition:.3s;
-
-}
-
-
-
-.profile-social a:hover,
-.social-links a:hover{
-
-  background:red;
-
-  box-shadow:0 0 20px red;
-
-}
-
-
-
-
-.team-history{
-
-  padding:15px;
-
-  color:#aaa;
-
   font-size:13px;
 
-  line-height:2;
-
-}
-
-
-
-
-
-/* RIGHT SIDE */
-
-
-.profile-right{
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:20px;
-
-}
-
-
-
-.profile-table{
-
-  background:#100404;
-
-  border:1px solid #4a1111;
-
-  border-radius:12px;
-
-  padding:20px;
-
-}
-
-
-
-.profile-table h2{
-
-  margin-bottom:20px;
-
-  font-size:20px;
-
-  color:white;
-
-}
-
-
-
-/* TABLE */
-
-
-.profile-table table{
-
-  width:100%;
-
-  border-collapse:collapse;
-
-}
-
-
-
-.profile-table th{
-
-  text-align:left;
-
-  padding:12px;
-
-  font-size:12px;
-
-  color:#ff3333;
-
-  border-bottom:1px solid #550000;
-
-}
-
-
-
-.profile-table td{
-
-  padding:15px 12px;
-
-  font-size:13px;
-
-  color:#ddd;
-
-  border-bottom:1px solid #301010;
-
-}
-
-
-
-.profile-table td:last-child{
-
-  color:#00ff88;
-
-  font-weight:bold;
-
-}
-
-
-
-.profile-table tr:hover{
-
-  background:#1a0000;
-
 }
 /* =========================
-LOADING SCREEN
+SOCIAL ICON RGB GLOW
 ========================= */
 
-
-.profile-loading{
-
-  position:fixed;
-
-  inset:0;
-
-  background:rgba(0,0,0,.96);
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  z-index:9999;
-
-}
-
-
-
-.loader-content{
-
-  text-align:center;
-
-}
-
-
-
-.loader-circle{
-
-  width:120px;
-
-  height:120px;
-
-  border-radius:50%;
-
-  border:5px solid #222;
-
-  border-top-color:red;
-
-  animation:rotateLoader 1s linear infinite;
-
-  margin:auto;
-
-  box-shadow:
-
-  0 0 25px red,
-
-  0 0 60px purple;
-
-}
-
-
-
-.loader-content h2{
-
-  margin-top:30px;
-
-  color:#ff2222;
-
-  letter-spacing:4px;
-
-  font-size:22px;
-
-}
-
-
-
-.loader-content p{
-
-  color:#aaa;
-
-  margin-top:10px;
-
-}
-
-
-
-@keyframes rotateLoader{
-
-  from{
-
-    transform:rotate(0deg);
-
-  }
-
-  to{
-
-    transform:rotate(360deg);
-
-  }
-
-}
-
-
-
-
-
-/* =========================
-CARD EFFECT
-========================= */
-
-
-.player-card:hover{
-
-  transform:translateY(-8px);
-
-  border-color:red;
-
-  box-shadow:
-
-  0 0 25px red;
-
-  transition:.3s;
-
-}
-
-
-
-.player-image{
-
-  transition:.3s;
-
-}
-
-
-
-.player-image:hover{
-
-  transform:scale(1.05);
-
-}
-
-
-
-
-
-/* =========================
-CONTACT
-========================= */
-
-
-.contact{
-
-  max-width:700px;
-
-  margin:80px auto;
-
-  padding:40px;
-
-  background:#111;
-
-  border-radius:20px;
-
-  text-align:center;
-
-  border:1px solid #333;
-
-}
-
-
-
-.contact h2{
-
-  color:red;
-
-  font-size:35px;
-
-}
-
-
-
-
-
-/* =========================
-MOBILE RESPONSIVE
-========================= */
-
-
-@media(max-width:800px){
-
-
-.navbar{
-
-  flex-direction:column;
-
-  gap:20px;
-
-  padding:20px;
-
-}
-
-
-
-.nav-links{
-
-  flex-wrap:wrap;
-
-  justify-content:center;
-
-  gap:15px;
-
-}
-
-
-
-.hero{
-
-  padding:60px 15px;
-
-}
-
-
-
-.hero h1{
-
-  font-size:38px;
-
-}
-
-
-
-.player-card{
-
-  width:90%;
-
-}
-
-
-
-.team-players{
-
-  gap:20px;
-
-}
-
-
-
-.profile-header{
-
-  flex-direction:column;
-
-  gap:20px;
-
-  text-align:center;
-
-}
-
-
-
-.profile-layout{
-
-  grid-template-columns:1fr;
-
-}
-
-
-
-.player-heading h1{
-
-  font-size:35px;
-
-}
-
-
-
-.profile-photo{
-
-  height:280px;
-
-}
-
-
-
-.winning-card{
-
-  width:100%;
-
-}
-
-
-
-.profile-table{
-
-  overflow-x:auto;
-
-}
-
-
-}
-/* =========================
-FINAL ESPORTS SOCIAL ICON
-========================= */
 
 .social-links{
 
 display:flex;
+
 justify-content:center;
+
 align-items:center;
 
-gap:15px;
+gap:14px;
 
 margin-top:20px;
 
@@ -949,13 +425,13 @@ width:40px;
 
 height:40px;
 
+border-radius:50%;
+
 display:flex;
 
 align-items:center;
 
 justify-content:center;
-
-border-radius:50%;
 
 background:#050505;
 
@@ -969,13 +445,9 @@ position:relative;
 
 transition:.3s;
 
-overflow:visible;
-
 }
 
 
-
-/* Moving mixed neon glow */
 
 .social-links a::before{
 
@@ -992,27 +464,27 @@ background:
 
 linear-gradient(
 45deg,
-#ff0000,
-#0066ff,
-#00ffff,
-#ff00ff,
-#ffff00,
-#ff0000
+red,
+blue,
+cyan,
+purple,
+yellow,
+red
 );
 
 
 background-size:400% 400%;
 
 
-z-index:-1;
-
-
 filter:blur(8px);
+
+
+z-index:-1;
 
 
 animation:
 
-socialRGB 3s linear infinite;
+rgbSocial 3s linear infinite;
 
 }
 
@@ -1027,7 +499,6 @@ transform:scale(1.25);
 
 
 
-
 .facebook{
 
 border:2px solid #1877f2;
@@ -1038,7 +509,7 @@ border:2px solid #1877f2;
 
 .instagram{
 
-border:2px solid #ff1493;
+border:2px solid #e1306c;
 
 }
 
@@ -1060,9 +531,7 @@ border:2px solid cyan;
 
 
 
-
-
-@keyframes socialRGB{
+@keyframes rgbSocial{
 
 
 0%{
@@ -1085,7 +554,6 @@ background-position:0% 50%;
 
 }
 
-
 }
 
 
@@ -1093,39 +561,372 @@ background-position:0% 50%;
 
 
 /* =========================
-PLAYER CARD ALIGNMENT
+PROFILE PAGE
 ========================= */
 
 
-.player-card{
+.esports-profile{
+
+max-width:1100px;
+
+margin:50px auto;
+
+padding:25px;
+
+background:
+
+linear-gradient(
+145deg,
+#150000,
+#050505
+);
+
+
+border:1px solid rgba(255,0,0,.5);
+
+border-radius:15px;
+
+
+box-shadow:
+
+0 0 40px rgba(255,0,0,.25);
+
+}
+
+
+
+
+.profile-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding-bottom:25px;
+
+border-bottom:1px solid #3b1111;
+
+}
+
+
+
+.player-heading h1{
+
+font-size:50px;
+
+color:#ff2020;
+
+font-weight:900;
+
+letter-spacing:3px;
+
+}
+
+
+
+.player-heading h3{
+
+margin-top:10px;
+
+color:#ffcc00;
+
+}
+
+
+
+.player-heading p{
+
+margin-top:15px;
+
+color:#aaa;
+
+}
+
+
+
+
+
+.winning-card{
+
+width:190px;
+
+padding:20px;
+
+background:#06150d;
+
+border:1px solid #00ff88;
+
+border-radius:12px;
+
+text-align:center;
+
+box-shadow:
+
+0 0 25px rgba(0,255,120,.4);
+
+}
+
+
+
+.winning-card h2{
+
+color:#00ff88;
+
+font-size:32px;
+
+}
+
+
+
+
+.profile-layout{
+
+display:grid;
+
+grid-template-columns:300px 1fr;
+
+gap:20px;
+
+margin-top:25px;
+
+}
+
+
+
+
+.profile-left{
+
+background:#100404;
+
+border:1px solid #4a1111;
+
+border-radius:12px;
+
+overflow:hidden;
+
+}
+
+
+
+.profile-photo{
+
+width:100%;
+
+height:330px;
+
+object-fit:contain;
+
+background:#050505;
+
+border:3px solid red;
+
+border-radius:15px;
+
+box-shadow:
+
+0 0 20px red,
+
+0 0 40px purple;
+
+}
+
+
+
+
+.profile-row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:12px 15px;
+
+border-bottom:1px solid #251010;
+
+font-size:12px;
+
+}
+
+
+
+.profile-row span{
+
+color:#888;
+
+}
+
+
+
+
+.profile-right{
 
 display:flex;
 
 flex-direction:column;
 
+gap:20px;
+
+}
+
+
+
+.profile-table{
+
+background:#100404;
+
+border:1px solid #4a1111;
+
+border-radius:12px;
+
+padding:20px;
+
+}
+
+
+
+.profile-table table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+
+.profile-table th{
+
+padding:12px;
+
+text-align:left;
+
+color:#ff3333;
+
+border-bottom:1px solid #550000;
+
+}
+
+
+
+.profile-table td{
+
+padding:15px 12px;
+
+color:#ddd;
+
+border-bottom:1px solid #301010;
+
+}
+
+
+
+.profile-table td:last-child{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+
+
+
+/* =========================
+LOADING
+========================= */
+
+
+.profile-loading{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.96);
+
+display:flex;
+
 align-items:center;
 
-}
+justify-content:center;
 
-
-
-.player-card h4{
-
-margin-top:18px;
-
-margin-bottom:6px;
-
-font-size:21px;
+z-index:9999;
 
 }
 
 
 
-.player-card span{
+.loader-circle{
 
-font-size:13px;
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+border:5px solid #222;
+
+border-top-color:red;
+
+animation:rotateLoader 1s linear infinite;
+
+box-shadow:
+
+0 0 25px red,
+
+0 0 60px purple;
+
+}
+
+
+
+@keyframes rotateLoader{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+/* =========================
+CONTACT SECTION
+========================= */
+
+
+.contact{
+
+max-width:700px;
+
+margin:80px auto;
+
+padding:40px;
+
+background:#111;
+
+border-radius:20px;
+
+text-align:center;
+
+border:1px solid #333;
+
+}
+
+
+
+.contact h2{
 
 color:red;
+
+font-size:35px;
 
 }
 
@@ -1134,187 +935,18 @@ color:red;
 
 
 /* =========================
-VIEW PROFILE BUTTON
+BUTTON STYLE
 ========================= */
 
 
-.player-card a:not(.social-links a){
-
-display:inline-flex;
-
-align-items:center;
-
-justify-content:center;
-
+.player-card button,
+.profile-btn{
 
 margin-top:22px;
 
+padding:12px 35px;
 
-width:110px;
-
-height:35px;
-
-
-border-radius:25px;
-
-
-background:#ff2020;
-
-
-color:white;
-
-
-font-size:13px;
-
-
-font-weight:bold;
-
-
-text-decoration:none;
-
-
-box-shadow:
-
-0 0 15px red;
-
-
-transition:.3s;
-
-}
-
-
-
-.player-card a:not(.social-links a):hover{
-
-
-transform:scale(1.1);
-
-
-box-shadow:
-
-0 0 35px red;
-
-
-}
-
-/* Individual glow */
-
-
-.social-links .facebook{
-
-border-color:#1877f2;
-
-box-shadow:
-0 0 8px #1877f2;
-
-}
-
-
-
-.social-links .instagram{
-
-border-color:#e1306c;
-
-box-shadow:
-0 0 8px #e1306c;
-
-}
-
-
-
-.social-links .youtube{
-
-border-color:red;
-
-box-shadow:
-0 0 8px red;
-
-}
-
-
-
-.social-links .tiktok{
-
-border-color:#00ffff;
-
-box-shadow:
-0 0 8px cyan;
-
-}
-
-
-
-
-.social-links a:hover{
-
-transform:scale(1.2);
-
-background:#111;
-
-}
-
-
-
-
-@keyframes socialPulse{
-
-from{
-
-filter:brightness(1);
-
-}
-
-
-to{
-
-filter:brightness(1.8);
-
-}
-
-}
-
-
-
-
-/* PLAYER TEXT ALIGN */
-
-
-.player-card h4{
-
-margin-top:18px;
-
-margin-bottom:5px;
-
-font-size:20px;
-
-}
-
-
-
-.player-card span{
-
-font-size:13px;
-
-}
-
-
-
-
-
-/* PROFILE BUTTON */
-
-
-.player-card a:not(.social-links a){
-
-display:inline-flex;
-
-justify-content:center;
-
-align-items:center;
-
-margin-top:22px;
-
-padding:10px 25px;
+border:none;
 
 border-radius:30px;
 
@@ -1326,9 +958,11 @@ font-size:13px;
 
 font-weight:bold;
 
-text-decoration:none;
+cursor:pointer;
 
-box-shadow:0 0 15px red;
+box-shadow:
+
+0 0 20px red;
 
 transition:.3s;
 
@@ -1336,10 +970,242 @@ transition:.3s;
 
 
 
-.player-card a:not(.social-links a):hover{
+.player-card button:hover,
+.profile-btn:hover{
 
-transform:scale(1.08);
+transform:scale(1.1);
 
-box-shadow:0 0 30px red;
+box-shadow:
+
+0 0 35px red;
+
+}
+
+
+
+
+
+/* =========================
+DESKTOP CARD ALIGNMENT
+========================= */
+
+
+.player-card{
+
+justify-content:flex-start;
+
+}
+
+
+
+.team-players{
+
+align-items:stretch;
+
+}
+
+
+
+.player-card{
+
+height:330px;
+
+}
+
+
+
+
+
+/* =========================
+MOBILE RESPONSIVE
+========================= */
+
+
+@media(max-width:800px){
+
+
+
+.navbar{
+
+flex-direction:column;
+
+gap:20px;
+
+padding:20px;
+
+}
+
+
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+gap:15px;
+
+}
+
+
+
+.hero{
+
+padding:60px 15px;
+
+}
+
+
+
+.hero h1{
+
+font-size:38px;
+
+}
+
+
+
+.hero p{
+
+font-size:18px;
+
+}
+
+
+
+.teams{
+
+padding:50px 15px;
+
+}
+
+
+
+.teams h2{
+
+font-size:32px;
+
+}
+
+
+
+.team-block h3{
+
+font-size:25px;
+
+}
+
+
+
+.team-players{
+
+gap:20px;
+
+}
+
+
+
+.player-card{
+
+width:90%;
+
+height:auto;
+
+min-height:320px;
+
+}
+
+
+
+.profile-header{
+
+flex-direction:column;
+
+gap:20px;
+
+text-align:center;
+
+}
+
+
+
+.player-heading h1{
+
+font-size:35px;
+
+}
+
+
+
+.profile-layout{
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.profile-photo{
+
+height:280px;
+
+}
+
+
+
+.winning-card{
+
+width:100%;
+
+}
+
+
+
+.profile-table{
+
+overflow-x:auto;
+
+}
+
+
+
+.social-links{
+
+gap:10px;
+
+}
+
+
+
+}
+
+
+
+
+
+/* =========================
+SMOOTH EFFECT
+========================= */
+
+
+*{
+
+scroll-behavior:smooth;
+
+}
+
+
+
+img{
+
+max-width:100%;
+
+}
+
+
+
+a{
+
+transition:.3s;
 
 }
