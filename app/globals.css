@@ -1528,3 +1528,43 @@ object-position:center center !important;
 transform:none !important;
 
 }
+/* =========================
+PLAYER FACE BALANCE FIX
+========================= */
+
+.player-image{
+
+width:130px;
+height:130px;
+
+border-radius:50%;
+
+overflow:hidden;
+
+border:3px solid red;
+
+background:#050505;
+
+display:flex;
+
+align-items:flex-start;
+
+justify-content:center;
+
+}
+
+
+
+.player-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+object-position:center top;
+
+transform:scale(1);
+
+}
