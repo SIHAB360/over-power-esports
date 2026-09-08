@@ -3,7 +3,6 @@ export default async function PlayerProfile({params}){
 
 const players = {
 
-
 appelo:{
 name:"APPELO",
 role:"PRIMARY",
@@ -63,7 +62,6 @@ youtube:"https://www.youtube.com/@fixfire09",
 tiktok:"https://tiktok.com/@fixfire09"
 }
 
-
 }
 
 
@@ -75,11 +73,7 @@ const player=players[id];
 
 if(!player){
 
-return(
-<h1>
-Player Not Found
-</h1>
-)
+return <h1>Player Not Found</h1>
 
 }
 
@@ -90,9 +84,7 @@ return(
 <section className="player-profile premium">
 
 
-
 <div className="player-header">
-
 
 <img
 src={player.image}
@@ -100,8 +92,11 @@ alt={player.name}
 />
 
 
-
 <div className="player-title">
+
+<span className="badge">
+PRO PLAYER
+</span>
 
 <h1>
 {player.name}
@@ -117,9 +112,7 @@ alt={player.name}
 {player.team}
 </h4>
 
-
 </div>
-
 
 </div>
 
@@ -193,7 +186,6 @@ BANGLADESH
 
 
 
-
 <div className="awards">
 
 
@@ -213,7 +205,6 @@ Over Power Esports Official Roster
 </p>
 
 </div>
-
 
 
 <div className="award-card">
@@ -251,16 +242,13 @@ Competitive Gaming Specialist
 Over Power Esports Main Team Player
 </li>
 
-
 <li>
 Competitive Tournament Participant
 </li>
 
-
 <li>
 Professional Free Fire Player
 </li>
-
 
 </ul>
 
@@ -278,7 +266,7 @@ Professional Free Fire Player
 
 {player.facebook &&
 <a href={player.facebook} target="_blank">
-Facebook
+f
 </a>
 }
 
@@ -286,7 +274,7 @@ Facebook
 
 {player.instagram &&
 <a href={player.instagram} target="_blank">
-Instagram
+◎
 </a>
 }
 
@@ -294,7 +282,7 @@ Instagram
 
 {player.youtube &&
 <a href={player.youtube} target="_blank">
-YouTube
+▶
 </a>
 }
 
@@ -302,7 +290,7 @@ YouTube
 
 {player.tiktok &&
 <a href={player.tiktok} target="_blank">
-TikTok
+♪
 </a>
 }
 
@@ -313,7 +301,6 @@ TikTok
 
 
 </section>
-
 
 )
 
