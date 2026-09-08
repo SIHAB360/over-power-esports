@@ -58,6 +58,7 @@ backdrop-filter:blur(10px);
 }
 
 
+
 .logo{
 
 font-size:26px;
@@ -65,6 +66,7 @@ font-size:26px;
 font-weight:900;
 
 }
+
 
 
 .logo span{
@@ -76,6 +78,7 @@ text-shadow:0 0 15px red;
 }
 
 
+
 .nav-links{
 
 display:flex;
@@ -83,6 +86,7 @@ display:flex;
 gap:35px;
 
 }
+
 
 
 .nav-links a{
@@ -98,11 +102,14 @@ transition:.3s;
 }
 
 
+
 .nav-links a:hover{
 
 color:red;
 
 }
+
+
 
 
 
@@ -120,6 +127,7 @@ padding:100px 20px;
 }
 
 
+
 .hero-logo{
 
 width:120px;
@@ -132,13 +140,12 @@ border-radius:50%;
 
 border:3px solid red;
 
-box-shadow:
-
-0 0 30px red;
+box-shadow:0 0 30px red;
 
 overflow:hidden;
 
 }
+
 
 
 .hero-logo img{
@@ -163,6 +170,7 @@ font-weight:900;
 
 letter-spacing:5px;
 
+
 background:
 
 linear-gradient(
@@ -172,6 +180,7 @@ yellow,
 white,
 red
 );
+
 
 -webkit-background-clip:text;
 
@@ -190,6 +199,7 @@ margin-top:20px;
 color:#ddd;
 
 }
+
 
 
 
@@ -216,13 +226,12 @@ font-weight:bold;
 
 cursor:pointer;
 
-box-shadow:
-
-0 0 20px red;
+box-shadow:0 0 20px red;
 
 transition:.3s;
 
 }
+
 
 
 button:hover{
@@ -230,6 +239,7 @@ button:hover{
 transform:scale(1.1);
 
 }
+
 
 
 
@@ -272,6 +282,7 @@ transition:.3s;
 }
 
 
+
 .cards div:hover{
 
 transform:translateY(-10px);
@@ -281,6 +292,7 @@ border-color:red;
 box-shadow:0 0 30px red;
 
 }
+
 
 
 .cards h2{
@@ -294,8 +306,9 @@ margin-bottom:15px;
 
 
 
+
 /* =====================
-TOURNAMENT
+SECTIONS
 ===================== */
 
 
@@ -325,6 +338,8 @@ margin-bottom:40px;
 
 
 
+
+
 .tournament-container,
 .game-container,
 .team-players{
@@ -338,6 +353,7 @@ gap:25px;
 flex-wrap:wrap;
 
 }
+
 
 
 
@@ -369,8 +385,10 @@ box-shadow:0 0 25px red;
 
 
 
+
+
 /* =====================
-TEAM PLAYER CARD
+TEAM CARD
 ===================== */
 
 
@@ -411,6 +429,7 @@ box-shadow:0 0 20px red;
 }
 
 
+
 .player-image img{
 
 width:100%;
@@ -441,43 +460,6 @@ font-weight:bold;
 
 }
 
-
-
-/* SOCIAL */
-
-
-.social-links{
-
-display:flex;
-
-gap:12px;
-
-justify-content:center;
-
-}
-
-
-.social-links a{
-
-width:35px;
-
-height:35px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-border-radius:50%;
-
-border:1px solid red;
-
-color:white;
-
-text-decoration:none;
-
-}
 
 
 
@@ -516,7 +498,6 @@ font-size:35px;
 
 
 
-
 /* MOBILE */
 
 
@@ -532,11 +513,13 @@ gap:20px;
 }
 
 
+
 .hero h1{
 
 font-size:38px;
 
 }
+
 
 
 .cards div,
@@ -545,6 +528,7 @@ font-size:38px;
 width:90%;
 
 }
+
 
 
 .nav-links{
@@ -557,7 +541,7 @@ justify-content:center;
 
 }
 /* =================================
-   ESPORTS PLAYER PROFILE FINAL
+ PREMIUM ESPORTS PLAYER PROFILE
 ================================= */
 
 
@@ -591,7 +575,6 @@ box-shadow:
 
 /* HEADER */
 
-
 .profile-header{
 
 display:flex;
@@ -608,29 +591,57 @@ border-bottom:1px solid #3b1111;
 
 
 
-.profile-header h1{
+.player-heading h1{
 
 font-size:50px;
 
-color:#ff2222;
+color:#ff2020;
 
 letter-spacing:3px;
 
+font-weight:900;
+
 }
 
 
 
-.profile-header p{
+.player-heading h3{
 
 margin-top:10px;
 
-color:#aaa;
+color:#ffcc00;
 
-font-size:14px;
+font-size:22px;
 
 }
 
 
+
+.player-heading h4{
+
+margin-top:10px;
+
+color:white;
+
+font-size:16px;
+
+}
+
+
+
+.player-heading p{
+
+margin-top:15px;
+
+color:#aaa;
+
+}
+
+
+
+
+
+/* WINNING CARD */
 
 
 .winning-card{
@@ -646,6 +657,10 @@ background:#06150d;
 border:1px solid #00ff88;
 
 border-radius:12px;
+
+box-shadow:
+
+0 0 25px rgba(0,255,120,.4);
 
 }
 
@@ -665,6 +680,8 @@ color:#aaa;
 
 margin-top:10px;
 
+font-size:32px;
+
 color:#00ff88;
 
 }
@@ -673,7 +690,7 @@ color:#00ff88;
 
 
 
-/* BODY */
+/* MAIN BODY */
 
 
 .profile-layout{
@@ -691,7 +708,8 @@ margin-top:25px;
 
 
 
-/* LEFT */
+
+/* LEFT PANEL */
 
 
 .profile-left{
@@ -716,6 +734,8 @@ height:330px;
 
 object-fit:cover;
 
+border-bottom:2px solid red;
+
 }
 
 
@@ -732,6 +752,8 @@ font-size:16px;
 
 
 
+
+
 .profile-row{
 
 display:flex;
@@ -740,9 +762,9 @@ justify-content:space-between;
 
 padding:12px 15px;
 
-border-bottom:1px solid #251010;
-
 font-size:12px;
+
+border-bottom:1px solid #251010;
 
 }
 
@@ -781,9 +803,9 @@ height:35px;
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
+
+justify-content:center;
 
 border-radius:50%;
 
@@ -792,6 +814,8 @@ border:1px solid red;
 color:white;
 
 text-decoration:none;
+
+font-weight:bold;
 
 transition:.3s;
 
@@ -806,6 +830,7 @@ background:red;
 transform:translateY(-5px);
 
 }
+
 
 
 
@@ -825,7 +850,8 @@ line-height:2;
 
 
 
-/* RIGHT */
+
+/* RIGHT SIDE */
 
 
 .profile-right{
@@ -856,11 +882,15 @@ padding:20px;
 
 .profile-table h2{
 
-color:white;
-
 margin-bottom:20px;
 
+font-size:20px;
+
+color:white;
+
 }
+
+
 
 
 
@@ -874,15 +904,31 @@ border-collapse:collapse;
 
 
 
+th{
+
+text-align:left;
+
+padding:12px;
+
+font-size:12px;
+
+color:#ff3333;
+
+border-bottom:1px solid #550000;
+
+}
+
+
+
 td{
 
-padding:15px;
-
-border-bottom:1px solid #301010;
+padding:15px 12px;
 
 font-size:13px;
 
 color:#ddd;
+
+border-bottom:1px solid #301010;
 
 }
 
@@ -891,6 +937,16 @@ color:#ddd;
 td:last-child{
 
 color:#00ff88;
+
+font-weight:bold;
+
+}
+
+
+
+.profile-table tr:hover{
+
+background:#1a0000;
 
 }
 
@@ -923,335 +979,6 @@ grid-template-columns:1fr;
 }
 
 
-.profile-header h1{
-
-font-size:35px;
-
-}
-
-
-}
-/* =================================
- FINAL ESPORTS POLISH
-================================= */
-
-
-.esports-profile{
-
-animation:profileFade .8s ease;
-
-}
-
-
-@keyframes profileFade{
-
-from{
-
-opacity:0;
-
-transform:translateY(20px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-
-
-
-.profile-photo{
-
-border-bottom:2px solid #ff0000;
-
-filter:
-
-drop-shadow(0 0 15px rgba(255,0,0,.6));
-
-transition:.4s;
-
-}
-
-
-
-.profile-photo:hover{
-
-transform:scale(1.03);
-
-}
-
-
-
-
-.winning-card{
-
-animation:winnerGlow 2s infinite alternate;
-
-}
-
-
-
-@keyframes winnerGlow{
-
-from{
-
-box-shadow:
-
-0 0 10px rgba(0,255,120,.3);
-
-}
-
-
-to{
-
-box-shadow:
-
-0 0 30px rgba(0,255,120,.7);
-
-}
-
-}
-
-
-
-
-.profile-table{
-
-transition:.3s;
-
-}
-
-
-
-.profile-table:hover{
-
-transform:translateY(-5px);
-
-box-shadow:
-
-0 0 25px rgba(255,0,0,.25);
-
-}
-
-
-
-
-.profile-table tr{
-
-transition:.3s;
-
-}
-
-
-
-.profile-table tr:hover{
-
-background:#1a0000;
-
-}
-
-
-
-
-.profile-social a{
-
-animation:socialPulse 3s infinite;
-
-}
-
-
-
-@keyframes socialPulse{
-
-0%{
-
-box-shadow:0 0 5px red;
-
-}
-
-50%{
-
-box-shadow:0 0 18px red;
-
-}
-
-100%{
-
-box-shadow:0 0 5px red;
-
-}
-
-}
-/* ===============================
-   FINAL PLAYER PROFILE POLISH
-================================ */
-
-
-.player-heading h1{
-
-font-size:50px;
-
-color:#ff2020;
-
-letter-spacing:3px;
-
-}
-
-
-
-.player-heading h3{
-
-margin-top:10px;
-
-color:#ffcc00;
-
-font-size:22px;
-
-}
-
-
-
-.player-heading h4{
-
-margin-top:10px;
-
-color:#fff;
-
-font-size:16px;
-
-}
-
-
-
-
-.profile-table th{
-
-text-align:left;
-
-padding:12px;
-
-font-size:12px;
-
-color:#ff3333;
-
-border-bottom:1px solid #550000;
-
-letter-spacing:1px;
-
-}
-
-
-
-.profile-table td{
-
-padding:15px 12px;
-
-}
-
-
-
-.profile-table tr{
-
-transition:.3s;
-
-}
-
-
-
-.profile-table tr:hover{
-
-background:#1a0000;
-
-}
-
-
-
-.profile-photo{
-
-filter:
-
-drop-shadow(0 0 20px rgba(255,0,0,.6));
-
-transition:.4s;
-
-}
-
-
-
-.profile-photo:hover{
-
-transform:scale(1.03);
-
-}
-
-
-
-.profile-left,
-.profile-table{
-
-box-shadow:
-
-0 0 25px rgba(255,0,0,.15);
-
-}
-
-
-
-.winning-card h2{
-
-font-size:32px;
-
-font-weight:900;
-
-}
-
-
-
-.winning-card{
-
-animation:
-
-winningGlow 2s infinite alternate;
-
-}
-
-
-
-@keyframes winningGlow{
-
-
-from{
-
-box-shadow:
-
-0 0 10px rgba(0,255,120,.3);
-
-}
-
-
-to{
-
-box-shadow:
-
-0 0 30px rgba(0,255,120,.8);
-
-}
-
-
-}
-
-
-
-/* MOBILE FIX */
-
-
-@media(max-width:800px){
 
 .player-heading h1{
 
@@ -1265,6 +992,7 @@ font-size:35px;
 height:280px;
 
 }
+
 
 
 }
