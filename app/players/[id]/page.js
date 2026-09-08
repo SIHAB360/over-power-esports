@@ -108,7 +108,29 @@ alt={player.name}
 <h4>
 {player.team}
 </h4>
+<div className="player-info">
 
+<p>
+<span>ROLE</span>
+{player.role}
+</p>
+
+<p>
+<span>TEAM</span>
+{player.team}
+</p>
+
+<p>
+<span>STATUS</span>
+ACTIVE PLAYER
+</p>
+
+<p>
+<span>COUNTRY</span>
+BANGLADESH
+</p>
+
+</div>
 
 
 <div>
