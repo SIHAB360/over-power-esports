@@ -885,7 +885,6 @@ FINAL PLAYER CIRCLE SIZE
 .player-image{
 
 width:110px;
-
 height:110px;
 
 border-radius:50%;
@@ -902,8 +901,19 @@ align-items:center;
 
 justify-content:center;
 
-box-shadow:
-0 0 20px red;
+box-shadow:0 0 20px red;
+
+}
+
+
+.player-image img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+transform:scale(1.15);
 
 }
 
