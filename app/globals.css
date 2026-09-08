@@ -228,180 +228,133 @@ color:#ddd;
 
 
 /* =========================
-FINAL FIX UPDATE
+PREMIUM JOIN TEAM BUTTON
 ========================= */
 
-
-/* HERO BUTTON FIX */
 
 .hero button{
 
-width:auto;
+margin-top:25px;
 
-min-width:150px;
+width:160px;
 
-height:48px;
+height:50px;
 
-padding:0 45px;
+border-radius:40px;
+
+border:1px solid rgba(255,255,255,.3);
+
+background:
+
+linear-gradient(
+135deg,
+#ff0000,
+#ff4d4d,
+#990000
+);
+
+color:white;
 
 font-size:15px;
 
-}
+font-weight:900;
 
+letter-spacing:1px;
 
+text-transform:uppercase;
 
-/* =========================
-PLAYER IMAGE FINAL
-ELITE TEAM STYLE
-========================= */
+cursor:pointer;
 
-
-.player-image{
-
-width:110px;
-
-height:110px;
-
-border-radius:50%;
+position:relative;
 
 overflow:hidden;
 
-background:#050505;
+box-shadow:
 
-border:3px solid red;
+0 0 15px red,
+0 0 40px rgba(255,0,0,.6);
 
-display:flex;
+transition:.4s;
 
-align-items:center;
+}
 
-justify-content:center;
+
+
+.hero button::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-100%;
+
+width:60%;
+
+height:100%;
+
+background:
+
+linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.8),
+transparent
+);
+
+transform:skewX(-25deg);
+
+animation:
+
+buttonShine 3s infinite;
+
+}
+
+
+
+@keyframes buttonShine{
+
+
+0%{
+
+left:-100%;
+
+}
+
+
+50%{
+
+left:150%;
+
+}
+
+
+100%{
+
+left:150%;
+
+}
+
+}
+
+
+
+.hero button:hover{
+
+transform:
+
+translateY(-5px)
+scale(1.08);
+
 
 box-shadow:
-0 0 20px red;
+
+0 0 25px red,
+0 0 70px red;
 
 }
 
-
-
-.player-image img{
-
-width:100% !important;
-
-height:100% !important;
-
-object-fit:cover !important;
-
-object-position:center 35% !important;
-
-transform:scale(1.05);
-
-}
-
-
-
-
-
-/* =========================
-SOCIAL RGB PREMIUM
-========================= */
-
-
-.social-links a{
-
-overflow:visible;
-
-}
-
-
-
-.social-links a::before{
-
-inset:-4px;
-
-filter:blur(4px);
-
-animation:socialRotate 2.5s linear infinite;
-
-}
-
-
-
-.social-links a:hover{
-
-transform:translateY(-4px) scale(1.15);
-
-}
-
-
-
-
-
-/* =========================
-CARD ALIGNMENT FIX
-========================= */
-
-
-.player-card{
-
-justify-content:flex-start;
-
-}
-
-
-
-.profile-btn{
-
-margin-top:auto;
-
-}
-
-
-
-
-
-/* =========================
-MOBILE FIX
-========================= */
-
-
-@media(max-width:600px){
-
-.hero h1{
-
-font-size:34px;
-
-letter-spacing:2px;
-
-}
-
-
-
-.hero p{
-
-font-size:18px;
-
-}
-
-
-
-.player-card{
-
-width:230px;
-
-}
-
-
-
-.player-image{
-
-width:105px;
-
-height:105px;
-
-}
-
-}
-}
 /* =========================
 TEAM SECTION
 ========================= */
@@ -475,6 +428,8 @@ display:flex;
 
 justify-content:center;
 
+align-items:center;
+
 gap:25px;
 
 flex-wrap:wrap;
@@ -533,22 +488,24 @@ box-shadow:
 
 
 /* =========================
-FINAL PLAYER IMAGE
-ELITE STYLE
+PLAYER IMAGE
+ELITE TEAM STYLE
 ========================= */
+
 
 .player-image{
 
 width:110px;
+
 height:110px;
 
 border-radius:50%;
 
 overflow:hidden;
 
-border:3px solid red;
-
 background:#050505;
+
+border:3px solid red;
 
 display:flex;
 
@@ -557,9 +514,11 @@ align-items:center;
 justify-content:center;
 
 box-shadow:
+
 0 0 20px red;
 
 }
+
 
 
 .player-image img{
@@ -568,13 +527,14 @@ width:100% !important;
 
 height:100% !important;
 
-object-fit:contain !important;
+object-fit:cover !important;
 
-object-position:center center !important;
+object-position:center 35% !important;
 
-transform:scale(1.25);
+transform:scale(1.05);
 
 }
+
 
 
 
@@ -686,7 +646,7 @@ red
 
 animation:
 
-socialRotate 2s linear infinite;
+socialRotate 2.5s linear infinite;
 
 
 filter:blur(5px);
@@ -824,6 +784,7 @@ box-shadow:
 0 0 30px red;
 
 }
+
 /* =========================
 PROFILE PAGE
 ========================= */
@@ -941,7 +902,9 @@ font-size:30px;
 
 
 
-/* PROFILE BODY */
+/* =========================
+PROFILE BODY
+========================= */
 
 
 .profile-layout{
@@ -1002,7 +965,6 @@ gap:20px;
 
 
 
-
 .profile-table{
 
 background:#100404;
@@ -1053,8 +1015,6 @@ border-bottom:1px solid #301010;
 
 
 
-
-
 /* =========================
 RESPONSIVE
 ========================= */
@@ -1074,7 +1034,6 @@ gap:20px;
 
 
 
-
 @media(max-width:900px){
 
 
@@ -1083,6 +1042,16 @@ gap:20px;
 flex-direction:column;
 
 gap:20px;
+
+}
+
+
+
+.nav-links{
+
+flex-wrap:wrap;
+
+justify-content:center;
 
 }
 
@@ -1120,7 +1089,6 @@ font-size:35px;
 
 
 
-
 @media(max-width:600px){
 
 
@@ -1128,13 +1096,21 @@ font-size:35px;
 
 font-size:38px;
 
+letter-spacing:2px;
+
+}
+
+
+
+.hero p{
+
+font-size:18px;
+
 }
 
 
 
 .team-players{
-
-display:flex;
 
 flex-direction:column;
 
@@ -1146,7 +1122,17 @@ align-items:center;
 
 .player-card{
 
-width:90%;
+width:230px;
+
+}
+
+
+
+.player-image{
+
+width:110px;
+
+height:110px;
 
 }
 
@@ -1155,16 +1141,6 @@ width:90%;
 .profile-photo{
 
 height:300px;
-
-}
-
-
-
-.nav-links{
-
-flex-wrap:wrap;
-
-justify-content:center;
 
 }
 
