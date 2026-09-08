@@ -1,5 +1,5 @@
 export default function Teams(){
-
+import ProfileLoader from "./ProfileLoader";
 const teams = [
 
 {
@@ -293,11 +293,7 @@ rel="noopener noreferrer"
 
 
 
-<a href={`/players/${player.name.toLowerCase().replace(" ","")}`}>
-<button>
-VIEW PROFILE
-</button>
-</a>
+<ProfileLoader id={player.id}/>
 
 
 </div>
