@@ -2102,3 +2102,373 @@ flex-direction:column;
 }
 
 }
+/* =================================
+   FINAL PREMIUM PLAYER PROFILE FIX
+================================= */
+
+
+.player-profile.premium{
+
+max-width:1200px;
+min-height:800px;
+
+margin:50px auto;
+
+padding:35px;
+
+display:block;
+
+background:
+linear-gradient(145deg,#120000,#050505);
+
+border:1px solid rgba(255,0,0,.6);
+
+border-radius:25px;
+
+box-shadow:
+0 0 40px rgba(255,0,0,.25);
+
+}
+
+
+
+/* HEADER */
+
+.player-header{
+
+display:flex;
+
+align-items:flex-start;
+
+gap:35px;
+
+}
+
+
+.player-header img{
+
+width:280px;
+
+height:380px;
+
+object-fit:cover;
+
+border-radius:20px;
+
+border:2px solid red;
+
+box-shadow:
+0 0 30px red;
+
+}
+
+
+
+/* NAME AREA */
+
+.player-title{
+
+padding-top:25px;
+
+}
+
+
+
+.player-title h1{
+
+font-size:55px;
+
+margin:0;
+
+color:#ff2020;
+
+letter-spacing:3px;
+
+}
+
+
+
+.player-title h3{
+
+margin-top:15px;
+
+color:#ff4444;
+
+font-size:22px;
+
+}
+
+
+
+.player-title h4{
+
+margin-top:10px;
+
+color:white;
+
+}
+
+
+
+/* STATS */
+
+.stats-panel{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:15px;
+
+margin-top:35px;
+
+}
+
+
+
+.stat-box{
+
+height:100px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+background:#0d0d0d;
+
+border:1px solid rgba(255,0,0,.5);
+
+border-radius:15px;
+
+}
+
+
+
+.stat-box h2{
+
+font-size:30px;
+
+color:#ff1a1a;
+
+margin:0;
+
+}
+
+
+
+.stat-box p{
+
+font-size:12px;
+
+color:#aaa;
+
+letter-spacing:2px;
+
+}
+
+
+
+/* PLAYER INFORMATION */
+
+.player-info{
+
+margin-top:35px;
+
+width:100%;
+
+padding:20px;
+
+background:#090909;
+
+border-radius:15px;
+
+border:1px solid #333;
+
+}
+
+
+
+.player-info p{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:12px;
+
+border-bottom:1px solid #222;
+
+}
+
+
+
+.player-info span{
+
+color:#ff1a1a;
+
+font-weight:bold;
+
+}
+
+
+
+/* AWARDS + ACHIEVEMENT AREA */
+
+
+.awards,
+.achievements{
+
+margin-top:35px;
+
+padding:25px;
+
+background:#090909;
+
+border-radius:20px;
+
+border:1px solid rgba(255,0,0,.5);
+
+}
+
+
+
+.awards h2,
+.achievements h2{
+
+color:#ffcc00;
+
+margin-bottom:20px;
+
+}
+
+
+
+.award-card{
+
+padding:20px;
+
+margin-bottom:15px;
+
+background:#111;
+
+border-radius:12px;
+
+border:1px solid #333;
+
+}
+
+
+
+.award-card:hover{
+
+border-color:#ffcc00;
+
+box-shadow:0 0 20px #ffcc00;
+
+}
+
+
+
+.achievements li{
+
+list-style:none;
+
+padding:15px;
+
+margin-bottom:10px;
+
+background:#111;
+
+border-left:3px solid red;
+
+}
+
+
+
+/* SOCIAL */
+
+.social-links{
+
+margin-top:30px;
+
+display:flex;
+
+gap:15px;
+
+}
+
+
+
+.social-links a{
+
+padding:10px 18px;
+
+border-radius:30px;
+
+border:1px solid red;
+
+color:white;
+
+background:#111;
+
+text-decoration:none;
+
+font-size:14px;
+
+}
+
+
+
+.social-links a:hover{
+
+background:red;
+
+box-shadow:0 0 20px red;
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+
+.player-header{
+
+flex-direction:column;
+
+}
+
+
+
+.player-header img{
+
+width:100%;
+
+height:auto;
+
+}
+
+
+
+.player-title h1{
+
+font-size:40px;
+
+}
+
+
+
+.stats-panel{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+
+}
