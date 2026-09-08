@@ -30,7 +30,7 @@ social:{
 facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
 instagram:"https://www.instagram.com/being_ogggyy?stkn=MTRuemcwaDJjaWdvMg==",
 youtube:"https://youtube.com/@being_ogggyy?si=UHNwx-WcCr4kVwFz",
-tiktok:"tiktok.com/@being_ogggyy"
+tiktok:"https://www.tiktok.com/@being_ogggyy?_r=1&_t=ZS-99Z8hvW8Hxd"
 }
 },
 
