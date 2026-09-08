@@ -22,7 +22,7 @@ players:[
 name:"APPELO",
 role:"PRIMARY",
 image:"/players/appelo.png",
-position:"center top",
+position:"center 35%",
 social:{
 facebook:"https://www.facebook.com/share/19XKoR58cb/",
 instagram:"https://www.instagram.com/_appelo_ff",
@@ -35,7 +35,7 @@ tiktok:"https://www.tiktok.com/@appelo_offical_"
 name:"OGGY",
 role:"SECONDARY",
 image:"/players/oggy.png",
-position:"center top",
+position:"center 30%",
 social:{
 facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
 instagram:"https://www.instagram.com/being_ogggyy",
@@ -48,7 +48,7 @@ tiktok:"https://www.tiktok.com/@being_ogggyy"
 name:"ITACHIx",
 role:"BOMBER",
 image:"/players/itachix.png",
-position:"center top",
+position:"center 35%",
 social:{
 facebook:"https://www.facebook.com/profile.php?id=61590102347309",
 youtube:"https://youtube.com/@itachiontop-r2p",
@@ -60,7 +60,7 @@ tiktok:"https://www.tiktok.com/@itachix074"
 name:"REJWAN",
 role:"IGL+SUPPORTER",
 image:"/players/rejwan.png",
-position:"center top",
+position:"center 35%",
 social:{
 facebook:"https://www.facebook.com/rejwan.ahammed11",
 instagram:"https://www.instagram.com/rahammed_",
@@ -73,7 +73,7 @@ tiktok:"https://www.tiktok.com/@rejwanahammed"
 name:"FixFIRE",
 role:"SNIPER",
 image:"/players/fixfire.png",
-position:"center top",
+position:"center 25%",
 social:{
 facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
 instagram:"https://www.instagram.com/xr_jisan09",
