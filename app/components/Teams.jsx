@@ -135,58 +135,7 @@ social:{}
 
 ]
 },
-  {
-name:"OVER POWER RISING",
-slogan:"Future Champions",
-
-players:[
-
-{
-name:"PLAYER ONE",
-role:"RISING STAR",
-image:"/players/player1.png",
-position:"center top",
-social:{}
-},
-
-{
-name:"PLAYER TWO",
-role:"ASSAULTER",
-image:"/players/player2.png",
-position:"center top",
-social:{}
-},
-
-{
-name:"PLAYER THREE",
-role:"SNIPER",
-image:"/players/player3.png",
-position:"center top",
-social:{}
-},
-
-{
-name:"PLAYER FOUR",
-role:"ALL ROUNDER",
-image:"/players/player4.png",
-position:"center top",
-social:{}
-},
-
-{
-name:"PLAYER FIVE",
-role:"SUPPORT",
-image:"/players/player5.png",
-position:"center top",
-social:{}
-}
-
-]
-
-}
-
-];
-
+  
 
 return(
 
