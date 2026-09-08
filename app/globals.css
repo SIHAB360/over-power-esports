@@ -1488,3 +1488,43 @@ object-position:center top !important;
 transform:scale(1.15);
 
 }
+/* =========================
+PLAYER FACE PERFECT FIX
+========================= */
+
+.player-image{
+
+width:140px;
+
+height:140px;
+
+overflow:hidden;
+
+border-radius:50%;
+
+border:3px solid red;
+
+background:#050505;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+
+.player-image img{
+
+width:100%;
+
+height:100%;
+
+object-fit:contain !important;
+
+object-position:center center !important;
+
+transform:none !important;
+
+}
