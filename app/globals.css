@@ -476,7 +476,7 @@ font-weight:bold;
 
 
 /* =========================
-SOCIAL ICON RGB EFFECT
+SOCIAL ICON RGB ROTATING GLOW
 ========================= */
 
 
@@ -488,7 +488,7 @@ justify-content:center;
 
 align-items:center;
 
-gap:12px;
+gap:14px;
 
 margin-top:18px;
 
@@ -518,9 +518,15 @@ font-size:17px;
 
 position:relative;
 
+overflow:visible;
+
+z-index:1;
+
 }
 
 
+
+/* Rotating RGB Ring */
 
 .social-links a::before{
 
@@ -528,84 +534,128 @@ content:"";
 
 position:absolute;
 
-inset:-5px;
+width:48px;
+
+height:48px;
 
 border-radius:50%;
 
+
 background:
 
-linear-gradient(
-45deg,
+conic-gradient(
+
 red,
-blue,
-cyan,
-purple,
+
 yellow,
+
+cyan,
+
+blue,
+
+purple,
+
 red
+
 );
 
-filter:blur(7px);
-
-z-index:-1;
 
 animation:
 
-rgbSocial 3s linear infinite;
+rotateRGB 2s linear infinite;
+
+
+z-index:-2;
+
+filter:blur(6px);
 
 }
 
 
 
-@keyframes rgbSocial{
+/* Inner black cover */
+
+.social-links a::after{
+
+content:"";
+
+position:absolute;
+
+inset:3px;
+
+border-radius:50%;
+
+background:#050505;
+
+z-index:-1;
+
+}
+
+
+
+/* Rotation */
+
+@keyframes rotateRGB{
 
 0%{
 
-filter:blur(7px)
-hue-rotate(0deg);
+transform:rotate(0deg);
 
 }
+
 
 100%{
 
-filter:blur(7px)
-hue-rotate(360deg);
+transform:rotate(360deg);
 
 }
 
 }
 
 
+
+/* Extra pulse */
+
+.social-links a:hover{
+
+transform:scale(1.2);
+
+box-shadow:
+
+0 0 25px red;
+
+}
+
+
+
+/* Individual icon border */
 
 .facebook{
 
-border:2px solid #1877f2;
+border:1px solid #1877f2;
 
 }
-
 
 
 .instagram{
 
-border:2px solid #e1306c;
+border:1px solid #e1306c;
 
 }
-
 
 
 .youtube{
 
-border:2px solid red;
+border:1px solid red;
 
 }
-
 
 
 .tiktok{
 
-border:2px solid cyan;
+border:1px solid cyan;
 
 }
-
 
 
 
