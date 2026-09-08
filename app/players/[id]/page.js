@@ -1,6 +1,8 @@
 export default async function PlayerProfile({params}){
 
+
 const players = {
+
 
 appelo:{
 name:"APPELO",
@@ -12,18 +14,17 @@ instagram:"https://www.instagram.com/_appelo_ff",
 youtube:"https://youtube.com/@appelo_ff",
 tiktok:"https://www.tiktok.com/@appelo_offical"
 },
- 
+
 
 oggy:{
 name:"OGGY",
 role:"SECONDARY",
 team:"OVER POWER MAIN TEAM",
 image:"/players/oggy.png",
-position:"center top",
 facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
-instagram:"https://www.instagram.com/being_ogggyy?stkn=MTRuemcwaDJjaWdvMg==",
-youtube:"https://youtube.com/@being_ogggyy?si=UHNwx-WcCr4kVwFz",
-tiktok:"https://www.tiktok.com/@being_ogggyy?_r=1&_t=ZS-99Z8hvW8Hxd"
+instagram:"https://www.instagram.com/being_ogggyy",
+youtube:"https://youtube.com/@being_ogggyy",
+tiktok:"https://www.tiktok.com/@being_ogggyy"
 },
 
 
@@ -44,8 +45,7 @@ name:"REJWAN",
 role:"IGL+SUPPORTER",
 team:"OVER POWER MAIN TEAM",
 image:"/players/rejwan.png",
-position:"center top",
-facebook:"https://www.facebook.com/rejwan.ahammed11?mibextid=wwXIfr",
+facebook:"https://www.facebook.com/rejwan.ahammed11",
 instagram:"https://www.instagram.com/rahammed_",
 youtube:"https://youtube.com/@rejwan-ff6711",
 tiktok:"https://www.tiktok.com/@rejwanahammed"
@@ -63,13 +63,14 @@ youtube:"https://www.youtube.com/@fixfire09",
 tiktok:"https://tiktok.com/@fixfire09"
 }
 
+
 }
 
 
 
-const { id } = await params;
+const {id}=await params;
 
-const player = players[id];
+const player=players[id];
 
 
 if(!player){
@@ -89,11 +90,18 @@ return(
 <section className="player-profile premium">
 
 
-<img 
+
+<div className="player-header">
+
+
+<img
 src={player.image}
 alt={player.name}
 />
 
+
+
+<div className="player-title">
 
 <h1>
 {player.name}
@@ -108,61 +116,91 @@ alt={player.name}
 <h4>
 {player.team}
 </h4>
- <div className="stats-panel">
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div className="stats-panel">
+
 
 <div className="stat-box">
 <h2>25+</h2>
 <p>MATCHES</p>
 </div>
 
+
 <div className="stat-box">
 <h2>12</h2>
 <p>WINS</p>
 </div>
+
 
 <div className="stat-box">
 <h2>5</h2>
 <p>MVP</p>
 </div>
 
+
 <div className="stat-box">
 <h2>#01</h2>
 <p>RANK</p>
 </div>
 
+
 </div>
+
+
+
+
+
 <div className="player-info">
+
 
 <p>
 <span>ROLE</span>
 {player.role}
 </p>
 
+
 <p>
 <span>TEAM</span>
 {player.team}
 </p>
+
 
 <p>
 <span>STATUS</span>
 ACTIVE PLAYER
 </p>
 
+
 <p>
 <span>COUNTRY</span>
 BANGLADESH
 </p>
 
+
 </div>
 
 
-<div>
-<div className="achievements">
- <div className="awards">
+
+
+
+
+
+<div className="awards">
+
 
 <h2>
 🏅 AWARDS
 </h2>
+
 
 <div className="award-card">
 
@@ -175,6 +213,7 @@ Over Power Esports Official Roster
 </p>
 
 </div>
+
 
 
 <div className="award-card">
@@ -192,9 +231,19 @@ Competitive Gaming Specialist
 
 </div>
 
+
+
+
+
+
+
+<div className="achievements">
+
+
 <h2>
 🏆 ACHIEVEMENTS
 </h2>
+
 
 <ul>
 
@@ -202,23 +251,37 @@ Competitive Gaming Specialist
 Over Power Esports Main Team Player
 </li>
 
+
 <li>
 Competitive Tournament Participant
 </li>
+
 
 <li>
 Professional Free Fire Player
 </li>
 
+
 </ul>
 
+
 </div>
+
+
+
+
+
+
+
+<div className="social-links">
+
 
 {player.facebook &&
 <a href={player.facebook} target="_blank">
 Facebook
 </a>
 }
+
 
 
 {player.instagram &&
@@ -228,11 +291,13 @@ Instagram
 }
 
 
+
 {player.youtube &&
 <a href={player.youtube} target="_blank">
 YouTube
 </a>
 }
+
 
 
 {player.tiktok &&
@@ -242,10 +307,13 @@ TikTok
 }
 
 
+
 </div>
 
 
+
 </section>
+
 
 )
 
