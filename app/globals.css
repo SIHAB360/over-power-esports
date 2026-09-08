@@ -2015,3 +2015,90 @@ color:#ffcc00;
 margin-bottom:10px;
 
 }
+/* =========================
+ PLAYER HEADER LAYOUT
+========================= */
+
+.player-header{
+
+display:flex;
+
+gap:30px;
+
+align-items:flex-start;
+
+}
+
+
+.player-title{
+
+padding-top:20px;
+
+}
+
+
+.player-title h1{
+
+margin:0;
+
+font-size:48px;
+
+}
+
+
+.player-title h3{
+
+margin-top:15px;
+
+}
+
+
+.player-title h4{
+
+margin-top:10px;
+
+}
+
+
+
+/* IMAGE SIZE */
+
+.player-header img{
+
+width:260px;
+
+height:360px;
+
+object-fit:cover;
+
+}
+
+
+/* COMPACT STATS */
+
+.stats-panel{
+
+margin-top:30px;
+
+}
+
+
+.stat-box{
+
+height:90px;
+
+padding:15px;
+
+}
+
+
+
+@media(max-width:800px){
+
+.player-header{
+
+flex-direction:column;
+
+}
+
+}
