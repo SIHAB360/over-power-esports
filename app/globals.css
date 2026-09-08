@@ -1184,3 +1184,144 @@ height:300px;
 }
 
 }
+/* =========================
+   TEAMS HEADER
+========================= */
+
+
+.teams-title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+
+.teams-title h2{
+
+    font-size:52px;
+    font-weight:1000;
+    letter-spacing:4px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #ff0000,
+        #ffcc00,
+        #ffffff,
+        #ff0000
+    );
+
+    background-size:300%;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation:
+    titleFlow 4s linear infinite,
+    titleGlow 1.8s ease-in-out infinite alternate;
+
+}
+
+
+
+.title-line{
+
+    width:180px;
+    height:5px;
+
+    margin:18px auto;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        #ff0000,
+        #ffd000,
+        transparent
+    );
+
+    border-radius:20px;
+
+    animation:
+    linePulse 2s infinite;
+
+}
+
+
+
+.teams-title p{
+
+    color:#ffcccc;
+
+    font-size:14px;
+
+    letter-spacing:6px;
+
+    font-weight:700;
+
+    opacity:.8;
+
+}
+
+
+
+/* TEXT COLOR MOVEMENT */
+
+@keyframes titleFlow{
+
+0%{
+background-position:0%;
+}
+
+100%{
+background-position:300%;
+}
+
+}
+
+
+
+/* GLOW */
+
+@keyframes titleGlow{
+
+from{
+
+text-shadow:
+0 0 10px red,
+0 0 20px red;
+
+}
+
+
+to{
+
+text-shadow:
+0 0 25px #ff0000,
+0 0 50px #ff6600;
+
+}
+
+}
+
+
+
+/* LINE */
+
+@keyframes linePulse{
+
+0%,100%{
+
+opacity:.5;
+transform:scaleX(.8);
+
+}
+
+
+50%{
+
+opacity:1;
+transform:scaleX(1.2);
+
+}
+
+}
