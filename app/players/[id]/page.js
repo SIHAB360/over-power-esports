@@ -73,9 +73,12 @@ tiktok:"https://tiktok.com/@fixfire09"
 
 
 
+
 const {id}=await params;
 
+
 const player=players[id];
+
 
 
 if(!player){
@@ -87,15 +90,24 @@ return <h1>Player Not Found</h1>
 
 
 
+
 return(
+
 
 <section className="esports-profile">
 
 
 
+
+
 {/* HEADER */}
 
+
+<div className="profile-header">
+
+
 <div className="player-heading">
+
 
 <h1>
 {player.name}
@@ -105,38 +117,44 @@ return(
 <h3>
 {player.role}
 </h3>
+
+
 <h4>
 {player.team}
 </h4>
+
 
 <p>
 Professional Free Fire esports player of Over Power Esports.
 </p>
 
 
-<h4>
-{player.team}
-</h4>
-
-
 </div>
+
+
 
 
 
 <div className="winning-card">
 
+
 <span>
 TOTAL WINNINGS
 </span>
+
 
 <h2>
 {player.winnings}
 </h2>
 
+
 </div>
 
 
+
 </div>
+
+
 
 
 
@@ -148,10 +166,13 @@ TOTAL WINNINGS
 
 
 
+
+
 {/* LEFT SIDE */}
 
 
 <aside className="profile-left">
+
 
 
 <img
@@ -167,39 +188,82 @@ alt={player.name}
 
 
 
+
+
 <h3>
 PLAYER INFORMATION
 </h3>
 
 
+
 <div className="profile-row">
-<span>Name</span>
+
+<span>
+Name
+</span>
+
 {player.name}
+
 </div>
 
 
+
+
 <div className="profile-row">
-<span>Role</span>
+
+<span>
+Role
+</span>
+
 {player.role}
+
 </div>
 
 
+
+
+
 <div className="profile-row">
-<span>Team</span>
+
+<span>
+Team
+</span>
+
 {player.team}
+
 </div>
 
 
+
+
+
 <div className="profile-row">
-<span>Country</span>
+
+<span>
+Country
+</span>
+
 Bangladesh 🇧🇩
+
 </div>
+
+
+
 
 
 <div className="profile-row">
-<span>Status</span>
+
+<span>
+Status
+</span>
+
 Active
+
 </div>
+
+
+
+
 
 
 
@@ -210,37 +274,62 @@ LINKS
 </h3>
 
 
+
+
 <div className="profile-social">
 
 
+
 {player.facebook &&
+
 <a href={player.facebook} target="_blank">
+
 f
+
 </a>
+
 }
+
+
 
 
 
 {player.instagram &&
+
 <a href={player.instagram} target="_blank">
+
 ◎
+
 </a>
+
 }
+
+
 
 
 
 {player.youtube &&
+
 <a href={player.youtube} target="_blank">
+
 ▶
+
 </a>
+
 }
 
 
 
+
+
 {player.tiktok &&
+
 <a href={player.tiktok} target="_blank">
+
 ♪
+
 </a>
+
 }
 
 
@@ -251,9 +340,14 @@ f
 
 
 
+
+
+
+
 <h3>
 TEAM HISTORY
 </h3>
+
 
 
 <p className="team-history">
@@ -268,7 +362,12 @@ Over Power Main Team
 
 
 
+
 </aside>
+
+
+
+
 
 
 
@@ -288,27 +387,21 @@ Over Power Main Team
 
 
 
+
 <div className="profile-table">
+
 
 
 <h2>
 🏆 ACHIEVEMENTS
 </h2>
 
-<thead>
 
-<tr>
 
-<th>DATE</th>
-<th>TIER</th>
-<th>TOURNAMENT</th>
-<th>PRIZE</th>
 
-</tr>
-
-</thead>
 
 <table>
+
 
 <thead>
 
@@ -318,60 +411,125 @@ Over Power Main Team
 DATE
 </th>
 
+
 <th>
 TIER
 </th>
+
 
 <th>
 TOURNAMENT
 </th>
 
+
 <th>
 PRIZE
 </th>
 
+
 </tr>
+
 
 </thead>
 
 
+
+
+
 <tbody>
 
+
+<tr>
+
+<td>
+2026
+</td>
+
+
+<td>
+A-Tier
+</td>
+
+
+<td>
+Free Fire Championship
+</td>
+
+
+<td>
+$120
+</td>
+
+
 </tr>
+
+
+
 
 
 <tr>
 
-<td>2026</td>
+<td>
+2026
+</td>
 
-<td>A-Tier</td>
 
-<td>Asia Invitational</td>
+<td>
+A-Tier
+</td>
 
-<td>$181</td>
+
+<td>
+Asia Invitational
+</td>
+
+
+<td>
+$181
+</td>
+
 
 </tr>
 
 
+
+
+
 <tr>
 
-<td>2026</td>
+<td>
+2026
+</td>
 
-<td>C-Tier</td>
 
-<td>Community Tournament</td>
+<td>
+C-Tier
+</td>
 
-<td>$48</td>
+
+<td>
+Community Tournament
+</td>
+
+
+<td>
+$48
+</td>
+
 
 </tr>
 
 
 </tbody>
 
+
 </table>
 
 
+
+
 </div>
+
 
 
 
@@ -387,21 +545,16 @@ PRIZE
 🏅 AWARDS
 </h2>
 
-<thead>
 
-<tr>
 
-<th>DATE</th>
-<th>AWARD</th>
-<th>ORGANIZATION</th>
 
-</tr>
-
-</thead>
 
 <table>
 
+
+
 <thead>
+
 
 <tr>
 
@@ -409,41 +562,36 @@ PRIZE
 DATE
 </th>
 
+
 <th>
 AWARD
 </th>
+
 
 <th>
 ORGANIZATION
 </th>
 
+
 </tr>
+
 
 </thead>
 
 
+
+
+
 <tbody>
 
+
 <tr>
+
 
 <td>
 2026
 </td>
 
-<td>
-Elite Player Award
-</td>
-
-<td>
-Over Power Esports
-</td>
-
-</tr>
-
-
-</tbody>
-
-</table>
 
 
 <td>
@@ -451,19 +599,33 @@ Elite Player Award
 </td>
 
 
+
 <td>
 Over Power Esports
 </td>
 
 
+
 </tr>
+
 
 
 </tbody>
 
+
+
 </table>
 
 
+
+
+</div>
+
+
+
+
+
+
 </div>
 
 
@@ -475,13 +637,16 @@ Over Power Esports
 
 
 
-</div>
+
 
 
 
 </section>
 
 
+
 )
+
+
 
 }
