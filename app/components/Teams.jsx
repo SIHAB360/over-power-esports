@@ -168,9 +168,19 @@ return (
 <section className="teams">
 
 
+<div className="teams-title">
+
 <h2>
 OUR TEAMS
 </h2>
+
+<div className="title-line"></div>
+
+<p>
+POWER • UNITY • DOMINATION
+</p>
+
+</div>
 
 
 
