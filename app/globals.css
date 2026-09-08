@@ -227,37 +227,121 @@ color:#ddd;
 
 
 
-button{
+/* =========================
+PREMIUM JOIN TEAM BUTTON
+========================= */
+
+.hero button{
 
 margin-top:25px;
 
-padding:12px 35px;
+padding:14px 45px;
 
-border:none;
+border-radius:40px;
 
-border-radius:30px;
+border:1px solid rgba(255,255,255,.3);
 
-background:#ff2020;
+background:
+
+linear-gradient(
+135deg,
+#ff0000,
+#ff4d4d,
+#990000
+);
 
 color:white;
 
-font-weight:bold;
+font-size:16px;
+
+font-weight:900;
+
+letter-spacing:1px;
+
+text-transform:uppercase;
 
 cursor:pointer;
 
+position:relative;
+
+overflow:hidden;
+
 box-shadow:
 
-0 0 20px red;
+0 0 15px red,
+0 0 40px rgba(255,0,0,.6);
 
-transition:.3s;
+transition:.4s;
 
 }
 
 
 
-button:hover{
+.hero button::before{
 
-transform:scale(1.08);
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-100%;
+
+width:60%;
+
+height:100%;
+
+background:
+
+linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,.8),
+transparent
+);
+
+transform:skewX(-25deg);
+
+animation:
+
+buttonShine 3s infinite;
+
+}
+
+
+
+@keyframes buttonShine{
+
+0%{
+
+left:-100%;
+
+}
+
+50%{
+
+left:150%;
+
+}
+
+100%{
+
+left:150%;
+
+}
+
+}
+
+
+
+.hero button:hover{
+
+transform:translateY(-5px) scale(1.08);
+
+box-shadow:
+
+0 0 25px red,
+0 0 70px red;
 
 }
 /* =========================
