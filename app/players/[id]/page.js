@@ -3,7 +3,6 @@ export default async function PlayerProfile({params}){
 
 const players = {
 
-
 appelo:{
 name:"APPELO",
 role:"PRIMARY",
@@ -68,17 +67,13 @@ youtube:"https://www.youtube.com/@fixfire09",
 tiktok:"https://tiktok.com/@fixfire09"
 }
 
-
-}
-
+};
 
 
 
 const {id}=await params;
 
-
 const player=players[id];
-
 
 
 if(!player){
@@ -89,18 +84,9 @@ return <h1>Player Not Found</h1>
 
 
 
-
-
 return(
 
-
 <section className="esports-profile">
-
-
-
-
-
-{/* HEADER */}
 
 
 <div className="profile-header">
@@ -133,30 +119,20 @@ Professional Free Fire esports player of Over Power Esports.
 
 
 
-
-
 <div className="winning-card">
-
 
 <span>
 TOTAL WINNINGS
 </span>
 
-
 <h2>
 {player.winnings}
 </h2>
 
-
 </div>
 
 
-
 </div>
-
-
-
-
 
 
 
@@ -166,28 +142,25 @@ TOTAL WINNINGS
 
 
 
-
-
-{/* LEFT SIDE */}
-
-
 <aside className="profile-left">
 
 
 
+<div className="photo-box">
+
 <img
-
 className="profile-photo"
-
 src={player.image}
-
 alt={player.name}
-
 />
 
+</div>
 
 
 
+
+
+<div className="info-box">
 
 
 <h3>
@@ -196,68 +169,42 @@ PLAYER INFORMATION
 
 
 
-<div className="profile-row">
-
-<span>
-Name
-</span>
-
-{player.name}
-
+<div className="info-item">
+<label>Name</label>
+<strong>{player.name}</strong>
 </div>
 
 
 
-
-<div className="profile-row">
-
-<span>
-Role
-</span>
-
-{player.role}
-
+<div className="info-item">
+<label>Role</label>
+<strong>{player.role}</strong>
 </div>
 
 
 
-
-
-<div className="profile-row">
-
-<span>
-Team
-</span>
-
-{player.team}
-
+<div className="info-item">
+<label>Team</label>
+<strong>{player.team}</strong>
 </div>
 
 
 
-
-
-<div className="profile-row">
-
-<span>
-Country
-</span>
-
-Bangladesh 🇧🇩
-
+<div className="info-item">
+<label>Country</label>
+<strong>Bangladesh 🇧🇩</strong>
 </div>
 
 
 
-
-
-<div className="profile-row">
-
-<span>
-Status
-</span>
-
+<div className="info-item">
+<label>Status</label>
+<strong className="active">
 Active
+</strong>
+</div>
+
+
 
 </div>
 
@@ -266,7 +213,7 @@ Active
 
 
 
-
+<div className="info-box">
 
 
 <h3>
@@ -275,63 +222,45 @@ LINKS
 
 
 
-
 <div className="profile-social">
 
 
-
-{player.facebook &&
-
+{
+player.facebook &&
 <a href={player.facebook} target="_blank">
-
-f
-
+Facebook
 </a>
-
 }
 
 
 
-
-
-{player.instagram &&
-
+{
+player.instagram &&
 <a href={player.instagram} target="_blank">
-
-◎
-
+Instagram
 </a>
-
 }
 
 
 
-
-
-{player.youtube &&
-
+{
+player.youtube &&
 <a href={player.youtube} target="_blank">
-
-▶
-
+YouTube
 </a>
-
 }
 
 
 
-
-
-{player.tiktok &&
-
+{
+player.tiktok &&
 <a href={player.tiktok} target="_blank">
-
-♪
-
+TikTok
 </a>
-
 }
 
+
+</div>
 
 
 </div>
@@ -341,7 +270,7 @@ f
 
 
 
-
+<div className="info-box">
 
 
 <h3>
@@ -349,16 +278,17 @@ TEAM HISTORY
 </h3>
 
 
-
-<p className="team-history">
-
+<p>
 2026 - Present
-
 <br/>
-
+<span>
 Over Power Main Team
-
+</span>
 </p>
+
+
+</div>
+
 
 
 
@@ -371,25 +301,11 @@ Over Power Main Team
 
 
 
-
-
-
-
-
-
-{/* RIGHT SIDE */}
-
-
-
 <div className="profile-right">
 
 
 
-
-
-
 <div className="profile-table">
-
 
 
 <h2>
@@ -397,126 +313,43 @@ Over Power Main Team
 </h2>
 
 
-
-
-
 <table>
-
 
 <thead>
 
 <tr>
-
-<th>
-DATE
-</th>
-
-
-<th>
-TIER
-</th>
-
-
-<th>
-TOURNAMENT
-</th>
-
-
-<th>
-PRIZE
-</th>
-
-
+<th>DATE</th>
+<th>TIER</th>
+<th>TOURNAMENT</th>
+<th>PRIZE</th>
 </tr>
-
 
 </thead>
 
 
-
-
-
 <tbody>
 
-
 <tr>
-
-<td>
-2026
-</td>
-
-
-<td>
-A-Tier
-</td>
-
-
-<td>
-Free Fire Championship
-</td>
-
-
-<td>
-$120
-</td>
-
-
+<td>2026</td>
+<td>A-Tier</td>
+<td>Free Fire Championship</td>
+<td>$120</td>
 </tr>
 
 
-
-
-
 <tr>
-
-<td>
-2026
-</td>
-
-
-<td>
-A-Tier
-</td>
-
-
-<td>
-Asia Invitational
-</td>
-
-
-<td>
-$181
-</td>
-
-
+<td>2026</td>
+<td>A-Tier</td>
+<td>Asia Invitational</td>
+<td>$181</td>
 </tr>
 
 
-
-
-
 <tr>
-
-<td>
-2026
-</td>
-
-
-<td>
-C-Tier
-</td>
-
-
-<td>
-Community Tournament
-</td>
-
-
-<td>
-$48
-</td>
-
-
+<td>2026</td>
+<td>C-Tier</td>
+<td>Community Tournament</td>
+<td>$48</td>
 </tr>
 
 
@@ -526,11 +359,7 @@ $48
 </table>
 
 
-
-
 </div>
-
-
 
 
 
@@ -547,89 +376,35 @@ $48
 
 
 
-
-
 <table>
-
-
 
 <thead>
 
-
 <tr>
-
-<th>
-DATE
-</th>
-
-
-<th>
-AWARD
-</th>
-
-
-<th>
-ORGANIZATION
-</th>
-
-
+<th>DATE</th>
+<th>AWARD</th>
+<th>ORGANIZATION</th>
 </tr>
-
 
 </thead>
 
 
-
-
-
 <tbody>
 
-
 <tr>
-
-
-<td>
-2026
-</td>
-
-
-
-<td>
-Elite Player Award
-</td>
-
-
-
-<td>
-Over Power Esports
-</td>
-
-
-
+<td>2026</td>
+<td>Elite Player Award</td>
+<td>Over Power Esports</td>
 </tr>
 
-
-
 </tbody>
-
 
 
 </table>
 
 
 
-
 </div>
-
-
-
-
-
-
-</div>
-
-
-
 
 
 
@@ -637,16 +412,13 @@ Over Power Esports
 
 
 
-
+</div>
 
 
 
 </section>
 
 
-
 )
-
-
 
 }
