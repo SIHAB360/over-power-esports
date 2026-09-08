@@ -22,7 +22,7 @@ players:[
 name:"APPELO",
 role:"PRIMARY",
 image:"/players/appelo.png",
-position:"center 15%"
+position:"center top",
 social:{
 facebook:"https://www.facebook.com/share/19XKoR58cb/",
 instagram:"https://www.instagram.com/_appelo_ff",
