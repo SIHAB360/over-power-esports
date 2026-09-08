@@ -53,10 +53,10 @@ role:"IGL+SUPPORTER",
 image:"/players/rejwan.png",
 position:"center top",
 social:{
-facebook:"",
-instagram:"",
-youtube:"",
-tiktok:""
+facebook:"https://www.facebook.com/rejwan.ahammed11?mibextid=wwXIfr&mibextid=wwXIfr",
+instagram:"https://www.instagram.com/rahammed_?stkn=MThpaDNkczhodzZiMQ%3D%3D&utm_source=qr",
+youtube:"https://youtube.com/@rejwan-ff6711?si=wkjwjecveyM69IRr",
+tiktok:"https://www.tiktok.com/@rejwanahammed?_r=1&_t=ZS-99Z8sfhqSbo"
 }
 },
 
