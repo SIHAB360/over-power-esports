@@ -391,24 +391,22 @@ box-shadow:
 
 
 /* =========================
-PLAYER CIRCLE
-ELITE TEAM STYLE
+FINAL PLAYER IMAGE
+ELITE STYLE
 ========================= */
-
 
 .player-image{
 
 width:110px;
-
 height:110px;
 
 border-radius:50%;
 
 overflow:hidden;
 
-background:#050505;
-
 border:3px solid red;
+
+background:#050505;
 
 display:flex;
 
@@ -417,27 +415,24 @@ align-items:center;
 justify-content:center;
 
 box-shadow:
-
 0 0 20px red;
 
 }
 
 
-
 .player-image img{
 
-width:100%;
+width:100% !important;
 
-height:100%;
+height:100% !important;
 
-object-fit:cover !important;
+object-fit:contain !important;
 
-object-position:center 25% !important;
+object-position:center center !important;
 
-transform:scale(1.15);
+transform:scale(1.25);
 
 }
-
 
 
 
