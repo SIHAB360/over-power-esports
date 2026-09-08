@@ -100,7 +100,7 @@ image:"/players/rfntc.png",
 position:"center top",
 social:{
 facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"",
+instagram:"https://www.facebook.com/share/1DYEWmWzRr/",
 youtube:"",
 tiktok:""
 }
