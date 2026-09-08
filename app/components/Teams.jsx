@@ -155,9 +155,6 @@ youtube:"",
 tiktok:""
 }
 }
-
-]
-
 ];
 return(
 
