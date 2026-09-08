@@ -8,6 +8,7 @@ import {
 
 export default function Teams() {
 
+
 const teams = [
 
 {
@@ -49,6 +50,7 @@ image:"/players/itachix.png",
 position:"center 35%",
 social:{
 facebook:"https://www.facebook.com/profile.php?id=61590102347309",
+instagram:"",
 youtube:"https://youtube.com/@itachiontop-r2p",
 tiktok:"https://www.tiktok.com/@itachix074"
 }
@@ -161,21 +163,25 @@ tiktok:""
 }
 
 ];
-
-
 return (
 
 <section className="teams">
+
 
 <h2>
 OUR TEAMS
 </h2>
 
 
+
 {
 teams.map((team,index)=>(
 
-<div className="team-block" key={index}>
+<div 
+className="team-block" 
+key={index}
+>
+
 
 <h3>
 {team.name}
@@ -187,13 +193,19 @@ teams.map((team,index)=>(
 </p>
 
 
+
 <div className="team-players">
 
 
 {
 team.players.map((player,i)=>(
 
-<div className="player-card" key={i}>
+
+<div 
+className="player-card" 
+key={i}
+>
+
 
 
 <div className="player-image">
@@ -209,9 +221,12 @@ objectPosition: player.position || "center"
 </div>
 
 
+
+
 <h4>
 {player.name}
 </h4>
+
 
 
 <span>
@@ -219,11 +234,14 @@ objectPosition: player.position || "center"
 </span>
 
 
+
+
 <div className="social-links">
 
 
+
 {
-player.social.facebook &&
+player.social.facebook && (
 
 <a
 href={player.social.facebook}
@@ -231,13 +249,17 @@ target="_blank"
 rel="noopener noreferrer"
 className="facebook"
 >
-<FaFacebookF/>
+<FaFacebookF />
 </a>
+
+)
 }
 
 
+
+
 {
-player.social.instagram &&
+player.social.instagram && (
 
 <a
 href={player.social.instagram}
@@ -245,13 +267,18 @@ target="_blank"
 rel="noopener noreferrer"
 className="instagram"
 >
-<FaInstagram/>
+<FaInstagram />
 </a>
+
+)
+
 }
 
 
+
+
 {
-player.social.youtube &&
+player.social.youtube && (
 
 <a
 href={player.social.youtube}
@@ -259,13 +286,18 @@ target="_blank"
 rel="noopener noreferrer"
 className="youtube"
 >
-<FaYoutube/>
+<FaYoutube />
 </a>
+
+)
+
 }
 
 
+
+
 {
-player.social.tiktok &&
+player.social.tiktok && (
 
 <a
 href={player.social.tiktok}
@@ -273,12 +305,18 @@ target="_blank"
 rel="noopener noreferrer"
 className="tiktok"
 >
-<FaTiktok/>
+<FaTiktok />
 </a>
+
+)
+
 }
 
 
+
 </div>
+
+
 
 
 <a
@@ -289,7 +327,10 @@ VIEW PROFILE
 </a>
 
 
+
+
 </div>
+
 
 ))
 
@@ -298,11 +339,15 @@ VIEW PROFILE
 
 </div>
 
+
+
 </div>
+
 
 ))
 
 }
+
 
 
 </section>
