@@ -24,7 +24,7 @@ role:"PRIMARY",
 image:"/players/appelo.png",
 position:"center top",
 social:{
-facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+facebook:"https://www.facebook.com/share/19XKoR58cb/",
 instagram:"https://www.instagram.com/_appelo_ff",
 youtube:"https://youtube.com/@appelo_ff",
 tiktok:"https://www.tiktok.com/@appelo_offical_"
@@ -80,6 +80,105 @@ instagram:"https://www.instagram.com/xr_jisan09",
 youtube:"https://www.youtube.com/@fixfire09",
 tiktok:"https://tiktok.com/@fixfire09"
 }
+}
+
+]
+
+},
+
+
+{
+name:"OVER POWER ELITE",
+slogan:"Victory Is Our Language",
+
+players:[
+
+{
+name:"FOYSAL",
+role:"PRIMARY",
+image:"/players/rfntc.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"JELLAL",
+role:"SECONDARY",
+image:"/players/jellal.png",
+position:"center 15%",
+social:{}
+},
+
+{
+name:"SOJIB",
+role:"BOMBER",
+image:"/players/sojib.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"NAFIZ",
+role:"SUPPORTER",
+image:"/players/nafiz.jpeg",
+position:"center 20%",
+social:{}
+},
+
+{
+name:"BAYMAX",
+role:"SNIPER",
+image:"/players/baymax.png",
+position:"center top",
+social:{}
+}
+
+]
+},
+  {
+name:"OVER POWER RISING",
+slogan:"Future Champions",
+
+players:[
+
+{
+name:"PLAYER ONE",
+role:"RISING STAR",
+image:"/players/player1.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"PLAYER TWO",
+role:"ASSAULTER",
+image:"/players/player2.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"PLAYER THREE",
+role:"SNIPER",
+image:"/players/player3.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"PLAYER FOUR",
+role:"ALL ROUNDER",
+image:"/players/player4.png",
+position:"center top",
+social:{}
+},
+
+{
+name:"PLAYER FIVE",
+role:"SUPPORT",
+image:"/players/player5.png",
+position:"center top",
+social:{}
 }
 
 ]
@@ -222,7 +321,6 @@ className="tiktok"
 
 
 <ProfileLoader/>
-
 
 </div>
 
