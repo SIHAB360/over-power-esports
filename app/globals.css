@@ -16,7 +16,10 @@ background:#050505;
 
 color:white;
 
-font-family:Arial, Helvetica, sans-serif;
+font-family:
+Arial,
+Helvetica,
+sans-serif;
 
 }
 
@@ -42,9 +45,9 @@ circle at top,
 
 img{
 
-max-width:100%;
-
 display:block;
+
+max-width:100%;
 
 }
 
@@ -132,6 +135,7 @@ font-weight:bold;
 color:red;
 
 }
+
 
 
 
@@ -227,6 +231,8 @@ color:#ddd;
 
 
 
+
+
 /* =========================
 PREMIUM JOIN TEAM BUTTON
 ========================= */
@@ -244,14 +250,16 @@ border-radius:40px;
 
 border:1px solid rgba(255,255,255,.3);
 
+
 background:
 
 linear-gradient(
 135deg,
 #ff0000,
-#ff4d4d,
+#ff3333,
 #990000
 );
+
 
 color:white;
 
@@ -261,22 +269,23 @@ font-weight:900;
 
 letter-spacing:1px;
 
-text-transform:uppercase;
-
 cursor:pointer;
 
 position:relative;
 
 overflow:hidden;
 
+
 box-shadow:
 
-0 0 15px red,
-0 0 40px rgba(255,0,0,.6);
+0 0 20px red,
+0 0 50px rgba(255,0,0,.5);
+
 
 transition:.4s;
 
 }
+
 
 
 
@@ -288,11 +297,12 @@ position:absolute;
 
 top:0;
 
-left:-100%;
+left:-120%;
 
 width:60%;
 
 height:100%;
+
 
 background:
 
@@ -303,22 +313,25 @@ rgba(255,255,255,.8),
 transparent
 );
 
+
 transform:skewX(-25deg);
+
 
 animation:
 
-buttonShine 3s infinite;
+buttonLight 3s infinite;
 
 }
 
 
 
-@keyframes buttonShine{
+
+@keyframes buttonLight{
 
 
 0%{
 
-left:-100%;
+left:-120%;
 
 }
 
@@ -340,7 +353,9 @@ left:150%;
 
 
 
+
 .hero button:hover{
+
 
 transform:
 
@@ -348,13 +363,14 @@ translateY(-5px)
 scale(1.08);
 
 
+
 box-shadow:
 
-0 0 25px red,
-0 0 70px red;
+0 0 30px red,
+0 0 80px red;
+
 
 }
-
 /* =========================
 TEAM SECTION
 ========================= */
@@ -369,6 +385,7 @@ text-align:center;
 }
 
 
+
 .teams h2{
 
 font-size:40px;
@@ -378,6 +395,7 @@ color:#ff1a1a;
 margin-bottom:50px;
 
 }
+
 
 
 
@@ -412,7 +430,6 @@ color:#aaa;
 margin-bottom:35px;
 
 }
-
 
 
 
@@ -467,7 +484,7 @@ flex-direction:column;
 
 align-items:center;
 
-transition:.3s;
+transition:.35s;
 
 }
 
@@ -479,25 +496,26 @@ transform:translateY(-8px);
 
 box-shadow:
 
-0 0 30px red;
+0 0 35px red;
 
 }
 
 
 
 
-
 /* =========================
-PLAYER IMAGE
+FINAL PLAYER AVATAR
 ELITE TEAM STYLE
 ========================= */
 
 
 .player-image{
 
-width:110px;
+width:100px;
 
-height:110px;
+height:100px;
+
+aspect-ratio:1 / 1;
 
 border-radius:50%;
 
@@ -529,12 +547,11 @@ height:100% !important;
 
 object-fit:cover !important;
 
-object-position:center 35% !important;
+object-position:center center !important;
 
-transform:scale(1.05);
+transform:scale(1.12);
 
 }
-
 
 
 
@@ -566,7 +583,7 @@ font-weight:bold;
 
 
 /* =========================
-SOCIAL ICON RGB ROTATING
+SOCIAL RGB ROTATING EFFECT
 ========================= */
 
 
@@ -646,7 +663,7 @@ red
 
 animation:
 
-socialRotate 2.5s linear infinite;
+socialRGB 2.5s linear infinite;
 
 
 filter:blur(5px);
@@ -675,7 +692,9 @@ z-index:-1;
 
 
 
-@keyframes socialRotate{
+
+@keyframes socialRGB{
+
 
 0%{
 
@@ -694,12 +713,13 @@ transform:rotate(360deg);
 
 
 
+
+
 .social-links a:hover{
 
 transform:scale(1.2);
 
 }
-
 
 
 
@@ -739,7 +759,7 @@ border:1px solid cyan;
 
 
 /* =========================
-PROFILE BUTTON
+VIEW PROFILE BUTTON
 ========================= */
 
 
@@ -781,10 +801,9 @@ transform:scale(1.08);
 
 box-shadow:
 
-0 0 30px red;
+0 0 35px red;
 
 }
-
 /* =========================
 PROFILE PAGE
 ========================= */
@@ -797,6 +816,7 @@ max-width:1200px;
 margin:50px auto;
 
 padding:35px;
+
 
 background:
 
@@ -811,11 +831,13 @@ border:1px solid rgba(255,0,0,.5);
 
 border-radius:15px;
 
+
 box-shadow:
 
 0 0 40px rgba(255,0,0,.25);
 
 }
+
 
 
 
@@ -833,6 +855,7 @@ padding-bottom:25px;
 border-bottom:1px solid #3b1111;
 
 }
+
 
 
 
@@ -883,6 +906,7 @@ border:1px solid #00ff88;
 
 border-radius:12px;
 
+
 box-shadow:
 
 0 0 25px rgba(0,255,120,.4);
@@ -893,11 +917,13 @@ box-shadow:
 
 .winning-card h2{
 
-color:#00ff88;
-
 font-size:30px;
 
+color:#00ff88;
+
 }
+
+
 
 
 
@@ -935,6 +961,7 @@ overflow:hidden;
 
 
 
+
 .profile-photo{
 
 width:100%;
@@ -953,6 +980,7 @@ border-radius:15px;
 
 
 
+
 .profile-right{
 
 display:flex;
@@ -962,6 +990,8 @@ flex-direction:column;
 gap:20px;
 
 }
+
+
 
 
 
@@ -976,6 +1006,7 @@ border-radius:12px;
 padding:25px;
 
 }
+
 
 
 
@@ -1015,6 +1046,7 @@ border-bottom:1px solid #301010;
 
 
 
+
 /* =========================
 RESPONSIVE
 ========================= */
@@ -1031,6 +1063,8 @@ gap:20px;
 
 
 }
+
+
 
 
 
@@ -1069,11 +1103,13 @@ text-align:center;
 
 
 
+
 .profile-layout{
 
 grid-template-columns:1fr;
 
 }
+
 
 
 
@@ -1084,7 +1120,9 @@ font-size:35px;
 }
 
 
+
 }
+
 
 
 
@@ -1120,6 +1158,7 @@ align-items:center;
 
 
 
+
 .player-card{
 
 width:230px;
@@ -1130,9 +1169,9 @@ width:230px;
 
 .player-image{
 
-width:110px;
+width:100px;
 
-height:110px;
+height:100px;
 
 }
 
