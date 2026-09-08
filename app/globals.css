@@ -931,3 +931,160 @@ font-size:35px;
 
 
 }
+/* =================================
+ FINAL ESPORTS POLISH
+================================= */
+
+
+.esports-profile{
+
+animation:profileFade .8s ease;
+
+}
+
+
+@keyframes profileFade{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+
+
+.profile-photo{
+
+border-bottom:2px solid #ff0000;
+
+filter:
+
+drop-shadow(0 0 15px rgba(255,0,0,.6));
+
+transition:.4s;
+
+}
+
+
+
+.profile-photo:hover{
+
+transform:scale(1.03);
+
+}
+
+
+
+
+.winning-card{
+
+animation:winnerGlow 2s infinite alternate;
+
+}
+
+
+
+@keyframes winnerGlow{
+
+from{
+
+box-shadow:
+
+0 0 10px rgba(0,255,120,.3);
+
+}
+
+
+to{
+
+box-shadow:
+
+0 0 30px rgba(0,255,120,.7);
+
+}
+
+}
+
+
+
+
+.profile-table{
+
+transition:.3s;
+
+}
+
+
+
+.profile-table:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.25);
+
+}
+
+
+
+
+.profile-table tr{
+
+transition:.3s;
+
+}
+
+
+
+.profile-table tr:hover{
+
+background:#1a0000;
+
+}
+
+
+
+
+.profile-social a{
+
+animation:socialPulse 3s infinite;
+
+}
+
+
+
+@keyframes socialPulse{
+
+0%{
+
+box-shadow:0 0 5px red;
+
+}
+
+50%{
+
+box-shadow:0 0 18px red;
+
+}
+
+100%{
+
+box-shadow:0 0 5px red;
+
+}
+
+}
