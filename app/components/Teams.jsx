@@ -158,8 +158,6 @@ tiktok:""
 
 ]
 
-}
-
 ];
 return(
 
