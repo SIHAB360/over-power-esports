@@ -135,6 +135,39 @@ BANGLADESH
 
 <div>
 <div className="achievements">
+ <div className="awards">
+
+<h2>
+🏅 AWARDS
+</h2>
+
+<div className="award-card">
+
+<h3>
+ELITE PLAYER
+</h3>
+
+<p>
+Over Power Esports Official Roster
+</p>
+
+</div>
+
+
+<div className="award-card">
+
+<h3>
+TEAM WARRIOR
+</h3>
+
+<p>
+Competitive Gaming Specialist
+</p>
+
+</div>
+
+
+</div>
 
 <h2>
 🏆 ACHIEVEMENTS
