@@ -1,4 +1,4 @@
-export default function PlayerProfile({params}){
+export default async function PlayerProfile({params}){
 
 const players = {
 
