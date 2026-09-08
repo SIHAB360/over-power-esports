@@ -1449,27 +1449,27 @@ margin:auto;
 
 }
 /* =========================
-PLAYER FACE CLEAR FIX
+FACE HIGHLIGHT FIX
 ========================= */
-
 
 .player-image{
 
-width:140px;
-
-height:140px;
-
-border-radius:50%;
+width:130px;
+height:130px;
 
 overflow:hidden;
+
+border-radius:50%;
 
 border:3px solid red;
 
 background:#050505;
 
-box-shadow:
+display:flex;
 
-0 0 20px red;
+align-items:flex-start;
+
+justify-content:center;
 
 }
 
@@ -1483,9 +1483,9 @@ height:100%;
 
 object-fit:cover !important;
 
-object-position:center top !important;
+object-position:center 15% !important;
 
-transform:scale(1.15);
+transform:scale(1.08);
 
 }
 /* =========================
