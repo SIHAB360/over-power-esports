@@ -3,42 +3,65 @@ GLOBAL RESET
 ========================= */
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
+scroll-behavior:smooth;
 }
 
 
 body{
 
-  background:#050505;
+background:#050505;
 
-  color:white;
+color:white;
 
-  font-family:
-  Arial,
-  Helvetica,
-  sans-serif;
+font-family:
+Arial,
+Helvetica,
+sans-serif;
 
 }
+
 
 
 main{
 
-  min-height:100vh;
+min-height:100vh;
 
-  padding:20px;
+padding:20px;
 
-  background:
+background:
 
-  radial-gradient(
-    circle at top,
-    #650000,
-    #050505 55%
-  );
+radial-gradient(
+circle at top,
+#650000,
+#050505 55%
+);
 
 }
 
+
+
+
+img{
+
+max-width:100%;
+
+display:block;
+
+}
+
+
+
+
+a{
+
+text-decoration:none;
+
+transition:.3s;
+
+}
 
 
 
@@ -49,20 +72,19 @@ NAVBAR
 
 .navbar{
 
-  display:flex;
+display:flex;
 
-  justify-content:space-between;
+justify-content:space-between;
 
-  align-items:center;
+align-items:center;
 
-  padding:20px 50px;
+padding:20px 50px;
 
-  background:rgba(10,10,10,.85);
+background:rgba(10,10,10,.85);
 
-  border-bottom:
-  1px solid rgba(255,0,0,.4);
+border-bottom:1px solid rgba(255,0,0,.4);
 
-  backdrop-filter:blur(10px);
+backdrop-filter:blur(10px);
 
 }
 
@@ -70,9 +92,9 @@ NAVBAR
 
 .logo{
 
-  font-size:26px;
+font-size:26px;
 
-  font-weight:900;
+font-weight:900;
 
 }
 
@@ -80,11 +102,11 @@ NAVBAR
 
 .logo span{
 
-  color:#ff1a1a;
+color:#ff1a1a;
 
-  text-shadow:
+text-shadow:
 
-  0 0 15px red;
+0 0 15px red;
 
 }
 
@@ -92,9 +114,9 @@ NAVBAR
 
 .nav-links{
 
-  display:flex;
+display:flex;
 
-  gap:35px;
+gap:35px;
 
 }
 
@@ -102,13 +124,9 @@ NAVBAR
 
 .nav-links a{
 
-  color:white;
+color:white;
 
-  text-decoration:none;
-
-  font-weight:bold;
-
-  transition:.3s;
+font-weight:bold;
 
 }
 
@@ -116,9 +134,10 @@ NAVBAR
 
 .nav-links a:hover{
 
-  color:red;
+color:red;
 
 }
+
 
 
 
@@ -130,9 +149,9 @@ HERO
 
 .hero{
 
-  text-align:center;
+text-align:center;
 
-  padding:100px 20px;
+padding:60px 20px 40px;
 
 }
 
@@ -140,21 +159,21 @@ HERO
 
 .hero-logo{
 
-  width:120px;
+width:120px;
 
-  height:120px;
+height:120px;
 
-  margin:auto;
+margin:auto;
 
-  border-radius:50%;
+border-radius:50%;
 
-  overflow:hidden;
+overflow:hidden;
 
-  border:3px solid red;
+border:3px solid red;
 
-  box-shadow:
+box-shadow:
 
-  0 0 30px red;
+0 0 30px red;
 
 }
 
@@ -162,11 +181,11 @@ HERO
 
 .hero-logo img{
 
-  width:100%;
+width:100%;
 
-  height:100%;
+height:100%;
 
-  object-fit:contain;
+object-fit:contain;
 
 }
 
@@ -174,27 +193,29 @@ HERO
 
 .hero h1{
 
-  margin-top:40px;
+margin-top:25px;
 
-  font-size:65px;
+font-size:55px;
 
-  font-weight:900;
+font-weight:900;
 
-  letter-spacing:5px;
+letter-spacing:5px;
 
-  background:
 
-  linear-gradient(
-    90deg,
-    red,
-    yellow,
-    white,
-    red
-  );
+background:
 
-  -webkit-background-clip:text;
+linear-gradient(
+90deg,
+red,
+yellow,
+white,
+red
+);
 
-  -webkit-text-fill-color:transparent;
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
 
 }
 
@@ -202,17 +223,49 @@ HERO
 
 .hero p{
 
-  margin-top:20px;
+margin-top:15px;
 
-  font-size:25px;
+font-size:22px;
 
-  color:#ddd;
+color:#ddd;
 
 }
 
 
 
+button{
 
+margin-top:25px;
+
+padding:12px 35px;
+
+border:none;
+
+border-radius:30px;
+
+background:#ff2020;
+
+color:white;
+
+font-weight:bold;
+
+cursor:pointer;
+
+box-shadow:
+
+0 0 20px red;
+
+transition:.3s;
+
+}
+
+
+
+button:hover{
+
+transform:scale(1.08);
+
+}
 /* =========================
 TEAM SECTION
 ========================= */
@@ -220,9 +273,9 @@ TEAM SECTION
 
 .teams{
 
-  padding:80px 20px;
+padding:60px 20px;
 
-  text-align:center;
+text-align:center;
 
 }
 
@@ -230,11 +283,11 @@ TEAM SECTION
 
 .teams h2{
 
-  font-size:40px;
+font-size:40px;
 
-  color:#ff1a1a;
+color:#ff1a1a;
 
-  margin-bottom:50px;
+margin-bottom:50px;
 
 }
 
@@ -242,7 +295,7 @@ TEAM SECTION
 
 .team-block{
 
-  margin-bottom:70px;
+margin-bottom:70px;
 
 }
 
@@ -250,15 +303,15 @@ TEAM SECTION
 
 .team-block h3{
 
-  font-size:32px;
+font-size:32px;
 
-  color:#ff2020;
+color:#ff2020;
 
-  margin-bottom:10px;
+margin-bottom:10px;
 
-  text-shadow:
+text-shadow:
 
-  0 0 15px red;
+0 0 15px red;
 
 }
 
@@ -266,26 +319,33 @@ TEAM SECTION
 
 .team-block p{
 
-  color:#aaa;
+color:#aaa;
 
-  margin-bottom:35px;
+margin-bottom:30px;
 
 }
 
 
+
+
+
+/* =========================
+PLAYER GRID
+========================= */
 
 
 .team-players{
 
-  display:flex;
+display:grid;
 
-  justify-content:center;
+grid-template-columns:repeat(5,230px);
 
-  gap:25px;
+justify-content:center;
 
-  flex-wrap:wrap;
+gap:25px;
 
 }
+
 
 
 
@@ -297,29 +357,27 @@ PLAYER CARD
 
 .player-card{
 
-  width:230px;
+width:230px;
 
-  min-height:330px;
+height:330px;
 
-  padding:25px;
+padding:25px;
 
-  background:#111;
+background:#111;
 
-  border:
+border:1px solid red;
 
-  1px solid red;
+border-radius:20px;
 
-  border-radius:20px;
+text-align:center;
 
-  text-align:center;
+display:flex;
 
-  display:flex;
+flex-direction:column;
 
-  flex-direction:column;
+align-items:center;
 
-  align-items:center;
-
-  transition:.3s;
+transition:.3s;
 
 }
 
@@ -327,39 +385,47 @@ PLAYER CARD
 
 .player-card:hover{
 
-  transform:translateY(-8px);
+transform:translateY(-8px);
 
-  box-shadow:
+box-shadow:
 
-  0 0 30px red;
+0 0 30px red;
 
 }
 
 
 
+
+
+/* =========================
+PLAYER IMAGE
+ELITE STYLE
+========================= */
+
+
 .player-image{
 
-  width:120px;
+width:100px;
 
-  height:120px;
+height:100px;
 
-  border-radius:50%;
+border-radius:50%;
 
-  overflow:hidden;
+overflow:hidden;
 
-  background:#050505;
+background:#050505;
 
-  border:3px solid red;
+border:3px solid red;
 
-  display:flex;
+display:flex;
 
-  justify-content:center;
+align-items:center;
 
-  align-items:center;
+justify-content:center;
 
-  box-shadow:
+box-shadow:
 
-  0 0 15px red;
+0 0 15px red;
 
 }
 
@@ -367,21 +433,27 @@ PLAYER CARD
 
 .player-image img{
 
-  width:100%;
+width:100%;
 
-  height:100%;
+height:100%;
 
-  object-fit:contain;
+object-fit:cover;
+
+object-position:center top;
+
+transform:scale(1.05);
 
 }
 
 
 
+
+
 .player-card h4{
 
-  margin-top:18px;
+margin-top:18px;
 
-  font-size:22px;
+font-size:20px;
 
 }
 
@@ -389,17 +461,22 @@ PLAYER CARD
 
 .player-card span{
 
-  margin-top:5px;
+margin-top:5px;
 
-  color:red;
+font-size:13px;
 
-  font-weight:bold;
+color:red;
 
-  font-size:13px;
+font-weight:bold;
 
 }
+
+
+
+
+
 /* =========================
-SOCIAL ICON RGB GLOW
+SOCIAL ICON RGB EFFECT
 ========================= */
 
 
@@ -411,9 +488,9 @@ justify-content:center;
 
 align-items:center;
 
-gap:14px;
+gap:12px;
 
-margin-top:20px;
+margin-top:18px;
 
 }
 
@@ -421,9 +498,9 @@ margin-top:20px;
 
 .social-links a{
 
-width:40px;
+width:38px;
 
-height:40px;
+height:38px;
 
 border-radius:50%;
 
@@ -437,13 +514,9 @@ background:#050505;
 
 color:white;
 
-font-size:18px;
-
-text-decoration:none;
+font-size:17px;
 
 position:relative;
-
-transition:.3s;
 
 }
 
@@ -455,10 +528,9 @@ content:"";
 
 position:absolute;
 
-inset:-6px;
+inset:-5px;
 
 border-radius:50%;
-
 
 background:
 
@@ -472,15 +544,9 @@ yellow,
 red
 );
 
-
-background-size:400% 400%;
-
-
-filter:blur(8px);
-
+filter:blur(7px);
 
 z-index:-1;
-
 
 animation:
 
@@ -490,12 +556,23 @@ rgbSocial 3s linear infinite;
 
 
 
-.social-links a:hover{
+@keyframes rgbSocial{
 
-transform:scale(1.25);
+0%{
+
+filter:blur(7px)
+hue-rotate(0deg);
 
 }
 
+100%{
+
+filter:blur(7px)
+hue-rotate(360deg);
+
+}
+
+}
 
 
 
@@ -531,1584 +608,12 @@ border:2px solid cyan;
 
 
 
-@keyframes rgbSocial{
-
-
-0%{
-
-background-position:0% 50%;
-
-}
-
-
-50%{
-
-background-position:100% 50%;
-
-}
-
-
-100%{
-
-background-position:0% 50%;
-
-}
-
-}
-
-
-
 
 
 /* =========================
-PROFILE PAGE
+PROFILE BUTTON
 ========================= */
 
-
-.esports-profile{
-
-max-width:1100px;
-
-margin:50px auto;
-
-padding:25px;
-
-background:
-
-linear-gradient(
-145deg,
-#150000,
-#050505
-);
-
-
-border:1px solid rgba(255,0,0,.5);
-
-border-radius:15px;
-
-
-box-shadow:
-
-0 0 40px rgba(255,0,0,.25);
-
-}
-
-
-
-
-.profile-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding-bottom:25px;
-
-border-bottom:1px solid #3b1111;
-
-}
-
-
-
-.player-heading h1{
-
-font-size:50px;
-
-color:#ff2020;
-
-font-weight:900;
-
-letter-spacing:3px;
-
-}
-
-
-
-.player-heading h3{
-
-margin-top:10px;
-
-color:#ffcc00;
-
-}
-
-
-
-.player-heading p{
-
-margin-top:15px;
-
-color:#aaa;
-
-}
-
-
-
-
-
-.winning-card{
-
-width:190px;
-
-padding:20px;
-
-background:#06150d;
-
-border:1px solid #00ff88;
-
-border-radius:12px;
-
-text-align:center;
-
-box-shadow:
-
-0 0 25px rgba(0,255,120,.4);
-
-}
-
-
-
-.winning-card h2{
-
-color:#00ff88;
-
-font-size:32px;
-
-}
-
-
-
-
-.profile-layout{
-
-display:grid;
-
-grid-template-columns:300px 1fr;
-
-gap:20px;
-
-margin-top:25px;
-
-}
-
-
-
-
-.profile-left{
-
-background:#100404;
-
-border:1px solid #4a1111;
-
-border-radius:12px;
-
-overflow:hidden;
-
-}
-
-
-
-.profile-photo{
-
-width:100%;
-
-height:330px;
-
-object-fit:contain;
-
-background:#050505;
-
-border:3px solid red;
-
-border-radius:15px;
-
-box-shadow:
-
-0 0 20px red,
-
-0 0 40px purple;
-
-}
-
-
-
-
-.profile-row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:12px 15px;
-
-border-bottom:1px solid #251010;
-
-font-size:12px;
-
-}
-
-
-
-.profile-row span{
-
-color:#888;
-
-}
-
-
-
-
-.profile-right{
-
-display:flex;
-
-flex-direction:column;
-
-gap:20px;
-
-}
-
-
-
-.profile-table{
-
-background:#100404;
-
-border:1px solid #4a1111;
-
-border-radius:12px;
-
-padding:20px;
-
-}
-
-
-
-.profile-table table{
-
-width:100%;
-
-border-collapse:collapse;
-
-}
-
-
-
-.profile-table th{
-
-padding:12px;
-
-text-align:left;
-
-color:#ff3333;
-
-border-bottom:1px solid #550000;
-
-}
-
-
-
-.profile-table td{
-
-padding:15px 12px;
-
-color:#ddd;
-
-border-bottom:1px solid #301010;
-
-}
-
-
-
-.profile-table td:last-child{
-
-color:#00ff88;
-
-font-weight:bold;
-
-}
-
-
-
-
-/* =========================
-LOADING
-========================= */
-
-
-.profile-loading{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.96);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-z-index:9999;
-
-}
-
-
-
-.loader-circle{
-
-width:120px;
-
-height:120px;
-
-border-radius:50%;
-
-border:5px solid #222;
-
-border-top-color:red;
-
-animation:rotateLoader 1s linear infinite;
-
-box-shadow:
-
-0 0 25px red,
-
-0 0 60px purple;
-
-}
-
-
-
-@keyframes rotateLoader{
-
-from{
-
-transform:rotate(0deg);
-
-}
-
-to{
-
-transform:rotate(360deg);
-
-}
-
-}
-/* =========================
-CONTACT SECTION
-========================= */
-
-
-.contact{
-
-max-width:700px;
-
-margin:80px auto;
-
-padding:40px;
-
-background:#111;
-
-border-radius:20px;
-
-text-align:center;
-
-border:1px solid #333;
-
-}
-
-
-
-.contact h2{
-
-color:red;
-
-font-size:35px;
-
-}
-
-
-
-
-
-/* =========================
-BUTTON STYLE
-========================= */
-
-
-.player-card button,
-.profile-btn{
-
-margin-top:22px;
-
-padding:12px 35px;
-
-border:none;
-
-border-radius:30px;
-
-background:#ff2020;
-
-color:white;
-
-font-size:13px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-box-shadow:
-
-0 0 20px red;
-
-transition:.3s;
-
-}
-
-
-
-.player-card button:hover,
-.profile-btn:hover{
-
-transform:scale(1.1);
-
-box-shadow:
-
-0 0 35px red;
-
-}
-
-
-
-
-
-/* =========================
-DESKTOP CARD ALIGNMENT
-========================= */
-
-
-.player-card{
-
-justify-content:flex-start;
-
-}
-
-
-
-.team-players{
-
-align-items:stretch;
-
-}
-
-
-
-.player-card{
-
-height:330px;
-
-}
-
-
-
-
-
-/* =========================
-MOBILE RESPONSIVE
-========================= */
-
-
-@media(max-width:800px){
-
-
-
-.navbar{
-
-flex-direction:column;
-
-gap:20px;
-
-padding:20px;
-
-}
-
-
-
-.nav-links{
-
-flex-wrap:wrap;
-
-justify-content:center;
-
-gap:15px;
-
-}
-
-
-
-.hero{
-
-padding:60px 15px;
-
-}
-
-
-
-.hero h1{
-
-font-size:38px;
-
-}
-
-
-
-.hero p{
-
-font-size:18px;
-
-}
-
-
-
-.teams{
-
-padding:50px 15px;
-
-}
-
-
-
-.teams h2{
-
-font-size:32px;
-
-}
-
-
-
-.team-block h3{
-
-font-size:25px;
-
-}
-
-
-
-.team-players{
-
-gap:20px;
-
-}
-
-
-
-.player-card{
-
-width:90%;
-
-height:auto;
-
-min-height:320px;
-
-}
-
-
-
-.profile-header{
-
-flex-direction:column;
-
-gap:20px;
-
-text-align:center;
-
-}
-
-
-
-.player-heading h1{
-
-font-size:35px;
-
-}
-
-
-
-.profile-layout{
-
-grid-template-columns:1fr;
-
-}
-
-
-
-.profile-photo{
-
-height:280px;
-
-}
-
-
-
-.winning-card{
-
-width:100%;
-
-}
-
-
-
-.profile-table{
-
-overflow-x:auto;
-
-}
-
-
-
-.social-links{
-
-gap:10px;
-
-}
-
-
-
-}
-
-
-
-
-
-/* =========================
-SMOOTH EFFECT
-========================= */
-
-
-*{
-
-scroll-behavior:smooth;
-
-}
-
-
-
-img{
-
-max-width:100%;
-
-}
-
-
-
-a{
-
-transition:.3s;
-
-}
-/* =========================
-FINAL SIZE ADJUSTMENT
-========================= */
-
-
-.hero{
-
-padding:60px 20px 120px;
-
-}
-
-
-
-.hero-logo{
-
-width:140px;
-
-height:140px;
-
-}
-
-
-
-.hero h1{
-
-font-size:55px;
-
-}
-
-
-
-.teams{
-
-padding-top:20px;
-
-}
-
-
-
-.team-block{
-
-margin-bottom:80px;
-
-}
-
-
-
-.team-block h3{
-
-font-size:35px;
-
-}
-
-
-
-.player-card{
-
-width:260px;
-
-min-height:380px;
-
-padding:35px;
-
-}
-
-
-
-.player-image{
-
-width:140px;
-
-height:140px;
-
-}
-
-
-
-.player-card h4{
-
-font-size:24px;
-
-}
-
-
-
-.social-links a{
-
-width:42px;
-
-height:42px;
-
-font-size:19px;
-
-}
-
-
-
-.player-card button,
-.profile-btn{
-
-width:130px;
-
-height:40px;
-
-}
-
-
-
-@media(max-width:800px){
-
-.player-card{
-
-width:90%;
-
-}
-
-.hero h1{
-
-font-size:38px;
-
-}
-
-}
-/* =========================
-FINAL TEAM GRID FIX
-========================= */
-
-
-.team-players{
-
-display:grid;
-
-grid-template-columns:repeat(5, 1fr);
-
-gap:20px;
-
-justify-content:center;
-
-align-items:start;
-
-}
-
-
-
-.player-card{
-
-width:100%;
-
-max-width:230px;
-
-height:330px;
-
-padding:25px;
-
-}
-
-
-
-.player-image{
-
-width:120px;
-
-height:120px;
-
-}
-
-
-
-.team-block{
-
-margin-bottom:60px;
-
-}
-
-
-
-.team-block h3{
-
-font-size:30px;
-
-margin-bottom:8px;
-
-}
-
-
-
-.team-block p{
-
-margin-bottom:25px;
-
-}
-
-
-
-
-/* keep all cards same row */
-
-@media(max-width:1200px){
-
-.team-players{
-
-grid-template-columns:repeat(4,1fr);
-
-}
-
-}
-
-
-
-@media(max-width:900px){
-
-.team-players{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-
-
-@media(max-width:600px){
-
-.team-players{
-
-grid-template-columns:1fr;
-
-}
-
-
-.player-card{
-
-max-width:280px;
-
-margin:auto;
-
-}
-
-}
-/* =========================
-FACE HIGHLIGHT FIX
-========================= */
-
-.player-image{
-
-width:130px;
-height:130px;
-
-overflow:hidden;
-
-border-radius:50%;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:flex-start;
-
-justify-content:center;
-
-}
-
-
-
-.player-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover !important;
-
-object-position:center 15% !important;
-
-transform:scale(1.08);
-
-}
-/* =========================
-PLAYER FACE PERFECT FIX
-========================= */
-
-.player-image{
-
-width:140px;
-
-height:140px;
-
-overflow:hidden;
-
-border-radius:50%;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
-
-.player-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:contain !important;
-
-object-position:center center !important;
-
-transform:none !important;
-
-}
-/* =========================
-PLAYER FACE BALANCE FIX
-========================= */
-
-.player-image{
-
-width:130px;
-height:130px;
-
-border-radius:50%;
-
-overflow:hidden;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:flex-start;
-
-justify-content:center;
-
-}
-
-
-
-.player-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-object-position:center top;
-
-transform:scale(1);
-
-}
-/* =========================
-FINAL HERO SPACING FIX
-========================= */
-
-
-.hero{
-
-padding:60px 20px 40px;
-
-}
-
-
-.hero-logo{
-
-width:120px;
-
-height:120px;
-
-}
-
-
-
-.hero h1{
-
-margin-top:25px;
-
-font-size:55px;
-
-}
-
-
-
-.hero p{
-
-margin-top:15px;
-
-}
-
-
-
-.teams{
-
-padding-top:30px;
-
-}
-
-
-
-/* LEFT CONTENT FIX */
-
-.home-content,
-.home-info,
-.hero-content{
-
-max-width:900px;
-
-margin:auto;
-
-}
-
-
-
-/* remove unwanted huge gaps */
-
-section{
-
-overflow:hidden;
-
-}
-/* =========================
-PROFILE BUTTON PREMIUM
-========================= */
-
-
-.profile-btn{
-
-margin-top:20px;
-
-width:130px;
-
-height:40px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-background:
-
-linear-gradient(
-90deg,
-#ff0000,
-#ff3030
-);
-
-
-border-radius:30px;
-
-
-color:white;
-
-font-size:12px;
-
-font-weight:900;
-
-
-text-decoration:none;
-
-
-letter-spacing:1px;
-
-
-box-shadow:
-
-0 0 15px red;
-
-
-transition:.3s;
-
-}
-
-
-
-.profile-btn:hover{
-
-transform:translateY(-3px) scale(1.05);
-
-
-box-shadow:
-
-0 0 35px red;
-
-}
-/* =========================
-PLAYER PROFILE FINAL POLISH
-========================= */
-
-
-.esports-profile{
-
-max-width:1200px;
-
-padding:35px;
-
-margin:50px auto;
-
-}
-
-
-
-.profile-layout{
-
-grid-template-columns:320px 1fr;
-
-gap:25px;
-
-}
-
-
-
-.profile-left{
-
-min-height:550px;
-
-}
-
-
-
-.profile-photo{
-
-height:360px;
-
-object-fit:cover;
-
-object-position:center top;
-
-}
-
-
-
-.profile-left h3{
-
-font-size:18px;
-
-color:#ff3333;
-
-padding:15px 20px;
-
-}
-
-
-
-.profile-row{
-
-padding:14px 20px;
-
-font-size:13px;
-
-}
-
-
-
-.profile-row span{
-
-color:#888;
-
-}
-
-
-
-.team-history{
-
-padding:20px;
-
-font-size:14px;
-
-color:white;
-
-}
-
-
-
-.profile-social,
-.social-links{
-
-padding:20px;
-
-display:flex;
-
-gap:15px;
-
-}
-
-
-
-.profile-social a,
-.social-links a{
-
-width:40px;
-
-height:40px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-border:1px solid red;
-
-background:#080808;
-
-color:white;
-
-font-size:18px;
-
-}
-
-
-
-.profile-social a:hover,
-.social-links a:hover{
-
-background:red;
-
-box-shadow:
-
-0 0 25px red;
-
-}
-
-
-
-/* RIGHT TABLE */
-
-.profile-table{
-
-padding:25px;
-
-}
-
-
-
-.profile-table h2{
-
-font-size:22px;
-
-margin-bottom:20px;
-
-}
-
-
-
-.profile-table td,
-.profile-table th{
-
-padding:16px;
-
-}
-
-
-
-
-
-@media(max-width:800px){
-
-
-.profile-layout{
-
-grid-template-columns:1fr;
-
-}
-
-
-.profile-photo{
-
-height:360px;
-
-object-fit:cover;
-
-object-position:center top;
-
-}
-}
-/* =========================
-PLAYER IMAGE FINAL CIRCLE
-========================= */
-
-.player-image{
-
-width:90px;
-height:90px;
-
-margin:auto;
-
-border-radius:50%;
-
-overflow:hidden;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-box-shadow:
-0 0 15px red;
-
-}
-
-
-
-.player-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
-
-object-position:center top;
-
-transform:scale(1.05);
-
-}
-/* =========================
-FINAL TEAM CARD DESIGN FIX
-========================= */
-
-
-.team-players{
-
-display:grid;
-
-grid-template-columns:repeat(5, 230px);
-
-justify-content:center;
-
-gap:25px;
-
-align-items:start;
-
-}
-
-
-
-/* CARD */
-
-.player-card{
-
-width:230px;
-
-height:330px;
-
-padding:25px;
-
-background:#111;
-
-border:1px solid red;
-
-border-radius:18px;
-
-text-align:center;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:flex-start;
-
-}
-
-
-
-/* SAME CIRCLE SIZE BOTH TEAM */
-
-.player-image{
-
-width:100px;
-
-height:100px;
-
-border-radius:50%;
-
-overflow:hidden;
-
-border:3px solid red;
-
-background:#050505;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-box-shadow:
-
-0 0 15px red;
-
-}
-
-
-
-/* FACE FIT */
-
-.player-image img{
-
-width:100%;
-
-height:100%;
-
-object-fit:cover !important;
-
-object-position:center top !important;
-
-transform:scale(1.05);
-
-}
-
-
-
-/* NAME */
-
-.player-card h4{
-
-margin-top:18px;
-
-font-size:20px;
-
-}
-
-
-
-/* ROLE */
-
-.player-card span{
-
-margin-top:5px;
-
-font-size:12px;
-
-color:red;
-
-font-weight:bold;
-
-}
-
-
-
-/* SOCIAL */
-
-.social-links{
-
-margin-top:18px;
-
-display:flex;
-
-justify-content:center;
-
-gap:12px;
-
-}
-
-
-
-.social-links a{
-
-width:36px;
-
-height:36px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:#050505;
-
-color:white;
-
-font-size:16px;
-
-}
-
-
-
-/* BUTTON */
 
 .profile-btn{
 
@@ -2134,15 +639,169 @@ font-size:12px;
 
 font-weight:900;
 
-text-decoration:none;
+box-shadow:
 
-box-shadow:0 0 15px red;
+0 0 15px red;
 
 }
 
 
 
-/* RESPONSIVE */
+.profile-btn:hover{
+
+transform:scale(1.08);
+
+box-shadow:
+
+0 0 35px red;
+
+}
+
+
+
+
+
+/* =========================
+PROFILE PAGE
+========================= */
+
+
+.esports-profile{
+
+max-width:1200px;
+
+margin:50px auto;
+
+padding:35px;
+
+background:
+
+linear-gradient(
+145deg,
+#150000,
+#050505
+);
+
+border:1px solid rgba(255,0,0,.5);
+
+border-radius:15px;
+
+}
+
+
+
+.profile-layout{
+
+display:grid;
+
+grid-template-columns:320px 1fr;
+
+gap:25px;
+
+margin-top:25px;
+
+}
+
+
+
+.profile-left{
+
+background:#100404;
+
+border:1px solid #4a1111;
+
+border-radius:12px;
+
+overflow:hidden;
+
+}
+
+
+
+.profile-photo{
+
+width:100%;
+
+height:360px;
+
+object-fit:contain;
+
+background:#050505;
+
+border:3px solid red;
+
+border-radius:15px;
+
+}
+
+
+
+.profile-right{
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+
+
+.profile-table{
+
+background:#100404;
+
+border:1px solid #4a1111;
+
+border-radius:12px;
+
+padding:25px;
+
+}
+
+
+
+.profile-table table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+
+.profile-table th{
+
+padding:12px;
+
+color:red;
+
+text-align:left;
+
+}
+
+
+
+.profile-table td{
+
+padding:15px;
+
+color:#ddd;
+
+border-bottom:1px solid #301010;
+
+}
+
+
+
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
 
 @media(max-width:1200px){
 
@@ -2155,6 +814,7 @@ grid-template-columns:repeat(4,230px);
 }
 
 
+
 @media(max-width:900px){
 
 .team-players{
@@ -2163,10 +823,37 @@ grid-template-columns:repeat(2,230px);
 
 }
 
+
+.profile-layout{
+
+grid-template-columns:1fr;
+
+}
+
 }
 
 
+
 @media(max-width:600px){
+
+
+.navbar{
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+
+
+.hero h1{
+
+font-size:38px;
+
+}
+
+
 
 .team-players{
 
@@ -2175,9 +862,18 @@ grid-template-columns:1fr;
 }
 
 
+
 .player-card{
 
 margin:auto;
+
+}
+
+
+
+.profile-photo{
+
+height:300px;
 
 }
 
