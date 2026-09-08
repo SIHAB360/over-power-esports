@@ -6,7 +6,7 @@ import {
 } from "react-icons/fa";
 
 
-export default function Teams(){
+export default function Teams() {
 
 const teams = [
 
@@ -155,11 +155,17 @@ youtube:"",
 tiktok:""
 }
 }
+
+]
+
+}
+
 ];
-return(
+
+
+return (
 
 <section className="teams">
-
 
 <h2>
 OUR TEAMS
@@ -170,7 +176,6 @@ OUR TEAMS
 teams.map((team,index)=>(
 
 <div className="team-block" key={index}>
-
 
 <h3>
 {team.name}
@@ -188,7 +193,6 @@ teams.map((team,index)=>(
 {
 team.players.map((player,i)=>(
 
-
 <div className="player-card" key={i}>
 
 
@@ -205,7 +209,6 @@ objectPosition: player.position || "center"
 </div>
 
 
-
 <h4>
 {player.name}
 </h4>
@@ -214,7 +217,6 @@ objectPosition: player.position || "center"
 <span>
 {player.role}
 </span>
-
 
 
 <div className="social-links">
@@ -231,9 +233,7 @@ className="facebook"
 >
 <FaFacebookF/>
 </a>
-
 }
-
 
 
 {
@@ -247,9 +247,7 @@ className="instagram"
 >
 <FaInstagram/>
 </a>
-
 }
-
 
 
 {
@@ -263,9 +261,7 @@ className="youtube"
 >
 <FaYoutube/>
 </a>
-
 }
-
 
 
 {
@@ -279,12 +275,10 @@ className="tiktok"
 >
 <FaTiktok/>
 </a>
-
 }
 
 
 </div>
-
 
 
 <a
@@ -297,14 +291,12 @@ VIEW PROFILE
 
 </div>
 
-
 ))
 
 }
 
 
 </div>
-
 
 </div>
 
@@ -315,6 +307,6 @@ VIEW PROFILE
 
 </section>
 
-)
+);
 
 }
