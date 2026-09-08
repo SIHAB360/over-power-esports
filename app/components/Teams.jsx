@@ -104,7 +104,7 @@ instagram:"",
 youtube:"",
 tiktok:""
 }
-}
+},
 
 {
 name:"JELLAL",
@@ -117,7 +117,7 @@ instagram:"",
 youtube:"",
 tiktok:""
 }
-}
+},
 
 {
 name:"SOJIB",
@@ -130,7 +130,7 @@ instagram:"",
 youtube:"",
 tiktok:""
 }
-}
+},
 
 {
 name:"NAFIZ",
@@ -143,7 +143,7 @@ instagram:"",
 youtube:"",
 tiktok:""
 }
-}
+},
 
 {
 name:"BAYMAX",
@@ -159,8 +159,8 @@ tiktok:""
 }
 
 ]
-},
-  
+
+}
 
 return(
 
