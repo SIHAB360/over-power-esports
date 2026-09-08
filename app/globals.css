@@ -228,121 +228,179 @@ color:#ddd;
 
 
 /* =========================
-PREMIUM JOIN TEAM BUTTON
+FINAL FIX UPDATE
 ========================= */
+
+
+/* HERO BUTTON FIX */
 
 .hero button{
 
-margin-top:25px;
+width:auto;
 
-padding:14px 45px;
+min-width:150px;
 
-border-radius:40px;
+height:48px;
 
-border:1px solid rgba(255,255,255,.3);
+padding:0 45px;
 
-background:
+font-size:15px;
 
-linear-gradient(
-135deg,
-#ff0000,
-#ff4d4d,
-#990000
-);
+}
 
-color:white;
 
-font-size:16px;
 
-font-weight:900;
+/* =========================
+PLAYER IMAGE FINAL
+ELITE TEAM STYLE
+========================= */
 
-letter-spacing:1px;
 
-text-transform:uppercase;
+.player-image{
 
-cursor:pointer;
+width:110px;
 
-position:relative;
+height:110px;
+
+border-radius:50%;
 
 overflow:hidden;
 
-box-shadow:
+background:#050505;
 
-0 0 15px red,
-0 0 40px rgba(255,0,0,.6);
+border:3px solid red;
 
-transition:.4s;
+display:flex;
 
-}
+align-items:center;
 
-
-
-.hero button::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-
-left:-100%;
-
-width:60%;
-
-height:100%;
-
-background:
-
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.8),
-transparent
-);
-
-transform:skewX(-25deg);
-
-animation:
-
-buttonShine 3s infinite;
-
-}
-
-
-
-@keyframes buttonShine{
-
-0%{
-
-left:-100%;
-
-}
-
-50%{
-
-left:150%;
-
-}
-
-100%{
-
-left:150%;
-
-}
-
-}
-
-
-
-.hero button:hover{
-
-transform:translateY(-5px) scale(1.08);
+justify-content:center;
 
 box-shadow:
+0 0 20px red;
 
-0 0 25px red,
-0 0 70px red;
+}
 
+
+
+.player-image img{
+
+width:100% !important;
+
+height:100% !important;
+
+object-fit:cover !important;
+
+object-position:center 35% !important;
+
+transform:scale(1.05);
+
+}
+
+
+
+
+
+/* =========================
+SOCIAL RGB PREMIUM
+========================= */
+
+
+.social-links a{
+
+overflow:visible;
+
+}
+
+
+
+.social-links a::before{
+
+inset:-4px;
+
+filter:blur(4px);
+
+animation:socialRotate 2.5s linear infinite;
+
+}
+
+
+
+.social-links a:hover{
+
+transform:translateY(-4px) scale(1.15);
+
+}
+
+
+
+
+
+/* =========================
+CARD ALIGNMENT FIX
+========================= */
+
+
+.player-card{
+
+justify-content:flex-start;
+
+}
+
+
+
+.profile-btn{
+
+margin-top:auto;
+
+}
+
+
+
+
+
+/* =========================
+MOBILE FIX
+========================= */
+
+
+@media(max-width:600px){
+
+.hero h1{
+
+font-size:34px;
+
+letter-spacing:2px;
+
+}
+
+
+
+.hero p{
+
+font-size:18px;
+
+}
+
+
+
+.player-card{
+
+width:230px;
+
+}
+
+
+
+.player-image{
+
+width:105px;
+
+height:105px;
+
+}
+
+}
 }
 /* =========================
 TEAM SECTION
