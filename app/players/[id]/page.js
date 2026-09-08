@@ -108,6 +108,29 @@ alt={player.name}
 <h4>
 {player.team}
 </h4>
+ <div className="stats-panel">
+
+<div className="stat-box">
+<h2>25+</h2>
+<p>MATCHES</p>
+</div>
+
+<div className="stat-box">
+<h2>12</h2>
+<p>WINS</p>
+</div>
+
+<div className="stat-box">
+<h2>5</h2>
+<p>MVP</p>
+</div>
+
+<div className="stat-box">
+<h2>#01</h2>
+<p>RANK</p>
+</div>
+
+</div>
 <div className="player-info">
 
 <p>
