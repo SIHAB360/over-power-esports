@@ -134,7 +134,29 @@ BANGLADESH
 
 
 <div>
+<div className="achievements">
 
+<h2>
+🏆 ACHIEVEMENTS
+</h2>
+
+<ul>
+
+<li>
+Over Power Esports Main Team Player
+</li>
+
+<li>
+Competitive Tournament Participant
+</li>
+
+<li>
+Professional Free Fire Player
+</li>
+
+</ul>
+
+</div>
 
 {player.facebook &&
 <a href={player.facebook} target="_blank">
