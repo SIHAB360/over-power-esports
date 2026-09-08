@@ -1888,8 +1888,11 @@ grid-template-columns:1fr;
 
 .profile-photo{
 
-height:300px;
+height:360px;
+
+object-fit:cover;
+
+object-position:center top;
 
 }
-
 }
