@@ -1088,3 +1088,183 @@ box-shadow:0 0 5px red;
 }
 
 }
+/* ===============================
+   FINAL PLAYER PROFILE POLISH
+================================ */
+
+
+.player-heading h1{
+
+font-size:50px;
+
+color:#ff2020;
+
+letter-spacing:3px;
+
+}
+
+
+
+.player-heading h3{
+
+margin-top:10px;
+
+color:#ffcc00;
+
+font-size:22px;
+
+}
+
+
+
+.player-heading h4{
+
+margin-top:10px;
+
+color:#fff;
+
+font-size:16px;
+
+}
+
+
+
+
+.profile-table th{
+
+text-align:left;
+
+padding:12px;
+
+font-size:12px;
+
+color:#ff3333;
+
+border-bottom:1px solid #550000;
+
+letter-spacing:1px;
+
+}
+
+
+
+.profile-table td{
+
+padding:15px 12px;
+
+}
+
+
+
+.profile-table tr{
+
+transition:.3s;
+
+}
+
+
+
+.profile-table tr:hover{
+
+background:#1a0000;
+
+}
+
+
+
+.profile-photo{
+
+filter:
+
+drop-shadow(0 0 20px rgba(255,0,0,.6));
+
+transition:.4s;
+
+}
+
+
+
+.profile-photo:hover{
+
+transform:scale(1.03);
+
+}
+
+
+
+.profile-left,
+.profile-table{
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.15);
+
+}
+
+
+
+.winning-card h2{
+
+font-size:32px;
+
+font-weight:900;
+
+}
+
+
+
+.winning-card{
+
+animation:
+
+winningGlow 2s infinite alternate;
+
+}
+
+
+
+@keyframes winningGlow{
+
+
+from{
+
+box-shadow:
+
+0 0 10px rgba(0,255,120,.3);
+
+}
+
+
+to{
+
+box-shadow:
+
+0 0 30px rgba(0,255,120,.8);
+
+}
+
+
+}
+
+
+
+/* MOBILE FIX */
+
+
+@media(max-width:800px){
+
+.player-heading h1{
+
+font-size:35px;
+
+}
+
+
+.profile-photo{
+
+height:280px;
+
+}
+
+
+}
