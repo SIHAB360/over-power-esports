@@ -1209,3 +1209,126 @@ a{
 transition:.3s;
 
 }
+/* =========================
+FINAL SIZE ADJUSTMENT
+========================= */
+
+
+.hero{
+
+padding:60px 20px 120px;
+
+}
+
+
+
+.hero-logo{
+
+width:140px;
+
+height:140px;
+
+}
+
+
+
+.hero h1{
+
+font-size:55px;
+
+}
+
+
+
+.teams{
+
+padding-top:20px;
+
+}
+
+
+
+.team-block{
+
+margin-bottom:80px;
+
+}
+
+
+
+.team-block h3{
+
+font-size:35px;
+
+}
+
+
+
+.player-card{
+
+width:260px;
+
+min-height:380px;
+
+padding:35px;
+
+}
+
+
+
+.player-image{
+
+width:140px;
+
+height:140px;
+
+}
+
+
+
+.player-card h4{
+
+font-size:24px;
+
+}
+
+
+
+.social-links a{
+
+width:42px;
+
+height:42px;
+
+font-size:19px;
+
+}
+
+
+
+.player-card button,
+.profile-btn{
+
+width:130px;
+
+height:40px;
+
+}
+
+
+
+@media(max-width:800px){
+
+.player-card{
+
+width:90%;
+
+}
+
+.hero h1{
+
+font-size:38px;
+
+}
+
+}
