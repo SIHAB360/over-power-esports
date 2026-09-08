@@ -105,7 +105,9 @@ return(
 <h3>
 {player.role}
 </h3>
-
+<h4>
+{player.team}
+</h4>
 
 <p>
 Professional Free Fire esports player of Over Power Esports.
@@ -293,7 +295,18 @@ Over Power Main Team
 🏆 ACHIEVEMENTS
 </h2>
 
+<thead>
 
+<tr>
+
+<th>DATE</th>
+<th>TIER</th>
+<th>TOURNAMENT</th>
+<th>PRIZE</th>
+
+</tr>
+
+</thead>
 
 <table>
 
@@ -374,7 +387,17 @@ PRIZE
 🏅 AWARDS
 </h2>
 
+<thead>
 
+<tr>
+
+<th>DATE</th>
+<th>AWARD</th>
+<th>ORGANIZATION</th>
+
+</tr>
+
+</thead>
 
 <table>
 
