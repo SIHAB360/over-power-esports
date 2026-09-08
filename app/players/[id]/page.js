@@ -1,11 +1,101 @@
+export default async function PlayerProfile({params}){
+
+
+const players = {
+
+
+appelo:{
+name:"APPELO",
+role:"PRIMARY",
+team:"OVER POWER MAIN TEAM",
+image:"/players/appelo.png",
+winnings:"$16,015",
+facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+instagram:"https://www.instagram.com/_appelo_ff",
+youtube:"https://youtube.com/@appelo_ff",
+tiktok:"https://www.tiktok.com/@appelo_offical"
+},
+
+
+oggy:{
+name:"OGGY",
+role:"SECONDARY",
+team:"OVER POWER MAIN TEAM",
+image:"/players/oggy.png",
+winnings:"$12,500",
+facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
+instagram:"https://www.instagram.com/being_ogggyy",
+youtube:"https://youtube.com/@being_ogggyy",
+tiktok:"https://www.tiktok.com/@being_ogggyy"
+},
+
+
+itachix:{
+name:"ITACHIx",
+role:"BOMBER",
+team:"OVER POWER MAIN TEAM",
+image:"/players/itachix.png",
+winnings:"$8,500",
+facebook:"https://www.facebook.com/profile.php?id=61590102347309",
+instagram:"",
+youtube:"https://youtube.com/@itachiontop-r2p",
+tiktok:"https://www.tiktok.com/@itachix074"
+},
+
+
+rejwan:{
+name:"REJWAN",
+role:"IGL + SUPPORTER",
+team:"OVER POWER MAIN TEAM",
+image:"/players/rejwan.png",
+winnings:"$7,800",
+facebook:"https://www.facebook.com/rejwan.ahammed11",
+instagram:"https://www.instagram.com/rahammed_",
+youtube:"https://youtube.com/@rejwan-ff6711",
+tiktok:"https://www.tiktok.com/@rejwanahammed"
+},
+
+
+fixfire:{
+name:"FixFIRE",
+role:"SNIPER",
+team:"OVER POWER MAIN TEAM",
+image:"/players/fixfire.png",
+winnings:"$6,400",
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+instagram:"https://www.instagram.com/xr_jisan09",
+youtube:"https://www.youtube.com/@fixfire09",
+tiktok:"https://tiktok.com/@fixfire09"
+}
+
+
+}
+
+
+
+const {id}=await params;
+
+const player=players[id];
+
+
+if(!player){
+
+return <h1>Player Not Found</h1>
+
+}
+
+
+
+
 return(
 
-<section className="player-profile premium">
+<section className="esports-profile">
 
 
-{/* TOP HEADER */}
 
-<div className="profile-top">
+{/* HEADER */}
+
+<div className="profile-header">
 
 
 <div>
@@ -14,22 +104,24 @@ return(
 {player.name}
 </h1>
 
+
 <p>
-{player.name} is a professional esports player currently playing for Over Power Esports.
+Professional Free Fire esports player of Over Power Esports.
 </p>
+
 
 </div>
 
 
 
-<div className="winnings">
+<div className="winning-card">
 
 <span>
 TOTAL WINNINGS
 </span>
 
 <h2>
-$16,015
+{player.winnings}
 </h2>
 
 </div>
@@ -41,69 +133,75 @@ $16,015
 
 
 
-<div className="profile-body">
+
+
+<div className="profile-layout">
 
 
 
-{/* LEFT SIDEBAR */}
-
-<div className="profile-sidebar">
+{/* LEFT SIDE */}
 
 
-<div className="player-image-box">
+<aside className="profile-left">
+
 
 <img
+
+className="profile-photo"
+
 src={player.image}
+
 alt={player.name}
+
 />
 
-</div>
 
 
 
-<h2>
+<h3>
 PLAYER INFORMATION
-</h2>
+</h3>
 
 
-<div className="info-row">
+<div className="profile-row">
 <span>Name</span>
 {player.name}
 </div>
 
 
-<div className="info-row">
-<span>Nationality</span>
-🇧🇩 Bangladesh
-</div>
-
-
-<div className="info-row">
-<span>Status</span>
-Active
-</div>
-
-
-<div className="info-row">
+<div className="profile-row">
 <span>Role</span>
 {player.role}
 </div>
 
 
-<div className="info-row">
+<div className="profile-row">
 <span>Team</span>
 {player.team}
 </div>
 
 
+<div className="profile-row">
+<span>Country</span>
+Bangladesh 🇧🇩
+</div>
 
 
-<h2>
+<div className="profile-row">
+<span>Status</span>
+Active
+</div>
+
+
+
+
+
+<h3>
 LINKS
-</h2>
+</h3>
 
 
-<div className="social-links">
+<div className="profile-social">
 
 
 {player.facebook &&
@@ -113,11 +211,13 @@ f
 }
 
 
+
 {player.instagram &&
 <a href={player.instagram} target="_blank">
 ◎
 </a>
 }
+
 
 
 {player.youtube &&
@@ -127,6 +227,7 @@ f
 }
 
 
+
 {player.tiktok &&
 <a href={player.tiktok} target="_blank">
 ♪
@@ -134,23 +235,34 @@ f
 }
 
 
+
 </div>
 
 
 
-<h2>
+
+
+<h3>
 TEAM HISTORY
-</h2>
+</h3>
 
 
-<p className="history">
-2026-06-18 - Present
+<p className="team-history">
+
+2026 - Present
+
 <br/>
+
 Over Power Main Team
+
 </p>
 
 
-</div>
+
+</aside>
+
+
+
 
 
 
@@ -160,11 +272,14 @@ Over Power Main Team
 {/* RIGHT SIDE */}
 
 
-<div className="profile-content">
+
+<div className="profile-right">
 
 
 
-<div className="table-card">
+
+
+<div className="profile-table">
 
 
 <h2>
@@ -172,31 +287,47 @@ Over Power Main Team
 </h2>
 
 
+
 <table>
 
 <tbody>
 
 <tr>
-<td>2026-06-21</td>
+
+<td>2026</td>
+
 <td>A-Tier</td>
-<td>Free Fire MAX Asia Invitational</td>
+
+<td>Free Fire Championship</td>
+
 <td>$120</td>
+
 </tr>
 
 
 <tr>
-<td>2026-06-06</td>
+
+<td>2026</td>
+
 <td>A-Tier</td>
-<td>Free Fire World Series</td>
+
+<td>Asia Invitational</td>
+
 <td>$181</td>
+
 </tr>
 
 
 <tr>
-<td>2026-05-30</td>
+
+<td>2026</td>
+
 <td>C-Tier</td>
-<td>Liquid Esports Invitational</td>
+
+<td>Community Tournament</td>
+
 <td>$48</td>
+
 </tr>
 
 
@@ -211,7 +342,10 @@ Over Power Main Team
 
 
 
-<div className="table-card">
+
+
+
+<div className="profile-table">
 
 
 <h2>
@@ -219,6 +353,7 @@ Over Power Main Team
 </h2>
 
 
+
 <table>
 
 <tbody>
@@ -226,20 +361,19 @@ Over Power Main Team
 <tr>
 
 <td>
-2026-01-30
+2026
 </td>
 
-<td>
-C-Tier
-</td>
 
 <td>
-Free Fire Road To Glory
+Elite Player Award
 </td>
 
+
 <td>
-CONTENT LEGEND
+Over Power Esports
 </td>
+
 
 </tr>
 
@@ -253,12 +387,20 @@ CONTENT LEGEND
 
 
 
+
+
+
 </div>
 
 
+
 </div>
+
 
 
 </section>
 
+
 )
+
+}
