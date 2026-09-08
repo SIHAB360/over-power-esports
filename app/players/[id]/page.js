@@ -84,7 +84,7 @@ Player Not Found
 
 return(
 
-<section className="player-profile">
+<section className="player-profile premium">
 
 
 <img 
