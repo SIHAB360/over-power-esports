@@ -1937,3 +1937,81 @@ grid-template-columns:repeat(2,1fr);
 }
 
 }
+/* =========================
+ PREMIUM PLAYER IMAGE FRAME
+========================= */
+
+
+.player-profile img{
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+.player-profile::after{
+
+content:"";
+
+position:absolute;
+
+left:25px;
+
+top:25px;
+
+width:320px;
+
+height:420px;
+
+border-radius:20px;
+
+border:2px solid rgba(255,0,0,.5);
+
+box-shadow:
+
+0 0 30px red;
+
+animation:imageGlow 3s infinite alternate;
+
+}
+
+
+
+@keyframes imageGlow{
+
+from{
+
+opacity:.4;
+
+}
+
+to{
+
+opacity:1;
+
+}
+
+}
+
+
+
+/* PLAYER NAME BADGE */
+
+.player-profile h1::before{
+
+content:"PRO PLAYER";
+
+display:block;
+
+font-size:12px;
+
+letter-spacing:3px;
+
+color:#ffcc00;
+
+margin-bottom:10px;
+
+}
