@@ -1,5 +1,3 @@
-import ProfileLoader from "./ProfileLoader";
-
 import {
   FaFacebookF,
   FaInstagram,
@@ -162,6 +160,7 @@ tiktok:""
 
 }
 
+];
 return(
 
 <section className="teams">
@@ -188,7 +187,6 @@ teams.map((team,index)=>(
 </p>
 
 
-
 <div className="team-players">
 
 
@@ -205,7 +203,7 @@ team.players.map((player,i)=>(
 src={player.image}
 alt={player.name}
 style={{
-objectPosition:player.position || "center"
+objectPosition: player.position || "center"
 }}
 />
 
@@ -291,6 +289,8 @@ className="tiktok"
 
 
 </div>
+
+
 
 <a
 href={`/players/${player.name.toLowerCase()}`}
