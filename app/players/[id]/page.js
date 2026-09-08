@@ -67,7 +67,9 @@ tiktok:"https://tiktok.com/@fixfire09"
 
 
 
-const player = players[params.id];
+const { id } = await params;
+
+const player = players[id];
 
 
 if(!player){
