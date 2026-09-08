@@ -1,29 +1,44 @@
 import Image from "next/image";
 import logo from "./assets/logo.png";
+
 import Navbar from "./components/Navbar";
 import Tournaments from "./components/Tournaments";
 import Games from "./components/Games";
 import Teams from "./components/Teams";
 
+
 export default function Home() {
+
   return (
+
     <main>
+
 
       <Navbar />
 
 
+
       <section className="hero">
+
 
         <div className="hero-logo">
 
+
           <Image
+
             src={logo}
-            width={110}
-            height={110}
+
+            width={140}
+
+            height={140}
+
             alt="Over Power Esports Logo"
+
           />
 
+
         </div>
+
 
 
         <h1>
@@ -31,9 +46,11 @@ export default function Home() {
         </h1>
 
 
+
         <p>
           Victory is our Mission
         </p>
+
 
 
         <button>
@@ -45,56 +62,8 @@ export default function Home() {
 
 
 
-      <section className="cards">
 
-        <div>
-          <h2>🎮 Games</h2>
-          <p>
-            Competitive Gaming & Tournaments
-          </p>
-        </div>
-
-
-
-        <div>
-
-          <h2>
-            🏆 Achievements
-          </h2>
-
-
-          <p>
-            Building Champions Worldwide
-          </p>
-
-
-          <a href="/achievements">
-
-            <button>
-              View Achievements
-            </button>
-
-          </a>
-
-
-        </div>
-
-
-
-        <div>
-
-          <h2>
-            🔥 Our Team
-          </h2>
-
-          <p>
-            Power. Skill. Victory.
-          </p>
-
-        </div>
-
-
-      </section>
+      <Teams />
 
 
 
@@ -106,15 +75,14 @@ export default function Home() {
 
 
 
-      <Teams />
-
-
 
       <section className="contact">
+
 
         <h2>
           Ready To Join?
         </h2>
+
 
 
         <p>
@@ -122,10 +90,13 @@ export default function Home() {
         </p>
 
 
+
       </section>
 
 
 
     </main>
+
   );
+
 }
