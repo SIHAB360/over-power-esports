@@ -95,19 +95,26 @@ return(
 
 {/* HEADER */}
 
-<div className="profile-header">
-
-
-<div>
+<div className="player-heading">
 
 <h1>
 {player.name}
 </h1>
 
 
+<h3>
+{player.role}
+</h3>
+
+
 <p>
 Professional Free Fire esports player of Over Power Esports.
 </p>
+
+
+<h4>
+{player.team}
+</h4>
 
 
 </div>
@@ -290,17 +297,32 @@ Over Power Main Team
 
 <table>
 
-<tbody>
+<thead>
 
 <tr>
 
-<td>2026</td>
+<th>
+DATE
+</th>
 
-<td>A-Tier</td>
+<th>
+TIER
+</th>
 
-<td>Free Fire Championship</td>
+<th>
+TOURNAMENT
+</th>
 
-<td>$120</td>
+<th>
+PRIZE
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
 
 </tr>
 
@@ -356,6 +378,27 @@ Over Power Main Team
 
 <table>
 
+<thead>
+
+<tr>
+
+<th>
+DATE
+</th>
+
+<th>
+AWARD
+</th>
+
+<th>
+ORGANIZATION
+</th>
+
+</tr>
+
+</thead>
+
+
 <tbody>
 
 <tr>
@@ -363,6 +406,21 @@ Over Power Main Team
 <td>
 2026
 </td>
+
+<td>
+Elite Player Award
+</td>
+
+<td>
+Over Power Esports
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
 
 
 <td>
