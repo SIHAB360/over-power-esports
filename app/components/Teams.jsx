@@ -99,7 +99,7 @@ role:"PRIMARY",
 image:"/players/rfntc.png",
 position:"center top",
 social:{
-facebook:"",
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
 instagram:"",
 youtube:"",
 tiktok:""
@@ -112,7 +112,7 @@ role:"SECONDARY",
 image:"/players/jellal.png",
 position:"center 15%",
 social:{
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+facebook:"",
 instagram:"",
 youtube:"",
 tiktok:""
