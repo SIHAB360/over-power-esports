@@ -318,9 +318,13 @@ className="tiktok"
 
 </div>
 
+<a
+href={`/players/${player.name.toLowerCase()}`}
+className="profile-btn"
+>
+VIEW PROFILE
+</a>
 
-
-<ProfileLoader/>
 
 </div>
 
