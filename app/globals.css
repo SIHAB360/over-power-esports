@@ -996,3 +996,159 @@ height:280px;
 
 
 }
+/* =========================
+ PROFILE LOADING SCREEN
+========================= */
+
+
+.profile-loading{
+
+position:fixed;
+
+inset:0;
+
+background:
+
+rgba(0,0,0,.96);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+z-index:9999;
+
+}
+
+
+
+.loader-content{
+
+text-align:center;
+
+}
+
+
+
+.loader-circle{
+
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+border:5px solid #222;
+
+border-top-color:#ff0000;
+
+animation:rotateLoader 1s linear infinite;
+
+margin:auto;
+
+box-shadow:
+
+0 0 25px red,
+0 0 60px purple;
+
+}
+
+
+
+.loader-content h2{
+
+margin-top:30px;
+
+color:#ff2222;
+
+letter-spacing:4px;
+
+font-size:22px;
+
+}
+
+
+
+.loader-content p{
+
+color:#aaa;
+
+margin-top:10px;
+
+}
+
+
+
+@keyframes rotateLoader{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+
+
+/* =========================
+ PREMIUM PLAYER IMAGE FRAME
+========================= */
+
+
+.profile-photo{
+
+border-radius:15px;
+
+border:3px solid red;
+
+box-shadow:
+
+0 0 20px red,
+0 0 50px purple;
+
+animation:
+
+playerGlow 3s infinite alternate;
+
+transition:.4s;
+
+}
+
+
+
+.profile-photo:hover{
+
+transform:scale(1.05);
+
+}
+
+
+
+@keyframes playerGlow{
+
+
+from{
+
+box-shadow:
+
+0 0 15px red;
+
+}
+
+
+
+to{
+
+box-shadow:
+
+0 0 45px purple,
+0 0 80px red;
+
+}
+
+
+}
