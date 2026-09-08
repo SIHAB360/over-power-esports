@@ -112,7 +112,7 @@ role:"SECONDARY",
 image:"/players/jellal.png",
 position:"center 15%",
 social:{
-facebook:"",
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
 instagram:"",
 youtube:"",
 tiktok:""
