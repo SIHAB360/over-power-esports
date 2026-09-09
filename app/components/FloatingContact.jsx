@@ -21,7 +21,11 @@ export default function FloatingContact() {
   ];
 
   return (
-    <div className={`floating-contact ${open ? "is-open" : ""}`}>
+    <div
+      className={`floating-contact ${open ? "is-open" : ""}`}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
 
       <div className="floating-links">
 
@@ -32,7 +36,7 @@ export default function FloatingContact() {
             target="_blank"
             rel="noopener noreferrer"
             className={`floating-link ${link.className}`}
-            style={{ "--delay": `${index * 0.06}s` }}
+            style={{ "--delay": `${index * 0.08}s` }}
             aria-label={link.name}
             title={link.name}
           >
@@ -52,7 +56,7 @@ export default function FloatingContact() {
           className={
             open
               ? "fa-solid fa-xmark"
-              : "fa-solid fa-comment"
+              : "fa-solid fa-headset"
           }
         ></i>
       </button>
