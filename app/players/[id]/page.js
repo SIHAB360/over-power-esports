@@ -635,7 +635,6 @@ Over Power Main Team
 
 
 
-
 {/* VIDEO GALLERY */}
 
 <div className="profile-table video-gallery">
@@ -647,7 +646,7 @@ Over Power Main Team
   <div className="video-grid">
 
     {player.youtubeVideos?.map((video, index) => (
-      
+
       <div className="video-card" key={index}>
 
         <iframe
@@ -663,7 +662,7 @@ Over Power Main Team
   </div>
 
 </div>
-</div>
+
 
 </section>
 
