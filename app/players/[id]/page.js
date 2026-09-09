@@ -27,7 +27,7 @@ winnings:"$16,015",
 facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
 instagram:"https://www.instagram.com/_appelo_ff",
 youtube:"https://youtube.com/@appelo_ff",
-tiktok:"https://www.tiktok.com/@appelo_offical"
+tiktok:"https://www.tiktok.com/@appelo_offical",
 
 youtubeVideos:[
 
