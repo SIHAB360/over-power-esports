@@ -1,3 +1,4 @@
+import FloatingContact from "./components/FloatingContact";
 import Image from "next/image";
 import logo from "./assets/logo.png";
 
@@ -13,51 +14,39 @@ export default function Home() {
 
     <main className="home-animation">
 
-
       <Navbar />
-
 
       <section className="hero">
 
-
         <div className="hero-logo">
-
           <Image
             src={logo}
             width={140}
             height={140}
             alt="Over Power Esports Logo"
           />
-
         </div>
-
 
         <h1>
           OVER POWER ESPORTS
         </h1>
 
-
         <p>
           Victory is our Mission
         </p>
 
-
         <button>
           Join Team
         </button>
-
 
       </section>
 
 
       <Teams />
 
-
       <Tournaments />
 
-
       <Games />
-
 
 
       <section className="contact">
@@ -66,14 +55,15 @@ export default function Home() {
           Ready To Join?
         </h2>
 
-
         <p>
           Become part of Over Power Esports
         </p>
 
-
       </section>
 
+
+      {/* FLOATING CONTACT BUTTON */}
+      <FloatingContact />
 
     </main>
 
