@@ -3155,12 +3155,68 @@ overflow:hidden;
 }
 
 
+/* Floating Main Button */
+
+.floating-main-button {
+
+  width:70px;
+  height:70px;
+
+  border-radius:50%;
+
+  border:none;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff1e2d,
+    #8b0000
+  );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  box-shadow:
+  0 0 20px rgba(255,0,30,.8);
+
+  transition:.3s ease;
+}
+
+
+/* Headset Image */
+
+.contact-icon {
+
+  width:55px;
+  height:55px;
+
+  object-fit:contain;
+
+  display:block;
+
+  border-radius:50%;
+
+  transition:.3s ease;
+}
+
+
 .floating-main-button:hover .contact-icon{
 
-transform:scale(1.15);
-
-transition:.3s ease;
+  transform:scale(1.15);
 
 }
+
+
+.floating-main-button:hover{
+
+  transform:scale(1.1);
+
+  box-shadow:
+  0 0 35px rgba(255,0,30,1);
 
 }
