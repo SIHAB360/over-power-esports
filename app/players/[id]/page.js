@@ -64,12 +64,12 @@ oggy: {
   tiktok:"https://www.tiktok.com/@being_ogggyy",
 
   youtubeVideos: [
-    "94JjtPH6Rp4",
-    "WiXfH8lHkao",
-    "T9gEdEC1BqA",
-    "S12LAik5ovc",
-    "8jzmVk4sd2Q",
-    "p9Bf-zGCefg"
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 
 },
@@ -98,12 +98,12 @@ itachix: {
   tiktok:"https://www.tiktok.com/@itachix074",
 
   youtubeVideos: [
-    "94JjtPH6Rp4",
-    "WiXfH8lHkao",
-    "T9gEdEC1BqA",
-    "S12LAik5ovc",
-    "8jzmVk4sd2Q",
-    "p9Bf-zGCefg"
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 
 },
@@ -132,12 +132,12 @@ rejwan: {
   tiktok:"https://www.tiktok.com/@rejwanahammed",
 
   youtubeVideos: [
-    "94JjtPH6Rp4",
-    "WiXfH8lHkao",
-    "T9gEdEC1BqA",
-    "S12LAik5ovc",
-    "8jzmVk4sd2Q",
-    "p9Bf-zGCefg"
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 
 },
