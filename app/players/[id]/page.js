@@ -304,11 +304,9 @@ alt={player.name}
 
 <div className="info-box reveal-card reveal-delay-2">
 
-
 <h3>
 🔗 SOCIAL LINKS
 </h3>
-
 
 
 <div className="profile-social">
@@ -317,7 +315,7 @@ alt={player.name}
 {
 player.facebook &&
 <a 
-href={player.facebook} 
+href={player.facebook}
 target="_blank"
 rel="noopener noreferrer"
 >
@@ -334,7 +332,7 @@ Facebook
 {
 player.instagram &&
 <a 
-href={player.instagram} 
+href={player.instagram}
 target="_blank"
 rel="noopener noreferrer"
 >
@@ -351,7 +349,7 @@ Instagram
 {
 player.youtube &&
 <a 
-href={player.youtube} 
+href={player.youtube}
 target="_blank"
 rel="noopener noreferrer"
 >
@@ -368,7 +366,7 @@ YouTube
 {
 player.tiktok &&
 <a 
-href={player.tiktok} 
+href={player.tiktok}
 target="_blank"
 rel="noopener noreferrer"
 >
@@ -383,6 +381,7 @@ TikTok
 
 </div>
 
+</div>
 
 
 
