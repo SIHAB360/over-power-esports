@@ -9,7 +9,6 @@ export default function FloatingContact() {
 
 
   const links = [
-
     {
       name: "WhatsApp",
       icon: "fa-brands fa-whatsapp",
@@ -23,7 +22,6 @@ export default function FloatingContact() {
       url: "https://discord.gg/4HrJ5zRCh",
       className: "discord",
     },
-
   ];
 
 
@@ -38,7 +36,7 @@ export default function FloatingContact() {
 
       <div className="floating-links">
 
-        {links.map((link,index)=>(
+        {links.map((link) => (
 
           <a
             key={link.name}
@@ -63,6 +61,7 @@ export default function FloatingContact() {
         type="button"
         className="floating-main-button"
         onClick={() => setOpen(!open)}
+        aria-label="Contact"
       >
 
         <img
