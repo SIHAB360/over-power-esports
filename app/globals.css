@@ -1396,87 +1396,26 @@ border:none !important;
 border-radius:12px;
 
 }
-/* =====================================
-   PREMIUM PLAYER PHOTO FRAME
-===================================== */
-
-.photo-box{
-  position:relative !important;
-
-  padding:5px !important;
-
-  background:
-    linear-gradient(
-      145deg,
-      #090909,
-      #130000
-    ) !important;
-
-  border:1px solid rgba(255,40,40,.75) !important;
-
-  border-radius:14px !important;
-
-  overflow:hidden !important;
-
-  box-shadow:
-    0 0 8px rgba(255,0,0,.45),
-    0 0 20px rgba(255,0,0,.20),
-    inset 0 0 12px rgba(255,0,0,.10) !important;
-}
-
-
-/* Player Image */
-
-.photo-box .profile-photo{
-  position:relative;
-
-  width:100% !important;
-  height:360px !important;
-
-  object-fit:contain !important;
-
-  border-radius:10px !important;
-
-  border:1px solid rgba(255,50,50,.55) !important;
-
-  z-index:2;
-}
-
-
-/* PREMIUM MOVING LIGHT */
-
-/* PREMIUM PRO PLAYER FRAME */
+/* PREMIUM RGB FRAME ONLY */
 
 .photo-box{
 
 position:relative;
 
-padding:4px !important;
+padding:5px !important;
 
 border-radius:18px !important;
 
-background:
-
-linear-gradient(
-135deg,
-#ff0000,
-#300000,
-#ff3030,
-#090909
-);
-
-box-shadow:
-
-0 0 15px rgba(255,0,0,.45),
-0 0 40px rgba(255,0,0,.18);
+background:#050505;
 
 overflow:hidden;
+
+z-index:1;
 
 }
 
 
-
-/* Inner dark frame */
+/* RGB glowing outer border */
 
 .photo-box::before{
 
@@ -1484,19 +1423,60 @@ content:"";
 
 position:absolute;
 
-inset:2px;
+inset:-3px;
 
-border-radius:15px;
+border-radius:20px;
 
-background:#050505;
 
-z-index:0;
+background:
+
+linear-gradient(
+45deg,
+#ff0000,
+#ffcc00,
+#00ffff,
+#ff00ff,
+#ff0000
+);
+
+
+background-size:400% 400%;
+
+
+animation:
+
+rgbBorder 4s linear infinite;
+
+
+z-index:-1;
+
+filter:blur(8px);
 
 }
 
 
 
-/* Image */
+/* Inner frame */
+
+.photo-box::after{
+
+content:"";
+
+position:absolute;
+
+inset:1px;
+
+border-radius:16px;
+
+background:#050505;
+
+z-index:-1;
+
+}
+
+
+
+/* Image clean */
 
 .photo-box .profile-photo{
 
@@ -1512,104 +1492,53 @@ object-fit:contain !important;
 
 border-radius:14px !important;
 
-border:1px solid rgba(255,255,255,.15);
+border:none !important;
 
 }
 
 
 
-/* Moving premium light */
+/* RGB movement */
 
-.photo-box::after{
-
-content:"";
-
-position:absolute;
-
-z-index:3;
-
-top:-50%;
-
-left:-80%;
-
-width:45%;
-
-height:200%;
-
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.7),
-rgba(255,0,0,.6),
-transparent
-);
-
-
-transform:rotate(25deg);
-
-animation:
-
-frameLight 3s infinite;
-
-}
-
-
-
-@keyframes frameLight{
+@keyframes rgbBorder{
 
 
 0%{
 
-left:-90%;
-
-opacity:0;
+background-position:0% 50%;
 
 }
 
 
-25%{
+50%{
 
-opacity:1;
-
-}
-
-
-55%{
-
-left:130%;
-
-opacity:0;
+background-position:100% 50%;
 
 }
 
 
 100%{
 
-left:130%;
-
-opacity:0;
+background-position:0% 50%;
 
 }
 
 }
 
 
-
-/* Soft pulse */
+/* Soft blink glow */
 
 .photo-box{
 
 animation:
 
-framePulse 2.8s infinite ease-in-out;
+boxGlow 2.5s ease-in-out infinite;
 
 }
 
 
-@keyframes framePulse{
+
+@keyframes boxGlow{
 
 
 0%,100%{
@@ -1625,13 +1554,13 @@ box-shadow:
 
 box-shadow:
 
-0 0 25px rgba(255,0,0,.65),
-0 0 50px rgba(255,0,0,.25);
+0 0 30px rgba(0,255,255,.45),
+0 0 50px rgba(255,0,255,.25);
 
 }
 
-}
 
+}
 
 /* FRAME LIGHT MOVEMENT */
 
