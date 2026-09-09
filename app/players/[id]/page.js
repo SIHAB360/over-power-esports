@@ -9,34 +9,31 @@ const players = {
 
 appelo: {
 
-name:"SAKIB HASAN",
-ign:"EXE APPELO",
-uid:"1673606480",
-role:"PRIMARY RUSHER",
-team:"OVER POWER MAIN TEAM",
-experience:"7 Years",
-profession:"Student",
-age:"19",
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka, Bangladesh",
-status:"Active",
+  name: "SAKIB HASAN",
+  ign: "EXE APPELO",
+  uid: "1673606480",
+  role: "PRIMARY RUSHER",
+  team: "OVER POWER MAIN TEAM",
+  experience: "7 Years",
+  profession: "Student",
+  age: "19",
+  nationality: "Bangladesh 🇧🇩",
+  location: "Dhaka, Bangladesh",
+  status: "Active",
 
-image:"/players/appelo.png",
-winnings:"$16,015",
+  image: "/players/appelo.png",
+  winnings: "$16,015",
 
-facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
-instagram:"https://www.instagram.com/_appelo_ff",
-youtube:"https://youtube.com/@appelo_ff",
-tiktok:"https://www.tiktok.com/@appelo_offical",
+  facebook: "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+  instagram: "https://www.instagram.com/_appelo_ff",
+  youtube: "https://youtube.com/@appelo_ff",
+  tiktok: "https://www.tiktok.com/@appelo_offical",
 
-youtubeVideos:[
-
-"94JjtPH6Rp4",
-"94JjtPH6Rp4",
-"94JjtPH6Rp4"
-
-],
-
+  youtubeVideos: [
+    "94JjtPH6Rp4",
+    "94JjtPH6Rp4",
+    "94JjtPH6Rp4"
+  ]
 
 },
 
