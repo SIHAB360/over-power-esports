@@ -1396,7 +1396,7 @@ border:none !important;
 border-radius:12px;
 
 }
-/* PREMIUM RGB FRAME ONLY */
+/* PLAYER IMAGE PREMIUM VISIBILITY */
 
 .photo-box{
 
@@ -1410,12 +1410,10 @@ background:#050505;
 
 overflow:hidden;
 
-z-index:1;
-
 }
 
 
-/* RGB glowing outer border */
+/* Outer RGB Frame */
 
 .photo-box::before{
 
@@ -1423,9 +1421,9 @@ content:"";
 
 position:absolute;
 
-inset:-3px;
+inset:-4px;
 
-border-radius:20px;
+border-radius:22px;
 
 
 background:
@@ -1440,23 +1438,22 @@ linear-gradient(
 );
 
 
-background-size:400% 400%;
+background-size:300% 300%;
 
 
 animation:
+rgbFrame 4s linear infinite;
 
-rgbBorder 4s linear infinite;
 
+filter:blur(7px);
 
-z-index:-1;
-
-filter:blur(8px);
+z-index:0;
 
 }
 
 
 
-/* Inner frame */
+/* Inner black space */
 
 .photo-box::after{
 
@@ -1464,19 +1461,18 @@ content:"";
 
 position:absolute;
 
-inset:1px;
+inset:3px;
 
-border-radius:16px;
+border-radius:15px;
 
 background:#050505;
 
-z-index:-1;
+z-index:1;
 
 }
 
 
-
-/* Image clean */
+/* Player image */
 
 .photo-box .profile-photo{
 
@@ -1484,23 +1480,30 @@ position:relative;
 
 z-index:2;
 
+
 width:100% !important;
 
 height:360px !important;
 
 object-fit:contain !important;
 
+
 border-radius:14px !important;
 
-border:none !important;
+
+filter:
+
+brightness(1.12)
+contrast(1.08)
+saturate(1.12);
+
 
 }
 
 
+/* RGB outside blink */
 
-/* RGB movement */
-
-@keyframes rgbBorder{
+@keyframes rgbFrame{
 
 
 0%{
@@ -1526,26 +1529,33 @@ background-position:0% 50%;
 }
 
 
-/* Soft blink glow */
+
+/* Soft player focus glow */
 
 .photo-box{
 
-animation:
+box-shadow:
 
-boxGlow 2.5s ease-in-out infinite;
+0 0 18px rgba(255,0,0,.45),
+0 0 35px rgba(80,0,255,.25);
+
+
+animation:
+playerBoxGlow 3s infinite ease-in-out;
 
 }
 
 
 
-@keyframes boxGlow{
+@keyframes playerBoxGlow{
 
 
 0%,100%{
 
 box-shadow:
 
-0 0 12px rgba(255,0,0,.35);
+0 0 15px rgba(255,0,0,.35),
+0 0 30px rgba(255,0,0,.15);
 
 }
 
@@ -1554,68 +1564,10 @@ box-shadow:
 
 box-shadow:
 
-0 0 30px rgba(0,255,255,.45),
+0 0 25px rgba(0,200,255,.45),
 0 0 50px rgba(255,0,255,.25);
 
 }
-
-
-}
-
-/* FRAME LIGHT MOVEMENT */
-
-@keyframes premiumFrameLight{
-
-  0%{
-    left:-120px;
-    opacity:0;
-  }
-
-  15%{
-    opacity:1;
-  }
-
-  55%{
-    opacity:.9;
-  }
-
-  75%{
-    left:120%;
-    opacity:0;
-  }
-
-  100%{
-    left:120%;
-    opacity:0;
-  }
-
-}
-
-
-/* SUBTLE FRAME PULSE */
-
-.photo-box{
-  animation:
-    premiumFramePulse 3s
-    ease-in-out infinite;
-}
-
-
-@keyframes premiumFramePulse{
-
-  0%,100%{
-    box-shadow:
-      0 0 7px rgba(255,0,0,.35),
-      0 0 16px rgba(255,0,0,.15),
-      inset 0 0 10px rgba(255,0,0,.08);
-  }
-
-  50%{
-    box-shadow:
-      0 0 11px rgba(255,25,25,.65),
-      0 0 28px rgba(255,0,0,.25),
-      inset 0 0 15px rgba(255,0,0,.14);
-  }
 
 }
 
