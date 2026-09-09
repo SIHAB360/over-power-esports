@@ -2612,3 +2612,174 @@ font-weight:bold;
   }
 
 }
+/* =====================================
+   PREMIUM PLAYER INFO POLISH
+===================================== */
+
+
+.info-box h3{
+
+display:flex;
+align-items:center;
+gap:8px;
+
+letter-spacing:.5px;
+
+}
+
+
+
+/* Information rows */
+
+.info-item{
+
+padding:12px 0 !important;
+
+border-bottom:
+1px solid rgba(255,255,255,.08) !important;
+
+}
+
+
+.info-item:last-child{
+
+border-bottom:none !important;
+
+}
+
+
+.info-item label{
+
+font-size:11px !important;
+
+color:#aaa !important;
+
+font-weight:600;
+
+display:flex;
+
+align-items:center;
+
+gap:5px;
+
+}
+
+
+.info-item strong{
+
+font-size:13px !important;
+
+color:white;
+
+font-weight:800;
+
+text-align:right;
+
+max-width:55%;
+
+}
+
+
+
+/* Active status */
+
+.player-status.active{
+
+color:#00ff88 !important;
+
+text-shadow:
+
+0 0 8px rgba(0,255,136,.8);
+
+}
+
+
+
+/* Social buttons */
+
+.profile-social a{
+
+position:relative;
+
+overflow:hidden;
+
+background:
+rgba(255,0,0,.08) !important;
+
+border:
+
+1px solid rgba(255,0,0,.7) !important;
+
+transition:.35s ease;
+
+}
+
+
+.profile-social a:hover{
+
+transform:
+
+translateY(-3px)
+scale(1.05);
+
+
+box-shadow:
+
+0 0 15px rgba(255,0,0,.6);
+
+}
+
+
+
+/* Team History */
+
+.info-box p{
+
+font-size:14px;
+
+line-height:1.8;
+
+color:#ddd;
+
+}
+
+
+.info-box p span{
+
+color:#ff3030;
+
+font-weight:800;
+
+text-shadow:
+
+0 0 8px rgba(255,0,0,.5);
+
+}
+
+
+
+/* Mobile spacing */
+
+@media(max-width:600px){
+
+.info-box{
+
+padding:14px !important;
+
+}
+
+
+.info-item{
+
+padding:10px 0 !important;
+
+}
+
+
+.info-item strong{
+
+font-size:12px !important;
+
+}
+
+}
