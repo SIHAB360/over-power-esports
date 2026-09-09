@@ -58,19 +58,19 @@ export default function FloatingContact() {
 
 
 
-      <button
-        type="button"
-        className="floating-main-button"
-        onClick={() => setOpen(!open)}
-      >
+     <button
+ type="button"
+ className="floating-main-button"
+ onClick={() => setOpen(!open)}
+>
 
-        <img
-          src="/headset.png"
-          alt="Contact"
-          className="contact-icon"
-        />
+<img
+ src="/headset.png"
+ alt="Contact"
+ className="contact-icon"
+/>
 
-      </button>
+</button>
 
 
     </div>
