@@ -644,11 +644,10 @@ Over Power Main Team
     🎬 PLAYER HIGHLIGHTS
   </h2>
 
-
   <div className="video-grid">
 
     {player.youtubeVideos?.map((video, index) => (
-
+      
       <div className="video-card" key={index}>
 
         <iframe
@@ -660,7 +659,6 @@ Over Power Main Team
       </div>
 
     ))}
-
 
   </div>
 
