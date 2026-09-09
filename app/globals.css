@@ -1537,106 +1537,477 @@ color:#ff2020;
 font-weight:bold;
 
 }
-/* Premium Light Profile Reveal */
+/* =========================================
+   PREMIUM STAGGERED PLAYER PROFILE REVEAL
+========================================= */
 
-.profile-animation{
+
+/* Whole profile - keep layout stable */
+.esports-profile{
   position:relative;
-  animation:premiumProfile 0.9s cubic-bezier(.2,.8,.2,1);
-  overflow:hidden;
 }
 
 
-/* Soft Shine Sweep */
+/* =========================================
+   HEADER REVEAL
+========================================= */
 
-.profile-animation::after{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:-120%;
-
-width:80%;
-height:100%;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,0.25),
-transparent
-);
-
-transform:skewX(-20deg);
-
-animation:profileShine 1.4s ease forwards;
-
-pointer-events:none;
-
+.reveal-header{
+  opacity:0;
+  animation:
+  headerPremiumReveal
+  .75s
+  cubic-bezier(.16,1,.3,1)
+  forwards;
 }
 
 
+@keyframes headerPremiumReveal{
 
-/* Entry */
+  0%{
+    opacity:0;
+    transform:translateY(-30px);
+    filter:blur(8px);
+  }
 
-@keyframes premiumProfile{
+  60%{
+    opacity:1;
+    transform:translateY(3px);
+    filter:blur(0);
+  }
 
-0%{
-
-opacity:0;
-
-transform:
-translateY(25px)
-scale(.97);
-
-filter:blur(5px);
-
-}
-
-
-60%{
-
-opacity:1;
-
-transform:
-translateY(-5px)
-scale(1.01);
-
-}
-
-
-100%{
-
-opacity:1;
-
-transform:
-translateY(0)
-scale(1);
-
-filter:blur(0);
-
-}
+  100%{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+  }
 
 }
 
 
 
-/* Shine */
+/* =========================================
+   WINNING CARD
+========================================= */
 
-@keyframes profileShine{
+.reveal-win{
+  opacity:0;
 
-0%{
+  animation:
+  winningPremiumReveal
+  .8s
+  .25s
+  cubic-bezier(.16,1,.3,1)
+  forwards;
+}
 
-left:-120%;
+
+@keyframes winningPremiumReveal{
+
+  0%{
+    opacity:0;
+    transform:
+    translateX(45px)
+    scale(.82);
+
+    filter:
+    blur(8px)
+    brightness(.5);
+  }
+
+
+  65%{
+    opacity:1;
+
+    transform:
+    translateX(-4px)
+    scale(1.04);
+
+    filter:
+    blur(0)
+    brightness(1.25);
+  }
+
+
+  100%{
+    opacity:1;
+
+    transform:
+    translateX(0)
+    scale(1);
+
+    filter:
+    blur(0)
+    brightness(1);
+  }
 
 }
 
 
-100%{
 
-left:150%;
+/* =========================================
+   PLAYER PHOTO CINEMATIC REVEAL
+========================================= */
+
+.reveal-photo{
+  opacity:0;
+
+  animation:
+  playerPremiumReveal
+  1s
+  .35s
+  cubic-bezier(.16,1,.3,1)
+  forwards;
+}
+
+
+@keyframes playerPremiumReveal{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateY(55px)
+    scale(.82);
+
+    filter:
+    blur(14px)
+    brightness(.35);
+  }
+
+
+  55%{
+    opacity:1;
+
+    transform:
+    translateY(-7px)
+    scale(1.025);
+
+    filter:
+    blur(0)
+    brightness(1.18);
+  }
+
+
+  100%{
+    opacity:1;
+
+    transform:
+    translateY(0)
+    scale(1);
+
+    filter:
+    blur(0)
+    brightness(1);
+  }
 
 }
+
+
+
+/* =========================================
+   LEFT INFORMATION CARDS
+========================================= */
+
+.reveal-card{
+  opacity:0;
+
+  animation:
+  cardPremiumReveal
+  .75s
+  cubic-bezier(.16,1,.3,1)
+  forwards;
+}
+
+
+/* Player Information */
+
+.reveal-delay-1{
+  animation-delay:.55s;
+}
+
+
+/* Links */
+
+.reveal-delay-2{
+  animation-delay:.72s;
+}
+
+
+/* Team History */
+
+.reveal-delay-3{
+  animation-delay:.89s;
+}
+
+
+@keyframes cardPremiumReveal{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateX(-45px)
+    scale(.97);
+
+    filter:blur(7px);
+  }
+
+
+  70%{
+    opacity:1;
+
+    transform:
+    translateX(3px)
+    scale(1.005);
+
+    filter:blur(0);
+  }
+
+
+  100%{
+    opacity:1;
+
+    transform:
+    translateX(0)
+    scale(1);
+
+    filter:blur(0);
+  }
+
+}
+
+
+
+/* =========================================
+   ACHIEVEMENTS + AWARDS
+========================================= */
+
+.reveal-table{
+  opacity:0;
+
+  animation:
+  tablePremiumReveal
+  .85s
+  cubic-bezier(.16,1,.3,1)
+  forwards;
+}
+
+
+.reveal-table-1{
+  animation-delay:.65s;
+}
+
+
+.reveal-table-2{
+  animation-delay:.92s;
+}
+
+
+@keyframes tablePremiumReveal{
+
+  0%{
+    opacity:0;
+
+    transform:
+    translateX(55px)
+    translateY(20px)
+    scale(.97);
+
+    filter:blur(8px);
+  }
+
+
+  70%{
+    opacity:1;
+
+    transform:
+    translateX(-3px)
+    translateY(0)
+    scale(1.005);
+
+    filter:blur(0);
+  }
+
+
+  100%{
+    opacity:1;
+
+    transform:
+    translateX(0)
+    translateY(0)
+    scale(1);
+
+    filter:blur(0);
+  }
+
+}
+
+
+
+/* =========================================
+   PREMIUM PHOTO GLOW
+========================================= */
+
+.reveal-photo{
+  position:relative;
+}
+
+
+.reveal-photo::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-2px;
+
+  border-radius:15px;
+
+  pointer-events:none;
+
+  opacity:0;
+
+  box-shadow:
+  0 0 15px rgba(255,0,0,.45),
+  0 0 35px rgba(255,0,0,.20);
+
+  animation:
+  photoGlowReveal
+  1.5s
+  .45s
+  ease-out
+  forwards;
+}
+
+
+@keyframes photoGlowReveal{
+
+  0%{
+    opacity:0;
+  }
+
+  35%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:.25;
+  }
+
+}
+
+
+
+/* =========================================
+   WINNING CARD GLOW PULSE
+========================================= */
+
+.reveal-win h2{
+
+  animation:
+  winningTextGlow
+  1.2s
+  .65s
+  ease-out
+  both;
+
+}
+
+
+@keyframes winningTextGlow{
+
+  0%{
+    text-shadow:none;
+  }
+
+  50%{
+    text-shadow:
+    0 0 12px rgba(0,255,136,.9),
+    0 0 28px rgba(0,255,136,.55);
+  }
+
+  100%{
+    text-shadow:
+    0 0 8px rgba(0,255,136,.35);
+  }
+
+}
+
+
+
+/* =========================================
+   MOBILE ANIMATION ADJUSTMENT
+========================================= */
+
+@media(max-width:600px){
+
+  @keyframes cardPremiumReveal{
+
+    0%{
+      opacity:0;
+      transform:
+      translateY(30px)
+      scale(.97);
+      filter:blur(6px);
+    }
+
+    100%{
+      opacity:1;
+      transform:
+      translateY(0)
+      scale(1);
+      filter:blur(0);
+    }
+
+  }
+
+
+  @keyframes tablePremiumReveal{
+
+    0%{
+      opacity:0;
+      transform:
+      translateY(35px)
+      scale(.97);
+      filter:blur(7px);
+    }
+
+    100%{
+      opacity:1;
+      transform:
+      translateY(0)
+      scale(1);
+      filter:blur(0);
+    }
+
+  }
+
+}
+
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  .reveal-header,
+  .reveal-win,
+  .reveal-photo,
+  .reveal-card,
+  .reveal-table,
+  .reveal-win h2{
+
+    opacity:1 !important;
+
+    animation:none !important;
+
+    transform:none !important;
+
+    filter:none !important;
+
+  }
 
 }
