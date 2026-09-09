@@ -63,9 +63,17 @@ facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
 instagram:"https://www.instagram.com/being_ogggyy",
 youtube:"https://youtube.com/@being_ogggyy",
 tiktok:"https://www.tiktok.com/@being_ogggyy"
+  
+  youtubeVideos: [
+    "94JjtPH6Rp4",
+    "WiXfH8lHkao",
+    "T9gEdEC1BqA",
+    "S12LAik5ovc",
+    "8jzmVk4sd2Q",
+    "p9Bf-zGCefg"
+  ]
 
 },
-
 
 
 itachix:{
