@@ -1,4 +1,4 @@
-import CopyUID from "@/app/components/CopyUID";
+import CopyUID from "../../components/CopyUID";
 export default async function PlayerProfile({ params }) {
 
   const players = {
