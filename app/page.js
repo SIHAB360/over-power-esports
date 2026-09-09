@@ -11,11 +11,10 @@ export default function Home() {
 
   return (
 
-    <main>
+    <main className="home-animation">
 
 
       <Navbar />
-
 
 
       <section className="hero">
@@ -23,22 +22,14 @@ export default function Home() {
 
         <div className="hero-logo">
 
-
           <Image
-
             src={logo}
-
             width={140}
-
             height={140}
-
             alt="Over Power Esports Logo"
-
           />
 
-
         </div>
-
 
 
         <h1>
@@ -46,11 +37,9 @@ export default function Home() {
         </h1>
 
 
-
         <p>
           Victory is our Mission
         </p>
-
 
 
         <button>
@@ -61,28 +50,21 @@ export default function Home() {
       </section>
 
 
-
-
       <Teams />
 
 
-
       <Tournaments />
-
 
 
       <Games />
 
 
 
-
       <section className="contact">
-
 
         <h2>
           Ready To Join?
         </h2>
-
 
 
         <p>
@@ -90,9 +72,7 @@ export default function Home() {
         </p>
 
 
-
       </section>
-
 
 
     </main>
