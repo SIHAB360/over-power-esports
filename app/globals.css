@@ -2948,7 +2948,6 @@ height:200px;
     box-shadow .3s ease;
 
   pointer-events: none;
-
 }
 
 
@@ -2957,24 +2956,23 @@ height:200px;
 .floating-contact:hover .floating-link,
 .floating-contact.is-open .floating-link {
 
-  opacity: 1;
+  opacity:1;
 
   transform:
-    translateY(0)
-    scale(1);
+  translateY(0)
+  scale(1);
 
   pointer-events:auto;
-
 }
 
 
-/* HOVER */
+/* LINK HOVER */
 
 .floating-link:hover {
 
   transform:
-    translateY(-5px)
-    scale(1.15);
+  translateY(-5px)
+  scale(1.15);
 
 }
 
@@ -3003,12 +3001,14 @@ box-shadow:
 }
 
 
-/* MAIN BUTTON */
+/* =========================
+   MAIN BUTTON
+========================= */
 
 .floating-main-button {
 
-width:60px;
-height:60px;
+width:65px;
+height:65px;
 
 border-radius:50%;
 
@@ -3021,24 +3021,48 @@ linear-gradient(
 #b80012
 );
 
-color:white;
-
 display:flex;
 align-items:center;
 justify-content:center;
 
-font-size:24px;
-
 cursor:pointer;
 
-box-shadow:
+overflow:hidden;
 
+box-shadow:
 0 0 20px rgba(255,0,30,.8);
 
 transition:.3s ease;
 
 }
 
+
+/* HEADSET IMAGE */
+
+.contact-icon {
+
+width:45px;
+height:45px;
+
+object-fit:contain;
+
+transition:.3s ease;
+
+}
+
+
+/* IMAGE HOVER */
+
+.floating-main-button:hover .contact-icon {
+
+transform:
+scale(1.15)
+rotate(5deg);
+
+}
+
+
+/* BUTTON HOVER */
 
 .floating-main-button:hover {
 
@@ -3051,27 +3075,30 @@ box-shadow:
 }
 
 
-/* ICON ANIMATION */
 
-.floating-main-button i {
+/* PULSE */
 
-animation:pulseIcon 1.8s infinite;
+.floating-main-button {
 
-}
-
-
-@keyframes pulseIcon {
-
-0%,100% {
-
-transform:scale(1);
+animation:
+buttonPulse 2s infinite;
 
 }
 
 
-50% {
+@keyframes buttonPulse {
 
-transform:scale(1.15);
+0%,100%{
+
+box-shadow:
+0 0 20px rgba(255,0,30,.8);
+
+}
+
+50%{
+
+box-shadow:
+0 0 40px rgba(255,0,30,1);
 
 }
 
@@ -3103,8 +3130,16 @@ font-size:18px;
 
 .floating-main-button {
 
-width:56px;
-height:56px;
+width:58px;
+height:58px;
+
+}
+
+
+.contact-icon {
+
+width:40px;
+height:40px;
 
 }
 
