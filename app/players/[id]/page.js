@@ -98,12 +98,12 @@ itachix: {
   tiktok:"https://www.tiktok.com/@itachix074",
 
   youtubeVideos: [
-    "ZS-99axWlErZuX",
-    "ZS-99axWlErZuX",
-    "ZS-99axWlErZuX",
-    "",
-    "",
-    ""
+    "89Z_9Rffa1M",
+    "89Z_9Rffa1M",
+    "89Z_9Rffa1M",
+    "-dzH4tBo0yY",
+    "-dzH4tBo0yY",
+    "-dzH4tBo0yY"
   ]
 
 },
@@ -132,12 +132,12 @@ rejwan: {
   tiktok:"https://www.tiktok.com/@rejwanahammed",
 
   youtubeVideos: [
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    "YzetH_r6KpE",
+    "1OGnv9NlgnI",
+    "a7kPD66eTlU",
+    "UJFPFz82cEo",
+    "ruDS83xiLSY",
+    "1cE1la0rGaQ"
   ]
 
 },
