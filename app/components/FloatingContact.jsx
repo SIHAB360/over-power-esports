@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 export default function FloatingContact() {
+
   const [open, setOpen] = useState(false);
 
   const links = [
@@ -20,47 +21,65 @@ export default function FloatingContact() {
     },
   ];
 
+
   return (
+
     <div
       className={`floating-contact ${open ? "is-open" : ""}`}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
 
+
       <div className="floating-links">
 
-        {links.map((link, index) => (
+        {links.map((link,index)=>(
+
           <a
             key={link.name}
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
             className={`floating-link ${link.className}`}
-            style={{ "--delay": `${index * 0.08}s` }}
-            aria-label={link.name}
+            style={{
+              "--delay": `${index * 0.08}s`
+            }}
             title={link.name}
           >
+
             <i className={link.icon}></i>
+
           </a>
+
         ))}
 
       </div>
 
+
+
       <button
-        type="button"
+
         className="floating-main-button"
+
         onClick={() => setOpen(!open)}
-        aria-label={open ? "Close contact links" : "Open contact links"}
+
+        type="button"
+
       >
+
         <i
           className={
             open
-              ? "fa-solid fa-xmark"
-              : "fa-solid fa-headset"
+            ? "fa-solid fa-xmark"
+            : "fa-solid fa-headset"
           }
         ></i>
+
+
       </button>
 
+
     </div>
+
   );
 }
