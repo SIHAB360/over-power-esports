@@ -1396,7 +1396,164 @@ border:none !important;
 border-radius:12px;
 
 }
+/* =====================================
+   PREMIUM PLAYER PHOTO FRAME
+===================================== */
 
+.photo-box{
+  position:relative !important;
+
+  padding:5px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #090909,
+      #130000
+    ) !important;
+
+  border:1px solid rgba(255,40,40,.75) !important;
+
+  border-radius:14px !important;
+
+  overflow:hidden !important;
+
+  box-shadow:
+    0 0 8px rgba(255,0,0,.45),
+    0 0 20px rgba(255,0,0,.20),
+    inset 0 0 12px rgba(255,0,0,.10) !important;
+}
+
+
+/* Player Image */
+
+.photo-box .profile-photo{
+  position:relative;
+
+  width:100% !important;
+  height:360px !important;
+
+  object-fit:contain !important;
+
+  border-radius:10px !important;
+
+  border:1px solid rgba(255,50,50,.55) !important;
+
+  z-index:2;
+}
+
+
+/* PREMIUM MOVING LIGHT */
+
+.photo-box::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:70px;
+  height:160%;
+
+  top:-30%;
+  left:-100px;
+
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,0,0,.15),
+    rgba(255,80,80,.75),
+    rgba(255,255,255,.35),
+    rgba(255,0,0,.15),
+    transparent
+  );
+
+  filter:blur(7px);
+
+  transform:rotate(20deg);
+
+  z-index:4;
+
+  pointer-events:none;
+
+  animation:
+    premiumFrameLight 3.5s
+    ease-in-out infinite;
+}
+
+
+/* FRAME LIGHT MOVEMENT */
+
+@keyframes premiumFrameLight{
+
+  0%{
+    left:-120px;
+    opacity:0;
+  }
+
+  15%{
+    opacity:1;
+  }
+
+  55%{
+    opacity:.9;
+  }
+
+  75%{
+    left:120%;
+    opacity:0;
+  }
+
+  100%{
+    left:120%;
+    opacity:0;
+  }
+
+}
+
+
+/* SUBTLE FRAME PULSE */
+
+.photo-box{
+  animation:
+    premiumFramePulse 3s
+    ease-in-out infinite;
+}
+
+
+@keyframes premiumFramePulse{
+
+  0%,100%{
+    box-shadow:
+      0 0 7px rgba(255,0,0,.35),
+      0 0 16px rgba(255,0,0,.15),
+      inset 0 0 10px rgba(255,0,0,.08);
+  }
+
+  50%{
+    box-shadow:
+      0 0 11px rgba(255,25,25,.65),
+      0 0 28px rgba(255,0,0,.25),
+      inset 0 0 15px rgba(255,0,0,.14);
+  }
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .photo-box{
+    padding:4px !important;
+    border-radius:12px !important;
+  }
+
+  .photo-box .profile-photo{
+    height:300px !important;
+    border-radius:9px !important;
+  }
+
+}
 
 
 
