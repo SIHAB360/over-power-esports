@@ -58,7 +58,7 @@ export default function FloatingContact() {
       >
 
         <img
-          src={headset.src}
+          src={headse.src}
           alt="Contact"
           className="contact-icon"
         />
