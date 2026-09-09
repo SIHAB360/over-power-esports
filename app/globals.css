@@ -3136,10 +3136,30 @@ height:58px;
 }
 
 
-.contact-icon {
+.contact-icon{
 
-width:40px;
-height:40px;
+width:48px;
+height:48px;
+
+object-fit:contain;
+
+border-radius:50%;
+
+}
+
+
+.floating-main-button{
+
+overflow:hidden;
+
+}
+
+
+.floating-main-button:hover .contact-icon{
+
+transform:scale(1.15);
+
+transition:.3s ease;
 
 }
 
