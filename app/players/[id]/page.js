@@ -32,9 +32,9 @@ tiktok: "https://www.tiktok.com/@appelo_offical",
   youtubeVideos: [
     "94JjtPH6Rp4",
     "94JjtPH6Rp4",
-    "94JjtPH6Rp4"
-    "94JjtPH6Rp4"
-    "94JjtPH6Rp4"
+    "94JjtPH6Rp4",
+    "94JjtPH6Rp4",
+    "94JjtPH6Rp4",
     "94JjtPH6Rp4"
   ]
 
