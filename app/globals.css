@@ -2909,7 +2909,8 @@ height:200px;
   align-items: center;
 }
 
-/* Social buttons */
+
+/* LINKS */
 
 .floating-links {
   display: flex;
@@ -2921,7 +2922,9 @@ height:200px;
   pointer-events: none;
 }
 
+
 .floating-link {
+
   width: 48px;
   height: 48px;
 
@@ -2931,127 +2934,178 @@ height:200px;
   align-items: center;
   justify-content: center;
 
-  color: #fff;
+  color: white;
   text-decoration: none;
 
   font-size: 20px;
 
   opacity: 0;
-  transform: translateY(18px) scale(0.55);
+  transform: translateY(25px) scale(.5);
 
   transition:
-    opacity 0.22s ease,
-    transform 0.28s cubic-bezier(.2,.8,.2,1),
-    box-shadow 0.2s ease;
+    opacity .3s ease,
+    transform .35s ease,
+    box-shadow .3s ease;
 
   pointer-events: none;
+
 }
+
+
+/* OPEN */
 
 .floating-contact:hover .floating-link,
 .floating-contact.is-open .floating-link {
+
   opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  pointer-events:auto;
+
 }
+
+
+/* HOVER */
 
 .floating-link:hover {
-  transform: translateY(-5px) scale(1.15);
-  box-shadow:0 0 25px rgba(255,255,255,.5);
+
+  transform:
+    translateY(-5px)
+    scale(1.15);
+
 }
 
-/* WhatsApp */
+
+/* WHATSAPP */
 
 .floating-link.whatsapp {
-  background: #25D366;
 
-  box-shadow:
-    0 0 12px rgba(37, 211, 102, 0.55),
-    0 0 28px rgba(37, 211, 102, 0.25);
+background:#25D366;
+
+box-shadow:
+0 0 15px rgba(37,211,102,.7);
+
 }
 
-/* Discord */
+
+/* DISCORD */
 
 .floating-link.discord {
-  background: #5865F2;
 
-  box-shadow:
-    0 0 12px rgba(88, 101, 242, 0.55),
-    0 0 28px rgba(88, 101, 242, 0.25);
+background:#5865F2;
+
+box-shadow:
+0 0 15px rgba(88,101,242,.7);
+
 }
 
-/* Main button */
+
+/* MAIN BUTTON */
 
 .floating-main-button {
-  width: 60px;
-  height: 60px;
 
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
+width:60px;
+height:60px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+border-radius:50%;
 
-  background: linear-gradient(
-    135deg,
-    #ff1e2d,
-    #b80012
-  );
+border:2px solid rgba(255,255,255,.2);
 
-  color: #fff;
+background:
+linear-gradient(
+135deg,
+#ff1e2d,
+#b80012
+);
 
-  font-size: 22px;
-  cursor: pointer;
+color:white;
 
-  box-shadow:
-    0 0 14px rgba(255, 0, 30, 0.75),
-    0 0 35px rgba(255, 0, 30, 0.3);
+display:flex;
+align-items:center;
+justify-content:center;
 
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+font-size:24px;
+
+cursor:pointer;
+
+box-shadow:
+
+0 0 20px rgba(255,0,30,.8);
+
+transition:.3s ease;
+
 }
+
 
 .floating-main-button:hover {
-  transform: scale(1.1);
 
-  box-shadow:
-    0 0 18px rgba(255, 0, 30, 0.9),
-    0 0 45px rgba(255, 0, 30, 0.45);
-}
+transform:scale(1.12);
 
-.floating-contact:hover .floating-main-button {
-  transform: scale(1.08);
-}
+box-shadow:
 
-/* Mobile */
+0 0 35px rgba(255,0,30,1);
 
-@media (max-width: 600px) {
-
-  .floating-contact {
-    right: 16px;
-    bottom: 16px;
-  }
-
-  .floating-link {
-    width: 44px;
-    height: 44px;
-    font-size: 18px;
-  }
-
- .floating-main-button i{
-  animation: pulseIcon 1.8s infinite;
 }
 
 
-@keyframes pulseIcon{
+/* ICON ANIMATION */
 
-0%,100%{
- transform:scale(1);
+.floating-main-button i {
+
+animation:pulseIcon 1.8s infinite;
+
 }
 
-50%{
- transform:scale(1.15);
+
+@keyframes pulseIcon {
+
+0%,100% {
+
+transform:scale(1);
+
+}
+
+
+50% {
+
+transform:scale(1.15);
+
+}
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.floating-contact {
+
+right:16px;
+bottom:16px;
+
+}
+
+
+.floating-link {
+
+width:44px;
+height:44px;
+
+font-size:18px;
+
+}
+
+
+.floating-main-button {
+
+width:56px;
+height:56px;
+
 }
 
 }
