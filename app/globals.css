@@ -2783,3 +2783,45 @@ font-size:12px !important;
 }
 
 }
+.profile-social a{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+}
+
+
+.profile-social i{
+
+font-size:18px;
+
+}
+
+
+.profile-social .fa-facebook-f{
+
+color:#1877f2;
+
+}
+
+
+.profile-social .fa-instagram{
+
+color:#e1306c;
+
+}
+
+
+.profile-social .fa-youtube{
+
+color:#ff0000;
+
+}
+
+
+.profile-social .fa-tiktok{
+
+color:#ffffff;
+
+}
