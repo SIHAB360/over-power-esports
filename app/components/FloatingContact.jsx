@@ -45,9 +45,6 @@ export default function FloatingContact() {
             target="_blank"
             rel="noopener noreferrer"
             className={`floating-link ${link.className}`}
-            style={{
-              "--delay": `${index * 0.08}s`
-            }}
             title={link.name}
           >
 
@@ -67,11 +64,12 @@ export default function FloatingContact() {
         onClick={() => setOpen(!open)}
       >
 
-       <img
-  src="/headset.png"
-  alt="Contact"
-  className="contact-icon"
-/>
+        <img
+          src="/headset.png"
+          alt="Contact"
+          className="contact-icon"
+        />
+
       </button>
 
 
