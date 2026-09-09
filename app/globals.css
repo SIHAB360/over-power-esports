@@ -3148,14 +3148,9 @@ border-radius:50%;
 }
 
 
-.floating-main-button{
-
-overflow:hidden;
-
-}
-
-
-/* Floating Main Button */
+/* =========================
+   FLOATING MAIN BUTTON
+========================= */
 
 .floating-main-button {
 
@@ -3181,6 +3176,8 @@ overflow:hidden;
 
   overflow:hidden;
 
+  padding:0;
+
   box-shadow:
   0 0 20px rgba(255,0,30,.8);
 
@@ -3188,7 +3185,10 @@ overflow:hidden;
 }
 
 
-/* Headset Image */
+
+/* =========================
+   HEADSET IMAGE
+========================= */
 
 .contact-icon {
 
@@ -3202,8 +3202,12 @@ overflow:hidden;
   border-radius:50%;
 
   transition:.3s ease;
+
 }
 
+
+
+/* IMAGE HOVER */
 
 .floating-main-button:hover .contact-icon{
 
@@ -3212,11 +3216,39 @@ overflow:hidden;
 }
 
 
+
+/* BUTTON HOVER */
+
 .floating-main-button:hover{
 
   transform:scale(1.1);
 
   box-shadow:
   0 0 35px rgba(255,0,30,1);
+
+}
+
+
+
+/* =========================
+   MOBILE FIX
+========================= */
+
+@media(max-width:600px){
+
+  .floating-main-button{
+
+    width:58px;
+    height:58px;
+
+  }
+
+
+  .contact-icon{
+
+    width:42px;
+    height:42px;
+
+  }
 
 }
