@@ -86,8 +86,7 @@ return <h1>Player Not Found</h1>
 
 return(
 
-<section className="esports-profile">
-
+<section className="esports-profile profile-animation">
 
 <div className="profile-header">
 
