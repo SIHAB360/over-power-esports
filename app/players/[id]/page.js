@@ -316,8 +316,16 @@ alt={player.name}
 
 {
 player.facebook &&
-<a href={player.facebook} target="_blank">
-🔵 Facebook
+<a 
+href={player.facebook} 
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<i className="fa-brands fa-facebook-f"></i>
+
+Facebook
+
 </a>
 }
 
@@ -325,8 +333,16 @@ player.facebook &&
 
 {
 player.instagram &&
-<a href={player.instagram} target="_blank">
-📸 Instagram
+<a 
+href={player.instagram} 
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<i className="fa-brands fa-instagram"></i>
+
+Instagram
+
 </a>
 }
 
@@ -334,8 +350,16 @@ player.instagram &&
 
 {
 player.youtube &&
-<a href={player.youtube} target="_blank">
-▶️ YouTube
+<a 
+href={player.youtube} 
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<i className="fa-brands fa-youtube"></i>
+
+YouTube
+
 </a>
 }
 
@@ -343,13 +367,18 @@ player.youtube &&
 
 {
 player.tiktok &&
-<a href={player.tiktok} target="_blank">
-🎵 TikTok
+<a 
+href={player.tiktok} 
+target="_blank"
+rel="noopener noreferrer"
+>
+
+<i className="fa-brands fa-tiktok"></i>
+
+TikTok
+
 </a>
 }
-
-
-</div>
 
 
 </div>
