@@ -2895,3 +2895,77 @@ height:200px;
 }
 
 }
+.floating-contact {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 99999;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.floating-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.floating-link {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  text-decoration: none;
+
+  opacity: 0;
+  transform: translateY(20px) scale(0.7);
+
+  transition: 0.3s ease;
+
+  pointer-events: none;
+}
+
+.floating-contact.is-open .floating-link {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.floating-main-button {
+  width: 58px;
+  height: 58px;
+
+  border: none;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #1f8f96;
+  color: #fff;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  box-shadow: 0 0 20px rgba(31, 143, 150, 0.6);
+
+  position: relative;
+  z-index: 2;
+}
+
+.floating-link.whatsapp {
+  background: #25d366;
+}
+
+.floating-link.discord {
+  background: #5865f2;
+}
