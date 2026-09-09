@@ -638,131 +638,30 @@ Over Power Main Team
 
 {/* VIDEO GALLERY */}
 
-
 <div className="profile-table video-gallery">
 
-
-<h2>
-🎬 PLAYER HIGHLIGHTS
-</h2>
-
+  <h2>
+    🎬 PLAYER HIGHLIGHTS
+  </h2>
 
 
-<div className="video-grid">
+  <div className="video-grid">
+
+    {player.youtubeVideos?.map((video, index) => (
+
+      <div className="video-card" key={index}>
+
+        <iframe
+          src={`https://www.youtube.com/embed/${video}`}
+          title={`Player Highlight ${index + 1}`}
+          allowFullScreen
+        ></iframe>
+
+      </div>
+
+    ))}
 
 
-
-<div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 1"
-
-allowFullScreen
-
-></iframe>
-
-</div>
-
-
-
-
-<div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 2"
-
-allowFullScreen
-
-></iframe>
+  </div>
 
 </div>
-
-
-
-
-<div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 3"
-
-allowFullScreen
-
-></iframe>
-
-</div>
- 
-<div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 3"
-
-allowFullScreen
-
-></iframe>
-
-</div>
-
- <div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 3"
-
-allowFullScreen
-
-></iframe>
-
-</div>
-
-
-
-<div className="video-card">
-
-<iframe
-
-src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-
-title="Player Highlight 4"
-
-allowFullScreen
-
-></iframe>
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-);
-
-}
