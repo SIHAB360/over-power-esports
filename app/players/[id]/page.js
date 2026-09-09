@@ -27,7 +27,7 @@ appelo: {
   facebook: "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
   instagram: "https://www.instagram.com/_appelo_ff",
   youtube: "https://youtube.com/@appelo_ff",
-tiktok: "https://www.tiktok.com/@appelo_offical",
+  tiktok: "https://www.tiktok.com/@appelo_offical",
 
   youtubeVideos: [
     "94JjtPH6Rp4",
@@ -41,29 +41,28 @@ tiktok: "https://www.tiktok.com/@appelo_offical",
 },
 
 
+oggy: {
 
-oggy:{
+  name:"SOMIR",
+  ign:"BE1NG OGGY",
+  uid:"4455951906",
+  role:"SECONDARY RUSHER",
+  team:"OVER POWER MAIN TEAM",
+  experience:"5 Years",
+  profession:"Student",
+  age:"17",
+  nationality:"Bangladesh 🇧🇩",
+  location:"Dhaka",
+  status:"Active",
 
-name:"SOMIR",
-ign:"BE1NG OGGY",
-uid:"4455951906",
-role:"SECONDARY RUSHER",
-team:"OVER POWER MAIN TEAM",
-experience:"5 Years",
-profession:"Student",
-age:"17",
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka",
-status:"Active",
+  image:"/players/oggy.png",
+  winnings:"$12,500",
 
-image:"/players/oggy.png",
-winnings:"$12,500",
+  facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
+  instagram:"https://www.instagram.com/being_ogggyy",
+  youtube:"https://youtube.com/@being_ogggyy",
+  tiktok:"https://www.tiktok.com/@being_ogggyy",
 
-facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
-instagram:"https://www.instagram.com/being_ogggyy",
-youtube:"https://youtube.com/@being_ogggyy",
-tiktok:"https://www.tiktok.com/@being_ogggyy"
-  
   youtubeVideos: [
     "94JjtPH6Rp4",
     "WiXfH8lHkao",
@@ -76,85 +75,106 @@ tiktok:"https://www.tiktok.com/@being_ogggyy"
 },
 
 
-itachix:{
+itachix: {
 
-name:"MD SALMAN",
-ign:"OP ITACHIx",
-uid:"7743068119",
-role:"BOMBER",
-team:"OVER POWER MAIN TEAM",
-experience:"5 Years",
-profession:"Student",
-age:"17",
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka",
-status:"Active",
+  name:"MD SALMAN",
+  ign:"OP ITACHIx",
+  uid:"7743068119",
+  role:"BOMBER",
+  team:"OVER POWER MAIN TEAM",
+  experience:"5 Years",
+  profession:"Student",
+  age:"17",
+  nationality:"Bangladesh 🇧🇩",
+  location:"Dhaka",
+  status:"Active",
 
-image:"/players/itachix.png",
-winnings:"$8,500",
+  image:"/players/itachix.png",
+  winnings:"$8,500",
 
-facebook:"https://www.facebook.com/profile.php?id=61590102347309",
-instagram:"",
-youtube:"https://youtube.com/@itachiontop-r2p",
-tiktok:"https://www.tiktok.com/@itachix074"
+  facebook:"https://www.facebook.com/profile.php?id=61590102347309",
+  instagram:"",
+  youtube:"https://youtube.com/@itachiontop-r2p",
+  tiktok:"https://www.tiktok.com/@itachix074",
 
-},
-
-
-
-rejwan:{
-
-name:"REJWAN AHAMMED",
-ign:"OP REJWAN",
-uid:"1111551408",
-role:"IGL + SUPPORTER",
-team:"OVER POWER MAIN TEAM",
-experience:"7 Years",
-profession:"JOB HOLDER",
-age:"18",
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka",
-status:"Active",
-
-image:"/players/rejwan.png",
-winnings:"$7,800",
-
-facebook:"https://www.facebook.com/rejwan.ahammed11",
-instagram:"https://www.instagram.com/rahammed_",
-youtube:"https://youtube.com/@rejwan-ff6711",
-tiktok:"https://www.tiktok.com/@rejwanahammed"
+  youtubeVideos: [
+    "94JjtPH6Rp4",
+    "WiXfH8lHkao",
+    "T9gEdEC1BqA",
+    "S12LAik5ovc",
+    "8jzmVk4sd2Q",
+    "p9Bf-zGCefg"
+  ]
 
 },
 
 
+rejwan: {
 
-fixfire:{
+  name:"REJWAN AHAMMED",
+  ign:"OP REJWAN",
+  uid:"1111551408",
+  role:"IGL + SUPPORTER",
+  team:"OVER POWER MAIN TEAM",
+  experience:"7 Years",
+  profession:"JOB HOLDER",
+  age:"18",
+  nationality:"Bangladesh 🇧🇩",
+  location:"Dhaka",
+  status:"Active",
 
-name:"ZISAN BISWAS",
-ign:"FixFIRE",
-uid:"63999291",
-role:"SNIPER",
-team:"OVER POWER MAIN TEAM",
-experience:"8 Years",
-profession:"Student",
-age:"20",
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka",
-status:"Active",
+  image:"/players/rejwan.png",
+  winnings:"$7,800",
 
-image:"/players/fixfire.png",
-winnings:"$6,400",
+  facebook:"https://www.facebook.com/rejwan.ahammed11",
+  instagram:"https://www.instagram.com/rahammed_",
+  youtube:"https://youtube.com/@rejwan-ff6711",
+  tiktok:"https://www.tiktok.com/@rejwanahammed",
 
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"https://www.instagram.com/xr_jisan09",
-youtube:"https://www.youtube.com/@fixfire09",
-tiktok:"https://tiktok.com/@fixfire09"
+  youtubeVideos: [
+    "94JjtPH6Rp4",
+    "WiXfH8lHkao",
+    "T9gEdEC1BqA",
+    "S12LAik5ovc",
+    "8jzmVk4sd2Q",
+    "p9Bf-zGCefg"
+  ]
+
+},
+
+
+fixfire: {
+
+  name:"ZISAN BISWAS",
+  ign:"FixFIRE",
+  uid:"63999291",
+  role:"SNIPER",
+  team:"OVER POWER MAIN TEAM",
+  experience:"8 Years",
+  profession:"Student",
+  age:"20",
+  nationality:"Bangladesh 🇧🇩",
+  location:"Dhaka",
+  status:"Active",
+
+  image:"/players/fixfire.png",
+  winnings:"$6,400",
+
+  facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+  instagram:"https://www.instagram.com/xr_jisan09",
+  youtube:"https://www.youtube.com/@fixfire09",
+  tiktok:"https://tiktok.com/@fixfire09",
+
+  youtubeVideos: [
+    "94JjtPH6Rp4",
+    "WiXfH8lHkao",
+    "T9gEdEC1BqA",
+    "S12LAik5ovc",
+    "8jzmVk4sd2Q",
+    "p9Bf-zGCefg"
+  ]
 
 }
-
-
-};
-
 
 
 const { id } = await params;
