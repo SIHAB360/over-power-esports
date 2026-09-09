@@ -1537,3 +1537,45 @@ color:#ff2020;
 font-weight:bold;
 
 }
+/* Mobile Responsive */
+@media (max-width: 768px) {
+
+  .roster-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 15px;
+  }
+
+  .player-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .player-card img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .player-card h3 {
+    font-size: 12px;
+  }
+
+  .role {
+    font-size: 9px;
+  }
+
+  .social-icons {
+    gap: 5px;
+  }
+
+  .social-icons a {
+    width: 18px;
+    height: 18px;
+  }
+
+  .view-profile {
+    font-size: 8px;
+    padding: 6px 10px;
+  }
+}
