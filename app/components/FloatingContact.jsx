@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import headset from "../assets/headset.png";
 
 export default function FloatingContact() {
 
@@ -58,19 +59,19 @@ export default function FloatingContact() {
 
 
 
-     <button
- type="button"
- className="floating-main-button"
- onClick={() => setOpen(!open)}
->
+      <button
+        type="button"
+        className="floating-main-button"
+        onClick={() => setOpen(!open)}
+      >
 
-<img
- src="/headset.png"
- alt="Contact"
- className="contact-icon"
-/>
+        <img
+          src={headset.src}
+          alt="Contact"
+          className="contact-icon"
+        />
 
-</button>
+      </button>
 
 
     </div>
