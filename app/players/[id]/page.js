@@ -236,11 +236,23 @@ alt={player.name}
 </div>
 
 
-<div className="info-item">
+<div className="info-item uid-box">
+
 <label>🆔 Game UID</label>
-<strong>{player.uid}</strong>
+
+<div className="uid-action">
+
+<strong>
+{player.uid}
+</strong>
+
+
+<CopyUID uid={player.uid} />
+
+
 </div>
 
+</div>
 
 <div className="info-item">
 <label>🎯 Role</label>
