@@ -1565,3 +1565,31 @@ font-weight:bold;
   }
 
 }
+/* Player Profile Entry Animation */
+
+.profile-animation{
+  animation: profileEnter 0.9s ease-in-out;
+}
+
+
+@keyframes profileEnter{
+
+  0%{
+    opacity:0;
+    transform:scale(0.96);
+    filter:hue-rotate(120deg);
+  }
+
+
+  50%{
+    filter:hue-rotate(50deg);
+  }
+
+
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:hue-rotate(0deg);
+  }
+
+}
