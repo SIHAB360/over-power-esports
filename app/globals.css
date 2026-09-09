@@ -3110,31 +3110,21 @@ box-shadow:
 
 @media(max-width:600px){
 
-.floating-contact {
+.floating-main-button{
 
-right:16px;
-bottom:16px;
-
-}
-
-
-.floating-link {
-
-width:44px;
-height:44px;
-
-font-size:18px;
+ width:55px;
+ height:55px;
 
 }
 
 
-.floating-main-button {
+.contact-icon{
 
-width:58px;
-height:58px;
+ padding:5px;
 
 }
 
+}
 
 .contact-icon{
 
@@ -3151,6 +3141,8 @@ border-radius:50%;
 /* =========================
    FLOATING MAIN BUTTON
 ========================= */
+
+/* Main Floating Button */
 
 .floating-main-button {
 
@@ -3176,15 +3168,44 @@ border-radius:50%;
 
   overflow:hidden;
 
-  padding:0;
-
   box-shadow:
   0 0 20px rgba(255,0,30,.8);
 
-  transition:.3s ease;
 }
 
 
+/* Contact Image */
+
+.contact-icon {
+
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  padding:8px;
+
+  border-radius:50%;
+
+  display:block;
+
+}
+
+
+/* Hover */
+
+.floating-main-button:hover .contact-icon{
+
+  transform:scale(1.12);
+
+}
+
+
+.floating-main-button:hover{
+
+  transform:scale(1.1);
+
+}
 
 /* =========================
    HEADSET IMAGE
