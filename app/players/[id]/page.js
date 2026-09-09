@@ -1,423 +1,394 @@
-export default async function PlayerProfile({params}){
+export default async function PlayerProfile({ params }) {
+
+  const players = {
+
+    appelo: {
+      name: "APPELO",
+      role: "PRIMARY",
+      team: "OVER POWER MAIN TEAM",
+      image: "/players/appelo.png",
+      winnings: "$16,015",
+      facebook: "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+      instagram: "https://www.instagram.com/_appelo_ff",
+      youtube: "https://youtube.com/@appelo_ff",
+      tiktok: "https://www.tiktok.com/@appelo_offical"
+    },
 
+    oggy: {
+      name: "OGGY",
+      role: "SECONDARY",
+      team: "OVER POWER MAIN TEAM",
+      image: "/players/oggy.png",
+      winnings: "$12,500",
+      facebook: "https://www.facebook.com/share/1JEkiAK2J6/",
+      instagram: "https://www.instagram.com/being_ogggyy",
+      youtube: "https://youtube.com/@being_ogggyy",
+      tiktok: "https://www.tiktok.com/@being_ogggyy"
+    },
 
-const players = {
+    itachix: {
+      name: "ITACHIx",
+      role: "BOMBER",
+      team: "OVER POWER MAIN TEAM",
+      image: "/players/itachix.png",
+      winnings: "$8,500",
+      facebook: "https://www.facebook.com/profile.php?id=61590102347309",
+      instagram: "",
+      youtube: "https://youtube.com/@itachiontop-r2p",
+      tiktok: "https://www.tiktok.com/@itachix074"
+    },
 
-appelo:{
-name:"APPELO",
-role:"PRIMARY",
-team:"OVER POWER MAIN TEAM",
-image:"/players/appelo.png",
-winnings:"$16,015",
-facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
-instagram:"https://www.instagram.com/_appelo_ff",
-youtube:"https://youtube.com/@appelo_ff",
-tiktok:"https://www.tiktok.com/@appelo_offical"
-},
+    rejwan: {
+      name: "REJWAN",
+      role: "IGL + SUPPORTER",
+      team: "OVER POWER MAIN TEAM",
+      image: "/players/rejwan.png",
+      winnings: "$7,800",
+      facebook: "https://www.facebook.com/rejwan.ahammed11",
+      instagram: "https://www.instagram.com/rahammed_",
+      youtube: "https://youtube.com/@rejwan-ff6711",
+      tiktok: "https://www.tiktok.com/@rejwanahammed"
+    },
 
+    fixfire: {
+      name: "FixFIRE",
+      role: "SNIPER",
+      team: "OVER POWER MAIN TEAM",
+      image: "/players/fixfire.png",
+      winnings: "$6,400",
+      facebook: "https://www.facebook.com/share/1DYEWmWzRr/",
+      instagram: "https://www.instagram.com/xr_jisan09",
+      youtube: "https://www.youtube.com/@fixfire09",
+      tiktok: "https://tiktok.com/@fixfire09"
+    }
 
-oggy:{
-name:"OGGY",
-role:"SECONDARY",
-team:"OVER POWER MAIN TEAM",
-image:"/players/oggy.png",
-winnings:"$12,500",
-facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
-instagram:"https://www.instagram.com/being_ogggyy",
-youtube:"https://youtube.com/@being_ogggyy",
-tiktok:"https://www.tiktok.com/@being_ogggyy"
-},
+  };
 
 
-itachix:{
-name:"ITACHIx",
-role:"BOMBER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/itachix.png",
-winnings:"$8,500",
-facebook:"https://www.facebook.com/profile.php?id=61590102347309",
-instagram:"",
-youtube:"https://youtube.com/@itachiontop-r2p",
-tiktok:"https://www.tiktok.com/@itachix074"
-},
+  const { id } = await params;
 
+  const player = players[id];
 
-rejwan:{
-name:"REJWAN",
-role:"IGL + SUPPORTER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/rejwan.png",
-winnings:"$7,800",
-facebook:"https://www.facebook.com/rejwan.ahammed11",
-instagram:"https://www.instagram.com/rahammed_",
-youtube:"https://youtube.com/@rejwan-ff6711",
-tiktok:"https://www.tiktok.com/@rejwanahammed"
-},
 
+  if (!player) {
+    return <h1>Player Not Found</h1>;
+  }
 
-fixfire:{
-name:"FixFIRE",
-role:"SNIPER",
-team:"OVER POWER MAIN TEAM",
-image:"/players/fixfire.png",
-winnings:"$6,400",
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"https://www.instagram.com/xr_jisan09",
-youtube:"https://www.youtube.com/@fixfire09",
-tiktok:"https://tiktok.com/@fixfire09"
-}
 
-};
+  return (
 
+    <section className="esports-profile">
 
 
-const {id}=await params;
+      {/* PLAYER HEADER */}
 
-const player=players[id];
+      <div className="profile-header reveal-header">
 
 
-if(!player){
+        <div className="player-heading">
 
-return <h1>Player Not Found</h1>
+          <h1>
+            {player.name}
+          </h1>
 
-}
+          <h3>
+            {player.role}
+          </h3>
 
+          <h4>
+            {player.team}
+          </h4>
 
+          <p>
+            Professional Free Fire esports player of Over Power Esports.
+          </p>
 
-return(
+        </div>
 
-<section className="esports-profile profile-animation">
 
-<div className="profile-header">
 
+        <div className="winning-card reveal-win">
 
-<div className="player-heading">
+          <span>
+            TOTAL WINNINGS
+          </span>
 
+          <h2>
+            {player.winnings}
+          </h2>
 
-<h1>
-{player.name}
-</h1>
+        </div>
 
 
-<h3>
-{player.role}
-</h3>
+      </div>
 
 
-<h4>
-{player.team}
-</h4>
 
+      {/* PROFILE CONTENT */}
 
-<p>
-Professional Free Fire esports player of Over Power Esports.
-</p>
+      <div className="profile-layout">
 
 
-</div>
+        <aside className="profile-left">
 
 
+          {/* PLAYER PHOTO */}
 
-<div className="winning-card">
+          <div className="photo-box reveal-photo">
 
-<span>
-TOTAL WINNINGS
-</span>
+            <img
+              className="profile-photo"
+              src={player.image}
+              alt={player.name}
+            />
 
-<h2>
-{player.winnings}
-</h2>
+          </div>
 
-</div>
 
 
-</div>
+          {/* PLAYER INFORMATION */}
 
+          <div className="info-box reveal-card reveal-delay-1">
 
+            <h3>
+              PLAYER INFORMATION
+            </h3>
 
 
+            <div className="info-item">
+              <label>Name</label>
+              <strong>{player.name}</strong>
+            </div>
 
-<div className="profile-layout">
 
+            <div className="info-item">
+              <label>Role</label>
+              <strong>{player.role}</strong>
+            </div>
 
 
-<aside className="profile-left">
+            <div className="info-item">
+              <label>Team</label>
+              <strong>{player.team}</strong>
+            </div>
 
 
+            <div className="info-item">
+              <label>Country</label>
+              <strong>Bangladesh 🇧🇩</strong>
+            </div>
 
-<div className="photo-box">
 
-<img
-className="profile-photo"
-src={player.image}
-alt={player.name}
-/>
+            <div className="info-item">
+              <label>Status</label>
 
-</div>
+              <strong className="active">
+                Active
+              </strong>
 
+            </div>
 
+          </div>
 
 
 
-<div className="info-box">
+          {/* SOCIAL LINKS */}
 
+          <div className="info-box reveal-card reveal-delay-2">
 
-<h3>
-PLAYER INFORMATION
-</h3>
+            <h3>
+              LINKS
+            </h3>
 
 
+            <div className="profile-social">
 
-<div className="info-item">
-<label>Name</label>
-<strong>{player.name}</strong>
-</div>
 
+              {
+                player.facebook &&
+                <a
+                  href={player.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Facebook
+                </a>
+              }
 
 
-<div className="info-item">
-<label>Role</label>
-<strong>{player.role}</strong>
-</div>
+              {
+                player.instagram &&
+                <a
+                  href={player.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram
+                </a>
+              }
 
 
+              {
+                player.youtube &&
+                <a
+                  href={player.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  YouTube
+                </a>
+              }
 
-<div className="info-item">
-<label>Team</label>
-<strong>{player.team}</strong>
-</div>
 
+              {
+                player.tiktok &&
+                <a
+                  href={player.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  TikTok
+                </a>
+              }
 
 
-<div className="info-item">
-<label>Country</label>
-<strong>Bangladesh 🇧🇩</strong>
-</div>
+            </div>
 
+          </div>
 
 
-<div className="info-item">
-<label>Status</label>
-<strong className="active">
-Active
-</strong>
-</div>
 
+          {/* TEAM HISTORY */}
 
+          <div className="info-box reveal-card reveal-delay-3">
 
-</div>
+            <h3>
+              TEAM HISTORY
+            </h3>
 
 
+            <p>
+              2026 - Present
+              <br />
 
+              <span>
+                Over Power Main Team
+              </span>
+            </p>
 
+          </div>
 
 
-<div className="info-box">
+        </aside>
 
 
-<h3>
-LINKS
-</h3>
 
+        {/* RIGHT SIDE */}
 
+        <div className="profile-right">
 
-<div className="profile-social">
 
+          {/* ACHIEVEMENTS */}
 
-{
-player.facebook &&
-<a href={player.facebook} target="_blank">
-Facebook
-</a>
-}
+          <div className="profile-table reveal-table reveal-table-1">
 
+            <h2>
+              🏆 ACHIEVEMENTS
+            </h2>
 
 
-{
-player.instagram &&
-<a href={player.instagram} target="_blank">
-Instagram
-</a>
-}
+            <table>
 
+              <thead>
 
+                <tr>
+                  <th>DATE</th>
+                  <th>TIER</th>
+                  <th>TOURNAMENT</th>
+                  <th>PRIZE</th>
+                </tr>
 
-{
-player.youtube &&
-<a href={player.youtube} target="_blank">
-YouTube
-</a>
-}
+              </thead>
 
 
+              <tbody>
 
-{
-player.tiktok &&
-<a href={player.tiktok} target="_blank">
-TikTok
-</a>
-}
+                <tr>
+                  <td>2026</td>
+                  <td>A-Tier</td>
+                  <td>Free Fire Championship</td>
+                  <td>$120</td>
+                </tr>
 
 
-</div>
+                <tr>
+                  <td>2026</td>
+                  <td>A-Tier</td>
+                  <td>Asia Invitational</td>
+                  <td>$181</td>
+                </tr>
 
 
-</div>
+                <tr>
+                  <td>2026</td>
+                  <td>C-Tier</td>
+                  <td>Community Tournament</td>
+                  <td>$48</td>
+                </tr>
 
+              </tbody>
 
+            </table>
 
+          </div>
 
 
 
-<div className="info-box">
+          {/* AWARDS */}
 
+          <div className="profile-table reveal-table reveal-table-2">
 
-<h3>
-TEAM HISTORY
-</h3>
+            <h2>
+              🏅 AWARDS
+            </h2>
 
 
-<p>
-2026 - Present
-<br/>
-<span>
-Over Power Main Team
-</span>
-</p>
+            <table>
 
+              <thead>
 
-</div>
+                <tr>
+                  <th>DATE</th>
+                  <th>AWARD</th>
+                  <th>ORGANIZATION</th>
+                </tr>
 
+              </thead>
 
 
+              <tbody>
 
+                <tr>
+                  <td>2026</td>
+                  <td>Elite Player Award</td>
+                  <td>Over Power Esports</td>
+                </tr>
 
-</aside>
+              </tbody>
 
+            </table>
 
+          </div>
 
 
+        </div>
 
 
+      </div>
 
-<div className="profile-right">
 
+    </section>
 
-
-<div className="profile-table">
-
-
-<h2>
-🏆 ACHIEVEMENTS
-</h2>
-
-
-<table>
-
-<thead>
-
-<tr>
-<th>DATE</th>
-<th>TIER</th>
-<th>TOURNAMENT</th>
-<th>PRIZE</th>
-</tr>
-
-</thead>
-
-
-<tbody>
-
-<tr>
-<td>2026</td>
-<td>A-Tier</td>
-<td>Free Fire Championship</td>
-<td>$120</td>
-</tr>
-
-
-<tr>
-<td>2026</td>
-<td>A-Tier</td>
-<td>Asia Invitational</td>
-<td>$181</td>
-</tr>
-
-
-<tr>
-<td>2026</td>
-<td>C-Tier</td>
-<td>Community Tournament</td>
-<td>$48</td>
-</tr>
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="profile-table">
-
-
-<h2>
-🏅 AWARDS
-</h2>
-
-
-
-<table>
-
-<thead>
-
-<tr>
-<th>DATE</th>
-<th>AWARD</th>
-<th>ORGANIZATION</th>
-</tr>
-
-</thead>
-
-
-<tbody>
-
-<tr>
-<td>2026</td>
-<td>Elite Player Award</td>
-<td>Over Power Esports</td>
-</tr>
-
-</tbody>
-
-
-</table>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</section>
-
-
-)
+  );
 
 }
