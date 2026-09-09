@@ -2955,7 +2955,8 @@ height:200px;
 }
 
 .floating-link:hover {
-  transform: scale(1.14);
+  transform: translateY(-5px) scale(1.15);
+  box-shadow:0 0 25px rgba(255,255,255,.5);
 }
 
 /* WhatsApp */
@@ -3038,9 +3039,19 @@ height:200px;
     font-size: 18px;
   }
 
-  .floating-main-button {
-    width: 56px;
-    height: 56px;
-    font-size: 21px;
-  }
+ .floating-main-button i{
+  animation: pulseIcon 1.8s infinite;
+}
+
+
+@keyframes pulseIcon{
+
+0%,100%{
+ transform:scale(1);
+}
+
+50%{
+ transform:scale(1.15);
+}
+
 }
