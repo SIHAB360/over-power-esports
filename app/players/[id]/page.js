@@ -175,7 +175,7 @@ fixfire: {
   ]
 
 }
-
+};
 
 const { id } = await params;
 
