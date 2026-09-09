@@ -67,12 +67,11 @@ export default function FloatingContact() {
         onClick={() => setOpen(!open)}
       >
 
-        <img
-          src="/headset.png"
-          alt="Contact"
-          className="contact-icon"
-        />
-
+       <img
+  src="/headset.png"
+  alt="Contact"
+  className="contact-icon"
+/>
       </button>
 
 
