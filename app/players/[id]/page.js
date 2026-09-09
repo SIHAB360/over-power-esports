@@ -166,12 +166,12 @@ fixfire: {
   tiktok:"https://tiktok.com/@fixfire09",
 
   youtubeVideos: [
-    "94JjtPH6Rp4",
-    "WiXfH8lHkao",
-    "T9gEdEC1BqA",
-    "S12LAik5ovc",
-    "8jzmVk4sd2Q",
-    "p9Bf-zGCefg"
+    "1L7XQBFOoEk",
+    "s0GGkCVsS3A&t",
+    "igltHVFp93o",
+    "1i7r3yw-LSY",
+    "83X6Ywd07yI",
+    "9q2YYLBJo0E"
   ]
 
 }
