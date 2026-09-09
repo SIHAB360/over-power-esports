@@ -33,6 +33,7 @@ export default function FloatingContact() {
       <div className="floating-links">
 
         {links.map((link)=>(
+
           <a
             key={link.name}
             href={link.url}
@@ -40,8 +41,11 @@ export default function FloatingContact() {
             rel="noopener noreferrer"
             className={`floating-link ${link.className}`}
           >
+
             <i className={link.icon}></i>
+
           </a>
+
         ))}
 
       </div>
@@ -50,7 +54,7 @@ export default function FloatingContact() {
       <button
         type="button"
         className="floating-main-button"
-        onClick={()=>setOpen(!open)}
+        onClick={() => setOpen(!open)}
       >
 
         <img
