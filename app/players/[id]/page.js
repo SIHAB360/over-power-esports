@@ -694,7 +694,34 @@ allowFullScreen
 ></iframe>
 
 </div>
+ 
+<div className="video-card">
 
+<iframe
+
+src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+
+title="Player Highlight 3"
+
+allowFullScreen
+
+></iframe>
+
+</div>
+
+ <div className="video-card">
+
+<iframe
+
+src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+
+title="Player Highlight 3"
+
+allowFullScreen
+
+></iframe>
+
+</div>
 
 
 
