@@ -1565,31 +1565,109 @@ font-weight:bold;
   }
 
 }
-/* Player Profile Entry Animation */
+/* Premium Esports Profile Animation */
 
 .profile-animation{
-  animation: profileEnter 0.9s ease-in-out;
+  position: relative;
+  animation: premiumReveal 1.2s cubic-bezier(.16,1,.3,1);
+  overflow:hidden;
 }
 
 
-@keyframes profileEnter{
+/* Light sweep effect */
 
-  0%{
-    opacity:0;
-    transform:scale(0.96);
-    filter:hue-rotate(120deg);
-  }
+.profile-animation::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+left:-120%;
+
+width:60%;
+height:100%;
+
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,0,60,0.35),
+rgba(0,220,255,0.35),
+transparent
+);
+
+transform:skewX(-25deg);
+
+animation:lightSweep 1.4s ease forwards;
+
+pointer-events:none;
+
+}
 
 
-  50%{
-    filter:hue-rotate(50deg);
-  }
+
+/* Main reveal */
+
+@keyframes premiumReveal{
+
+0%{
+
+opacity:0;
+
+transform:
+translateY(40px)
+scale(.92);
+
+filter:
+blur(10px)
+brightness(.5);
+
+}
 
 
-  100%{
-    opacity:1;
-    transform:scale(1);
-    filter:hue-rotate(0deg);
-  }
+40%{
+
+opacity:1;
+
+filter:
+blur(2px)
+brightness(1.3);
+
+}
+
+
+100%{
+
+transform:
+translateY(0)
+scale(1);
+
+filter:
+blur(0)
+brightness(1);
+
+}
+
+}
+
+
+
+
+/* Neon sweep */
+
+@keyframes lightSweep{
+
+0%{
+
+left:-120%;
+
+}
+
+
+100%{
+
+left:160%;
+
+}
 
 }
