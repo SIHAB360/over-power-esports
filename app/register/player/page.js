@@ -148,7 +148,7 @@ export default function PlayerRegister() {
               name="full_name"
               value={form.full_name}
               onChange={handleChange}
-              placeholder="Enter your full name"
+              placeholder="আপনার নিজের ফুল নাম লিখুন"
             />
             <Field
               label="In-Game Name (IGN)"
@@ -156,7 +156,7 @@ export default function PlayerRegister() {
               name="ign"
               value={form.ign}
               onChange={handleChange}
-              placeholder="Enter your in-game name"
+              placeholder="আপনার গেম আইডি এর নাম লিখুন"
             />
             <Field
               label="Free Fire UID"
@@ -164,7 +164,7 @@ export default function PlayerRegister() {
               name="freefire_uid"
               value={form.freefire_uid}
               onChange={handleChange}
-              placeholder="Enter your Free Fire UID"
+              placeholder="আপনার ফ্রী ফায়ার UID লিখুন"
             />
             <Field
               label="Age"
@@ -173,7 +173,7 @@ export default function PlayerRegister() {
               type="number"
               value={form.age}
               onChange={handleChange}
-              placeholder="Enter your age"
+              placeholder="আপনার বয়স লিখুন"
             />
             <Field
               label="Birth Date"
@@ -241,7 +241,7 @@ export default function PlayerRegister() {
               type="tel"
               value={form.phone}
               onChange={handleChange}
-              placeholder="Enter your phone number"
+              placeholder="আপনার নিজের ফোন নাম্বার লিখুন"
               required
             />
             <Field
@@ -251,14 +251,14 @@ export default function PlayerRegister() {
               type="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Enter your email address"
+              placeholder="আপনার ব্যবহৃত ইমেইল আইডি লিখুন"
             />
             <Field
-              label="Full Address"
+              label="Your Full Address"
               name="full_address"
               value={form.full_address}
               onChange={handleChange}
-              placeholder="Enter your full address"
+              placeholder="আপনার নিজের ফুল অ্যাড্রেস লিখুন"
               textarea
             />
           </section>
@@ -273,7 +273,7 @@ export default function PlayerRegister() {
               name="device"
               value={form.device}
               onChange={handleChange}
-              placeholder="Enter your mobile/device name"
+              placeholder="আপনার ফোনের নাম ও মোডেল"
               required
             />
           </section>
