@@ -2748,231 +2748,256 @@ transform:scale(1.1);
 box-shadow:
 0 0 60px red;
 }
-
-
 /* =========================
-FINAL RESPONSIVE
+FINAL RESPONSIVE FIX
 ========================= */
 
-@media(max-width:1000px){
 
-.profile-layout{
-grid-template-columns:1fr;
-}
-
-.profile-right{
-display:flex;
-flex-direction:column;
-}
-
-.video-gallery{
-height:auto;
-}
-
-.video-grid{
-grid-template-columns:
-repeat(2,minmax(0,1fr));
-
-grid-template-rows:auto;
-}
-
-.video-card,
-.video-card iframe{
-height:auto;
-min-height:230px;
-}
-
-}
-
-
-@media(max-width:900px){
-
-.tournament-container{
-grid-template-columns:1fr;
-}
-
-.game-container{
-grid-template-columns:1fr;
-
-max-width:600px;
-
-gap:30px;
-}
-
-.profile-header{
-flex-direction:column;
-
-gap:25px;
-
-text-align:center;
-}
-
-.winning-card{
-width:100%;
-}
-
-}
-
-
-@media(max-width:800px){
-
-.game-container{
-grid-template-columns:1fr;
-
-gap:30px;
-
-padding:0 15px;
-}
-
-.game-card{
-width:100%;
-
-min-height:420px;
-
-padding:35px 25px;
-}
-
-.games-header h2{
-font-size:32px;
-
-letter-spacing:2px;
-}
-
-.games-header p{
-font-size:13px;
-}
-
-.game-icon{
-font-size:55px;
-}
-
-.game-card h3{
-font-size:24px;
-}
-
-.game-stats{
-grid-template-columns:
-1fr 1fr;
-
-gap:12px;
-
-padding:15px;
-}
-
-.game-stats strong{
-font-size:26px;
-}
-
-.game-status{
-padding:10px 25px;
-}
-
-}
-
-
+/* TABLET + REAL MOBILE ONLY */
 @media(max-width:600px){
+
 
 .teams{
 padding:45px 10px;
 }
 
+
 .teams-title h2{
 font-size:36px;
 }
+
 
 .team-block h3{
 font-size:25px;
 }
 
+
 .player-card{
 width:min(300px,100%);
 }
 
+
+
+/* PLAYER PROFILE */
+
 .esports-profile{
+
 padding:15px;
 
 margin:40px auto;
+
 }
+
+
+
+.profile-header{
+
+flex-direction:column;
+
+text-align:center;
+
+gap:25px;
+
+}
+
+
+
+.winning-card{
+
+width:100%;
+
+}
+
+
+
+.profile-layout{
+
+grid-template-columns:1fr;
+
+}
+
+
 
 .player-heading h1{
+
 font-size:32px;
+
 }
+
+
 
 .player-heading h3{
+
 font-size:20px;
+
 }
+
+
 
 .profile-photo{
+
 height:300px;
+
 }
 
+
+
 .info-item{
+
 grid-template-columns:1fr;
 
 gap:5px;
+
 }
+
+
 
 .info-item strong{
+
 text-align:left;
+
 }
+
+
 
 .uid-action{
+
 justify-content:flex-start;
+
 flex-wrap:wrap;
+
 }
+
+
 
 .profile-social{
+
 grid-template-columns:1fr;
+
 }
 
+
+
 .video-grid{
+
 grid-template-columns:1fr;
+
 grid-template-rows:auto;
+
 }
+
+
 
 .video-card,
 .video-card iframe{
+
 height:auto;
+
 min-height:220px;
+
 }
+
+
 
 .floating-contact{
+
 right:15px;
+
 bottom:15px;
+
 }
+
+
 
 .floating-main-button{
+
 width:60px;
+
 height:60px;
+
 }
+
+
 
 .premium-contact{
+
 padding:50px 20px;
+
 }
+
+
 
 .premium-contact h2{
+
 font-size:30px;
-}
 
 }
 
 
-@media(max-width:500px){
 
-.game-stats{
+/* GAME */
+
+.game-container{
+
 grid-template-columns:1fr;
+
+gap:30px;
+
+padding:0 15px;
+
 }
+
+
 
 .game-card{
+
+width:100%;
+
 min-height:auto;
+
+padding:35px 25px;
+
 }
 
-.games{
-padding:60px 15px;
-}
+
 
 .games-header h2{
+
 font-size:28px;
+
 }
+
+
+
+.game-stats{
+
+grid-template-columns:1fr;
+
+}
+
+
+
+}
+
+
+
+/* SMALL MOBILE */
+
+@media(max-width:400px){
+
+
+.game-stats{
+
+grid-template-columns:1fr;
+
+}
+
+
+.player-card{
+
+width:100%;
+
+}
+
 
 }
