@@ -17,90 +17,155 @@ export async function POST(request){
     const formData = await request.formData();
 
 
+    const requiredFields = [
+      "full_name",
+      "ign",
+      "freefire_uid",
+      "email",
+      "phone",
+      "age",
+      "birth_date",
+      "primary_role",
+      "secondary_role",
+      "device",
+      "internet_connection",
+      "practice_time",
+      "game_experience",
+      "tournament_experience",
+      "joining_date",
+      "average_br_kd_rate",
+      "expert_weapon",
+      "previous_team",
+      "social_media_link",
+      "full_address",
+      "team_name"
+    ];
+
+
+
+    for(const field of requiredFields){
+
+      const value = formData.get(field);
+
+
+      if(!value || value.toString().trim() === ""){
+
+        return NextResponse.json({
+
+          success:false,
+          message:`${field} is required`
+
+        });
+
+      }
+
+    }
+
+
+
+
     const profileImage = formData.get("profile_image");
+
     const gameScreenshot = formData.get("game_id_screenshot");
 
 
 
-    let profileImageUrl = null;
-    let gameScreenshotUrl = null;
+    if(!profileImage || profileImage.size === 0){
+
+      return NextResponse.json({
+
+        success:false,
+        message:"Profile image is required"
+
+      });
+
+    }
 
 
 
-    // Upload Profile Image
+    if(!gameScreenshot || gameScreenshot.size === 0){
 
-    if(profileImage && profileImage.size > 0){
+      return NextResponse.json({
 
+        success:false,
+        message:"Game ID screenshot is required"
 
-      const fileName =
-      `profile-${Date.now()}-${profileImage.name}`;
-
-
-
-      const { error } = await supabase.storage
-      .from("player-images")
-      .upload(fileName, profileImage);
-
-
-
-      if(error){
-
-        throw error;
-
-      }
-
-
-
-      const { data } =
-      supabase.storage
-      .from("player-images")
-      .getPublicUrl(fileName);
-
-
-
-      profileImageUrl = data.publicUrl;
-
+      });
 
     }
 
 
 
 
-    // Upload Game Screenshot
+    // Upload profile image
 
-    if(gameScreenshot && gameScreenshot.size > 0){
-
-
-      const fileName =
-      `game-${Date.now()}-${gameScreenshot.name}`;
+    const profileFileName =
+    `profile-${Date.now()}-${profileImage.name}`;
 
 
 
-      const { error } = await supabase.storage
-      .from("game-screenshots")
-      .upload(fileName, gameScreenshot);
+    const {error:profileError}=await supabase.storage
+
+    .from("player-images")
+
+    .upload(profileFileName,profileImage);
 
 
 
-      if(error){
+    if(profileError){
 
-        throw error;
-
-      }
-
-
-
-      const { data } =
-      supabase.storage
-      .from("game-screenshots")
-      .getPublicUrl(fileName);
-
-
-
-      gameScreenshotUrl = data.publicUrl;
-
+      throw profileError;
 
     }
+
+
+
+    const {data:profileURL}=
+
+    supabase.storage
+
+    .from("player-images")
+
+    .getPublicUrl(profileFileName);
+
+
+
+
+
+
+    // Upload game screenshot
+
+
+    const screenshotFileName =
+    `game-${Date.now()}-${gameScreenshot.name}`;
+
+
+
+    const {error:screenshotError}=await supabase.storage
+
+    .from("game-screenshots")
+
+    .upload(screenshotFileName,gameScreenshot);
+
+
+
+    if(screenshotError){
+
+      throw screenshotError;
+
+    }
+
+
+
+    const {data:screenshotURL}=
+
+    supabase.storage
+
+    .from("game-screenshots")
+
+    .getPublicUrl(screenshotFileName);
+
+
 
 
 
@@ -118,7 +183,9 @@ export async function POST(request){
 
       phone: formData.get("phone"),
 
-      age: formData.get("age"),
+
+      age: Number(formData.get("age")),
+
 
       birth_date: formData.get("birth_date"),
 
@@ -151,9 +218,9 @@ export async function POST(request){
       team_name: formData.get("team_name"),
 
 
-      profile_image: profileImageUrl,
+      profile_image: profileURL.publicUrl,
 
-      game_id_screenshot: gameScreenshotUrl
+      game_id_screenshot: screenshotURL.publicUrl
 
 
     };
@@ -162,9 +229,12 @@ export async function POST(request){
 
 
 
-    const { data, error } = await supabase
+    const {data,error}=await supabase
+
     .from("players")
+
     .insert([playerData])
+
     .select();
 
 
@@ -178,10 +248,11 @@ export async function POST(request){
 
 
 
-
     return NextResponse.json({
 
       success:true,
+
+      message:"Registration Successful",
 
       data
 
@@ -190,6 +261,7 @@ export async function POST(request){
 
 
   }
+
   catch(error){
 
 
