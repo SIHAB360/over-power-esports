@@ -2267,12 +2267,9 @@ transform:scale(1.6);
 
 
 }
-
-
-
-
-
-/* LIVE STATS LABEL */
+/* =========================
+LIVE STATS LABEL
+========================= */
 
 
 .game-card::before{
@@ -2285,32 +2282,51 @@ top:15px;
 
 left:15px;
 
-padding:5px 12px;
+
+padding:6px 14px;
+
 
 font-size:10px;
 
+
 font-weight:900;
+
 
 letter-spacing:1px;
 
+
 color:white;
 
-background:#ff2020;
+
+background:
+
+linear-gradient(
+135deg,
+#ff2020,
+#990000
+);
+
 
 border-radius:20px;
 
+
 box-shadow:
 
-0 0 15px red;
+0 0 20px red;
 
-z-index:2;
+
+z-index:3;
+
 
 }
 
 
 
 
-/* COUNTER NUMBER */
+
+/* =========================
+COUNTER NUMBER GLOW
+========================= */
 
 
 .game-stats strong{
@@ -2354,7 +2370,7 @@ numberGlow 2s infinite;
 
 text-shadow:
 
-0 0 8px red;
+0 0 10px red;
 
 
 }
@@ -2366,12 +2382,11 @@ text-shadow:
 
 text-shadow:
 
-0 0 20px red,
-0 0 40px rgba(255,0,0,.8);
+0 0 25px red,
+0 0 45px rgba(255,0,0,.8);
 
 
 }
-
 
 
 }
@@ -2395,39 +2410,73 @@ transition:.3s;
 
 
 }
-/* PREMIUM CARD GLOW */
-
-.game-card::after{
-
-content:"";
-
-position:absolute;
-
-inset:0;
 
 
-border-radius:25px;
 
 
-background:
 
-radial-gradient(
-circle at top right,
-rgba(255,0,0,.25),
-transparent 35%
-);
+/* =========================
+PREMIUM CARD LIGHT EFFECT
+========================= */
 
 
-opacity:.8;
+.game-card{
 
-pointer-events:none;
+
+position:relative;
+
+
+overflow:hidden;
 
 
 }
 
 
 
+
+.game-card::after{
+
+
+content:"";
+
+
+position:absolute;
+
+
+top:0;
+
+
+right:0;
+
+
+width:120px;
+
+
+height:120px;
+
+
+
+background:
+
+radial-gradient(
+circle,
+rgba(255,0,0,.35),
+transparent 70%
+);
+
+
+
+pointer-events:none;
+
+
+
+}
+
+
+
+
 .game-card:hover{
+
 
 transform:
 
@@ -2435,8 +2484,10 @@ translateY(-12px)
 scale(1.03);
 
 
+
 box-shadow:
 
 0 0 60px rgba(255,0,0,.7);
+
 
 }
