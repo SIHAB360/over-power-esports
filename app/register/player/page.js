@@ -519,8 +519,37 @@ export default function PlayerRegister() {
         * {
           box-sizing: border-box;
         }
+.op-header h1 {
+  margin: 12px 0 4px;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  background: linear-gradient(
+    90deg,
+    #ff0033,
+    #ff4d6d,
+    #ffffff,
+    #ff4d6d,
+    #ff0033
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShine 3.5s linear infinite;
+}
 
-       /* ========== PREMIUM SECTION ========== */
+@keyframes titleShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+
+      /* ========== PREMIUM SECTION ========== */
 .op-section {
   background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
   border: 1px solid rgba(255, 30, 50, 0.22);
