@@ -3029,17 +3029,52 @@ width:100%;
 
 }
 /* =========================
-MOBILE FLOATING CONTACT
+   TOURNAMENT MOBILE FIX
 ========================= */
 
-@media(max-width:600px){
+.tournament-container{
 
-.floating-contact{
+width:100%;
 
-right:15px;
-
-bottom:15px;
+max-width:1100px;
 
 }
+
+
+@media(max-width:900px){
+
+.tournament-container{
+
+grid-template-columns:1fr;
+
+width:100%;
+
+padding:0 10px;
+
+}
+
+
+.tournament-card{
+
+width:100%;
+
+max-width:100%;
+
+}
+
+
+.tournament-card h3{
+
+font-size:22px;
+
+}
+
+
+.tournament-info{
+
+width:100%;
+
+}
+
 
 }
