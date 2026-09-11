@@ -1,14 +1,34 @@
 export default function Games(){
 
-const games = [
+const games=[
+
 {
-title:"Free Fire",
+title:"Free Fire Main Team",
 icon:"🔥",
-description:"Free Fire Competitive Team",
-tournaments:"25+",
-wins:"15+",
-status:"Active Division"
+description:"Free Fire Competitive Division",
+
+tournaments:"75+",
+championRush:"30+",
+scrims:"60+",
+wins:"40+",
+
+status:"Active Roster"
+},
+
+
+{
+title:"Free Fire Elite Team",
+icon:"⚡",
+description:"Free Fire Competitive Division",
+
+tournaments:"90+",
+championRush:"30+",
+scrims:"60+",
+wins:"35+",
+
+status:"Active Roster"
 }
+
 ];
 
 
@@ -37,17 +57,12 @@ Power • Unity • Victory
 {
 games.map((game,index)=>(
 
-<div 
-className="game-card"
-key={index}
->
 
+<div className="game-card" key={index}>
 
 
 <div className="game-icon">
-
 {game.icon}
-
 </div>
 
 
@@ -59,10 +74,9 @@ key={index}
 
 
 <p className="game-description">
-
 {game.description}
-
 </p>
+
 
 
 
@@ -70,39 +84,27 @@ key={index}
 
 
 <div>
-
-<span>
-🏆
-</span>
-
-<p>
-Tournaments
-</p>
-
-<strong>
-{game.tournaments}
-</strong>
-
+<p>Tournaments</p>
+<strong>{game.tournaments}</strong>
 </div>
-
 
 
 <div>
-
-<span>
-🥇
-</span>
-
-<p>
-Wins
-</p>
-
-<strong>
-{game.wins}
-</strong>
-
+<p>Champion Rush</p>
+<strong>{game.championRush}</strong>
 </div>
 
+
+<div>
+<p>Scrims</p>
+<strong>{game.scrims}</strong>
+</div>
+
+
+<div>
+<p>Wins</p>
+<strong>{game.wins}</strong>
+</div>
 
 
 </div>
@@ -118,6 +120,7 @@ Wins
 
 
 </div>
+
 
 ))
 
