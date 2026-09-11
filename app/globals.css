@@ -1601,3 +1601,214 @@ gap:15px;
 
 
 }
+/* =========================
+TOURNAMENT SECTION
+========================= */
+
+.tournaments{
+
+padding:90px 20px;
+
+text-align:center;
+
+}
+
+
+.tournament-header h2,
+.tournaments > h2{
+
+font-size:45px;
+
+color:white;
+
+text-shadow:0 0 20px red;
+
+margin-bottom:15px;
+
+}
+
+
+
+.tournament-header p{
+
+color:#aaa;
+
+margin-bottom:40px;
+
+}
+
+
+
+.tournament-container{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:30px;
+
+max-width:1100px;
+
+margin:40px auto;
+
+}
+
+
+
+.tournament-card{
+
+background:
+
+linear-gradient(
+145deg,
+#220000,
+#050505
+);
+
+
+border:1px solid red;
+
+border-radius:20px;
+
+padding:30px;
+
+
+box-shadow:
+
+0 0 30px rgba(255,0,0,.3);
+
+
+transition:.35s;
+
+}
+
+
+
+.tournament-card:hover{
+
+transform:translateY(-10px);
+
+
+box-shadow:
+
+0 0 50px red;
+
+}
+
+
+
+.tournament-top{
+
+display:flex;
+
+justify-content:space-between;
+
+}
+
+
+
+.status{
+
+background:red;
+
+padding:6px 15px;
+
+border-radius:20px;
+
+font-size:12px;
+
+}
+
+
+
+.tournament-icon{
+
+font-size:30px;
+
+}
+
+
+
+.tournament-card h3{
+
+margin:25px 0;
+
+color:white;
+
+}
+
+
+
+.tournament-info{
+
+background:#111;
+
+padding:15px;
+
+border-radius:12px;
+
+}
+
+
+
+.tournament-info p{
+
+color:#ddd;
+
+}
+
+
+
+.tournament-card button,
+.join-card button{
+
+
+margin-top:20px;
+
+padding:12px 30px;
+
+border:none;
+
+border-radius:30px;
+
+
+background:red;
+
+color:white;
+
+font-weight:bold;
+
+
+box-shadow:0 0 20px red;
+
+}
+
+
+
+.join-card{
+
+max-width:700px;
+
+margin:60px auto;
+
+padding:40px;
+
+background:#150000;
+
+border:1px solid red;
+
+border-radius:25px;
+
+}
+
+
+
+@media(max-width:900px){
+
+.tournament-container{
+
+grid-template-columns:1fr;
+
+}
+
+}
