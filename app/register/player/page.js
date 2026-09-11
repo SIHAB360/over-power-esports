@@ -982,10 +982,6 @@ export default function PlayerRegister() {
         }
 
         @media (max-width: 600px) {
-         /* পুরনোটা মুছে দিবে */
-.op-registration-page {
-  ...
-}
 
 /* নতুনটা বসাবে */
 .op-registration-page {
