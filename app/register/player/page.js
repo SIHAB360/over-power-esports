@@ -521,9 +521,9 @@ export default function PlayerRegister() {
         }
 .op-header h1 {
   margin: 12px 0 4px;
-  font-size: 34px;
+  font-size: 50px;
   font-weight: 900;
-  letter-spacing: 3px;
+  letter-spacing: 5px;
   background: linear-gradient(
     90deg,
     #ff0033,
