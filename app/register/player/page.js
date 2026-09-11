@@ -589,7 +589,7 @@ export default function PlayerRegister() {
   color: #e0e0e0;
   font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.7px;
 }
 
 .op-input,
@@ -904,16 +904,69 @@ export default function PlayerRegister() {
         }
 
         @media (max-width: 600px) {
-          .op-registration-page {
-            padding: 15px 10px 40px;
-          }
-          .op-header h1 {
-            font-size: 26px;
-          }
-          .op-section {
-            padding: 20px 16px;
-          }
-        }
+         /* পুরনোটা মুছে দিবে */
+.op-registration-page {
+  ...
+}
+
+/* নতুনটা বসাবে */
+.op-registration-page {
+  min-height: 100vh;
+  background: 
+    radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(180, 0, 20, 0.55) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 0% 30%,
+      rgba(120, 0, 15, 0.35) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 100% 40%,
+      rgba(120, 0, 15, 0.3) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      #2a0008 0%,
+      #120005 45%,
+      #050505 100%
+    );
+  padding: 40px 15px 80px;
+  color: white;
+  font-family: Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.op-registration-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 20, 40, 0.06) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 20, 40, 0.05) 0%,
+      transparent 40%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.op-registration-container {
+  position: relative;
+  z-index: 1;
+}
       `}</style>
     </main>
   );
