@@ -501,18 +501,19 @@ export default function PlayerRegister() {
   border: 1px solid rgba(255, 30, 50, 0.18);
   border-left: 4px solid #e90018;
   border-radius: 18px;
-  padding: 36px 28px 32px;          /* আগে কম ছিল */
-  margin-bottom: 28px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55),
-              0 0 30px rgba(233, 0, 24, 0.06),
-              inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  padding: 40px 30px 36px;
+  margin-bottom: 30px;
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.55),
+    0 0 30px rgba(233, 0, 24, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
 .op-section h2 {
-  margin: 0 0 32px;                 /* বেশি gap */
+  margin: 0 0 36px;
   text-align: center;
   color: #ff2032;
   font-size: 20px;
@@ -529,6 +530,48 @@ export default function PlayerRegister() {
   height: 2px;
   background: linear-gradient(90deg, transparent, #e90018, transparent);
   margin: 14px auto 0;
+}
+
+/* ========== FIELD SPACING (সবচেয়ে গুরুত্বপূর্ণ) ========== */
+.field {
+  margin-bottom: 28px !important;
+}
+
+.field:last-child {
+  margin-bottom: 0 !important;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 10px !important;
+  color: #e5e5e5;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.op-input,
+.op-textarea {
+  width: 100%;
+  padding: 16px 18px !important;
+  border-radius: 12px;
+  border: 1px solid #2c2c2c;
+  background: #0b0b0b;
+  color: white;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+.op-input:focus,
+.op-textarea:focus {
+  border-color: #e90018;
+  background: #111;
+  box-shadow: 
+    0 0 0 3px rgba(233, 0, 24, 0.2),
+    0 0 24px rgba(233, 0, 24, 0.15),
+    inset 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* ========== FIELD SPACING ========== */
