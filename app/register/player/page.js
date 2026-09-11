@@ -990,28 +990,7 @@ export default function PlayerRegister() {
 /* নতুনটা বসাবে */
 .op-registration-page {
   min-height: 100vh;
-  background: 
-    radial-gradient(
-      ellipse 80% 50% at 50% -20%,
-      rgba(180, 0, 20, 0.55) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 0% 30%,
-      rgba(120, 0, 15, 0.35) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 100% 40%,
-      rgba(120, 0, 15, 0.3) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      #2a0008 0%,
-      #120005 45%,
-      #050505 100%
-    );
+  background: #050505;
   padding: 40px 15px 80px;
   color: white;
   font-family: Arial, sans-serif;
@@ -1019,7 +998,26 @@ export default function PlayerRegister() {
   overflow-x: hidden;
 }
 
+/* মেইন মুভিং গ্রেডিয়েন্ট */
 .op-registration-page::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(180, 0, 30, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(120, 0, 40, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(255, 20, 50, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(90, 0, 20, 0.3) 0%, transparent 40%);
+  animation: bgMove 18s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* দ্বিতীয় লেয়ার (আরও soft glow) */
+.op-registration-page::after {
   content: "";
   position: fixed;
   top: 0;
@@ -1027,16 +1025,8 @@ export default function PlayerRegister() {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(255, 20, 40, 0.06) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(255, 20, 40, 0.05) 0%,
-      transparent 40%
-    );
+    radial-gradient(ellipse at top, rgba(255, 0, 40, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(80, 0, 15, 0.2) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -1045,9 +1035,17 @@ export default function PlayerRegister() {
   position: relative;
   z-index: 1;
 }
-      `}</style>
-    </main>
-  );
+
+@keyframes bgMove {
+  0% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  50% {
+    transform: translate(-5%, 3%) scale(1.05);
+  }
+  100% {
+    transform: translate(4%, -4%) scale(1.02);
+  }
 }
 
 /* INPUT COMPONENT */
