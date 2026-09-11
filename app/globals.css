@@ -2395,10 +2395,7 @@ transition:.3s;
 
 
 }
-/* =========================
-ACTIVE ROSTER PREMIUM
-========================= */
-
+/* PREMIUM CARD GLOW */
 
 .game-card::after{
 
@@ -2406,53 +2403,40 @@ content:"";
 
 position:absolute;
 
-top:0;
+inset:0;
 
-left:-120%;
 
-width:60%;
+border-radius:25px;
 
-height:100%;
 
 background:
 
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.15),
-transparent
+radial-gradient(
+circle at top right,
+rgba(255,0,0,.25),
+transparent 35%
 );
 
-transform:skewX(-20deg);
 
-animation:
+opacity:.8;
 
-cardShine 3s infinite;
+pointer-events:none;
+
 
 }
 
 
 
-@keyframes cardShine{
+.game-card:hover{
 
-0%{
+transform:
 
-left:-120%;
-
-}
-
-
-50%{
-
-left:150%;
-
-}
+translateY(-12px)
+scale(1.03);
 
 
-100%{
+box-shadow:
 
-left:150%;
-
-}
+0 0 60px rgba(255,0,0,.7);
 
 }
