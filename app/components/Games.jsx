@@ -12,7 +12,7 @@ useEffect(()=>{
 
 let start=0;
 
-const end=parseInt(value);
+const end=value;
 
 const duration=1200;
 
@@ -20,6 +20,7 @@ const increment=end/(duration/30);
 
 
 const timer=setInterval(()=>{
+
 
 start+=increment;
 
@@ -53,6 +54,7 @@ return()=>clearInterval(timer);
 return <strong>{count}+</strong>;
 
 }
+
 
 
 
@@ -98,7 +100,6 @@ return(
 <section className="games">
 
 
-
 <div className="games-header">
 
 <h2>
@@ -114,7 +115,6 @@ Power • Unity • Victory
 
 
 
-
 <div className="game-container">
 
 
@@ -124,6 +124,19 @@ games.map((game,index)=>(
 
 
 <div className="game-card" key={index}>
+
+
+
+<div className="live-badge">
+
+<span className="live-dot"></span>
+
+LIVE
+
+</div>
+
+
+
 
 
 <div className="game-icon">
@@ -167,6 +180,7 @@ Tournaments
 <Counter value={game.tournaments}/>
 
 </div>
+
 
 
 
