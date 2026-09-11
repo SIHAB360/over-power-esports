@@ -1,55 +1,134 @@
 export default function Games(){
 
-  return(
-
-    <section className="games">
-
-      <h2>
-        OP Believe in Domination
-      </h2>
-
-
-      <div className="game-container">
-
-        <div className="game-card">
+const games = [
+{
+title:"Free Fire",
+icon:"🔥",
+description:"Free Fire Competitive Team",
+tournaments:"25+",
+wins:"15+",
+status:"Active Division"
+}
+];
 
 
-          <h3>
-            🔥 Free Fire
-          </h3>
+return(
+
+<section className="games">
 
 
-          <p>
-            Free Fire Competitive Team
-          </p>
+<div className="games-header">
+
+<h2>
+OP Believe in Domination
+</h2>
+
+<p>
+Power • Unity • Victory
+</p>
+
+</div>
 
 
-          <div className="game-stats">
 
-            <p>
-              🏆 Tournaments: 25+
-            </p>
+<div className="game-container">
 
 
-            <p>
-              🥇 Wins: 15+
-            </p>
+{
+games.map((game,index)=>(
 
-          </div>
-
-
-          <span>
-            Active Division
-          </span>
+<div 
+className="game-card"
+key={index}
+>
 
 
-        </div>
 
-      </div>
+<div className="game-icon">
+
+{game.icon}
+
+</div>
 
 
-    </section>
 
-  )
+<h3>
+{game.title}
+</h3>
+
+
+
+<p className="game-description">
+
+{game.description}
+
+</p>
+
+
+
+<div className="game-stats">
+
+
+<div>
+
+<span>
+🏆
+</span>
+
+<p>
+Tournaments
+</p>
+
+<strong>
+{game.tournaments}
+</strong>
+
+</div>
+
+
+
+<div>
+
+<span>
+🥇
+</span>
+
+<p>
+Wins
+</p>
+
+<strong>
+{game.wins}
+</strong>
+
+</div>
+
+
+
+</div>
+
+
+
+<div className="game-status">
+
+{game.status}
+
+</div>
+
+
+
+</div>
+
+))
+
+}
+
+
+</div>
+
+
+</section>
+
+)
 
 }
