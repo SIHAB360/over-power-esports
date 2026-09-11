@@ -3,26 +3,26 @@ export default function Tournaments(){
 const tournaments=[
 
 {
-name:"OP Championship 2026",
-game:"Valorant",
-prize:"$10,000",
-status:"Upcoming",
+name:"Pro Leguage S4 2026",
+game:"Battel Royal",
+prize:"10,00000 BDT",
+status:"Running",
 icon:"🔥"
 },
 
 {
-name:"Power Clash Cup",
-game:"CS2",
-prize:"$5,000",
+name:"Free Fire World Series 2026",
+game:"Battel Royal",
+prize:"20,00000 BDT",
 status:"Live",
 icon:"⚡"
 },
 
 {
-name:"Winter Battle Arena",
-game:"PUBG Mobile",
-prize:"$3,000",
-status:"Completed",
+name:"Metal Blade Champion Rush",
+game:"Live Cast",
+prize:"100,000 BDT",
+status:"UPCOMING",
 icon:"🏆"
 }
 
