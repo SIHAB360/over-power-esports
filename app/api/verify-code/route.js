@@ -43,7 +43,9 @@ export async function POST(request) {
 
       .single();
 
-
+console.log("INPUT CODE:", cleanCode);
+console.log("DATABASE DATA:", data);
+console.log("DATABASE ERROR:", error);
 
     if (error || !data) {
 
