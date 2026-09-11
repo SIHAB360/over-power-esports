@@ -31,6 +31,9 @@ team_name:""
 });
 
 
+const [profileImage,setProfileImage] = useState(null);
+const [gameScreenshot,setGameScreenshot] = useState(null);
+
 const [message,setMessage]=useState("");
 
 
@@ -48,11 +51,9 @@ setForm({
 
 function handleWeapon(e){
 
-let value = e.target.value;
-
 setForm({
 ...form,
-expert_weapon:value
+expert_weapon:e.target.value
 });
 
 }
@@ -64,20 +65,52 @@ async function submit(e){
 e.preventDefault();
 
 
-const res = await fetch("/api/register-player",{
+const formData = new FormData();
 
-method:"POST",
 
-headers:{
-"Content-Type":"application/json"
-},
 
-body:JSON.stringify(form)
+Object.keys(form).forEach((key)=>{
+
+formData.append(key,form[key]);
 
 });
 
 
+
+if(profileImage){
+
+formData.append(
+"profile_image",
+profileImage
+);
+
+}
+
+
+
+if(gameScreenshot){
+
+formData.append(
+"game_id_screenshot",
+gameScreenshot
+);
+
+}
+
+
+
+const res = await fetch("/api/register-player",{
+
+method:"POST",
+
+body:formData
+
+});
+
+
+
 const data = await res.json();
+
 
 
 if(data.success){
@@ -85,11 +118,13 @@ if(data.success){
 setMessage("Registration Successful");
 
 }
+
 else{
 
 setMessage(data.message);
 
 }
+
 
 }
 
@@ -105,30 +140,39 @@ PLAYER REGISTRATION
 </h1>
 
 
+
 <form onSubmit={submit}>
 
 
 <input name="full_name" placeholder="Player Name" onChange={handleChange}/>
 
+
 <input name="ign" placeholder="In Game Name (IGN)" onChange={handleChange}/>
+
 
 <input name="freefire_uid" placeholder="Free Fire UID" onChange={handleChange}/>
 
+
 <input name="email" placeholder="Email Address" onChange={handleChange}/>
 
+
 <input name="phone" placeholder="Phone Number" onChange={handleChange}/>
+
 
 <input name="age" placeholder="Age" onChange={handleChange}/>
 
 
 
-<label>Birth Date</label>
+<label>
+Birth Date
+</label>
 
 <input 
 type="date"
 name="birth_date"
 onChange={handleChange}
 />
+
 
 
 
@@ -197,6 +241,7 @@ Sniper
 
 
 
+
 <input name="device" placeholder="Device" onChange={handleChange}/>
 
 
@@ -212,9 +257,17 @@ Sniper
 <input name="tournament_experience" placeholder="Tournament Experience" onChange={handleChange}/>
 
 
-<label>Joining Date</label>
 
-<input type="date" name="joining_date" onChange={handleChange}/>
+<label>
+Joining Date
+</label>
+
+<input 
+type="date"
+name="joining_date"
+onChange={handleChange}
+/>
+
 
 
 
@@ -251,6 +304,7 @@ AWM
 
 
 
+
 <input name="previous_team" placeholder="Previous Team" onChange={handleChange}/>
 
 
@@ -263,11 +317,13 @@ onChange={handleChange}
 
 
 
+
 <input
 name="social_media_link"
 placeholder="Social Media Link"
 onChange={handleChange}
 />
+
 
 
 
@@ -279,15 +335,40 @@ onChange={handleChange}
 
 
 
+<h3>Profile Image</h3>
+
+<input
+type="file"
+accept="image/*"
+onChange={(e)=>setProfileImage(e.target.files[0])}
+/>
+
+
+
+<h3>Game ID Screenshot</h3>
+
+<input
+type="file"
+onChange={(e)=>setGameScreenshot(e.target.files[0])}
+/>
+
+
+
+
 <button>
 Submit
 </button>
 
 
+
 </form>
 
 
-<p>{message}</p>
+
+<p>
+{message}
+</p>
+
 
 
 </main>
