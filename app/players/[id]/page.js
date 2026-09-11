@@ -186,28 +186,28 @@ youtubeVideos:[
 
 foysal:{
 
-name:"FOYSAL",
-ign:"FOYSAL",
-uid:"",
+name:"MD FOYSAL",
+ign:"OP RF NTC",
+uid:"2628615876",
 
-role:"PRIMARY",
+role:"PRIMARY RUSHER",
 team:"OVER POWER ELITE",
 
-experience:"",
-profession:"",
-age:"",
+experience:"1 YEAR",
+profession:"OUT OF COUNTRY",
+age:"23",
 
-nationality:"Bangladesh 🇧🇩",
-location:"Dhaka",
+nationality:"Malaysia",
+location:"Kuala Lampur",
 status:"Active",
 
 image:"/players/rfntc.png",
-winnings:"$0",
+winnings:"$14,365",
 
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"",
-youtube:"",
-tiktok:"",
+facebook:"https://www.facebook.com/share/1GyYZjBWmZ/",
+instagram:"https://www.instagram.com/md_rasel._123?stkn=MTY5ZjBtbDEwZWtweA==",
+youtube:"https://www.youtube.com/@EmranKhan-y1p4s",
+tiktok:"tiktok.com/@emran.khan3103",
 
 youtubeVideos:[]
 
@@ -217,16 +217,16 @@ youtubeVideos:[]
 
 jellal:{
 
-name:"JELLAL",
-ign:"JELLAL",
-uid:"",
+name:"SHAWON AHMED",
+ign:"OP JELLAL",
+uid:"6587036423",
 
-role:"SECONDARY",
+role:"SECONDARY RUSHER",
 team:"OVER POWER ELITE",
 
-experience:"",
-profession:"",
-age:"",
+experience:"6 MONTH",
+profession:"JOB HOLDER",
+age:"21",
 
 nationality:"Bangladesh 🇧🇩",
 location:"Dhaka",
@@ -240,7 +240,14 @@ instagram:"",
 youtube:"",
 tiktok:"",
 
-youtubeVideos:[]
+youtubeVideos:[
+   "sOU0G3abc0M",
+   "Q_qe4D70jFE",
+   "w2hgp0jga1w",
+   "lQZ8SeM75Mg",
+   "EJZTmnixjIg",
+   "_Cg-g_K-6ic"
+]
 
 },
 
@@ -248,16 +255,16 @@ youtubeVideos:[]
 
 sojib:{
 
-name:"SOJIB",
+name:"MD SOJIB",
 ign:"SOJIB",
 uid:"",
 
 role:"BOMBER",
 team:"OVER POWER ELITE",
 
-experience:"",
-profession:"",
-age:"",
+experience:"1 YEAR",
+profession:"STUDENT",
+age:"18",
 
 nationality:"Bangladesh 🇧🇩",
 location:"Dhaka",
@@ -271,7 +278,14 @@ instagram:"",
 youtube:"",
 tiktok:"",
 
-youtubeVideos:[]
+youtubeVideos:[
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+]
 
 },
 
@@ -279,30 +293,37 @@ youtubeVideos:[]
 
 nafiz:{
 
-name:"NAFIZ",
-ign:"NAFIZ",
-uid:"",
+name:"MD NAFIZ",
+ign:"NXE NAFIZ",
+uid:"5540170894",
 
 role:"SUPPORTER",
 team:"OVER POWER ELITE",
 
-experience:"",
-profession:"",
-age:"",
+experience:"1 YEAR",
+profession:"STUDENT",
+age:"22",
 
 nationality:"Bangladesh 🇧🇩",
 location:"Dhaka",
 status:"Active",
 
 image:"/players/nafiz.jpeg",
-winnings:"$0",
+winnings:"$10,250",
 
-facebook:"",
-instagram:"",
-youtube:"",
-tiktok:"",
+facebook:"https://www.facebook.com/share/1FrtytpbHg/",
+instagram:"https://www.instagram.com/nxe_nafiz_00?stkn=MWVpNHd3OTg5bGZ1Yg==",
+youtube:"https://www.youtube.com/@MdBijoy-t7m",
+tiktok:"https://www.tiktok.com/@md.bijoy4059?_r=1&_t=ZS-99aN1LHLXrc",
 
-youtubeVideos:[]
+youtubeVideos:[
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+]
 
 },
 
@@ -310,30 +331,37 @@ youtubeVideos:[]
 
 baymax:{
 
-name:"BAYMAX",
-ign:"BAYMAX",
-uid:"",
+name:"SAIF AHMED ",
+ign:"OP BAYMAX",
+uid:"15767917163",
 
 role:"SNIPER",
 team:"OVER POWER ELITE",
 
-experience:"",
-profession:"",
-age:"",
+experience:"4 MONTH",
+profession:"STUDENT",
+age:"20",
 
 nationality:"Bangladesh 🇧🇩",
 location:"Dhaka",
 status:"Active",
 
 image:"/players/baymax.png",
-winnings:"$0",
+winnings:"$6,500",
 
-facebook:"",
-instagram:"",
-youtube:"",
+facebook:"https://www.facebook.com/share/18E6u8Mo18/",
+instagram:"https://www.instagram.com/_mhs_1037?stkn=eTRybnAyb2c1Zmxn",
+youtube:"https://youtube.com/@mhsgaming211?si=3JJBWuI_a_a5KRpt",
 tiktok:"",
 
-youtubeVideos:[]
+youtubeVideos:[
+   "yDz2FzDJFc0",
+   "u2wJUDb72xc&rco",
+   "u2wJUDb72xc&rco",
+   "yDz2FzDJFc0",
+   "yDz2FzDJFc0",
+   "DDfeZfVBJzQ"
+]
 
 }
 
@@ -722,7 +750,6 @@ TikTok
 
 
 <div className="profile-right">
-  id="part3"
 {/* ACHIEVEMENTS */}
 
 
