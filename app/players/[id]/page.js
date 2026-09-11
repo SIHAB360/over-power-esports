@@ -1,6 +1,4 @@
 import CopyUID from "../../components/CopyUID";
-import CopyUID from "../../components/CopyUID";
-
 
 // এখানে বসাবেন
 function getExperience(joinDate){ 
