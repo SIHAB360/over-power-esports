@@ -4,83 +4,94 @@ import { useState } from "react";
 
 export default function PlayerRegister(){
 
-  const [form,setForm] = useState({
+const [form,setForm] = useState({
 
-    full_name:"",
-    ign:"",
-    freefire_uid:"",
-    email:"",
-    phone:"",
-    age:"",
-    birth_date:"",
-    primary_role:"",
-    secondary_role:"",
-    device:"",
-    internet_connection:"",
-    practice_time:"",
-    game_experience:"",
-    tournament_experience:"",
-    joining_date:"",
-    average_br_kd_rate:"",
-    expert_weapon:"",
-    previous_team:"",
-    social_media_link:"",
-    full_address:"",
-    team_name:""
+full_name:"",
+ign:"",
+freefire_uid:"",
+email:"",
+phone:"",
+age:"",
+birth_date:"",
+primary_role:"",
+secondary_role:"",
+device:"",
+internet_connection:"",
+practice_time:"",
+game_experience:"",
+tournament_experience:"",
+joining_date:"",
+average_br_kd_rate:"",
+expert_weapon:"",
+previous_team:"",
+social_media_link:"",
+full_address:"",
+team_name:""
 
-  });
-
-
-  const [message,setMessage]=useState("");
+});
 
 
-
-  function handleChange(e){
-
-    setForm({
-
-      ...form,
-      [e.target.name]:e.target.value
-
-    });
-
-  }
+const [message,setMessage]=useState("");
 
 
 
-  async function submit(e){
+function handleChange(e){
 
-    e.preventDefault();
+setForm({
+...form,
+[e.target.name]:e.target.value
+});
 
-
-    const res = await fetch("/api/register-player",{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body:JSON.stringify(form)
-
-    });
+}
 
 
-    const data = await res.json();
+
+function handleWeapon(e){
+
+let value = e.target.value;
+
+setForm({
+...form,
+expert_weapon:value
+});
+
+}
 
 
-    if(data.success){
 
-      setMessage("Registration Successful");
+async function submit(e){
 
-    }
-    else{
+e.preventDefault();
 
-      setMessage(data.message);
 
-    }
+const res = await fetch("/api/register-player",{
 
-  }
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(form)
+
+});
+
+
+const data = await res.json();
+
+
+if(data.success){
+
+setMessage("Registration Successful");
+
+}
+else{
+
+setMessage(data.message);
+
+}
+
+}
 
 
 
@@ -110,40 +121,79 @@ PLAYER REGISTRATION
 <input name="age" placeholder="Age" onChange={handleChange}/>
 
 
+
 <label>Birth Date</label>
-<input type="date" name="birth_date" onChange={handleChange}/>
+
+<input 
+type="date"
+name="birth_date"
+onChange={handleChange}
+/>
 
 
 
 <h3>Primary Role</h3>
 
-<select name="primary_role" onChange={handleChange}>
 
-<option value="">Select</option>
-<option>1st Rusher</option>
-<option>2nd Rusher</option>
-<option>Supporter</option>
-<option>Supporter + Boomber</option>
-<option>All Rounder</option>
-<option>Sniper</option>
-<option>Coach</option>
+<label>
+<input type="radio" name="primary_role" value="1st Rusher" onChange={handleChange}/>
+1st Rusher
+</label>
 
-</select>
+
+<label>
+<input type="radio" name="primary_role" value="2nd Rusher" onChange={handleChange}/>
+2nd Rusher
+</label>
+
+
+<label>
+<input type="radio" name="primary_role" value="Supporter" onChange={handleChange}/>
+Supporter
+</label>
+
+
+<label>
+<input type="radio" name="primary_role" value="All Rounder" onChange={handleChange}/>
+All Rounder
+</label>
+
+
+<label>
+<input type="radio" name="primary_role" value="Sniper" onChange={handleChange}/>
+Sniper
+</label>
+
+
 
 
 
 <h3>Secondary Role</h3>
 
-<select name="secondary_role" onChange={handleChange}>
 
-<option value="">Select</option>
-<option>1st Rusher</option>
-<option>2nd Rusher</option>
-<option>Supporter</option>
-<option>Boomber</option>
-<option>Sniper</option>
+<label>
+<input type="radio" name="secondary_role" value="1st Rusher" onChange={handleChange}/>
+1st Rusher
+</label>
 
-</select>
+
+<label>
+<input type="radio" name="secondary_role" value="Supporter" onChange={handleChange}/>
+Supporter
+</label>
+
+
+<label>
+<input type="radio" name="secondary_role" value="Boomber" onChange={handleChange}/>
+Boomber
+</label>
+
+
+<label>
+<input type="radio" name="secondary_role" value="Sniper" onChange={handleChange}/>
+Sniper
+</label>
+
 
 
 
@@ -171,10 +221,38 @@ PLAYER REGISTRATION
 <input name="average_br_kd_rate" placeholder="Average BR K/D Rate" onChange={handleChange}/>
 
 
-<input name="expert_weapon" placeholder="Expert Weapon" onChange={handleChange}/>
+
+
+<h3>Expert Weapon</h3>
+
+
+<label>
+<input type="checkbox" value="M590" onChange={handleWeapon}/>
+M590
+</label>
+
+
+<label>
+<input type="checkbox" value="Woodpecker" onChange={handleWeapon}/>
+Woodpecker
+</label>
+
+
+<label>
+<input type="checkbox" value="MAG7" onChange={handleWeapon}/>
+MAG7
+</label>
+
+
+<label>
+<input type="checkbox" value="AWM" onChange={handleWeapon}/>
+AWM
+</label>
+
 
 
 <input name="previous_team" placeholder="Previous Team" onChange={handleChange}/>
+
 
 
 <textarea
