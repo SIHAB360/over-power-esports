@@ -99,8 +99,8 @@ role:"PRIMARY",
 image:"/players/rfntc.png",
 position:"center top",
 social:{
-facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-instagram:"https://www.facebook.com/share/1DYEWmWzRr/",
+facebook:"",
+instagram:"",
 youtube:"",
 tiktok:""
 }
@@ -112,9 +112,9 @@ role:"SECONDARY",
 image:"/players/jellal.png",
 position:"center 15%",
 social:{
-facebook:"",
-instagram:"",
-youtube:"",
+facebook:"https://www.facebook.com/ew.r.sawon.739315",
+instagram:"https://www.instagram.com/sgr100m?stkn=NjFqMDVyamx3OGth",
+youtube:"https://youtube.com/@sgr100m?si=dPon0FOtSGuXmpbo",
 tiktok:""
 }
 },
@@ -138,10 +138,10 @@ role:"SUPPORTER",
 image:"/players/nafiz.jpeg",
 position:"center 20%",
 social:{
-facebook:"",
-instagram:"",
-youtube:"",
-tiktok:""
+facebook:"https://www.facebook.com/share/1FrtytpbHg/",
+instagram:"https://www.instagram.com/nxe_nafiz_00?stkn=MWVpNHd3OTg5bGZ1Yg==",
+youtube:"https://www.youtube.com/@MdBijoy-t7m",
+tiktok:"https://www.tiktok.com/@md.bijoy4059?_r=1&_t=ZS-99aN1LHLXrc"
 }
 },
 
@@ -151,9 +151,9 @@ role:"SNIPER",
 image:"/players/baymax.png",
 position:"center top",
 social:{
-facebook:"",
-instagram:"",
-youtube:"",
+facebook:"https://www.facebook.com/share/18E6u8Mo18/",
+instagram:"https://www.instagram.com/_mhs_1037?stkn=eTRybnAyb2c1Zmxn",
+youtube:"https://youtube.com/@mhsgaming211?si=3JJBWuI_a_a5KRpt",
 tiktok:""
 }
 }
