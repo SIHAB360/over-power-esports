@@ -781,7 +781,7 @@ export default function PlayerRegister() {
     background: rgba(255, 30, 50, 0.06);
     color: #fff;
   }
-`}</style>
+
   /* ========== PREMIUM SECTION ========== */
   .op-section {
     background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
