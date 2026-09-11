@@ -558,8 +558,10 @@ player.uid &&
 <strong>{player.age || "N/A"}</strong>
 </div>
 
-
-
+<div className="info-item">
+<label>📅 Join Date</label>
+<strong>{player.joinDate || "N/A"}</strong>
+</div>
 
 
 <div className="info-item">
