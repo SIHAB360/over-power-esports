@@ -554,18 +554,20 @@ export default function PlayerRegister() {
       </div>
 
       <style jsx>{`
-        * {
-          box-sizing: border-box;
-        }
-        .op-registration-page {
-          min-height: 100vh;
-          background: #030308;
-          padding: 40px 15px 80px;
-          color: white;
-          font-family: inherit;
-          position: relative;
-          overflow-x: hidden;
-        }
+  @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
+
+  * {
+    box-sizing: border-box;
+  }
+  .op-registration-page {
+    min-height: 100vh;
+    background: #030308;
+    padding: 40px 15px 80px;
+    color: white;
+    font-family: 'Satoshi', inherit, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+  }
         /* মেইন মাল্টি-কালার মুভিং লেয়ার */
         .op-registration-page::before {
           content: "";
