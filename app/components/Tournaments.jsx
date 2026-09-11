@@ -120,12 +120,6 @@ VIEW DETAILS
 </div>
 
 
-
-
-
-<div className="join-card">
-
-
 <h2>
 READY TO JOIN?
 </h2>
