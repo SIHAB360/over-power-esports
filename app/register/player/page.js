@@ -675,8 +675,8 @@ export default function PlayerRegister() {
         }
 
         .field {
-          margin-bottom: 18px;
-        }
+  margin-bottom: 26px;
+}
 
         .field label {
           display: block;
