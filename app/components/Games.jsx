@@ -10,22 +10,23 @@ const [count,setCount]=useState(0);
 
 useEffect(()=>{
 
-let start=0;
+let start = 0;
 
-const end=value;
+const end = value;
 
-const duration=1200;
+const duration = 1200;
 
-const increment=end/(duration/30);
-
-
-const timer=setInterval(()=>{
+const step = end / (duration / 30);
 
 
-start+=increment;
+
+const timer = setInterval(()=>{
 
 
-if(start>=end){
+start += step;
+
+
+if(start >= end){
 
 setCount(end);
 
@@ -45,6 +46,7 @@ setCount(Math.floor(start));
 
 
 return()=>clearInterval(timer);
+
 
 
 },[value]);
@@ -78,6 +80,7 @@ status:"Active Roster"
 },
 
 
+
 {
 title:"Over Power Elite",
 icon:"⚡",
@@ -106,11 +109,14 @@ return(
 OP Believe in Domination
 </h2>
 
+
 <p>
 Power • Unity • Victory
 </p>
 
+
 </div>
+
 
 
 
@@ -123,7 +129,10 @@ Power • Unity • Victory
 games.map((game,index)=>(
 
 
-<div className="game-card" key={index}>
+<div 
+className="game-card" 
+key={index}
+>
 
 
 
@@ -148,6 +157,7 @@ LIVE
 
 
 
+
 <h3>
 
 {game.title}
@@ -157,11 +167,13 @@ LIVE
 
 
 
+
 <p className="game-description">
 
 {game.description}
 
 </p>
+
 
 
 
@@ -237,6 +249,7 @@ Wins
 {game.status}
 
 </div>
+
 
 
 
