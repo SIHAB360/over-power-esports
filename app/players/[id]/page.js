@@ -233,7 +233,7 @@ location:"Dhaka",
 status:"Active",
 
 image:"/players/jellal.png",
-winnings:"$0",
+winnings:"$7,800",
 
 facebook:"https://www.facebook.com/ew.r.sawon.739315",
 instagram:"https://www.instagram.com/sgr100m?stkn=NjFqMDVyamx3OGth",
