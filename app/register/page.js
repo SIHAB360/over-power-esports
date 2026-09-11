@@ -4,31 +4,37 @@ import { useState } from "react";
 
 export default function RegisterPage() {
 
-  const [code,setCode] = useState("");
-  const [message,setMessage] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [code, setCode] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
-  async function verifyCode(e){
+  async function verifyCode(e) {
 
     e.preventDefault();
+
+    if (!code.trim()) {
+      setMessage("Please enter registration code");
+      return;
+    }
+
 
     setLoading(true);
     setMessage("");
 
 
-    try{
+    try {
 
-      const res = await fetch("/api/verify-code",{
+      const res = await fetch("/api/verify-code", {
 
-        method:"POST",
+        method: "POST",
 
-        headers:{
-          "Content-Type":"application/json"
+        headers: {
+          "Content-Type": "application/json"
         },
 
-        body:JSON.stringify({
-          code
+        body: JSON.stringify({
+          code: code.trim().toUpperCase()
         })
 
       });
@@ -37,22 +43,26 @@ export default function RegisterPage() {
       const data = await res.json();
 
 
-      if(data.success){
+      if (data.success) {
 
-        window.location.href="/register/player";
+        window.location.href = "/register/player";
+
+      } 
+      else {
+
+        setMessage(
+          data.message || "Invalid or expired registration code"
+        );
 
       }
-      else{
-
-        setMessage("Invalid or expired registration code");
-
-      }
 
 
-    }
-    catch(error){
+    } 
+    catch (error) {
 
-      setMessage("Something went wrong");
+      console.error(error);
+
+      setMessage("Server error. Please try again.");
 
     }
 
@@ -63,75 +73,74 @@ export default function RegisterPage() {
 
 
 
-return (
+  return (
 
-<main className="register-page">
-
-
-<div className="register-card">
+    <main className="register-page">
 
 
-<h1>
-JOIN OVER POWER ESPORTS
-</h1>
+      <div className="register-card">
 
 
-<p>
-Enter the official registration code to continue.
-</p>
+        <h1>
+          JOIN OVER POWER ESPORTS
+        </h1>
 
 
-
-<form onSubmit={verifyCode}>
-
-
-<input
-
-type="text"
-
-placeholder="Enter Registration Code"
-
-value={code}
-
-onChange={(e)=>setCode(e.target.value.toUpperCase())}
-
-/>
+        <p>
+          Enter the official registration code to continue.
+        </p>
 
 
 
-<button disabled={loading}>
-
-{
-loading
-?
-"Checking..."
-:
-"Continue"
-}
-
-</button>
+        <form onSubmit={verifyCode}>
 
 
+          <input
 
-</form>
+            type="text"
 
+            placeholder="Enter Registration Code"
 
+            value={code}
 
-{
-message &&
-<p className="error-message">
-{message}
-</p>
-}
+            onChange={(e)=>setCode(e.target.value.toUpperCase())}
+
+          />
 
 
 
-</div>
+          <button disabled={loading}>
+
+            {
+              loading
+              ?
+              "Checking..."
+              :
+              "Continue"
+            }
+
+          </button>
 
 
-</main>
 
-);
+        </form>
 
+
+
+        {
+          message &&
+          <p className="error-message">
+            {message}
+          </p>
+        }
+
+
+
+      </div>
+
+
+    </main>
+
+  );
 
 }
