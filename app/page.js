@@ -25,17 +25,11 @@ export default function Home() {
         <div className="hero-logo reveal-photo">
 
           <Image
-
             src={logo}
-
             width={140}
-
             height={140}
-
             alt="Over Power Esports Logo"
-
             priority
-
           />
 
         </div>
@@ -95,9 +89,6 @@ export default function Home() {
 
 
 
-
-      {/* FINAL RECRUITMENT SECTION */}
-
       <section className="contact premium-contact">
 
 
@@ -106,17 +97,14 @@ export default function Home() {
         </h2>
 
 
-
         <p>
           Become part of Over Power Esports
         </p>
 
 
-
         <button>
           JOIN TEAM
         </button>
-
 
 
       </section>
@@ -125,9 +113,7 @@ export default function Home() {
 
 
 
-
       <FloatingContact />
-
 
 
     </main>
