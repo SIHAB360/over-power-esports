@@ -2395,20 +2395,24 @@ transition:.3s;
 
 
 }
-
-
-
-
-/* ACTIVE ROSTER PREMIUM */
+/* =========================
+ACTIVE ROSTER PREMIUM
+========================= */
 
 
 .game-status{
-
 
 position:relative;
 
 overflow:hidden;
 
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
 
 }
 
@@ -2425,13 +2429,14 @@ position:absolute;
 
 top:0;
 
-left:-100%;
+left:-120%;
 
 
-width:50%;
+width:60%;
 
 
 height:100%;
+
 
 
 background:
@@ -2439,19 +2444,25 @@ background:
 linear-gradient(
 90deg,
 transparent,
-rgba(255,255,255,.5),
+rgba(255,255,255,.45),
 transparent
 );
 
 
 
+transform:skewX(-25deg);
+
+
+
 animation:
 
-statusSweep 2.5s infinite;
+statusSweep 2.8s infinite;
 
 
 
 }
+
+
 
 
 
@@ -2460,9 +2471,18 @@ statusSweep 2.5s infinite;
 
 0%{
 
-left:-100%;
+left:-120%;
 
 }
+
+
+
+50%{
+
+left:150%;
+
+}
+
 
 
 100%{
