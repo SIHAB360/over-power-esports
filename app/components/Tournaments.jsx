@@ -33,6 +33,7 @@ return(
 Upcoming Tournaments
 </h2>
 
+
 <div className="tournament-container">
 
 {
@@ -40,20 +41,62 @@ tournaments.map((item,index)=>(
 
 <div className="tournament-card" key={index}>
 
-<h3>{item.name}</h3>
 
-<p>🎮 {item.game}</p>
+<div className="status">
+{item.status}
+</div>
 
-<p>🏆 Prize: {item.prize}</p>
 
-<span>{item.status}</span>
+<h3>
+{item.name}
+</h3>
+
+
+<div className="tournament-info">
+
+<p>
+🎮 Game: {item.game}
+</p>
+
+
+<p>
+🏆 Prize: {item.prize}
+</p>
+
+
+</div>
+
+
+<button>
+VIEW DETAILS
+</button>
+
 
 </div>
 
 ))
 }
 
+
 </div>
+
+
+<div className="join-card">
+
+<h2>
+READY TO JOIN?
+</h2>
+
+<p>
+Become part of Over Power Esports
+</p>
+
+<button>
+JOIN TEAM
+</button>
+
+</div>
+
 
 </section>
 
