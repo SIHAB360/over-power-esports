@@ -6,6 +6,7 @@ import { Hind_Siliguri } from "next/font/google";
 const hindSiliguri = Hind_Siliguri({
   weight: ["400", "500", "600", "700"],
   subsets: ["bengali", "latin"],
+  display: "swap",
 });
 
 export default function PlayerRegister() {
@@ -560,14 +561,15 @@ export default function PlayerRegister() {
     box-sizing: border-box;
   }
   .op-registration-page {
-    min-height: 100vh;
-    background: #030308;
-    padding: 40px 15px 80px;
-    color: white;
-    font-family: 'Satoshi', inherit, sans-serif;
-    position: relative;
-    overflow-x: hidden;
-  }
+  min-height: 100vh;
+  background: #030308;
+  padding: 40px 15px 80px;
+  color: white;
+  font-family: 'Satoshi', var(--font-hind-siliguri), sans-serif;
+  font-weight: 500;
+  position: relative;
+  overflow-x: hidden;
+}
         /* মেইন মাল্টি-কালার মুভিং লেয়ার */
         .op-registration-page::before {
           content: "";
@@ -846,9 +848,11 @@ export default function PlayerRegister() {
           box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
         }
         .op-input::placeholder,
-        .op-textarea::placeholder {
-          color: #666;
-        }
+.op-textarea::placeholder {
+  color: #888;
+  font-weight: 500;
+  opacity: 0.9;
+}
         .op-input:hover,
         .op-textarea:hover {
           border-color: #3f3f3f;
