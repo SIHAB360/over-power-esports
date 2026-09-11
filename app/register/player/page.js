@@ -418,51 +418,50 @@ export default function PlayerRegister() {
             </div>
           </section>
 
-          {/* TEAM */}
-          <section className="op-section">
-            <h3>
-              Previous Team <span>*</span>
-            </h3>
-            <Field
-              label=""
-              name="previous_team"
-              value={form.previous_team}
-              onChange={handleChange}
-              placeholder="আপনি আগে যে টিমে ছিলেন তার নাম লিখুন"
-              required
-            />
-
-            <h3 style={{ marginTop: "28px" }}>
-              Team Name <span>*</span>
-            </h3>
-            <p className="help-text">
-              আপনি কোন টিমে যোগ দিতে চান সিলেক্ট করুন।
-            </p>
-            <div className="radio-list">
-              <label className="choice">
-                <input
-                  type="radio"
-                  name="team_name"
-                  value="Over Power"
-                  checked={form.team_name === "Over Power"}
-                  onChange={handleChange}
-                  required
-                />
-                <span>Over Power</span>
-              </label>
-              <label className="choice">
-                <input
-                  type="radio"
-                  name="team_name"
-                  value="Over Power Elite"
-                  checked={form.team_name === "Over Power Elite"}
-                  onChange={handleChange}
-                  required
-                />
-                <span>Over Power Elite</span>
-              </label>
-            </div>
-          </section>
+         {/* TEAM */}
+<section className="op-section">
+  <h3>
+    Previous Team <span>*</span>
+  </h3>
+  <Field
+    label=""
+    name="previous_team"
+    value={form.previous_team}
+    onChange={handleChange}
+    placeholder="আপনি আগে যে টিমে ছিলেন তার নাম লিখুন"
+    required
+  />
+  <h3 style={{ marginTop: "28px" }}>
+    Team Name <span>*</span>
+  </h3>
+  <p className="help-text">
+    আপনি কোন টিমে যোগ দিতে চান সিলেক্ট করুন।
+  </p>
+  <div className="radio-list">
+    <label className="choice">
+      <input
+        type="radio"
+        name="team_name"
+        value="Over Power"
+        checked={form.team_name === "Over Power"}
+        onChange={handleChange}
+        required
+      />
+      <span>Over Power</span>
+    </label>
+    <label className="choice">
+      <input
+        type="radio"
+        name="team_name"
+        value="Over Power Elite"
+        checked={form.team_name === "Over Power Elite"}
+        onChange={handleChange}
+        required
+      />
+      <span>Over Power Elite</span>
+    </label>
+  </div>
+</section>
 
           {/* SOCIAL MEDIA - 4 SEPARATE FIELDS */}
           <section className="op-section">
