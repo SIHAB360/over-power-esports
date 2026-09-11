@@ -48,9 +48,7 @@ export default function Home() {
 
 
 
-        <button>
-          JOIN TEAM
-        </button>
+       
 
 
       </section>
