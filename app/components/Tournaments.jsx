@@ -40,11 +40,14 @@ return(
 Upcoming Tournaments
 </h2>
 
+
 <p>
 Compete • Dominate • Become Champion
 </p>
 
+
 </div>
+
 
 
 
@@ -52,13 +55,18 @@ Compete • Dominate • Become Champion
 
 
 {
+
 tournaments.map((item,index)=>(
 
 
-<div 
-className="tournament-card" 
+<div
+
+className="tournament-card"
+
 key={index}
+
 >
+
 
 
 
@@ -66,22 +74,34 @@ key={index}
 
 
 <span className="status">
+
 {item.status}
+
 </span>
+
 
 
 <span className="tournament-icon">
+
 {item.icon}
+
 </span>
+
 
 
 </div>
 
 
 
+
+
 <h3>
+
 {item.name}
+
 </h3>
+
+
 
 
 
@@ -90,13 +110,28 @@ key={index}
 
 
 <p>
-<span>🎮 Game:</span> {item.game}
+
+<span>
+🎮 Game:
+</span>
+
+{item.game}
+
 </p>
+
+
 
 
 <p>
-<span>🏆 Prize:</span> {item.prize}
+
+<span>
+🏆 Prize:
+</span>
+
+{item.prize}
+
 </p>
+
 
 
 </div>
@@ -104,9 +139,15 @@ key={index}
 
 
 
+
+
 <button>
+
 VIEW DETAILS
+
 </button>
+
+
 
 
 
@@ -114,29 +155,12 @@ VIEW DETAILS
 
 
 ))
+
 }
 
 
-</div>
-
-
-<h2>
-READY TO JOIN?
-</h2>
-
-
-<p>
-Become part of Over Power Esports
-</p>
-
-
-<button>
-JOIN TEAM
-</button>
-
 
 </div>
-
 
 
 
