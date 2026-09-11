@@ -1,13 +1,57 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import crypto from "crypto";
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+function validToken(token) {
+  if (!token || !process.env.REGISTRATION_SESSION_SECRET) return false;
+
+  const dot = token.lastIndexOf(".");
+  if (dot === -1) return false;
+
+  const payload = token.slice(0, dot);
+  const signature = token.slice(dot + 1);
+
+  const expected = crypto
+    .createHmac("sha256", process.env.REGISTRATION_SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+
+  if (signature.length !== expected.length) return false;
+
+  if (
+    !crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expected)
+    )
+  ) {
+    return false;
+  }
+
+  const expiry = Number(payload.split(".").pop());
+  return expiry > Date.now();
+}
+
 export async function POST(request) {
   try {
+    // ========== Verification Check ==========
+    const token = request.cookies.get("registration_verified")?.value;
+
+    if (!validToken(token)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please verify registration code first",
+        },
+        { status: 401 }
+      );
+    }
+    // ========================================
+
     const formData = await request.formData();
 
     const requiredFields = [
@@ -31,7 +75,7 @@ export async function POST(request) {
       "previous_team",
       "full_address",
       "team_name",
-      "facebook_link", // শুধু Facebook required
+      "facebook_link",
     ];
 
     for (const field of requiredFields) {
@@ -110,13 +154,10 @@ export async function POST(request) {
       previous_team: formData.get("previous_team"),
       full_address: formData.get("full_address"),
       team_name: formData.get("team_name"),
-
-      // নতুন সোশ্যাল মিডিয়া ফিল্ড
       facebook_link: formData.get("facebook_link"),
       instagram_link: formData.get("instagram_link") || null,
       tiktok_link: formData.get("tiktok_link") || null,
       youtube_link: formData.get("youtube_link") || null,
-
       profile_image: profileURL.publicUrl,
       game_id_screenshot: screenshotURL.publicUrl,
     };
