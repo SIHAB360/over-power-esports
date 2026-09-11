@@ -1,4 +1,47 @@
 import CopyUID from "../../components/CopyUID";
+import CopyUID from "../../components/CopyUID";
+
+
+// এখানে বসাবেন
+function getExperience(joinDate){ 
+ 
+const start = new Date(joinDate); 
+ 
+const now = new Date(); 
+ 
+ 
+let years = now.getFullYear() - start.getFullYear(); 
+ 
+let months = now.getMonth() - start.getMonth(); 
+ 
+ 
+if(months < 0){ 
+ 
+years--; 
+ 
+months += 12; 
+ 
+} 
+ 
+ 
+ 
+if(years > 0 && months > 0){ 
+ 
+return `${years} Year ${months} Months`; 
+ 
+} 
+ 
+ 
+if(years > 0){ 
+ 
+return `${years} Year`; 
+ 
+} 
+ 
+ 
+return `${months} Months`; 
+ 
+}
 
 
 export default async function PlayerProfile({ params }) {
@@ -723,17 +766,19 @@ TikTok
 
 <p>
 
-2026 - Present
+{player.joinDate} - Present
 
 <br/>
 
-
 <span>
-
 {player.team}
-
 </span>
 
+<br/>
+
+<strong>
+🔥 Active For: {getExperience(player.joinDate)}
+</strong>
 
 </p>
 
