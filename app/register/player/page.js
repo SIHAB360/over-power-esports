@@ -273,7 +273,7 @@ export default function PlayerRegister() {
               name="device"
               value={form.device}
               onChange={handleChange}
-              placeholder="আপনার ফোনের নাম ও মোডেল"
+              placeholder="আপনার ফোনের নাম ও মডেল লিখুন"
               required
             />
           </section>
@@ -318,7 +318,7 @@ export default function PlayerRegister() {
               name="practice_time"
               value={form.practice_time}
               onChange={handleChange}
-              placeholder="Example: 6:00 PM - 8:00 PM"
+              placeholder="উদাহরণস্বরূপ: 6:00 PM - 8:00 PM"
               required
             />
             <h3>
@@ -329,7 +329,7 @@ export default function PlayerRegister() {
               name="game_experience"
               value={form.game_experience}
               onChange={handleChange}
-              placeholder="Example: 3 Years"
+              placeholder="আপনি কত বছর ধরে গেম খেলেন উদাহরণস্বরূপ: 3 Month/Years"
               required
             />
             <h3>
@@ -340,7 +340,7 @@ export default function PlayerRegister() {
               name="tournament_experience"
               value={form.tournament_experience}
               onChange={handleChange}
-              placeholder="Describe your tournament experience"
+              placeholder="আপনি কত বছর ধরে টুর্নামেন্ট খেলেন উদাহরণস্বরূপ: 1 Month/Years"
               required
             />
           </section>
@@ -377,6 +377,7 @@ export default function PlayerRegister() {
                     value={kd}
                     checked={form.average_br_kd_rate === kd}
                     onChange={handleChange}
+                    placeholder="প্রতি সিজনে আপনার KD কত থাকে"
                     required
                   />
                   <span>{kd}</span>
@@ -408,14 +409,15 @@ export default function PlayerRegister() {
           {/* TEAM */}
           <section className="op-section">
             <h3>
-              Previous Team <span>*</span>
+              Previous Team <span>*</span>্ম্মম্ম্মম্মম্ম্ম্্মম্মম
             </h3>
-            <Field
+            <Field্মম্ম্ম্মমম্ম্মম্মম্মমমম্মম্মমমমমমমমমমমম্মমম 
               label=""
-              name="previous_team"
+              name="previous_team"ইইতিমিইইইইইইমইইইইইইত
               value={form.previous_team}
               onChange={handleChange}
-              placeholder="Enter previous team name or None"
+              placeholder="আপনি আগে যে timeইইইইইইইইইইইইইইইইইইইইইইইই ইইইইইইই
+                ইইইইইইইইইইইইইইইইইইইইইইইইইইইইইইইইই"
               required
             />
 
