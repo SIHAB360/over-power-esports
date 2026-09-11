@@ -42,29 +42,21 @@ export default function Home() {
 
 
 
-
         <h1>
-
           OVER POWER ESPORTS
-
         </h1>
 
 
 
         <p>
-
           Victory is our Mission
-
         </p>
 
 
 
         <button>
-
           JOIN TEAM
-
         </button>
-
 
 
       </section>
@@ -104,29 +96,25 @@ export default function Home() {
 
 
 
+      {/* FINAL RECRUITMENT SECTION */}
+
       <section className="contact premium-contact">
 
 
         <h2>
-
           READY TO JOIN?
-
         </h2>
 
 
 
         <p>
-
           Become part of Over Power Esports
-
         </p>
 
 
 
         <button>
-
           JOIN TEAM
-
         </button>
 
 
