@@ -132,7 +132,7 @@ export default function PlayerRegister() {
             <img src={logo.src} alt="Over Power Esports Logo" />
           </div>
           <h1>OVER POWER</h1>
-    <h2>রেজিস্ট্রেশন করতে নিচের ফর্ম পূরণ করুন</h2>
+    <h3>রেজিস্ট্রেশন করতে নিচের ফর্ম পূরণ করুন</h3>
         </div>
 
         {/* MESSAGE */}
@@ -606,63 +606,130 @@ export default function PlayerRegister() {
           100% { transform: translate(4%, -4%) scale(1.02); }
         }
 
-        .op-header {
-          text-align: center;
-          padding: 30px 20px;
-          margin-bottom: 25px;
-        }
 
-        .op-logo {
-          width: 90px;
-          height: 90px;
-          margin: 0 auto 15px;
-          border-radius: 50%;
-          overflow: hidden;
-          box-shadow: 0 0 30px rgba(255, 0, 30, 0.5);
-        }
 
-        .op-logo img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
 
-        .op-header h1 {
-          margin: 0;
-          font-size: 42px;
-          font-weight: 900;
-          letter-spacing: 4px;
-          background: linear-gradient(
-            90deg,
-            #ff0033,
-            #ff4d6d,
-            #ffffff,
-            #ff4d6d,
-            #ff0033
-          );
-          background-size: 300% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: titleShine 3.5s linear infinite;
-        }
 
-        @keyframes titleShine {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 300% 50%; }
-        }
 
-        .op-message {
-          padding: 15px;
-          margin-bottom: 20px;
-          border-radius: 12px;
-          background: #101010;
-          border: 1px solid #ff1728;
-          text-align: center;
-          font-weight: bold;
-        }
 
-        /* ========== PREMIUM SECTION ========== */
+
+
+
+
+        /* ========== PREMIUM HEADER CARD ========== */
+.op-header {
+  text-align: center;
+  padding: 40px 30px 35px;
+  margin-bottom: 35px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, #0f0f14 0%, #0a0a10 100%);
+  border: 1px solid rgba(255, 40, 80, 0.25);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(255, 0, 80, 0.12);
+}
+
+/* চারপাশের অ্যানিমেটেড গ্লো বর্ডার */
+.op-header::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    #ff0033,
+    #ff4d6d,
+    #00f0ff,
+    #b000ff,
+    #ff0033
+  );
+  background-size: 300% 100%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderGlow 4s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.op-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.op-logo {
+  width: 95px;
+  height: 95px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 35px rgba(255, 0, 60, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.op-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.op-header h1 {
+  margin: 0 0 12px;
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  background: linear-gradient(
+    90deg,
+    #ff0033,
+    #ff4d6d,
+    #ffffff,
+    #ff4d6d,
+    #ff0033
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleShine 3.5s linear infinite;
+}
+
+.op-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #c0c0c0;
+  letter-spacing: 0.5px;
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@keyframes titleShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+
+       
+  
+  
+  
+  /* ========== PREMIUM SECTION ========== */
         .op-section {
           background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
           border: 1px solid rgba(255, 30, 50, 0.22);
