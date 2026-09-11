@@ -522,19 +522,42 @@ export default function PlayerRegister() {
 
        /* ========== PREMIUM SECTION ========== */
 .op-section {
-  background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-  border: 1px solid rgba(255, 30, 50, 0.18);
+  background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
+  border: 1px solid rgba(255, 30, 50, 0.22);
   border-left: 4px solid #e90018;
   border-radius: 18px;
   padding: 40px 30px 36px;
   margin-bottom: 30px;
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.55),
-    0 0 30px rgba(233, 0, 24, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    0 18px 45px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(233, 0, 24, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
+}
+
+.op-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 40, 60, 0.55),
+    transparent
+  );
+}
+
+.op-section:hover {
+  border-color: rgba(255, 30, 50, 0.45);
+  box-shadow: 
+    0 22px 55px rgba(0, 0, 0, 0.7),
+    0 0 50px rgba(233, 0, 24, 0.15);
+  transform: translateY(-2px);
 }
 
 .op-section h2 {
@@ -543,20 +566,21 @@ export default function PlayerRegister() {
   color: #ff2032;
   font-size: 20px;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
+  text-shadow: 0 0 22px rgba(255, 32, 50, 0.45);
+  position: relative;
 }
 
 .op-section h2::after {
   content: "";
   display: block;
-  width: 60px;
+  width: 70px;
   height: 2px;
   background: linear-gradient(90deg, transparent, #e90018, transparent);
   margin: 14px auto 0;
+  box-shadow: 0 0 12px rgba(233, 0, 24, 0.5);
 }
-
 /* ========== FIELD SPACING (সবচেয়ে গুরুত্বপূর্ণ) ========== */
 .field {
   margin-bottom: 28px !important;
