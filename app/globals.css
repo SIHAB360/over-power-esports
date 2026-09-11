@@ -3193,52 +3193,35 @@ text-shadow:
 
 
 }
-
-
-
-
-
 /* =========================
-MAIN LAYOUT
+MAIN PROFILE LAYOUT
 ========================= */
 
 
 .profile-layout{
 
-
 display:grid;
-
 
 grid-template-columns:330px 1fr;
 
-
 gap:30px;
-
 
 margin-top:40px;
 
-
-align-items:stretch;
-
+align-items:start;
 
 }
-
-
 
 
 
 .profile-left,
 .profile-right{
 
-
 display:flex;
-
 
 flex-direction:column;
 
-
 gap:25px;
-
 
 }
 
@@ -3246,14 +3229,12 @@ gap:25px;
 
 
 
-
 /* =========================
-PHOTO
+PLAYER PHOTO
 ========================= */
 
 
 .photo-box{
-
 
 padding:10px;
 
@@ -3262,7 +3243,7 @@ background:
 
 linear-gradient(
 145deg,
-red,
+#ff2020,
 #050505
 );
 
@@ -3272,42 +3253,33 @@ border-radius:25px;
 
 box-shadow:
 
-0 0 35px red;
+0 0 35px rgba(255,0,0,.6);
 
 
 }
-
 
 
 
 .profile-photo{
 
-
 width:100%;
-
 
 height:380px;
 
-
 object-fit:cover;
-
-
-border-radius:20px;
-
 
 display:block;
 
+border-radius:20px;
 
 }
-
-
 
 
 
 
 
 /* =========================
-COMMON CARD
+COMMON BOX STYLE
 ========================= */
 
 
@@ -3319,7 +3291,7 @@ background:
 
 linear-gradient(
 145deg,
-#160000,
+#180000,
 #050505
 );
 
@@ -3334,6 +3306,7 @@ border:
 border-radius:25px;
 
 
+
 padding:25px;
 
 
@@ -3344,8 +3317,6 @@ box-shadow:
 
 
 }
-
-
 
 
 
@@ -3369,36 +3340,35 @@ margin-bottom:25px;
 
 
 
-
-
 /* =========================
-PLAYER INFORMATION
+PLAYER INFORMATION FIX
 ========================= */
 
 
 .info-item{
 
 
-display:grid;
-
-
-grid-template-columns:120px 1fr;
+display:flex;
 
 
 align-items:center;
 
 
-gap:15px;
+justify-content:space-between;
+
+
+gap:20px;
 
 
 
-padding:14px 0;
+padding:13px 0;
 
 
 
 border-bottom:
 
 1px solid rgba(255,255,255,.08);
+
 
 
 }
@@ -3414,6 +3384,9 @@ color:#999;
 font-size:14px;
 
 
+flex:0 0 120px;
+
+
 }
 
 
@@ -3427,11 +3400,16 @@ color:white;
 text-align:right;
 
 
+flex:1;
+
+
+font-size:14px;
+
+
 word-break:break-word;
 
 
 }
-
 
 
 
@@ -3454,21 +3432,23 @@ text-shadow:
 
 
 
+
+
 /* =========================
-SOCIAL LINKS
+SOCIAL LINKS FIX
 ========================= */
 
 
 .profile-social{
 
 
-display:grid;
+display:flex;
 
 
-grid-template-columns:1fr 1fr;
+flex-direction:column;
 
 
-gap:15px;
+gap:12px;
 
 
 }
@@ -3478,7 +3458,11 @@ gap:15px;
 .profile-social a{
 
 
-height:50px;
+width:100%;
+
+
+height:52px;
+
 
 
 display:flex;
@@ -3487,10 +3471,14 @@ display:flex;
 align-items:center;
 
 
-justify-content:center;
+justify-content:flex-start;
 
 
-gap:10px;
+gap:15px;
+
+
+
+padding:0 18px;
 
 
 
@@ -3498,20 +3486,20 @@ border-radius:15px;
 
 
 
-background:#080808;
+background:#090909;
 
 
 
 border:
 
-1px solid rgba(255,255,255,.2);
+1px solid rgba(255,255,255,.15);
 
 
 
 color:white;
 
 
-font-size:14px;
+font-size:15px;
 
 
 
@@ -3525,10 +3513,12 @@ transition:.3s;
 .profile-social a:hover{
 
 
-transform:translateY(-5px);
+transform:translateX(8px);
 
 
-box-shadow:0 0 20px red;
+box-shadow:
+
+0 0 25px red;
 
 
 }
@@ -3538,7 +3528,13 @@ box-shadow:0 0 20px red;
 .profile-social i{
 
 
+width:25px;
+
+
 font-size:20px;
+
+
+text-align:center;
 
 
 }
@@ -3552,7 +3548,6 @@ color:#1877f2;
 }
 
 
-
 .profile-social .fa-instagram{
 
 color:#ff3cac;
@@ -3560,13 +3555,11 @@ color:#ff3cac;
 }
 
 
-
 .profile-social .fa-youtube{
 
 color:red;
 
 }
-
 
 
 .profile-social .fa-tiktok{
@@ -3581,14 +3574,14 @@ color:white;
 
 
 /* =========================
-TABLE
+TABLE DESIGN
 ========================= */
 
 
 .profile-table{
 
 
-height:auto;
+width:100%;
 
 
 }
@@ -3657,16 +3650,15 @@ rgba(255,0,0,.08);
 
 
 
-
 /* =========================
-VIDEO SECTION
+VIDEO HIGHLIGHTS FIX
 ========================= */
 
 
 .video-gallery{
 
 
-flex:1;
+width:100%;
 
 
 }
@@ -3681,14 +3673,14 @@ display:grid;
 
 grid-template-columns:
 
-repeat(3,1fr);
+repeat(2,1fr);
+
 
 
 gap:20px;
 
 
 }
-
 
 
 
@@ -3701,14 +3693,21 @@ overflow:hidden;
 border-radius:18px;
 
 
+
 border:
 
 1px solid rgba(255,0,0,.5);
 
 
+
+background:#050505;
+
+
+
 box-shadow:
 
 0 0 20px rgba(255,0,0,.25);
+
 
 
 transition:.3s;
@@ -3740,7 +3739,10 @@ display:block;
 .video-card:hover{
 
 
-transform:translateY(-8px);
+transform:
+
+translateY(-8px);
+
 
 
 box-shadow:
@@ -3755,6 +3757,34 @@ box-shadow:
 
 
 
+/* =========================
+DESKTOP BALANCE
+========================= */
+
+
+.profile-right{
+
+
+min-height:100%;
+
+
+}
+
+
+
+
+
+.video-gallery{
+
+
+margin-top:auto;
+
+
+}
+
+
+
+
 
 /* =========================
 RESPONSIVE
@@ -3762,6 +3792,16 @@ RESPONSIVE
 
 
 @media(max-width:900px){
+
+
+.profile-layout{
+
+
+grid-template-columns:1fr;
+
+
+}
+
 
 
 .profile-header{
@@ -3777,16 +3817,6 @@ text-align:center;
 
 
 
-.profile-layout{
-
-
-grid-template-columns:1fr;
-
-
-}
-
-
-
 .video-grid{
 
 
@@ -3796,9 +3826,7 @@ grid-template-columns:1fr 1fr;
 }
 
 
-
 }
-
 
 
 
@@ -3806,33 +3834,26 @@ grid-template-columns:1fr 1fr;
 @media(max-width:600px){
 
 
-.esports-profile{
-
-
-padding:15px;
-
-
-}
-
-
-
-.player-heading h1{
-
-
-font-size:32px;
-
-
-}
-
-
-
 .info-item{
 
 
-grid-template-columns:1fr;
+flex-direction:column;
+
+
+align-items:flex-start;
 
 
 gap:5px;
+
+
+}
+
+
+
+.info-item label{
+
+
+flex:auto;
 
 
 }
@@ -3843,16 +3864,6 @@ gap:5px;
 
 
 text-align:left;
-
-
-}
-
-
-
-.profile-social{
-
-
-grid-template-columns:1fr;
 
 
 }
@@ -3873,6 +3884,16 @@ grid-template-columns:1fr;
 
 
 height:300px;
+
+
+}
+
+
+
+.esports-profile{
+
+
+padding:15px;
 
 
 }
