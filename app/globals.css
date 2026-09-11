@@ -2777,6 +2777,10 @@ width:min(300px,100%);
 }
 
 
+/* =========================
+MOBILE PLAYER PROFILE FIX
+========================= */
+
 
 /* PLAYER PROFILE */
 
@@ -2834,11 +2838,19 @@ font-size:20px;
 
 
 
+
+/* PLAYER IMAGE MOBILE FACE FOCUS */
+
 .profile-photo{
 
 height:300px;
 
+object-fit:cover;
+
+object-position:center 20%;
+
 }
+
 
 
 
@@ -2932,6 +2944,7 @@ padding:50px 20px;
 font-size:30px;
 
 }
+
 
 
 
