@@ -775,7 +775,7 @@ TikTok
 <br/>
 
 <strong>
-🔥 Active For: {getExperience(player.joinDate)}
+🟢 Active For: {getExperience(player.joinDate)}
 </strong>
 
 </p>
