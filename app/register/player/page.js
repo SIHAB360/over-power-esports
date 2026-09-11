@@ -132,6 +132,7 @@ export default function PlayerRegister() {
             <img src={logo.src} alt="Over Power Esports Logo" />
           </div>
           <h1>OVER POWER</h1>
+    <h2>রেজিস্ট্রেশন করতে নিচের ফর্ম পূরণ করুন</h2>
         </div>
 
         {/* MESSAGE */}
