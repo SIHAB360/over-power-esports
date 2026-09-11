@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import logo from "../../assets/logo.png";
 
 export default function PlayerRegister() {
   const [form, setForm] = useState({
