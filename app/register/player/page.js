@@ -495,78 +495,109 @@ export default function PlayerRegister() {
           box-sizing: border-box;
         }
 
-        .op-registration-page {
-          min-height: 100vh;
-          background: radial-gradient(
-            circle at top,
-            #3b0000 0%,
-            #110000 35%,
-            #050505 75%
-          );
-          padding: 30px 15px 60px;
-          color: white;
-          font-family: Arial, sans-serif;
-        }
+       /* ========== PREMIUM SECTION ========== */
+.op-section {
+  background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
+  border: 1px solid rgba(255, 30, 50, 0.18);
+  border-left: 4px solid #e90018;
+  border-radius: 18px;
+  padding: 36px 28px 32px;          /* আগে কম ছিল */
+  margin-bottom: 28px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55),
+              0 0 30px rgba(233, 0, 24, 0.06),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
 
-        .op-registration-container {
-          width: 100%;
-          max-width: 720px;
-          margin: auto;
-        }
+.op-section h2 {
+  margin: 0 0 32px;                 /* বেশি gap */
+  text-align: center;
+  color: #ff2032;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
+}
 
-        .op-header {
-          text-align: center;
-          padding: 30px 20px;
-          margin-bottom: 20px;
-          border-radius: 20px;
-          background: linear-gradient(135deg, #080808, #250000);
-          border: 1px solid #4a0000;
-          box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
-        }
+.op-section h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #e90018, transparent);
+  margin: 14px auto 0;
+}
 
-        .op-logo {
-          width: 80px;
-          height: 80px;
-          margin: 0 auto 10px;
-          border-radius: 50%;
-          overflow: hidden;
-          background: linear-gradient(135deg, #ff0018, #720000);
-          box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+/* ========== FIELD SPACING ========== */
+.field {
+  margin-bottom: 26px;              /* আগে 20px ছিল → এখন বেশি */
+}
 
-        .op-logo img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
+.field:last-child {
+  margin-bottom: 0;
+}
 
-        .op-header h1 {
-          margin: 12px 0 4px;
-          font-size: 32px;
-          font-weight: 900;
-          letter-spacing: 2px;
-        }
+.field label {
+  display: block;
+  margin-bottom: 9px;               /* label আর input এর মধ্যে বেশি জায়গা */
+  color: #e0e0e0;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
 
-        .op-header p {
-          margin: 0;
-          color: #ff3945;
-          font-weight: bold;
-          letter-spacing: 2px;
-          font-size: 14px;
-        }
+.op-input,
+.op-textarea {
+  width: 100%;
+  padding: 15px 18px;               /* একটু বড় padding */
+  border-radius: 12px;
+  border: 1px solid #2c2c2c;
+  background: #0b0b0b;
+  color: white;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+}
 
-        .op-message {
-          padding: 15px;
-          margin-bottom: 20px;
-          border-radius: 12px;
-          background: #101010;
-          border: 1px solid #ff1728;
-          text-align: center;
-          font-weight: bold;
-        }
+.op-input:focus,
+.op-textarea:focus {
+  border-color: #e90018;
+  background: #111;
+  box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.2),
+              0 0 24px rgba(233, 0, 24, 0.15),
+              inset 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Radio / Checkbox list spacing */
+.radio-list,
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                         /* আইটেমগুলোর মধ্যে সুন্দর gap */
+  margin-top: 6px;
+}
+
+.choice {
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 16px;               /* বেশি padding */
+  border-radius: 11px;
+  cursor: pointer;
+  color: #ddd;
+  font-size: 14.5px;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.choice:hover {
+  background: rgba(255, 30, 50, 0.09);
+  color: #fff;
+}
 
         /* ========== PREMIUM SECTION ========== */
         .op-section {
