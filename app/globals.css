@@ -1862,19 +1862,13 @@ letter-spacing:2px;
 
 display:grid;
 
-grid-template-columns:
+grid-template-columns:repeat(2,380px);
 
-repeat(auto-fit,minmax(320px,1fr));
+justify-content:center;
 
+gap:45px;
 
-gap:35px;
-
-
-max-width:900px;
-
-
-margin:50px auto 0;
-
+margin:60px auto;
 
 }
 
@@ -2414,26 +2408,13 @@ MOBILE
 ========================= */
 
 
-@media(max-width:600px){
+@media(max-width:800px){
 
+.game-container{
 
-.game-card{
-
-
-width:100%;
-
+grid-template-columns:1fr;
 
 }
-
-
-
-.game-stats{
-
-
-grid-template-columns:
-
-1fr;
-
 
 }
 
