@@ -3,118 +3,111 @@ import { createClient } from "@supabase/supabase-js";
 
 
 const supabase = createClient(
-
-process.env.NEXT_PUBLIC_SUPABASE_URL,
-
-process.env.SUPABASE_SERVICE_ROLE_KEY
-
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 
 
-export async function POST(request){
+export async function POST(request) {
 
 
-try{
+  try {
 
 
-const { code } = await request.json();
+    const { code } = await request.json();
 
 
+    if (!code) {
 
-if(!code){
+      return NextResponse.json({
+        success:false,
+        message:"Code required"
+      });
 
-return NextResponse.json({
+    }
 
-success:false,
 
-message:"Code required"
 
-});
+    const cleanCode = code.trim().toUpperCase();
 
-}
 
 
+    const { data, error } = await supabase
 
+      .from("registration_codes")
 
-const { data, error } = await supabase
+      .select("*")
 
-.from("registration_codes")
+      .eq("code", cleanCode)
 
-.select("*")
+      .single();
 
-.ilike("code", code.trim())
 
-.single();
 
+    if (error || !data) {
 
 
+      return NextResponse.json({
 
+        success:false,
 
-if(error || !data){
+        message:"Invalid registration code"
 
+      });
 
-return NextResponse.json({
 
-success:false
+    }
 
-});
 
 
-}
 
+    const now = new Date();
 
+    const expiry = new Date(data.expires_at);
 
 
-const now = new Date();
 
-const expiry = new Date(data.expires_at);
+    if (expiry < now) {
 
 
+      return NextResponse.json({
 
+        success:false,
 
-if(expiry < now){
+        message:"Registration code expired"
 
+      });
 
-return NextResponse.json({
 
-success:false,
+    }
 
-message:"Code expired"
 
-});
 
 
-}
+    return NextResponse.json({
 
+      success:true,
 
+      message:"Code verified"
 
+    });
 
-return NextResponse.json({
 
-success:true
 
-});
+  } catch(error) {
 
 
+    return NextResponse.json({
 
+      success:false,
 
+      message:error.message
 
-}
+    });
 
-catch(error){
 
-
-return NextResponse.json({
-
-success:false,
-
-error:error.message
-
-});
-
-
-}
+  }
 
 
 }
