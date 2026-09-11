@@ -3060,3 +3060,343 @@ height:200px;
 }
 
 }
+/* =========================
+   PREMIUM TOURNAMENT CARDS
+========================= */
+
+
+.tournaments{
+
+padding:80px 20px;
+
+text-align:center;
+
+}
+
+
+
+.tournaments h2{
+
+font-size:45px;
+
+font-weight:900;
+
+letter-spacing:3px;
+
+margin-bottom:50px;
+
+color:white;
+
+text-shadow:
+
+0 0 15px red;
+
+}
+
+
+
+.tournament-container{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:30px;
+
+max-width:1100px;
+
+margin:auto;
+
+}
+
+
+
+.tournament-card{
+
+position:relative;
+
+padding:30px;
+
+background:
+
+linear-gradient(
+145deg,
+#200000,
+#080808
+);
+
+
+border:1px solid red;
+
+border-radius:22px;
+
+overflow:hidden;
+
+transition:.35s ease;
+
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.25);
+
+}
+
+
+
+.tournament-card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-100%;
+
+width:60%;
+
+height:100%;
+
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.15),
+transparent
+);
+
+
+transform:skewX(-20deg);
+
+transition:.5s;
+
+}
+
+
+
+.tournament-card:hover::before{
+
+left:150%;
+
+}
+
+
+
+.tournament-card:hover{
+
+transform:translateY(-10px) scale(1.03);
+
+
+box-shadow:
+
+0 0 45px rgba(255,0,0,.7);
+
+}
+
+
+
+
+.tournament-card h3{
+
+color:white;
+
+font-size:22px;
+
+margin:25px 0 20px;
+
+}
+
+
+
+.tournament-card p{
+
+color:#ccc;
+
+font-size:15px;
+
+margin:12px 0;
+
+}
+
+
+
+.tournament-card span{
+
+display:inline-block;
+
+margin-top:15px;
+
+padding:7px 20px;
+
+border-radius:30px;
+
+background:#ff2020;
+
+color:white;
+
+font-size:12px;
+
+font-weight:bold;
+
+box-shadow:
+
+0 0 15px red;
+
+}
+
+
+
+.tournament-card button{
+
+margin-top:20px;
+
+padding:12px 25px;
+
+border:none;
+
+border-radius:30px;
+
+background:#ff2020;
+
+color:white;
+
+font-weight:900;
+
+cursor:pointer;
+
+}
+
+
+
+.tournament-card button:hover{
+
+background:#ff5555;
+
+transform:scale(1.05);
+
+}
+
+
+
+/* READY TO JOIN CARD */
+
+
+.join-card{
+
+margin:70px auto 0;
+
+max-width:700px;
+
+padding:45px 25px;
+
+
+background:
+
+linear-gradient(
+145deg,
+#250000,
+#050505
+);
+
+
+border:
+
+1px solid red;
+
+
+border-radius:25px;
+
+
+box-shadow:
+
+0 0 35px rgba(255,0,0,.35);
+
+}
+
+
+
+.join-card h2{
+
+font-size:35px;
+
+color:white;
+
+}
+
+
+
+.join-card p{
+
+color:#aaa;
+
+margin-top:15px;
+
+font-size:18px;
+
+}
+
+
+
+.join-card button{
+
+margin-top:25px;
+
+padding:14px 35px;
+
+border:none;
+
+border-radius:30px;
+
+background:#ff2020;
+
+color:white;
+
+font-weight:900;
+
+box-shadow:
+
+0 0 20px red;
+
+}
+
+
+
+.join-card button:hover{
+
+transform:scale(1.08);
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+
+.tournaments h2{
+
+font-size:32px;
+
+}
+
+
+.tournament-card{
+
+padding:25px;
+
+}
+
+
+.join-card{
+
+padding:35px 15px;
+
+}
+
+
+}
