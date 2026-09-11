@@ -560,16 +560,17 @@ export default function PlayerRegister() {
   * {
     box-sizing: border-box;
   }
+
   .op-registration-page {
-  min-height: 100vh;
-  background: #030308;
-  padding: 40px 15px 80px;
-  color: white;
-  font-family: 'Satoshi', var(--font-hind-siliguri), sans-serif;
-  font-weight: 500;
-  position: relative;
-  overflow-x: hidden;
-}
+    min-height: 100vh;
+    background: #030308;
+    padding: 40px 15px 80px;
+    color: white;
+    font-family: 'Satoshi', inherit, sans-serif;
+    font-weight: 500;
+    position: relative;
+    overflow-x: hidden;
+  }
         /* মেইন মাল্টি-কালার মুভিং লেয়ার */
         .op-registration-page::before {
           content: "";
