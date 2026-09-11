@@ -513,54 +513,91 @@ export default function PlayerRegister() {
           box-sizing: border-box;
         }
 
-        .op-registration-page {
-          min-height: 100vh;
-          background: #050505;
-          padding: 40px 15px 80px;
-          color: white;
-          font-family: Arial, sans-serif;
-          position: relative;
-          overflow-x: hidden;
-        }
+       .op-registration-page {
+  min-height: 100vh;
+  background: #030308;
+  padding: 40px 15px 80px;
+  color: white;
+  font-family: Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
 
-        .op-registration-page::before {
-          content: "";
-          position: fixed;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: 
-            radial-gradient(circle at 20% 30%, rgba(180, 0, 30, 0.35) 0%, transparent 40%),
-            radial-gradient(circle at 80% 20%, rgba(120, 0, 40, 0.25) 0%, transparent 40%),
-            radial-gradient(circle at 40% 80%, rgba(255, 20, 50, 0.18) 0%, transparent 45%),
-            radial-gradient(circle at 70% 60%, rgba(90, 0, 20, 0.3) 0%, transparent 40%);
-          animation: bgMove 18s ease-in-out infinite alternate;
-          pointer-events: none;
-          z-index: 0;
-        }
+/* মেইন মাল্টি-কালার মুভিং লেয়ার */
+.op-registration-page::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 0, 80, 0.4) 0%, transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(0, 150, 255, 0.35) 0%, transparent 35%),
+    radial-gradient(circle at 10% 80%, rgba(180, 0, 255, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 90% 70%, rgba(0, 255, 200, 0.25) 0%, transparent 35%),
+    radial-gradient(circle at 50% 50%, rgba(255, 50, 100, 0.2) 0%, transparent 45%),
+    radial-gradient(circle at 40% 30%, rgba(100, 0, 200, 0.25) 0%, transparent 40%);
+  animation: multiColorMove 16s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
 
-        .op-registration-page::after {
-          content: "";
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: 
-            radial-gradient(ellipse at top, rgba(255, 0, 40, 0.12) 0%, transparent 55%),
-            radial-gradient(ellipse at bottom, rgba(80, 0, 15, 0.2) 0%, transparent 50%);
-          pointer-events: none;
-          z-index: 0;
-        }
+/* দ্বিতীয় লেয়ার - আরও কালার + পালস */
+.op-registration-page::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse 120% 70% at 50% -20%, rgba(255, 0, 100, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 60% at 0% 50%, rgba(0, 100, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 100% 50%, rgba(150, 0, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 120%, rgba(0, 200, 180, 0.18) 0%, transparent 55%);
+  animation: pulseMulti 10s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
 
-        .op-registration-container {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          max-width: 720px;
-          margin: auto;
-        }
+.op-registration-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+  margin: auto;
+}
+
+@keyframes multiColorMove {
+  0% {
+    transform: translate(0%, 0%) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(-6%, 4%) rotate(2deg) scale(1.06);
+  }
+  66% {
+    transform: translate(5%, -5%) rotate(-3deg) scale(1.03);
+  }
+  100% {
+    transform: translate(3%, 3%) rotate(1deg) scale(1.05);
+  }
+}
+
+@keyframes pulseMulti {
+  0% {
+    opacity: 0.65;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    filter: hue-rotate(15deg);
+  }
+  100% {
+    opacity: 0.75;
+    filter: hue-rotate(-10deg);
+  }
+}
 
         @keyframes bgMove {
           0% { transform: translate(0%, 0%) scale(1); }
