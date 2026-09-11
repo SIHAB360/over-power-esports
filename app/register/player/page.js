@@ -635,6 +635,207 @@ export default function PlayerRegister() {
   /* ========== PREMIUM SECTION ========== */
   .op-section {
     background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
+    border: 1px solid rgba(255, 30, 50, 0.18);
+    border-left: 4px solid #e90018;
+    border-radius: 18px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.55),
+      0 0 30px rgba(233, 0, 24, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .op-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 30, 50, 0.45),
+      transparent
+    );
+  }
+
+  .op-section:hover {
+    border-color: rgba(255, 30, 50, 0.4);
+    box-shadow: 
+      0 18px 50px rgba(0, 0, 0, 0.65),
+      0 0 40px rgba(233, 0, 24, 0.12);
+  }
+
+  .op-section h2 {
+    margin: 0 0 26px;
+    text-align: center;
+    color: #ff2032;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
+  }
+
+  .op-section h2::after {
+    content: "";
+    display: block;
+    width: 70px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e90018, transparent);
+    margin: 12px auto 0;
+  }
+
+  .op-section h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .op-section h3 span {
+    color: #ff2638;
+  }
+
+  /* Helper / green text */
+  .op-section p {
+    color: #4ade80 !important;
+    font-size: 13px;
+    margin: 0 0 18px !important;
+  }
+
+  /* ========== INPUT ========== */
+  .field {
+    margin-bottom: 22px;
+  }
+
+  .op-input {
+    width: 100%;
+    background: #0b0b0b;
+    border: 1px solid #2c2c2c;
+    border-radius: 12px;
+    padding: 15px 18px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.25s ease;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.45);
+  }
+
+  .op-input::placeholder {
+    color: #666;
+  }
+
+  .op-input:hover {
+    border-color: #3f3f3f;
+  }
+
+  .op-input:focus {
+    border-color: #e90018;
+    background: #111;
+    box-shadow: 
+      0 0 0 3px rgba(233, 0, 24, 0.18),
+      0 0 25px rgba(233, 0, 24, 0.15),
+      inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .op-input[type="date"] {
+    color-scheme: dark;
+  }
+
+  /* ========== RADIO + CHECKBOX (FIXED LAYOUT) ========== */
+  .op-section label {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ddd;
+    width: 100%;
+  }
+
+  .op-section label:hover {
+    background: rgba(255, 30, 50, 0.08);
+    color: #fff;
+  }
+
+  /* Radio */
+  .op-section input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 50%;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .op-section input[type="radio"]:checked {
+    border-color: #e90018;
+    background: #e90018;
+    box-shadow: 0 0 14px rgba(233, 0, 24, 0.6);
+  }
+
+  .op-section input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  /* Checkbox */
+  .op-section input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    margin: 0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .op-section input[type="checkbox"]:checked {
+    border-color: #e90018;
+    background: #e90018;
+    box-shadow: 0 0 14px rgba(233, 0, 24, 0.6);
+  }
+
+  .op-section input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+`}</style>
+
+  /* ========== PREMIUM SECTION ========== */
+  .op-section {
+    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
     border: 1px solid rgba(255, 30, 50, 0.15);
     border-left: 4px solid #e90018;
     border-radius: 18px;
