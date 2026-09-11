@@ -43,7 +43,7 @@ const { data, error } = await supabase
 
 .select("*")
 
-.eq("code",code)
+.ilike("code", code.trim())
 
 .single();
 
