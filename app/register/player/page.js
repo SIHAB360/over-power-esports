@@ -136,7 +136,7 @@ export default function PlayerRegister() {
             <img src={logo.src} alt="Over Power Esports Logo" />
           </div>
           <h1>OVER POWER</h1>
-          <p>PLAYER REGISTRATION</p>
+    
         </div>
 
         {/* MESSAGE */}
