@@ -471,7 +471,7 @@ export default function PlayerRegister() {
             </div>
           </section>
 
-          {/* SOCIAL MEDIA - 4 SEPARATE FIELDS */}
+          {/* SOCIAL MEDIA */}
           <section className="op-section">
             <h3>
               Social Media Links <span>*</span>
@@ -555,22 +555,25 @@ export default function PlayerRegister() {
       </div>
 
       <style jsx>{`
-  @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
+        * {
+          box-sizing: border-box;
+        }
 
-  * {
-    box-sizing: border-box;
-  }
+        .op-registration-page {
+          min-height: 100vh;
+          background: #030308;
+          padding: 40px 15px 80px;
+          color: white;
+          font-family: ${hindSiliguri.style.fontFamily}, sans-serif !important;
+          font-weight: 500;
+          position: relative;
+          overflow-x: hidden;
+        }
 
-  .op-registration-page {
-    min-height: 100vh;
-    background: #030308;
-    padding: 40px 15px 80px;
-    color: white;
-    font-family: 'Satoshi', inherit, sans-serif;
-    font-weight: 500;
-    position: relative;
-    overflow-x: hidden;
-  }
+        .op-registration-page * {
+          font-family: inherit !important;
+        }
+
         /* মেইন মাল্টি-কালার মুভিং লেয়ার */
         .op-registration-page::before {
           content: "";
@@ -590,7 +593,7 @@ export default function PlayerRegister() {
           pointer-events: none;
           z-index: 0;
         }
-        /* দ্বিতীয় লেয়ার - আরও কালার + পালস */
+
         .op-registration-page::after {
           content: "";
           position: fixed;
@@ -607,6 +610,7 @@ export default function PlayerRegister() {
           pointer-events: none;
           z-index: 0;
         }
+
         .op-registration-container {
           position: relative;
           z-index: 1;
@@ -614,39 +618,20 @@ export default function PlayerRegister() {
           max-width: 720px;
           margin: auto;
         }
+
         @keyframes multiColorMove {
-          0% {
-            transform: translate(0%, 0%) rotate(0deg) scale(1);
-          }
-          33% {
-            transform: translate(-6%, 4%) rotate(2deg) scale(1.06);
-          }
-          66% {
-            transform: translate(5%, -5%) rotate(-3deg) scale(1.03);
-          }
-          100% {
-            transform: translate(3%, 3%) rotate(1deg) scale(1.05);
-          }
+          0% { transform: translate(0%, 0%) rotate(0deg) scale(1); }
+          33% { transform: translate(-6%, 4%) rotate(2deg) scale(1.06); }
+          66% { transform: translate(5%, -5%) rotate(-3deg) scale(1.03); }
+          100% { transform: translate(3%, 3%) rotate(1deg) scale(1.05); }
         }
+
         @keyframes pulseMulti {
-          0% {
-            opacity: 0.65;
-            filter: hue-rotate(0deg);
-          }
-          50% {
-            opacity: 0.9;
-            filter: hue-rotate(15deg);
-          }
-          100% {
-            opacity: 0.75;
-            filter: hue-rotate(-10deg);
-          }
+          0% { opacity: 0.65; filter: hue-rotate(0deg); }
+          50% { opacity: 0.9; filter: hue-rotate(15deg); }
+          100% { opacity: 0.75; filter: hue-rotate(-10deg); }
         }
-        @keyframes bgMove {
-          0% { transform: translate(0%, 0%) scale(1); }
-          50% { transform: translate(-5%, 3%) scale(1.05); }
-          100% { transform: translate(4%, -4%) scale(1.02); }
-        }
+
         /* ========== PREMIUM HEADER CARD ========== */
         .op-header {
           text-align: center;
@@ -661,7 +646,7 @@ export default function PlayerRegister() {
             0 20px 50px rgba(0, 0, 0, 0.6),
             0 0 40px rgba(255, 0, 80, 0.12);
         }
-        /* চারপাশের অ্যানিমেটেড গ্লো বর্ডার */
+
         .op-header::before {
           content: "";
           position: absolute;
@@ -686,10 +671,12 @@ export default function PlayerRegister() {
           z-index: 0;
           pointer-events: none;
         }
+
         .op-header > * {
           position: relative;
           z-index: 1;
         }
+
         .op-logo {
           width: 95px;
           height: 95px;
@@ -699,11 +686,13 @@ export default function PlayerRegister() {
           box-shadow: 0 0 35px rgba(255, 0, 60, 0.55);
           border: 2px solid rgba(255, 255, 255, 0.1);
         }
+
         .op-logo img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
+
         .op-header h1 {
           margin: 0 0 12px;
           font-size: 42px;
@@ -723,6 +712,7 @@ export default function PlayerRegister() {
           -webkit-text-fill-color: transparent;
           animation: titleShine 3.5s linear infinite;
         }
+
         .op-header h3 {
           margin: 0;
           font-size: 15px;
@@ -730,22 +720,17 @@ export default function PlayerRegister() {
           color: #c0c0c0;
           letter-spacing: 0.5px;
         }
+
         @keyframes borderGlow {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 300% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          100% { background-position: 300% 50%; }
         }
+
         @keyframes titleShine {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 300% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          100% { background-position: 300% 50%; }
         }
+
         /* ========== PREMIUM SECTION ========== */
         .op-section {
           background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
@@ -762,6 +747,7 @@ export default function PlayerRegister() {
           overflow: hidden;
           transition: all 0.35s ease;
         }
+
         .op-section::before {
           content: "";
           position: absolute;
@@ -776,6 +762,7 @@ export default function PlayerRegister() {
             transparent
           );
         }
+
         .op-section:hover {
           border-color: rgba(255, 30, 50, 0.45);
           box-shadow: 
@@ -783,6 +770,7 @@ export default function PlayerRegister() {
             0 0 50px rgba(233, 0, 24, 0.15);
           transform: translateY(-2px);
         }
+
         .op-section h2 {
           margin: 0 0 32px;
           text-align: center;
@@ -793,6 +781,7 @@ export default function PlayerRegister() {
           text-transform: uppercase;
           text-shadow: 0 0 22px rgba(255, 32, 50, 0.45);
         }
+
         .op-section h2::after {
           content: "";
           display: block;
@@ -802,28 +791,34 @@ export default function PlayerRegister() {
           margin: 14px auto 0;
           box-shadow: 0 0 12px rgba(233, 0, 24, 0.5);
         }
+
         .op-section h3 {
           margin: 0 0 8px;
           font-size: 15px;
           font-weight: 700;
           color: #ffffff;
         }
+
         .op-section h3 span {
           color: #ff2638;
         }
+
         .help-text {
           color: #4ade80 !important;
           font-size: 13px;
           margin: 0 0 16px !important;
           line-height: 1.4;
         }
+
         /* ========== FIELD ========== */
         .field {
           margin-bottom: 26px;
         }
+
         .field:last-child {
           margin-bottom: 0;
         }
+
         .field label {
           display: block;
           margin-bottom: 9px;
@@ -832,9 +827,11 @@ export default function PlayerRegister() {
           font-weight: 600;
           letter-spacing: 0.3px;
         }
+
         .required {
           color: #ff2537;
         }
+
         .op-input,
         .op-textarea {
           width: 100%;
@@ -848,16 +845,19 @@ export default function PlayerRegister() {
           transition: all 0.25s ease;
           box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
         }
+
         .op-input::placeholder,
-.op-textarea::placeholder {
-  color: #888;
-  font-weight: 500;
-  opacity: 0.9;
-}
+        .op-textarea::placeholder {
+          color: #888;
+          font-weight: 500;
+          opacity: 0.9;
+        }
+
         .op-input:hover,
         .op-textarea:hover {
           border-color: #3f3f3f;
         }
+
         .op-input:focus,
         .op-textarea:focus {
           border-color: #e90018;
@@ -867,13 +867,16 @@ export default function PlayerRegister() {
             0 0 24px rgba(233, 0, 24, 0.15),
             inset 0 2px 6px rgba(0, 0, 0, 0.3);
         }
+
         .op-textarea {
           min-height: 100px;
           resize: vertical;
         }
+
         .op-input[type="date"] {
           color-scheme: dark;
         }
+
         /* ========== RADIO + CHECKBOX ========== */
         .radio-list,
         .check-list {
@@ -882,6 +885,7 @@ export default function PlayerRegister() {
           gap: 8px;
           margin-top: 6px;
         }
+
         .choice {
           display: flex !important;
           align-items: center;
@@ -894,10 +898,12 @@ export default function PlayerRegister() {
           transition: all 0.2s ease;
           width: 100%;
         }
+
         .choice:hover {
           background: rgba(255, 30, 50, 0.09);
           color: #fff;
         }
+
         .choice input[type="radio"],
         .choice input[type="checkbox"] {
           appearance: none;
@@ -911,18 +917,22 @@ export default function PlayerRegister() {
           transition: all 0.2s ease;
           flex-shrink: 0;
         }
+
         .choice input[type="radio"] {
           border-radius: 50%;
         }
+
         .choice input[type="checkbox"] {
           border-radius: 4px;
         }
+
         .choice input[type="radio"]:checked,
         .choice input[type="checkbox"]:checked {
           border-color: #e90018;
           background: #e90018;
           box-shadow: 0 0 14px rgba(233, 0, 24, 0.55);
         }
+
         .choice input[type="radio"]:checked::after {
           content: "";
           position: absolute;
@@ -934,6 +944,7 @@ export default function PlayerRegister() {
           background: white;
           border-radius: 50%;
         }
+
         .choice input[type="checkbox"]:checked::after {
           content: "✓";
           position: absolute;
@@ -944,6 +955,7 @@ export default function PlayerRegister() {
           font-size: 12px;
           font-weight: bold;
         }
+
         /* ========== FILE ========== */
         .op-file {
           width: 100%;
@@ -955,14 +967,17 @@ export default function PlayerRegister() {
           cursor: pointer;
           transition: all 0.25s ease;
         }
+
         .op-file:hover {
           border-color: #e90018;
           background: #111;
         }
+
         /* ========== SUBMIT ========== */
         .op-submit-section {
           padding: 10px 0 30px;
         }
+
         .op-submit {
           width: 100%;
           border: none;
@@ -977,16 +992,19 @@ export default function PlayerRegister() {
           box-shadow: 0 8px 28px rgba(255, 0, 20, 0.3);
           transition: all 0.25s ease;
         }
+
         .op-submit:hover {
           transform: translateY(-2px);
           filter: brightness(1.1);
           box-shadow: 0 12px 35px rgba(255, 0, 20, 0.4);
         }
+
         .op-submit:disabled {
           opacity: 0.6;
           cursor: not-allowed;
           transform: none;
         }
+
         @media (max-width: 600px) {
           .op-registration-page {
             padding: 20px 12px 50px;
