@@ -71,12 +71,8 @@ export default function PlayerRegister() {
         }
       });
 
-      if (profileImage) {
-        formData.append("profile_image", profileImage);
-      }
-      if (gameScreenshot) {
-        formData.append("game_id_screenshot", gameScreenshot);
-      }
+      if (profileImage) formData.append("profile_image", profileImage);
+      if (gameScreenshot) formData.append("game_id_screenshot", gameScreenshot);
 
       const res = await fetch("/api/register-player", {
         method: "POST",
@@ -136,7 +132,6 @@ export default function PlayerRegister() {
             <img src={logo.src} alt="Over Power Esports Logo" />
           </div>
           <h1>OVER POWER</h1>
-    
         </div>
 
         {/* MESSAGE */}
@@ -146,7 +141,6 @@ export default function PlayerRegister() {
           {/* BASIC INFORMATION */}
           <section className="op-section">
             <h2>PLAYER REGISTRATION</h2>
-
             <Field
               label="Player Name"
               required
@@ -410,52 +404,51 @@ export default function PlayerRegister() {
             </div>
           </section>
 
-        {/* TEAM */}
-<section className="op-section">
-  <h3>
-    Previous Team <span>*</span>
-  </h3>
-  <Field
-    label=""
-    name="previous_team"
-    value={form.previous_team}
-    onChange={handleChange}
-    placeholder="Enter previous team name or None"
-    required
-  />
+          {/* TEAM */}
+          <section className="op-section">
+            <h3>
+              Previous Team <span>*</span>
+            </h3>
+            <Field
+              label=""
+              name="previous_team"
+              value={form.previous_team}
+              onChange={handleChange}
+              placeholder="Enter previous team name or None"
+              required
+            />
 
-  <h3 style={{ marginTop: "28px" }}>
-    Team Name <span>*</span>
-  </h3>
-  <p className="help-text">
-    আপনি কোন টিমে যোগ দিতে চান সিলেক্ট করুন।
-  </p>
-  <div className="radio-list">
-    <label className="choice">
-      <input
-        type="radio"
-        name="team_name"
-        value="Over Power"
-        checked={form.team_name === "Over Power"}
-        onChange={handleChange}
-        required
-      />
-      <span>Over Power</span>
-    </label>
-
-    <label className="choice">
-      <input
-        type="radio"
-        name="team_name"
-        value="Over Power Elite"
-        checked={form.team_name === "Over Power Elite"}
-        onChange={handleChange}
-        required
-      />
-      <span>Over Power Elite</span>
-    </label>
-  </div>
-</section>
+            <h3 style={{ marginTop: "28px" }}>
+              Team Name <span>*</span>
+            </h3>
+            <p className="help-text">
+              আপনি কোন টিমে যোগ দিতে চান সিলেক্ট করুন।
+            </p>
+            <div className="radio-list">
+              <label className="choice">
+                <input
+                  type="radio"
+                  name="team_name"
+                  value="Over Power"
+                  checked={form.team_name === "Over Power"}
+                  onChange={handleChange}
+                  required
+                />
+                <span>Over Power</span>
+              </label>
+              <label className="choice">
+                <input
+                  type="radio"
+                  name="team_name"
+                  value="Over Power Elite"
+                  checked={form.team_name === "Over Power Elite"}
+                  onChange={handleChange}
+                  required
+                />
+                <span>Over Power Elite</span>
+              </label>
+            </div>
+          </section>
 
           {/* SOCIAL */}
           <section className="op-section">
@@ -519,221 +512,133 @@ export default function PlayerRegister() {
         * {
           box-sizing: border-box;
         }
-.op-header h1 {
-  margin: 12px 0 4px;
-  font-size: 50px;
-  font-weight: 900;
-  letter-spacing: 5px;
-  background: linear-gradient(
-    90deg,
-    #ff0033,
-    #ff4d6d,
-    #ffffff,
-    #ff4d6d,
-    #ff0033
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: titleShine 3.5s linear infinite;
-}
 
-@keyframes titleShine {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 300% 50%;
-  }
-}
+        .op-registration-page {
+          min-height: 100vh;
+          background: #050505;
+          padding: 40px 15px 80px;
+          color: white;
+          font-family: Arial, sans-serif;
+          position: relative;
+          overflow-x: hidden;
+        }
 
+        .op-registration-page::before {
+          content: "";
+          position: fixed;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: 
+            radial-gradient(circle at 20% 30%, rgba(180, 0, 30, 0.35) 0%, transparent 40%),
+            radial-gradient(circle at 80% 20%, rgba(120, 0, 40, 0.25) 0%, transparent 40%),
+            radial-gradient(circle at 40% 80%, rgba(255, 20, 50, 0.18) 0%, transparent 45%),
+            radial-gradient(circle at 70% 60%, rgba(90, 0, 20, 0.3) 0%, transparent 40%);
+          animation: bgMove 18s ease-in-out infinite alternate;
+          pointer-events: none;
+          z-index: 0;
+        }
 
-      /* ========== PREMIUM SECTION ========== */
-.op-section {
-  background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
-  border: 1px solid rgba(255, 30, 50, 0.22);
-  border-left: 4px solid #e90018;
-  border-radius: 18px;
-  padding: 40px 30px 36px;
-  margin-bottom: 30px;
-  box-shadow: 
-    0 18px 45px rgba(0, 0, 0, 0.6),
-    0 0 40px rgba(233, 0, 24, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.35s ease;
-}
+        .op-registration-page::after {
+          content: "";
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 
+            radial-gradient(ellipse at top, rgba(255, 0, 40, 0.12) 0%, transparent 55%),
+            radial-gradient(ellipse at bottom, rgba(80, 0, 15, 0.2) 0%, transparent 50%);
+          pointer-events: none;
+          z-index: 0;
+        }
 
-.op-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 40, 60, 0.55),
-    transparent
-  );
-}
+        .op-registration-container {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          max-width: 720px;
+          margin: auto;
+        }
 
-.op-section:hover {
-  border-color: rgba(255, 30, 50, 0.45);
-  box-shadow: 
-    0 22px 55px rgba(0, 0, 0, 0.7),
-    0 0 50px rgba(233, 0, 24, 0.15);
-  transform: translateY(-2px);
-}
+        @keyframes bgMove {
+          0% { transform: translate(0%, 0%) scale(1); }
+          50% { transform: translate(-5%, 3%) scale(1.05); }
+          100% { transform: translate(4%, -4%) scale(1.02); }
+        }
 
-.op-section h2 {
-  margin: 0 0 36px;
-  text-align: center;
-  color: #ff2032;
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  text-shadow: 0 0 22px rgba(255, 32, 50, 0.45);
-  position: relative;
-}
+        .op-header {
+          text-align: center;
+          padding: 30px 20px;
+          margin-bottom: 25px;
+        }
 
-.op-section h2::after {
-  content: "";
-  display: block;
-  width: 70px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #e90018, transparent);
-  margin: 14px auto 0;
-  box-shadow: 0 0 12px rgba(233, 0, 24, 0.5);
-}
-/* ========== FIELD SPACING (সবচেয়ে গুরুত্বপূর্ণ) ========== */
-.field {
-  margin-bottom: 28px !important;
-}
+        .op-logo {
+          width: 90px;
+          height: 90px;
+          margin: 0 auto 15px;
+          border-radius: 50%;
+          overflow: hidden;
+          box-shadow: 0 0 30px rgba(255, 0, 30, 0.5);
+        }
 
-.field:last-child {
-  margin-bottom: 0 !important;
-}
+        .op-logo img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
 
-.field label {
-  display: block;
-  margin-bottom: 10px !important;
-  color: #e5e5e5;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-}
+        .op-header h1 {
+          margin: 0;
+          font-size: 42px;
+          font-weight: 900;
+          letter-spacing: 4px;
+          background: linear-gradient(
+            90deg,
+            #ff0033,
+            #ff4d6d,
+            #ffffff,
+            #ff4d6d,
+            #ff0033
+          );
+          background-size: 300% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: titleShine 3.5s linear infinite;
+        }
 
-.op-input,
-.op-textarea {
-  width: 100%;
-  padding: 16px 18px !important;
-  border-radius: 12px;
-  border: 1px solid #2c2c2c;
-  background: #0b0b0b;
-  color: white;
-  outline: none;
-  font-size: 15px;
-  transition: all 0.25s ease;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
-}
+        @keyframes titleShine {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 300% 50%; }
+        }
 
-.op-input:focus,
-.op-textarea:focus {
-  border-color: #e90018;
-  background: #111;
-  box-shadow: 
-    0 0 0 3px rgba(233, 0, 24, 0.2),
-    0 0 24px rgba(233, 0, 24, 0.15),
-    inset 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* ========== FIELD SPACING ========== */
-.field {
-  margin-bottom: 26px;              /* আগে 20px ছিল → এখন বেশি */
-}
-
-.field:last-child {
-  margin-bottom: 0;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 9px;               /* label আর input এর মধ্যে বেশি জায়গা */
-  color: #e0e0e0;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.7px;
-}
-
-.op-input,
-.op-textarea {
-  width: 100%;
-  padding: 15px 18px;               /* একটু বড় padding */
-  border-radius: 12px;
-  border: 1px solid #2c2c2c;
-  background: #0b0b0b;
-  color: white;
-  outline: none;
-  font-size: 15px;
-  transition: all 0.25s ease;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
-}
-
-.op-input:focus,
-.op-textarea:focus {
-  border-color: #e90018;
-  background: #111;
-  box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.2),
-              0 0 24px rgba(233, 0, 24, 0.15),
-              inset 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Radio / Checkbox list spacing */
-.radio-list,
-.check-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;                         /* আইটেমগুলোর মধ্যে সুন্দর gap */
-  margin-top: 6px;
-}
-
-.choice {
-  display: flex !important;
-  align-items: center;
-  gap: 14px;
-  padding: 13px 16px;               /* বেশি padding */
-  border-radius: 11px;
-  cursor: pointer;
-  color: #ddd;
-  font-size: 14.5px;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-.choice:hover {
-  background: rgba(255, 30, 50, 0.09);
-  color: #fff;
-}
+        .op-message {
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 12px;
+          background: #101010;
+          border: 1px solid #ff1728;
+          text-align: center;
+          font-weight: bold;
+        }
 
         /* ========== PREMIUM SECTION ========== */
         .op-section {
-          background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-          border: 1px solid rgba(255, 30, 50, 0.18);
+          background: linear-gradient(165deg, #111111 0%, #0a0a0a 100%);
+          border: 1px solid rgba(255, 30, 50, 0.22);
           border-left: 4px solid #e90018;
           border-radius: 18px;
-          padding: 28px 24px;
-          margin-bottom: 24px;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55),
-            0 0 30px rgba(233, 0, 24, 0.06),
-            inset 0 1px 0 rgba(255, 255, 255, 0.03);
+          padding: 36px 28px;
+          margin-bottom: 28px;
+          box-shadow: 
+            0 18px 45px rgba(0, 0, 0, 0.6),
+            0 0 40px rgba(233, 0, 24, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
           position: relative;
           overflow: hidden;
-          transition: all 0.3s ease;
+          transition: all 0.35s ease;
         }
 
         .op-section::before {
@@ -746,35 +651,38 @@ export default function PlayerRegister() {
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 30, 50, 0.45),
+            rgba(255, 40, 60, 0.55),
             transparent
           );
         }
 
         .op-section:hover {
-          border-color: rgba(255, 30, 50, 0.4);
-          box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65),
-            0 0 40px rgba(233, 0, 24, 0.12);
+          border-color: rgba(255, 30, 50, 0.45);
+          box-shadow: 
+            0 22px 55px rgba(0, 0, 0, 0.7),
+            0 0 50px rgba(233, 0, 24, 0.15);
+          transform: translateY(-2px);
         }
 
         .op-section h2 {
-          margin: 0 0 24px;
+          margin: 0 0 32px;
           text-align: center;
           color: #ff2032;
           font-size: 20px;
           font-weight: 800;
-          letter-spacing: 1.5px;
+          letter-spacing: 1.8px;
           text-transform: uppercase;
-          text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
+          text-shadow: 0 0 22px rgba(255, 32, 50, 0.45);
         }
 
         .op-section h2::after {
           content: "";
           display: block;
-          width: 60px;
+          width: 70px;
           height: 2px;
           background: linear-gradient(90deg, transparent, #e90018, transparent);
-          margin: 10px auto 0;
+          margin: 14px auto 0;
+          box-shadow: 0 0 12px rgba(233, 0, 24, 0.5);
         }
 
         .op-section h3 {
@@ -795,17 +703,22 @@ export default function PlayerRegister() {
           line-height: 1.4;
         }
 
-        /* ========== FIELD & INPUT ========== */
+        /* ========== FIELD ========== */
         .field {
-          margin-bottom: 20px;
+          margin-bottom: 26px;
+        }
+
+        .field:last-child {
+          margin-bottom: 0;
         }
 
         .field label {
           display: block;
-          margin-bottom: 7px;
-          color: #ddd;
+          margin-bottom: 9px;
+          color: #e0e0e0;
           font-size: 13.5px;
           font-weight: 600;
+          letter-spacing: 0.3px;
         }
 
         .required {
@@ -815,15 +728,15 @@ export default function PlayerRegister() {
         .op-input,
         .op-textarea {
           width: 100%;
-          padding: 14px 16px;
-          border-radius: 11px;
+          padding: 15px 18px;
+          border-radius: 12px;
           border: 1px solid #2c2c2c;
           background: #0b0b0b;
           color: white;
           outline: none;
-          font-size: 14.5px;
+          font-size: 15px;
           transition: all 0.25s ease;
-          box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+          box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
         }
 
         .op-input::placeholder,
@@ -840,9 +753,10 @@ export default function PlayerRegister() {
         .op-textarea:focus {
           border-color: #e90018;
           background: #111;
-          box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.18),
-            0 0 22px rgba(233, 0, 24, 0.12),
-            inset 0 2px 5px rgba(0, 0, 0, 0.3);
+          box-shadow: 
+            0 0 0 3px rgba(233, 0, 24, 0.2),
+            0 0 24px rgba(233, 0, 24, 0.15),
+            inset 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
         .op-textarea {
@@ -859,24 +773,25 @@ export default function PlayerRegister() {
         .check-list {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
+          margin-top: 6px;
         }
 
         .choice {
           display: flex !important;
           align-items: center;
-          gap: 12px;
-          padding: 11px 14px;
-          border-radius: 10px;
+          gap: 14px;
+          padding: 13px 16px;
+          border-radius: 11px;
           cursor: pointer;
           color: #ddd;
-          font-size: 14px;
+          font-size: 14.5px;
           transition: all 0.2s ease;
           width: 100%;
         }
 
         .choice:hover {
-          background: rgba(255, 30, 50, 0.08);
+          background: rgba(255, 30, 50, 0.09);
           color: #fff;
         }
 
@@ -932,7 +847,7 @@ export default function PlayerRegister() {
           font-weight: bold;
         }
 
-        /* ========== FILE INPUT ========== */
+        /* ========== FILE ========== */
         .op-file {
           width: 100%;
           padding: 14px;
@@ -951,7 +866,7 @@ export default function PlayerRegister() {
 
         /* ========== SUBMIT ========== */
         .op-submit-section {
-          padding: 10px 0 20px;
+          padding: 10px 0 30px;
         }
 
         .op-submit {
@@ -982,69 +897,22 @@ export default function PlayerRegister() {
         }
 
         @media (max-width: 600px) {
-
-/* নতুনটা বসাবে */
-.op-registration-page {
-  min-height: 100vh;
-  background: #050505;
-  padding: 40px 15px 80px;
-  color: white;
-  font-family: Arial, sans-serif;
-  position: relative;
-  overflow-x: hidden;
+          .op-registration-page {
+            padding: 20px 12px 50px;
+          }
+          .op-header h1 {
+            font-size: 28px;
+            letter-spacing: 2px;
+          }
+          .op-section {
+            padding: 24px 18px;
+          }
+        }
+      `}</style>
+    </main>
+  );
 }
 
-/* মেইন মুভিং গ্রেডিয়েন্ট */
-.op-registration-page::before {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(180, 0, 30, 0.35) 0%, transparent 40%),
-    radial-gradient(circle at 80% 20%, rgba(120, 0, 40, 0.25) 0%, transparent 40%),
-    radial-gradient(circle at 40% 80%, rgba(255, 20, 50, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(90, 0, 20, 0.3) 0%, transparent 40%);
-  animation: bgMove 18s ease-in-out infinite alternate;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* দ্বিতীয় লেয়ার (আরও soft glow) */
-.op-registration-page::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(ellipse at top, rgba(255, 0, 40, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at bottom, rgba(80, 0, 15, 0.2) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.op-registration-container {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes bgMove {
-  0% {
-    transform: translate(0%, 0%) scale(1);
-  }
-  50% {
-    transform: translate(-5%, 3%) scale(1.05);
-  }
-  100% {
-    transform: translate(4%, -4%) scale(1.02);
-  }
-}
-
-/* INPUT COMPONENT */
 function Field({
   label,
   name,
