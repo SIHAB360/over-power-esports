@@ -641,14 +641,14 @@ export default function PlayerRegister() {
         }
 
         .op-section {
-          background: #101010;
-          border: 1px solid #292929;
-          border-left: 3px solid #e90018;
-          border-radius: 12px;
-          padding: 22px;
-          margin-bottom: 16px;
-          box-shadow: 0 7px 25px rgba(0, 0, 0, 0.35);
-        }
+  background: linear-gradient(145deg, #111111, #0b0b0b);
+  border: 1px solid #252525;
+  border-left: 3px solid #e90018;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+}
 
         .op-section h2 {
           margin: 0 0 22px;
