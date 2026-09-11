@@ -235,9 +235,9 @@ status:"Active",
 image:"/players/jellal.png",
 winnings:"$0",
 
-facebook:"",
-instagram:"",
-youtube:"",
+facebook:"https://www.facebook.com/ew.r.sawon.739315",
+instagram:"https://www.instagram.com/sgr100m?stkn=NjFqMDVyamx3OGth",
+youtube:"https://youtube.com/@sgr100m?si=dPon0FOtSGuXmpbo",
 tiktok:"",
 
 youtubeVideos:[
