@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 
@@ -43,14 +42,12 @@ export default function PlayerRegister() {
   function handleCheckbox(name, value) {
     setForm((prev) => {
       const current = prev[name];
-
       if (current.includes(value)) {
         return {
           ...prev,
           [name]: current.filter((item) => item !== value),
         };
       }
-
       return {
         ...prev,
         [name]: [...current, value],
@@ -60,16 +57,13 @@ export default function PlayerRegister() {
 
   async function submit(e) {
     e.preventDefault();
-
     setLoading(true);
     setMessage("");
 
     try {
       const formData = new FormData();
-
       Object.keys(form).forEach((key) => {
         const value = form[key];
-
         if (Array.isArray(value)) {
           formData.append(key, value.join(", "));
         } else {
@@ -80,7 +74,6 @@ export default function PlayerRegister() {
       if (profileImage) {
         formData.append("profile_image", profileImage);
       }
-
       if (gameScreenshot) {
         formData.append("game_id_screenshot", gameScreenshot);
       }
@@ -94,11 +87,7 @@ export default function PlayerRegister() {
 
       if (data.success) {
         setMessage("Registration Successful ✅");
-
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         setMessage(data.message || "Registration failed");
       }
@@ -141,26 +130,19 @@ export default function PlayerRegister() {
   return (
     <main className="op-registration-page">
       <div className="op-registration-container">
-
         {/* HEADER */}
         <div className="op-header">
           <div className="op-logo">
-  <img src={logo.src} alt="Over Power Esports Logo" />
-</div>
-
+            <img src={logo.src} alt="Over Power Esports Logo" />
+          </div>
           <h1>OVER POWER</h1>
           <p>PLAYER REGISTRATION</p>
         </div>
 
         {/* MESSAGE */}
-        {message && (
-          <div className="op-message">
-            {message}
-          </div>
-        )}
+        {message && <div className="op-message">{message}</div>}
 
         <form onSubmit={submit}>
-
           {/* BASIC INFORMATION */}
           <section className="op-section">
             <h2>PLAYER REGISTRATION</h2>
@@ -173,7 +155,6 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="Enter your full name"
             />
-
             <Field
               label="In-Game Name (IGN)"
               required
@@ -182,7 +163,6 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="Enter your in-game name"
             />
-
             <Field
               label="Free Fire UID"
               required
@@ -191,7 +171,6 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="Enter your Free Fire UID"
             />
-
             <Field
               label="Age"
               required
@@ -201,7 +180,6 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="Enter your age"
             />
-
             <Field
               label="Birth Date"
               required
@@ -217,11 +195,7 @@ export default function PlayerRegister() {
             <h3>
               Primary Role <span>*</span>
             </h3>
-
-            <p className="help-text">
-              Select your primary role in the squad.
-            </p>
-
+            <p className="help-text">Select your primary role in the squad.</p>
             <div className="radio-list">
               {roles.map((role) => (
                 <label key={role} className="choice">
@@ -244,7 +218,6 @@ export default function PlayerRegister() {
             <h3>
               Secondary Role <span>*</span>
             </h3>
-
             <div className="radio-list">
               {secondaryRoles.map((role) => (
                 <label key={role} className="choice">
@@ -267,7 +240,6 @@ export default function PlayerRegister() {
             <h3>
               Phone Number <span>*</span>
             </h3>
-
             <Field
               label=""
               name="phone"
@@ -277,7 +249,6 @@ export default function PlayerRegister() {
               placeholder="Enter your phone number"
               required
             />
-
             <Field
               label="Email Address"
               required
@@ -287,7 +258,6 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="Enter your email address"
             />
-
             <Field
               label="Full Address"
               name="full_address"
@@ -303,7 +273,6 @@ export default function PlayerRegister() {
             <h3>
               Device <span>*</span>
             </h3>
-
             <Field
               label=""
               name="device"
@@ -319,32 +288,25 @@ export default function PlayerRegister() {
             <h3>
               Internet Connection Select <span>*</span>
             </h3>
-
             <p className="help-text">
               Select your available internet connection.
             </p>
-
             <div className="check-list">
               {["Wi-Fi", "Mobile Data", "IPS+UPS"].map((item) => (
                 <label key={item} className="choice">
                   <input
                     type="checkbox"
                     checked={form.internet_connection.includes(item)}
-                    onChange={() =>
-                      handleCheckbox("internet_connection", item)
-                    }
+                    onChange={() => handleCheckbox("internet_connection", item)}
                   />
                   <span>{item}</span>
                 </label>
               ))}
-
               <label className="choice">
                 <input
                   type="checkbox"
                   checked={form.internet_connection.includes("Other")}
-                  onChange={() =>
-                    handleCheckbox("internet_connection", "Other")
-                  }
+                  onChange={() => handleCheckbox("internet_connection", "Other")}
                 />
                 <span>Other</span>
               </label>
@@ -356,7 +318,6 @@ export default function PlayerRegister() {
             <h3>
               Practice Time <span>*</span>
             </h3>
-
             <Field
               label=""
               name="practice_time"
@@ -365,11 +326,9 @@ export default function PlayerRegister() {
               placeholder="Example: 6:00 PM - 8:00 PM"
               required
             />
-
             <h3>
               Game Experience <span>*</span>
             </h3>
-
             <Field
               label=""
               name="game_experience"
@@ -378,11 +337,9 @@ export default function PlayerRegister() {
               placeholder="Example: 3 Years"
               required
             />
-
             <h3>
               Tournament Experience <span>*</span>
             </h3>
-
             <Field
               label=""
               name="tournament_experience"
@@ -398,11 +355,9 @@ export default function PlayerRegister() {
             <h3>
               Joining Date <span>*</span>
             </h3>
-
             <p className="help-text">
               Over Power Esports-এ যোগদানের তারিখ নির্বাচন করুন।
             </p>
-
             <input
               className="op-input"
               type="date"
@@ -418,7 +373,6 @@ export default function PlayerRegister() {
             <h3>
               Average BR K/D Rate <span>*</span>
             </h3>
-
             <div className="radio-list">
               {["1", "2", "3", "4", "5", "6", "7", "8"].map((kd) => (
                 <label key={kd} className="choice">
@@ -438,23 +392,17 @@ export default function PlayerRegister() {
 
           {/* WEAPONS */}
           <section className="op-section">
-            <h3>
-              Expert Weapon ⚔️
-            </h3>
-
+            <h3>Expert Weapon ⚔️</h3>
             <p className="help-text">
               যেসব weapon-এ আপনি expert সেগুলো নির্বাচন করুন।
             </p>
-
             <div className="check-list">
               {weapons.map((weapon) => (
                 <label key={weapon} className="choice">
                   <input
                     type="checkbox"
                     checked={form.expert_weapon.includes(weapon)}
-                    onChange={() =>
-                      handleCheckbox("expert_weapon", weapon)
-                    }
+                    onChange={() => handleCheckbox("expert_weapon", weapon)}
                   />
                   <span>{weapon}</span>
                 </label>
@@ -467,7 +415,6 @@ export default function PlayerRegister() {
             <h3>
               Previous Team <span>*</span>
             </h3>
-
             <Field
               label=""
               name="previous_team"
@@ -476,7 +423,6 @@ export default function PlayerRegister() {
               placeholder="Enter previous team name or None"
               required
             />
-
             <Field
               label="Team Name"
               name="team_name"
@@ -491,11 +437,9 @@ export default function PlayerRegister() {
             <h3>
               Social Media Link <span>*</span>
             </h3>
-
             <p className="help-text">
               Facebook / TikTok / YouTube / Instagram profile link
             </p>
-
             <Field
               label=""
               name="social_media_link"
@@ -511,803 +455,205 @@ export default function PlayerRegister() {
             <h3>
               Profile Image <span>*</span>
             </h3>
-
             <p className="help-text">
               আপনার একটি পরিষ্কার profile image upload করুন।
             </p>
-
             <input
               className="op-file"
               type="file"
               accept="image/*"
               required
-              onChange={(e) =>
-                setProfileImage(e.target.files?.[0] || null)
-              }
+              onChange={(e) => setProfileImage(e.target.files?.[0] || null)}
             />
           </section>
 
           {/* SCREENSHOT */}
           <section className="op-section">
             <h3>Game ID Screenshot</h3>
-
             <p className="help-text">
               আপনার Free Fire Game ID-এর screenshot upload করুন।
             </p>
-
             <input
               className="op-file"
               type="file"
               accept="image/*"
-              onChange={(e) =>
-                setGameScreenshot(e.target.files?.[0] || null)
-              }
+              onChange={(e) => setGameScreenshot(e.target.files?.[0] || null)}
             />
           </section>
 
           {/* SUBMIT */}
           <section className="op-submit-section">
-            <button
-              type="submit"
-              className="op-submit"
-              disabled={loading}
-            >
+            <button type="submit" className="op-submit" disabled={loading}>
               {loading ? "Submitting..." : "SUBMIT REGISTRATION"}
             </button>
           </section>
-
         </form>
       </div>
 
       <style jsx>{`
-  * {
-    box-sizing: border-box;
-  }
-
-  .op-registration-page {
-    min-height: 100vh;
-    background:
-      radial-gradient(
-        circle at top,
-        #3b0000 0%,
-        #110000 35%,
-        #050505 75%
-      );
-    padding: 30px 15px 60px;
-    color: white;
-    font-family: Arial, sans-serif;
-  }
-
-  .op-registration-container {
-    width: 100%;
-    max-width: 720px;
-    margin: auto;
-  }
-
-  .op-header {
-    text-align: center;
-    padding: 30px 20px;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #080808, #250000);
-    border: 1px solid #4a0000;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
-  }
-
-  .op-logo {
-    width: 75px;
-    height: 75px;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ff0018, #720000);
-    font-size: 25px;
-    font-weight: 900;
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
-  }
-
-  .op-header h1 {
-    margin: 15px 0 5px;
-    font-size: 32px;
-    font-weight: 900;
-    letter-spacing: 2px;
-  }
-
-  .op-header p {
-    margin: 0;
-    color: #ff3945;
-    font-weight: bold;
-    letter-spacing: 2px;
-  }
-
-  .op-message {
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    background: #101010;
-    border: 1px solid #ff1728;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  /* ========== PREMIUM SECTION ========== */
-  .op-section {
-    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-    border: 1px solid rgba(255, 30, 50, 0.18);
-    border-left: 4px solid #e90018;
-    border-radius: 18px;
-    padding: 32px 28px;
-    margin-bottom: 28px;
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.55),
-      0 0 30px rgba(233, 0, 24, 0.06),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .op-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 30, 50, 0.45),
-      transparent
-    );
-  }
-
-  .op-section:hover {
-    border-color: rgba(255, 30, 50, 0.4);
-    box-shadow: 
-      0 18px 50px rgba(0, 0, 0, 0.65),
-      0 0 40px rgba(233, 0, 24, 0.12);
-  }
-
-  .op-section h2 {
-    margin: 0 0 26px;
-    text-align: center;
-    color: #ff2032;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
-  }
-
-  .op-section h2::after {
-    content: "";
-    display: block;
-    width: 70px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #e90018, transparent);
-    margin: 12px auto 0;
-  }
-
-  .op-section h3 {
-    margin: 0 0 8px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  .op-section h3 span {
-    color: #ff2638;
-  }
-
-  /* Helper / green text */
-  .op-section p {
-    color: #4ade80 !important;
-    font-size: 13px;
-    margin: 0 0 18px !important;
-  }
-
-  /* ========== INPUT ========== */
-  .field {
-    margin-bottom: 22px;
-  }
-
-  .op-input {
-    width: 100%;
-    background: #0b0b0b;
-    border: 1px solid #2c2c2c;
-    border-radius: 12px;
-    padding: 15px 18px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.25s ease;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.45);
-  }
-
-  .op-input::placeholder {
-    color: #666;
-  }
-
-  .op-input:hover {
-    border-color: #3f3f3f;
-  }
-
-  .op-input:focus {
-    border-color: #e90018;
-    background: #111;
-    box-shadow: 
-      0 0 0 3px rgba(233, 0, 24, 0.18),
-      0 0 25px rgba(233, 0, 24, 0.15),
-      inset 0 2px 5px rgba(0, 0, 0, 0.3);
-  }
-
-  .op-input[type="date"] {
-    color-scheme: dark;
-  }
-
-  /* ========== RADIO + CHECKBOX (FIXED LAYOUT) ========== */
-  .op-section label {
-    display: flex !important;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 14px;
-    margin-bottom: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #ddd;
-    width: 100%;
-  }
-
-  .op-section label:hover {
-    background: rgba(255, 30, 50, 0.08);
-    color: #fff;
-  }
-
-  /* Radio */
-  .op-section input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #555;
-    border-radius: 50%;
-    margin: 0;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .op-section input[type="radio"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    box-shadow: 0 0 14px rgba(233, 0, 24, 0.6);
-  }
-
-  .op-section input[type="radio"]:checked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-  }
-
-  /* Checkbox */
-  .op-section input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #555;
-    border-radius: 4px;
-    margin: 0;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .op-section input[type="checkbox"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    box-shadow: 0 0 14px rgba(233, 0, 24, 0.6);
-  }
-
-  .op-section input[type="checkbox"]:checked::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-  }
-`}</style>
-
-  /* ========== PREMIUM SECTION ========== */
-  .op-section {
-    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-    border: 1px solid rgba(255, 30, 50, 0.15);
-    border-left: 4px solid #e90018;
-    border-radius: 18px;
-    padding: 32px 28px;
-    margin-bottom: 28px;
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .op-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 30, 50, 0.4),
-      transparent
-    );
-  }
-
-  .op-section:hover {
-    border-color: rgba(255, 30, 50, 0.35);
-    box-shadow: 
-      0 18px 45px rgba(0, 0, 0, 0.65),
-      0 0 25px rgba(233, 0, 24, 0.08);
-  }
-
-  .op-section h2 {
-    margin: 0 0 26px;
-    text-align: center;
-    color: #ff2032;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 0 0 18px rgba(255, 32, 50, 0.35);
-  }
-
-  .op-section h2::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #e90018, transparent);
-    margin: 12px auto 0;
-  }
-
-  .op-section h3 {
-    margin: 0 0 8px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  .op-section h3 span {
-    color: #ff2638;
-  }
-
-  /* Helper text (green) */
-  .op-section p,
-  .op-section .helper-text {
-    color: #4ade80 !important;
-    font-size: 13px;
-    margin: 0 0 18px;
-  }
-
-  /* Field & Input */
-  .field {
-    margin-bottom: 22px;
-  }
-
-  .op-input {
-    width: 100%;
-    background: #0c0c0c;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    padding: 14px 16px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.25s ease;
-  }
-
-  .op-input::placeholder {
-    color: #666;
-  }
-
-  .op-input:focus {
-    border-color: #e90018;
-    background: #111;
-    box-shadow: 
-      0 0 0 3px rgba(233, 0, 24, 0.15),
-      0 0 20px rgba(233, 0, 24, 0.1);
-  }
-
-  /* ========== RADIO + CHECKBOX LAYOUT FIX ========== */
-  .op-section label {
-    display: flex !important;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 14px;
-    margin-bottom: 8px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #ddd;
-    width: 100%;
-  }
-
-  .op-section label:hover {
-    background: rgba(255, 30, 50, 0.07);
-    color: #fff;
-  }
-
-  /* Custom Radio */
-  .op-section input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #555;
-    border-radius: 50%;
-    margin: 0;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .op-section input[type="radio"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    box-shadow: 0 0 12px rgba(233, 0, 24, 0.55);
-  }
-
-  .op-section input[type="radio"]:checked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-  }
-
-  /* Custom Checkbox */
-  .op-section input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #555;
-    border-radius: 4px;
-    margin: 0;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .op-section input[type="checkbox"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    box-shadow: 0 0 12px rgba(233, 0, 24, 0.55);
-  }
-
-  .op-section input[type="checkbox"]:checked::after {
-    content: "✓";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-  }
-
-  /* ========== PREMIUM SECTION ========== */
-  .op-section {
-    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-    border: 1px solid rgba(255, 30, 50, 0.15);
-    border-left: 4px solid #e90018;
-    border-radius: 18px;
-    padding: 32px 28px;
-    margin-bottom: 28px;
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .op-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 30, 50, 0.4),
-      transparent
-    );
-  }
-
-  .op-section:hover {
-    border-color: rgba(255, 30, 50, 0.35);
-    box-shadow: 
-      0 18px 45px rgba(0, 0, 0, 0.65),
-      0 0 25px rgba(233, 0, 24, 0.08);
-  }
-
-  .op-section h2 {
-    margin: 0 0 26px;
-    text-align: center;
-    color: #ff2032;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 0 0 18px rgba(255, 32, 50, 0.35);
-    position: relative;
-  }
-
-  .op-section h2::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #e90018, transparent);
-    margin: 12px auto 0;
-  }
-
-  .op-section h3 {
-    margin: 0 0 14px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.3px;
-  }
-
-  .op-section h3 span {
-    color: #ff2638;
-  }
-
-  /* Field & Input */
-  .field {
-    margin-bottom: 22px;
-  }
-
-  .op-input {
-    width: 100%;
-    background: #0c0c0c;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    padding: 14px 16px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.25s ease;
-  }
-
-  .op-input::placeholder {
-    color: #666;
-  }
-
-  .op-input:focus {
-    border-color: #e90018;
-    background: #111;
-    box-shadow: 
-      0 0 0 3px rgba(233, 0, 24, 0.15),
-      0 0 20px rgba(233, 0, 24, 0.1);
-  }
-
-  /* Custom Radio Buttons */
-  .op-section input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #444;
-    border-radius: 50%;
-    margin-right: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    vertical-align: middle;
-    flex-shrink: 0;
-  }
-
-  .op-section input[type="radio"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    box-shadow: 0 0 12px rgba(233, 0, 24, 0.5);
-  }
-
-  .op-section input[type="radio"]:checked::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-  }
-
-  .op-section label {
-    display: flex;
-    align-items: center;
-    padding: 10px 12px;
-    margin-bottom: 6px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #ddd;
-  }
-
-  .op-section label:hover {
-    background: rgba(255, 30, 50, 0.06);
-    color: #fff;
-  }
-
-  /* ========== PREMIUM SECTION ========== */
-  .op-section {
-    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
-    border: 1px solid rgba(255, 30, 50, 0.15);
-    border-left: 4px solid #e90018;
-    border-radius: 18px;
-    padding: 32px 28px;
-    margin-bottom: 28px;
-    box-shadow: 
-      0 15px 40px rgba(0, 0, 0, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .op-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 30, 50, 0.4),
-      transparent
-    );
-  }
-
-  .op-section:hover {
-    border-color: rgba(255, 30, 50, 0.35);
-    box-shadow: 
-      0 18px 45px rgba(0, 0, 0, 0.65),
-      0 0 25px rgba(233, 0, 24, 0.08);
-  }
-
-  .op-section h2 {
-    margin: 0 0 26px;
-    text-align: center;
-    color: #ff2032;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 0 0 18px rgba(255, 32, 50, 0.35);
-    position: relative;
-  }
-
-  .op-section h2::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #e90018, transparent);
-    margin: 12px auto 0;
-  }
-
-  .op-section h3 {
-    margin: 0 0 14px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.3px;
-  }
-
-  .op-section h3 span {
-    color: #ff2638;
-  }
-
-  /* Field & Input (premium) */
-  .field {
-    margin-bottom: 22px;
-  }
-
-  .op-input {
-    width: 100%;
-    background: #0c0c0c;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
-    padding: 14px 16px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.25s ease;
-  }
-
-  .op-input::placeholder {
-    color: #666;
-  }
-
-  .op-input:focus {
-    border-color: #e90018;
-    background: #111;
-    box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.15),
-                0 0 20px rgba(233, 0, 24, 0.1);
-  }
-
-  /* Radio buttons (premium custom) */
-  .op-section input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #444;
-    border-radius: 50%;
-    margin-right: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    vertical-align: middle;
-  }
-
-  .op-section input[type="radio"]:checked {
-    border-color: #e90018;
-    background: #e90018;
-    
-        .help-text {
-          color: #999;
-          font-size: 12px;
-          line-height: 1.5;
-          margin: 0 0 15px;
+        * {
+          box-sizing: border-box;
         }
 
+        .op-registration-page {
+          min-height: 100vh;
+          background: radial-gradient(
+            circle at top,
+            #3b0000 0%,
+            #110000 35%,
+            #050505 75%
+          );
+          padding: 30px 15px 60px;
+          color: white;
+          font-family: Arial, sans-serif;
+        }
+
+        .op-registration-container {
+          width: 100%;
+          max-width: 720px;
+          margin: auto;
+        }
+
+        .op-header {
+          text-align: center;
+          padding: 30px 20px;
+          margin-bottom: 20px;
+          border-radius: 20px;
+          background: linear-gradient(135deg, #080808, #250000);
+          border: 1px solid #4a0000;
+          box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .op-logo {
+          width: 80px;
+          height: 80px;
+          margin: 0 auto 10px;
+          border-radius: 50%;
+          overflow: hidden;
+          background: linear-gradient(135deg, #ff0018, #720000);
+          box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .op-logo img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .op-header h1 {
+          margin: 12px 0 4px;
+          font-size: 32px;
+          font-weight: 900;
+          letter-spacing: 2px;
+        }
+
+        .op-header p {
+          margin: 0;
+          color: #ff3945;
+          font-weight: bold;
+          letter-spacing: 2px;
+          font-size: 14px;
+        }
+
+        .op-message {
+          padding: 15px;
+          margin-bottom: 20px;
+          border-radius: 12px;
+          background: #101010;
+          border: 1px solid #ff1728;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        /* ========== PREMIUM SECTION ========== */
+        .op-section {
+          background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
+          border: 1px solid rgba(255, 30, 50, 0.18);
+          border-left: 4px solid #e90018;
+          border-radius: 18px;
+          padding: 28px 24px;
+          margin-bottom: 24px;
+          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55),
+            0 0 30px rgba(233, 0, 24, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03);
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .op-section::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 30, 50, 0.45),
+            transparent
+          );
+        }
+
+        .op-section:hover {
+          border-color: rgba(255, 30, 50, 0.4);
+          box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65),
+            0 0 40px rgba(233, 0, 24, 0.12);
+        }
+
+        .op-section h2 {
+          margin: 0 0 24px;
+          text-align: center;
+          color: #ff2032;
+          font-size: 20px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          text-shadow: 0 0 20px rgba(255, 32, 50, 0.4);
+        }
+
+        .op-section h2::after {
+          content: "";
+          display: block;
+          width: 60px;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #e90018, transparent);
+          margin: 10px auto 0;
+        }
+
+        .op-section h3 {
+          margin: 0 0 8px;
+          font-size: 15px;
+          font-weight: 700;
+          color: #ffffff;
+        }
+
+        .op-section h3 span {
+          color: #ff2638;
+        }
+
+        .help-text {
+          color: #4ade80 !important;
+          font-size: 13px;
+          margin: 0 0 16px !important;
+          line-height: 1.4;
+        }
+
+        /* ========== FIELD & INPUT ========== */
         .field {
-  margin-bottom: 26px;
-}
+          margin-bottom: 20px;
+        }
 
         .field label {
           display: block;
           margin-bottom: 7px;
           color: #ddd;
-          font-size: 13px;
-          font-weight: bold;
+          font-size: 13.5px;
+          font-weight: 600;
         }
 
         .required {
@@ -1317,20 +663,34 @@ export default function PlayerRegister() {
         .op-input,
         .op-textarea {
           width: 100%;
-          padding: 13px 14px;
-          border-radius: 8px;
-          border: 1px solid #3b3b3b;
-          background: #181818;
+          padding: 14px 16px;
+          border-radius: 11px;
+          border: 1px solid #2c2c2c;
+          background: #0b0b0b;
           color: white;
           outline: none;
-          font-size: 14px;
-          transition: 0.2s;
+          font-size: 14.5px;
+          transition: all 0.25s ease;
+          box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .op-input::placeholder,
+        .op-textarea::placeholder {
+          color: #666;
+        }
+
+        .op-input:hover,
+        .op-textarea:hover {
+          border-color: #3f3f3f;
         }
 
         .op-input:focus,
         .op-textarea:focus {
-          border-color: #ff1d31;
-          box-shadow: 0 0 0 2px rgba(255, 0, 30, 0.12);
+          border-color: #e90018;
+          background: #111;
+          box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.18),
+            0 0 22px rgba(233, 0, 24, 0.12),
+            inset 0 2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .op-textarea {
@@ -1338,79 +698,146 @@ export default function PlayerRegister() {
           resize: vertical;
         }
 
+        .op-input[type="date"] {
+          color-scheme: dark;
+        }
+
+        /* ========== RADIO + CHECKBOX ========== */
         .radio-list,
         .check-list {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 6px;
         }
 
         .choice {
-          display: flex;
+          display: flex !important;
           align-items: center;
-          gap: 10px;
+          gap: 12px;
+          padding: 11px 14px;
+          border-radius: 10px;
           cursor: pointer;
           color: #ddd;
           font-size: 14px;
+          transition: all 0.2s ease;
+          width: 100%;
         }
 
-        .choice input {
-          width: 17px;
-          height: 17px;
-          accent-color: #ff1629;
+        .choice:hover {
+          background: rgba(255, 30, 50, 0.08);
+          color: #fff;
         }
 
+        .choice input[type="radio"],
+        .choice input[type="checkbox"] {
+          appearance: none;
+          -webkit-appearance: none;
+          width: 18px;
+          height: 18px;
+          border: 2px solid #555;
+          margin: 0;
+          position: relative;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          flex-shrink: 0;
+        }
+
+        .choice input[type="radio"] {
+          border-radius: 50%;
+        }
+
+        .choice input[type="checkbox"] {
+          border-radius: 4px;
+        }
+
+        .choice input[type="radio"]:checked,
+        .choice input[type="checkbox"]:checked {
+          border-color: #e90018;
+          background: #e90018;
+          box-shadow: 0 0 14px rgba(233, 0, 24, 0.55);
+        }
+
+        .choice input[type="radio"]:checked::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 6px;
+          height: 6px;
+          background: white;
+          border-radius: 50%;
+        }
+
+        .choice input[type="checkbox"]:checked::after {
+          content: "✓";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        /* ========== FILE INPUT ========== */
         .op-file {
           width: 100%;
-          padding: 13px;
-          border-radius: 8px;
+          padding: 14px;
+          border-radius: 11px;
           border: 1px dashed #555;
-          background: #181818;
+          background: #0b0b0b;
           color: #bbb;
+          cursor: pointer;
+          transition: all 0.25s ease;
         }
 
+        .op-file:hover {
+          border-color: #e90018;
+          background: #111;
+        }
+
+        /* ========== SUBMIT ========== */
         .op-submit-section {
-          padding: 5px 0;
+          padding: 10px 0 20px;
         }
 
         .op-submit {
           width: 100%;
           border: none;
-          border-radius: 10px;
-          padding: 16px;
-          background: linear-gradient(
-            90deg,
-            #ff0018,
-            #c90016
-          );
+          border-radius: 12px;
+          padding: 17px;
+          background: linear-gradient(90deg, #ff0018, #c90016);
           color: white;
           font-size: 16px;
           font-weight: 900;
+          letter-spacing: 1px;
           cursor: pointer;
-          box-shadow: 0 8px 25px rgba(255, 0, 20, 0.25);
+          box-shadow: 0 8px 28px rgba(255, 0, 20, 0.3);
+          transition: all 0.25s ease;
         }
 
         .op-submit:hover {
-          transform: translateY(-1px);
+          transform: translateY(-2px);
           filter: brightness(1.1);
+          box-shadow: 0 12px 35px rgba(255, 0, 20, 0.4);
         }
 
         .op-submit:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+          transform: none;
         }
 
         @media (max-width: 600px) {
           .op-registration-page {
             padding: 15px 10px 40px;
           }
-
           .op-header h1 {
-            font-size: 25px;
+            font-size: 26px;
           }
-
           .op-section {
-            padding: 17px;
+            padding: 20px 16px;
           }
         }
       `}</style>
@@ -1418,9 +845,7 @@ export default function PlayerRegister() {
   );
 }
 
-
 /* INPUT COMPONENT */
-
 function Field({
   label,
   name,
@@ -1435,11 +860,9 @@ function Field({
     <div className="field">
       {label && (
         <label>
-          {label}{" "}
-          {required && <span className="required">*</span>}
+          {label} {required && <span className="required">*</span>}
         </label>
       )}
-
       {textarea ? (
         <textarea
           className="op-textarea"
