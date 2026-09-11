@@ -143,7 +143,7 @@ export default function PlayerRegister() {
 
         {/* HEADER */}
         <div className="op-header">
-          <div className="op-logo">
+          <div className="logo.png">
   <img src="/logo.png" alt="Over Power Esports Logo" />
 </div>
 
