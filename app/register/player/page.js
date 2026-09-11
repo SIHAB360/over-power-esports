@@ -409,14 +409,14 @@ export default function PlayerRegister() {
           {/* TEAM */}
           <section className="op-section">
             <h3>
-              Previous Team <span>*</span>্ততততততততততততততততততততত
+              Previous Team <span>*</span
             </h3>তত্ত ত
             <Field
               label=""
               name="previous_team"
               value={form.previous_team}
               onChange={handleChange}
-              placeholder="আপনি আগে যে time"
+              placeholder="আপনি আগে যে tim"
               required
             />
 
