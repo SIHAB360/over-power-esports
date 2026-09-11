@@ -3,7 +3,7 @@ export default function Games(){
 const games=[
 
 {
-title:"Free Fire Main Team",
+title:"Over Power Main Team",
 icon:"🔥",
 description:"Free Fire Competitive Division",
 
@@ -17,7 +17,7 @@ status:"Active Roster"
 
 
 {
-title:"Free Fire Elite Team",
+title:"Over Power Elite",
 icon:"⚡",
 description:"Free Fire Competitive Division",
 
