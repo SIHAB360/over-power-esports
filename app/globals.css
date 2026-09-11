@@ -306,11 +306,11 @@ transform:translateY(-120px) scale(.7);
 
 animation-name:logoEntry, logoFloat;
 
-animation-duration:1.2s,4s;
+animation-duration:1.2s,2s;
 
 animation-timing-function:ease, ease-in-out;
 
-animation-delay:0s,1.2s;
+animation-delay:0s,1s;
 
 animation-iteration-count:1,infinite;
 
