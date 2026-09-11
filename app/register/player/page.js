@@ -560,113 +560,196 @@ export default function PlayerRegister() {
       </div>
 
       <style jsx>{`
-        * {
-          box-sizing: border-box;
-        }
+  * {
+    box-sizing: border-box;
+  }
 
-        .op-registration-page {
-          min-height: 100vh;
-          background:
-            radial-gradient(
-              circle at top,
-              #3b0000 0%,
-              #110000 35%,
-              #050505 75%
-            );
-          padding: 30px 15px 60px;
-          color: white;
-          font-family: Arial, sans-serif;
-        }
+  .op-registration-page {
+    min-height: 100vh;
+    background:
+      radial-gradient(
+        circle at top,
+        #3b0000 0%,
+        #110000 35%,
+        #050505 75%
+      );
+    padding: 30px 15px 60px;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
 
-        .op-registration-container {
-          width: 100%;
-          max-width: 720px;
-          margin: auto;
-        }
+  .op-registration-container {
+    width: 100%;
+    max-width: 720px;
+    margin: auto;
+  }
 
-        .op-header {
-          text-align: center;
-          padding: 30px 20px;
-          margin-bottom: 20px;
-          border-radius: 20px;
-          background: linear-gradient(
-            135deg,
-            #080808,
-            #250000
-          );
-          border: 1px solid #4a0000;
-          box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
-        }
+  .op-header {
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #080808, #250000);
+    border: 1px solid #4a0000;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
+  }
 
-        .op-logo {
-          width: 75px;
-          height: 75px;
-          margin: auto;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          background: linear-gradient(
-            135deg,
-            #ff0018,
-            #720000
-          );
-          font-size: 25px;
-          font-weight: 900;
-          box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
-        }
+  .op-logo {
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff0018, #720000);
+    font-size: 25px;
+    font-weight: 900;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+  }
 
-        .op-header h1 {
-          margin: 15px 0 5px;
-          font-size: 32px;
-          font-weight: 900;
-          letter-spacing: 2px;
-        }
+  .op-header h1 {
+    margin: 15px 0 5px;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
 
-        .op-header p {
-          margin: 0;
-          color: #ff3945;
-          font-weight: bold;
-          letter-spacing: 2px;
-        }
+  .op-header p {
+    margin: 0;
+    color: #ff3945;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
 
-        .op-message {
-          padding: 15px;
-          margin-bottom: 20px;
-          border-radius: 10px;
-          background: #101010;
-          border: 1px solid #ff1728;
-          text-align: center;
-          font-weight: bold;
-        }
+  .op-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background: #101010;
+    border: 1px solid #ff1728;
+    text-align: center;
+    font-weight: bold;
+  }
 
-        .op-section {
-  background: linear-gradient(145deg, #111111, #0b0b0b);
-  border: 1px solid #252525;
-  border-left: 3px solid #e90018;
-  border-radius: 16px;
-  padding: 30px;
-  margin-bottom: 24px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
-}
+  /* ========== PREMIUM SECTION ========== */
+  .op-section {
+    background: linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%);
+    border: 1px solid rgba(255, 30, 50, 0.15);
+    border-left: 4px solid #e90018;
+    border-radius: 18px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
 
-        .op-section h2 {
-          margin: 0 0 22px;
-          text-align: center;
-          color: #ff2032;
-          font-size: 22px;
-        }
+  .op-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 30, 50, 0.4),
+      transparent
+    );
+  }
 
-        .op-section h3 {
-          margin: 5px 0 10px;
-          font-size: 16px;
-          color: #ffffff;
-        }
+  .op-section:hover {
+    border-color: rgba(255, 30, 50, 0.35);
+    box-shadow: 
+      0 18px 45px rgba(0, 0, 0, 0.65),
+      0 0 25px rgba(233, 0, 24, 0.08);
+  }
 
-        .op-section h3 span {
-          color: #ff2638;
-        }
+  .op-section h2 {
+    margin: 0 0 26px;
+    text-align: center;
+    color: #ff2032;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(255, 32, 50, 0.35);
+    position: relative;
+  }
 
+  .op-section h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e90018, transparent);
+    margin: 12px auto 0;
+  }
+
+  .op-section h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+  }
+
+  .op-section h3 span {
+    color: #ff2638;
+  }
+
+  /* Field & Input (premium) */
+  .field {
+    margin-bottom: 22px;
+  }
+
+  .op-input {
+    width: 100%;
+    background: #0c0c0c;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.25s ease;
+  }
+
+  .op-input::placeholder {
+    color: #666;
+  }
+
+  .op-input:focus {
+    border-color: #e90018;
+    background: #111;
+    box-shadow: 0 0 0 3px rgba(233, 0, 24, 0.15),
+                0 0 20px rgba(233, 0, 24, 0.1);
+  }
+
+  /* Radio buttons (premium custom) */
+  .op-section input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #444;
+    border-radius: 50%;
+    margin-right: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+  }
+
+  .op-section input[type="radio"]:checked {
+    border-color: #e90018;
+    background: #e90018;
+    
         .help-text {
           color: #999;
           font-size: 12px;
