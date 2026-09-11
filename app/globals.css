@@ -2400,81 +2400,46 @@ ACTIVE ROSTER PREMIUM
 ========================= */
 
 
-.game-status{
-
-position:relative;
-
-overflow:hidden;
-
-display:inline-flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:8px;
-
-}
-
-
-
-.game-status::before{
-
+.game-card::after{
 
 content:"";
 
-
 position:absolute;
-
 
 top:0;
 
 left:-120%;
 
-
 width:60%;
 
-
 height:100%;
-
-
 
 background:
 
 linear-gradient(
-90deg,
+120deg,
 transparent,
-rgba(255,255,255,.45),
+rgba(255,255,255,.15),
 transparent
 );
 
-
-
-transform:skewX(-25deg);
-
-
+transform:skewX(-20deg);
 
 animation:
 
-statusSweep 2.8s infinite;
-
-
+cardShine 3s infinite;
 
 }
 
 
 
-
-
-@keyframes statusSweep{
-
+@keyframes cardShine{
 
 0%{
 
 left:-120%;
 
 }
-
 
 
 50%{
@@ -2484,13 +2449,10 @@ left:150%;
 }
 
 
-
 100%{
 
 left:150%;
 
 }
-
-
 
 }
