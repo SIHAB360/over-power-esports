@@ -9,175 +9,337 @@ const players = {
 
 appelo: {
 
-  name: "SAKIB HASAN",
-  ign: "EXE APPELO",
-  uid: "1673606480",
-  role: "PRIMARY RUSHER",
-  team: "OVER POWER MAIN TEAM",
-  experience: "5 Month",
-  profession: "Student",
-  age: "19",
-  nationality: "Bangladesh 🇧🇩",
-  location: "Dhaka, Bangladesh",
-  status: "Active",
+name:"SAKIB HASAN",
+ign:"EXE APPELO",
+uid:"1673606480",
 
-  image: "/players/appelo.png",
-  winnings: "$16,015",
+role:"PRIMARY RUSHER",
+team:"OVER POWER MAIN TEAM",
 
-  facebook: "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
-  instagram: "https://www.instagram.com/_appelo_ff",
-  youtube: "https://youtube.com/@appelo_ff",
-  tiktok: "https://www.tiktok.com/@appelo_offical",
+experience:"5 Month",
+profession:"Student",
+age:"19",
 
-  youtubeVideos: [
-    "94JjtPH6Rp4",
-    "WiXfH8lHkao",
-    "T9gEdEC1BqA",
-    "S12LAik5ovc",
-    "8jzmVk4sd2Q",
-    "p9Bf-zGCefg"
-  ]
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka, Bangladesh",
+status:"Active",
 
-},
+image:"/players/appelo.png",
+winnings:"$16,015",
 
+facebook:"https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+instagram:"https://www.instagram.com/_appelo_ff",
+youtube:"https://youtube.com/@appelo_ff",
+tiktok:"https://www.tiktok.com/@appelo_offical",
 
-oggy: {
-
-  name:"SOMIR",
-  ign:"BE1NG OGGY",
-  uid:"4455951906",
-  role:"SECONDARY RUSHER",
-  team:"OVER POWER MAIN TEAM",
-  experience:"1 Year",
-  profession:"Student",
-  age:"17",
-  nationality:"Bangladesh 🇧🇩",
-  location:"Dhaka",
-  status:"Active",
-
-  image:"/players/oggy.png",
-  winnings:"$12,500",
-
-  facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
-  instagram:"https://www.instagram.com/being_ogggyy",
-  youtube:"https://youtube.com/@being_ogggyy",
-  tiktok:"https://www.tiktok.com/@being_ogggyy",
-
-  youtubeVideos: [
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
-  ]
+youtubeVideos:[
+"94JjtPH6Rp4",
+"WiXfH8lHkao",
+"T9gEdEC1BqA",
+"S12LAik5ovc",
+"8jzmVk4sd2Q",
+"p9Bf-zGCefg"
+]
 
 },
 
 
-itachix: {
 
-  name:"MD SALMAN",
-  ign:"OP ITACHIx",
-  uid:"7743068119",
-  role:"BOMBER",
-  team:"OVER POWER MAIN TEAM",
-  experience:"1 Years",
-  profession:"Student",
-  age:"17",
-  nationality:"Bangladesh 🇧🇩",
-  location:"Dhaka",
-  status:"Active",
+oggy:{
 
-  image:"/players/itachix.png",
-  winnings:"$8,500",
+name:"SOMIR",
+ign:"BE1NG OGGY",
+uid:"4455951906",
 
-  facebook:"https://www.facebook.com/profile.php?id=61590102347309",
-  instagram:"",
-  youtube:"https://youtube.com/@itachiontop-r2p",
-  tiktok:"https://www.tiktok.com/@itachix074",
+role:"SECONDARY RUSHER",
+team:"OVER POWER MAIN TEAM",
 
-  youtubeVideos: [
-    "89Z_9Rffa1M",
-    "89Z_9Rffa1M",
-    "89Z_9Rffa1M",
-    "-dzH4tBo0yY",
-    "-dzH4tBo0yY",
-    "-dzH4tBo0yY"
-  ]
+experience:"1 Year",
+profession:"Student",
+age:"17",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/oggy.png",
+winnings:"$12,500",
+
+facebook:"https://www.facebook.com/share/1JEkiAK2J6/",
+instagram:"https://www.instagram.com/being_ogggyy",
+youtube:"https://youtube.com/@being_ogggyy",
+tiktok:"https://www.tiktok.com/@being_ogggyy",
+
+youtubeVideos:[]
 
 },
 
 
-rejwan: {
 
-  name:"REJWAN AHAMMED",
-  ign:"OP REJWAN",
-  uid:"1111551408",
-  role:"IGL + SUPPORTER",
-  team:"OVER POWER MAIN TEAM",
-  experience:"8 Month",
-  profession:"JOB HOLDER",
-  age:"18",
-  nationality:"Bangladesh 🇧🇩",
-  location:"Dhaka",
-  status:"Active",
+itachix:{
 
-  image:"/players/rejwan.png",
-  winnings:"$7,800",
+name:"MD SALMAN",
+ign:"OP ITACHIx",
+uid:"7743068119",
 
-  facebook:"https://www.facebook.com/rejwan.ahammed11",
-  instagram:"https://www.instagram.com/rahammed_",
-  youtube:"https://youtube.com/@rejwan-ff6711",
-  tiktok:"https://www.tiktok.com/@rejwanahammed",
+role:"BOMBER",
+team:"OVER POWER MAIN TEAM",
 
-  youtubeVideos: [
-    "YzetH_r6KpE",
-    "1OGnv9NlgnI",
-    "a7kPD66eTlU",
-    "UJFPFz82cEo",
-    "ruDS83xiLSY",
-    "1cE1la0rGaQ"
-  ]
+experience:"1 Years",
+profession:"Student",
+age:"17",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/itachix.png",
+winnings:"$8,500",
+
+facebook:"https://www.facebook.com/profile.php?id=61590102347309",
+instagram:"",
+youtube:"https://youtube.com/@itachiontop-r2p",
+tiktok:"https://www.tiktok.com/@itachix074",
+
+youtubeVideos:[
+"89Z_9Rffa1M",
+"-dzH4tBo0yY"
+]
 
 },
 
 
-fixfire: {
 
-  name:"JISAN BISWAS",
-  ign:"FixFIRE",
-  uid:"63999291",
-  role:"SNIPER",
-  team:"OVER POWER MAIN TEAM",
-  experience:"3 Years",
-  profession:"Student",
-  age:"21",
-  nationality:"Bangladesh 🇧🇩",
-  location:"Dhaka",
-  status:"Active",
+rejwan:{
 
-  image:"/players/fixfire.png",
-  winnings:"$6,400",
+name:"REJWAN AHAMMED",
+ign:"OP REJWAN",
+uid:"1111551408",
 
-  facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
-  instagram:"https://www.instagram.com/xr_jisan09",
-  youtube:"https://www.youtube.com/@fixfire09",
-  tiktok:"https://tiktok.com/@fixfire09",
+role:"IGL + SUPPORTER",
+team:"OVER POWER MAIN TEAM",
 
-  youtubeVideos: [
-    "1L7XQBFOoEk",
-    "JD9yIRFYHco",
-    "igltHVFp93o",
-    "1i7r3yw-LSY",
-    "83X6Ywd07yI",
-    "9q2YYLBJo0E"
-  ]
+experience:"8 Month",
+profession:"JOB HOLDER",
+age:"18",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/rejwan.png",
+winnings:"$7,800",
+
+facebook:"https://www.facebook.com/rejwan.ahammed11",
+instagram:"https://www.instagram.com/rahammed_",
+youtube:"https://youtube.com/@rejwan-ff6711",
+tiktok:"https://www.tiktok.com/@rejwanahammed",
+
+youtubeVideos:[
+"YzetH_r6KpE",
+"1OGnv9NlgnI",
+"a7kPD66eTlU"
+]
+
+},
+
+
+
+fixfire:{
+
+name:"JISAN BISWAS",
+ign:"FixFIRE",
+uid:"63999291",
+
+role:"SNIPER",
+team:"OVER POWER MAIN TEAM",
+
+experience:"3 Years",
+profession:"Student",
+age:"21",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/fixfire.png",
+winnings:"$6,400",
+
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+instagram:"https://www.instagram.com/xr_jisan09",
+youtube:"https://www.youtube.com/@fixfire09",
+tiktok:"https://tiktok.com/@fixfire09",
+
+youtubeVideos:[
+"1L7XQBFOoEk",
+"JD9yIRFYHco"
+]
+
+},
+
+
+
+/* =====================
+   OVER POWER ELITE
+===================== */
+
+
+foysal:{
+
+name:"FOYSAL",
+ign:"FOYSAL",
+uid:"",
+
+role:"PRIMARY",
+team:"OVER POWER ELITE",
+
+experience:"",
+profession:"",
+age:"",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/rfntc.png",
+winnings:"$0",
+
+facebook:"https://www.facebook.com/share/1DYEWmWzRr/",
+instagram:"",
+youtube:"",
+tiktok:"",
+
+youtubeVideos:[]
+
+},
+
+
+
+jellal:{
+
+name:"JELLAL",
+ign:"JELLAL",
+uid:"",
+
+role:"SECONDARY",
+team:"OVER POWER ELITE",
+
+experience:"",
+profession:"",
+age:"",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/jellal.png",
+winnings:"$0",
+
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:"",
+
+youtubeVideos:[]
+
+},
+
+
+
+sojib:{
+
+name:"SOJIB",
+ign:"SOJIB",
+uid:"",
+
+role:"BOMBER",
+team:"OVER POWER ELITE",
+
+experience:"",
+profession:"",
+age:"",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/sojib.png",
+winnings:"$0",
+
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:"",
+
+youtubeVideos:[]
+
+},
+
+
+
+nafiz:{
+
+name:"NAFIZ",
+ign:"NAFIZ",
+uid:"",
+
+role:"SUPPORTER",
+team:"OVER POWER ELITE",
+
+experience:"",
+profession:"",
+age:"",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/nafiz.jpeg",
+winnings:"$0",
+
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:"",
+
+youtubeVideos:[]
+
+},
+
+
+
+baymax:{
+
+name:"BAYMAX",
+ign:"BAYMAX",
+uid:"",
+
+role:"SNIPER",
+team:"OVER POWER ELITE",
+
+experience:"",
+profession:"",
+age:"",
+
+nationality:"Bangladesh 🇧🇩",
+location:"Dhaka",
+status:"Active",
+
+image:"/players/baymax.png",
+winnings:"$0",
+
+facebook:"",
+instagram:"",
+youtube:"",
+tiktok:"",
+
+youtubeVideos:[]
 
 }
-};
 
-const { id } = await params;
+
+};
+  const { id } = await params;
 
 
 const player = players[id];
@@ -188,7 +350,9 @@ if (!player) {
 return <h1>Player Not Found</h1>;
 
 }
- return (
+
+
+return (
 
 <section className="esports-profile">
 
@@ -197,7 +361,6 @@ return <h1>Player Not Found</h1>;
 
 
 <div className="player-heading">
-
 
 <h1>
 {player.name}
@@ -218,13 +381,12 @@ return <h1>Player Not Found</h1>;
 Professional Free Fire esports player of Over Power Esports.
 </p>
 
-
 </div>
 
 
 
-<div className="winning-card reveal-win">
 
+<div className="winning-card reveal-win">
 
 <span>
 🏆 TOTAL WINNINGS
@@ -234,7 +396,6 @@ Professional Free Fire esports player of Over Power Esports.
 <h2>
 {player.winnings}
 </h2>
-
 
 </div>
 
@@ -255,7 +416,6 @@ Professional Free Fire esports player of Over Power Esports.
 
 <div className="photo-box reveal-photo">
 
-
 <img
 
 className="profile-photo"
@@ -266,22 +426,20 @@ alt={player.name}
 
 />
 
-
 </div>
 
 
 
 
 
-{/* PLAYER INFORMATION */}
 
-
-<div className="info-box reveal-card reveal-delay-1">
+<div className="info-box reveal-card">
 
 
 <h3>
 👤 PLAYER INFORMATION
 </h3>
+
 
 
 
@@ -292,6 +450,7 @@ alt={player.name}
 
 
 
+
 <div className="info-item">
 <label>🎮 IGN Name</label>
 <strong>{player.ign}</strong>
@@ -299,8 +458,9 @@ alt={player.name}
 
 
 
-<div className="info-item uid-box">
 
+
+<div className="info-item uid-box">
 
 <label>
 🆔 Game UID
@@ -311,17 +471,21 @@ alt={player.name}
 
 
 <strong>
-{player.uid}
+{player.uid || "Not Available"}
 </strong>
 
 
+{
+player.uid &&
 <CopyUID uid={player.uid}/>
+}
 
 
 </div>
 
-
 </div>
+
+
 
 
 
@@ -332,6 +496,8 @@ alt={player.name}
 
 
 
+
+
 <div className="info-item">
 <label>🛡️ Team</label>
 <strong>{player.team}</strong>
@@ -339,24 +505,32 @@ alt={player.name}
 
 
 
+
+
 <div className="info-item">
 <label>⏳ Experience</label>
-<strong>{player.experience}</strong>
+<strong>{player.experience || "N/A"}</strong>
 </div>
+
+
 
 
 
 <div className="info-item">
 <label>💼 Profession</label>
-<strong>{player.profession}</strong>
+<strong>{player.profession || "N/A"}</strong>
 </div>
+
+
 
 
 
 <div className="info-item">
 <label>🎂 Age</label>
-<strong>{player.age}</strong>
+<strong>{player.age || "N/A"}</strong>
 </div>
+
+
 
 
 
@@ -367,6 +541,8 @@ alt={player.name}
 
 
 
+
+
 <div className="info-item">
 <label>📍 Location</label>
 <strong>{player.location}</strong>
@@ -374,8 +550,9 @@ alt={player.name}
 
 
 
-<div className="info-item">
 
+
+<div className="info-item">
 
 <label>
 🟢 Status
@@ -399,16 +576,15 @@ alt={player.name}
 
 
 
-{/* SOCIAL LINKS */}
 
 
-
-<div className="info-box reveal-card reveal-delay-2">
+<div className="info-box reveal-card">
 
 
 <h3>
 🔗 SOCIAL LINKS
 </h3>
+
 
 
 
@@ -420,13 +596,9 @@ alt={player.name}
 player.facebook &&
 
 <a
-
 href={player.facebook}
-
 target="_blank"
-
 rel="noopener noreferrer"
-
 >
 
 <i className="fa-brands fa-facebook-f"></i>
@@ -444,13 +616,9 @@ Facebook
 player.instagram &&
 
 <a
-
 href={player.instagram}
-
 target="_blank"
-
 rel="noopener noreferrer"
-
 >
 
 <i className="fa-brands fa-instagram"></i>
@@ -468,13 +636,9 @@ Instagram
 player.youtube &&
 
 <a
-
 href={player.youtube}
-
 target="_blank"
-
 rel="noopener noreferrer"
-
 >
 
 <i className="fa-brands fa-youtube"></i>
@@ -492,13 +656,9 @@ YouTube
 player.tiktok &&
 
 <a
-
 href={player.tiktok}
-
 target="_blank"
-
 rel="noopener noreferrer"
-
 >
 
 <i className="fa-brands fa-tiktok"></i>
@@ -513,12 +673,16 @@ TikTok
 
 </div>
 
-
 </div>
-{/* TEAM HISTORY */}
 
 
-<div className="info-box reveal-card reveal-delay-3">
+
+
+
+
+
+
+<div className="info-box reveal-card">
 
 
 <h3>
@@ -526,18 +690,27 @@ TikTok
 </h3>
 
 
+
 <p>
+
 2026 - Present
+
 <br/>
 
+
 <span>
-Over Power Main Team
+
+{player.team}
+
 </span>
+
 
 </p>
 
 
 </div>
+
+
 
 
 
@@ -548,18 +721,12 @@ Over Power Main Team
 
 
 
-
-{/* RIGHT SIDE */}
-
-
 <div className="profile-right">
-
-
-
+  id="part3"
 {/* ACHIEVEMENTS */}
 
 
-<div className="profile-table reveal-table reveal-table-1">
+<div className="profile-table reveal-table">
 
 
 <h2>
@@ -572,42 +739,99 @@ Over Power Main Team
 <thead>
 
 <tr>
-<th>DATE</th>
-<th>TIER</th>
-<th>TOURNAMENT</th>
-<th>PRIZE</th>
+
+<th>
+DATE
+</th>
+
+<th>
+TIER
+</th>
+
+<th>
+TOURNAMENT
+</th>
+
+<th>
+PRIZE
+</th>
+
 </tr>
 
 </thead>
 
 
+
 <tbody>
 
+
 <tr>
-<td>2026</td>
-<td>A-Tier</td>
-<td>Free Fire Championship</td>
-<td>$120</td>
+
+<td>
+2026
+</td>
+
+<td>
+A-Tier
+</td>
+
+<td>
+Free Fire Championship
+</td>
+
+<td>
+$120
+</td>
+
 </tr>
 
 
+
 <tr>
-<td>2026</td>
-<td>A-Tier</td>
-<td>Asia Invitational</td>
-<td>$181</td>
+
+<td>
+2026
+</td>
+
+<td>
+A-Tier
+</td>
+
+<td>
+Asia Invitational
+</td>
+
+<td>
+$181
+</td>
+
 </tr>
 
 
+
 <tr>
-<td>2026</td>
-<td>C-Tier</td>
-<td>Community Tournament</td>
-<td>$48</td>
+
+<td>
+2026
+</td>
+
+<td>
+C-Tier
+</td>
+
+<td>
+Community Tournament
+</td>
+
+<td>
+$48
+</td>
+
 </tr>
 
 
 </tbody>
+
 
 </table>
 
@@ -623,7 +847,8 @@ Over Power Main Team
 {/* AWARDS */}
 
 
-<div className="profile-table reveal-table reveal-table-2">
+
+<div className="profile-table reveal-table">
 
 
 <h2>
@@ -631,29 +856,58 @@ Over Power Main Team
 </h2>
 
 
+
 <table>
+
 
 <thead>
 
 <tr>
-<th>DATE</th>
-<th>AWARD</th>
-<th>ORGANIZATION</th>
+
+<th>
+DATE
+</th>
+
+<th>
+AWARD
+</th>
+
+<th>
+ORGANIZATION
+</th>
+
 </tr>
+
 
 </thead>
 
 
+
 <tbody>
 
+
 <tr>
-<td>2026</td>
-<td>Elite Player Award</td>
-<td>Over Power Esports</td>
+
+<td>
+2026
+</td>
+
+
+<td>
+Elite Player Award
+</td>
+
+
+<td>
+Over Power Esports
+</td>
+
+
 </tr>
 
 
 </tbody>
+
 
 
 </table>
@@ -666,40 +920,80 @@ Over Power Main Team
 
 
 
-{/* VIDEO GALLERY */}
+
+{/* PLAYER HIGHLIGHTS */}
+
+
 
 <div className="profile-table video-gallery">
 
-  <h2>
-    🎬 PLAYER HIGHLIGHTS
-  </h2>
 
-  <div className="video-grid">
+<h2>
+🎬 PLAYER HIGHLIGHTS
+</h2>
 
-    {player.youtubeVideos?.map((video, index) => (
 
-      <div className="video-card" key={index}>
 
-        <iframe
-          src={`https://www.youtube.com/embed/${video}`}
-          title={`Player Highlight ${index + 1}`}
-          allowFullScreen
-        ></iframe>
+<div className="video-grid">
 
-      </div>
 
-    ))}
+{
 
-  </div>
+player.youtubeVideos?.length > 0 &&
+
+player.youtubeVideos.map((video,index)=>(
+
+
+<div 
+className="video-card"
+key={index}
+>
+
+
+<iframe
+
+src={`https://www.youtube.com/embed/${video}`}
+
+title={`Player Highlight ${index+1}`}
+
+allowFullScreen
+
+></iframe>
+
+
 
 </div>
 
 
-</div>   {/* profile-right */}
+))
 
-</div>   {/* profile-layout */}
+
+}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div> 
+{/* profile-right */}
+
+
+
+</div>
+{/* profile-layout */}
+
+
 
 </section>
 
+
 );
+
 }
