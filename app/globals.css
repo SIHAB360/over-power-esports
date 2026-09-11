@@ -1,2990 +1,6 @@
 /* =========================
-GLOBAL RESET
-========================= */
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-scroll-behavior:smooth;
-}
-
-
-html{
-background:#050505;
-}
-
-
-body{
-
-background:#050505;
-
-color:white;
-
-font-family:
-Arial,
-Helvetica,
-sans-serif;
-
-overflow-x:hidden;
-
-}
-
-
-
-main{
-
-min-height:100vh;
-
-padding:20px;
-
-background:
-
-radial-gradient(
-circle at top,
-#650000,
-#050505 55%
-);
-
-}
-
-
-
-/* =========================
-GLOBAL ELEMENTS
-========================= */
-
-
-img{
-
-display:block;
-
-max-width:100%;
-
-}
-
-
-
-a{
-
-text-decoration:none;
-
-transition:.3s ease;
-
-}
-
-
-
-button{
-
-font-family:inherit;
-
-}
-
-
-
-/* =========================
-NAVBAR
-========================= */
-
-
-.navbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 50px;
-
-
-background:
-
-rgba(10,10,10,.85);
-
-
-border:
-
-1px solid rgba(255,0,0,.35);
-
-
-border-radius:18px;
-
-
-backdrop-filter:blur(12px);
-
-
-box-shadow:
-
-0 0 30px rgba(255,0,0,.15);
-
-
-}
-
-
-
-.logo{
-
-font-size:28px;
-
-font-weight:900;
-
-letter-spacing:2px;
-
-}
-
-
-
-.logo span{
-
-color:#ff2020;
-
-text-shadow:
-
-0 0 20px red;
-
-}
-
-
-
-.nav-links{
-
-display:flex;
-
-gap:35px;
-
-}
-
-
-
-.nav-links a{
-
-color:white;
-
-font-weight:bold;
-
-position:relative;
-
-}
-
-
-
-.nav-links a::after{
-
-content:"";
-
-position:absolute;
-
-bottom:-8px;
-
-left:0;
-
-width:0;
-
-height:2px;
-
-background:red;
-
-box-shadow:
-
-0 0 10px red;
-
-transition:.3s;
-
-}
-
-
-
-.nav-links a:hover{
-
-color:#ff2020;
-
-}
-
-
-
-.nav-links a:hover::after{
-
-width:100%;
-
-}
-
-/* =========================
-HERO SECTION
-========================= */
-
-
-.hero{
-
-text-align:center;
-
-padding:80px 20px 60px;
-
-position:relative;
-
-}
-
-
-
-.hero::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-
-left:50%;
-
-transform:translateX(-50%);
-
-
-width:300px;
-
-height:300px;
-
-
-background:red;
-
-
-filter:blur(150px);
-
-
-opacity:.18;
-
-
-z-index:-1;
-
-}
-
-
-
-.hero-logo{
-
-width:140px;
-
-height:140px;
-
-margin:auto;
-
-border-radius:50%;
-
-overflow:hidden;
-
-border:3px solid red;
-
-background:#050505;
-
-box-shadow:
-
-0 0 30px red;
-
-
-animation:
-
-logoFloat 4s ease-in-out infinite;
-
-
-}
-
-
-.hero-logo{
-
-animation-delay:1.2s;
-
-}
-
-
-/* প্রথমবার entry */
-
-.hero-logo{
-
-opacity:0;
-
-transform:translateY(-120px) scale(.7);
-
-animation-name:logoEntry, logoFloat;
-
-animation-duration:1.2s,2s;
-
-animation-timing-function:ease, ease-in-out;
-
-animation-delay:0s,1s;
-
-animation-iteration-count:1,infinite;
-
-animation-fill-mode:forwards;
-
-}
-
-
-
-@keyframes logoEntry{
-
-
-0%{
-
-opacity:0;
-
-transform:
-
-translateY(-120px)
-scale(.7);
-
-}
-
-
-
-100%{
-
-opacity:1;
-
-transform:
-
-translateY(0)
-scale(1);
-
-}
-
-
-}
-
-
-
-
-@keyframes logoFloat{
-
-
-0%,100%{
-
-transform:
-
-translateY(0);
-
-}
-
-
-50%{
-
-transform:
-
-translateY(-10px);
-
-}
-
-
-}
-
-
-
-
-
-
-/* LOGO DROP ANIMATION */
-
-
-@keyframes logoDrop{
-
-
-0%{
-
-
-opacity:0;
-
-
-transform:
-
-translateY(-120px)
-scale(.7);
-
-
-}
-
-
-
-70%{
-
-
-opacity:1;
-
-
-transform:
-
-translateY(15px)
-scale(1.05);
-
-
-}
-
-
-
-100%{
-
-
-opacity:1;
-
-
-transform:
-
-translateY(0)
-scale(1);
-
-
-}
-
-
-
-}
-
-
-
-
-
-/* LOGO GLOW PULSE */
-
-
-@keyframes heroPulse{
-
-
-0%,100%{
-
-
-box-shadow:
-
-0 0 25px red,
-0 0 45px rgba(255,0,0,.4);
-
-
-
-}
-
-
-
-50%{
-
-
-box-shadow:
-
-0 0 45px red,
-0 0 80px rgba(255,0,0,.7);
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-TITLE
-========================= */
-
-
-.hero h1{
-
-
-margin-top:35px;
-
-
-font-size:55px;
-
-
-font-weight:1000;
-
-
-letter-spacing:5px;
-
-
-
-background:
-
-linear-gradient(
-90deg,
-red,
-yellow,
-white,
-red
-);
-
-
-
-background-size:300%;
-
-
-
--webkit-background-clip:text;
-
-
--webkit-text-fill-color:transparent;
-
-
-
-animation:
-
-titleFlow 4s linear infinite;
-
-
-
-}
-
-
-
-
-.hero p{
-
-
-margin-top:18px;
-
-
-font-size:22px;
-
-
-color:#ddd;
-
-
-letter-spacing:2px;
-
-
-
-}
-
-
-
-
-
-
-
-/* =========================
-JOIN BUTTON
-========================= */
-
-
-.hero button{
-
-
-margin-top:30px;
-
-
-
-width:170px;
-
-
-
-height:52px;
-
-
-
-border-radius:50px;
-
-
-
-border:none;
-
-
-
-background:
-
-linear-gradient(
-135deg,
-#ff0000,
-#990000
-);
-
-
-
-color:white;
-
-
-
-font-weight:900;
-
-
-
-cursor:pointer;
-
-
-
-box-shadow:
-
-0 0 25px red;
-
-
-
-transition:.35s;
-
-
-
-}
-
-
-
-
-.hero button:hover{
-
-
-transform:
-
-translateY(-5px)
-scale(1.08);
-
-
-
-box-shadow:
-
-0 0 50px red;
-
-
-
-}
-
-
-
-
-
-
-
-/* TITLE ANIMATION */
-
-
-@keyframes titleFlow{
-
-
-0%{
-
-
-background-position:0%;
-
-
-}
-
-
-
-100%{
-
-
-background-position:300%;
-
-
-}
-
-
-
-}
-
-
-
-
-
-
-
-
-/* =========================
-RESPONSIVE
-========================= */
-
-
-@media(max-width:900px){
-
-
-.navbar{
-
-flex-direction:column;
-
-gap:20px;
-
-padding:20px;
-
-}
-
-
-
-.nav-links{
-
-flex-wrap:wrap;
-
-justify-content:center;
-
-}
-
-
-
-.hero h1{
-
-font-size:40px;
-
-}
-
-
-}
-
-
-
-
-@media(max-width:600px){
-
-
-main{
-
-padding:10px;
-
-}
-
-
-
-.hero h1{
-
-font-size:32px;
-
-letter-spacing:2px;
-
-}
-
-
-
-.hero p{
-
-font-size:17px;
-
-}
-
-
-
-}
-/* =========================
-TEAMS SECTION
-========================= */
-
-
-.teams{
-
-padding:70px 20px;
-
-text-align:center;
-
-}
-
-
-
-.teams-title{
-
-margin-bottom:60px;
-
-}
-
-
-
-.teams-title h2{
-
-font-size:52px;
-
-font-weight:1000;
-
-letter-spacing:4px;
-
-
-background:
-
-linear-gradient(
-90deg,
-#ff0000,
-#ffcc00,
-white,
-#ff0000
-);
-
-
-background-size:300%;
-
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-
-animation:
-
-titleFlow 4s linear infinite;
-
-}
-
-
-
-.title-line{
-
-width:180px;
-
-height:5px;
-
-margin:18px auto;
-
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-red,
-yellow,
-transparent
-);
-
-
-border-radius:20px;
-
-}
-
-
-
-
-.team-block{
-
-margin-bottom:70px;
-
-}
-
-
-
-.team-block h3{
-
-font-size:32px;
-
-color:#ff2020;
-
-
-text-shadow:
-
-0 0 20px red;
-
-
-margin-bottom:10px;
-
-}
-
-
-
-.team-block p{
-
-color:#aaa;
-
-margin-bottom:35px;
-
-}
-
-
-
-
-/* =========================
-PLAYER GRID
-========================= */
-
-
-.team-players{
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-gap:25px;
-
-flex-wrap:wrap;
-
-}
-
-
-
-
-.player-card{
-
-
-width:230px;
-
-height:330px;
-
-padding:25px;
-
-
-background:
-
-linear-gradient(
-145deg,
-#180000,
-#080808
-);
-
-
-border:
-
-1px solid rgba(255,0,0,.8);
-
-
-border-radius:22px;
-
-
-text-align:center;
-
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-
-transition:.35s;
-
-
-box-shadow:
-
-0 0 20px rgba(255,0,0,.25);
-
-}
-
-
-
-.player-card:hover{
-
-
-transform:
-
-translateY(-10px);
-
-
-box-shadow:
-
-0 0 40px rgba(255,0,0,.7);
-
-}
-
-
-
-
-.player-image{
-
-
-width:100px;
-
-height:100px;
-
-
-border-radius:50%;
-
-
-overflow:hidden;
-
-
-background:#050505;
-
-
-border:
-
-3px solid red;
-
-
-box-shadow:
-
-0 0 25px red;
-
-
-}
-
-
-
-.player-image img{
-
-
-width:100%;
-
-height:100%;
-
-
-object-fit:cover;
-
-
-}
-
-
-
-
-.player-card h4{
-
-
-margin-top:18px;
-
-
-font-size:20px;
-
-
-}
-
-
-
-.player-card span{
-
-
-margin-top:8px;
-
-
-font-size:13px;
-
-
-color:#ff2020;
-
-
-font-weight:bold;
-
-
-}
-
-
-
-/* =========================
-SOCIAL LINKS
-========================= */
-
-
-.social-links{
-
-
-display:flex;
-
-justify-content:center;
-
-gap:14px;
-
-margin-top:18px;
-
-
-}
-
-
-
-.social-links a{
-
-
-width:38px;
-
-height:38px;
-
-
-border-radius:50%;
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-background:#050505;
-
-
-color:white;
-
-
-font-size:17px;
-
-
-border:
-
-1px solid red;
-
-
-}
-
-
-
-.social-links a:hover{
-
-
-transform:
-
-scale(1.15);
-
-
-box-shadow:
-
-0 0 25px red;
-
-
-}
-
-
-
-
-/* =========================
-PROFILE BUTTON
-========================= */
-
-
-.profile-btn{
-
-
-margin-top:auto;
-
-
-width:120px;
-
-
-height:38px;
-
-
-display:flex;
-
-
-align-items:center;
-
-
-justify-content:center;
-
-
-background:#ff2020;
-
-
-border-radius:30px;
-
-
-color:white;
-
-
-font-size:12px;
-
-
-font-weight:900;
-
-
-box-shadow:
-
-
-0 0 20px red;
-
-
-transition:.3s;
-
-
-}
-
-
-
-.profile-btn:hover{
-
-
-transform:
-
-scale(1.08);
-
-
-box-shadow:
-
-
-0 0 40px red;
-
-
-}
-/* =========================
-PLAYER PROFILE
-========================= */
-
-
-.esports-profile{
-
-max-width:1200px;
-
-margin:50px auto;
-
-padding:35px;
-
-
-background:
-
-linear-gradient(
-145deg,
-#150000,
-#050505
-);
-
-
-border:1px solid rgba(255,0,0,.5);
-
-border-radius:20px;
-
-
-box-shadow:
-
-0 0 40px rgba(255,0,0,.25);
-
-}
-
-
-
-
-.profile-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding-bottom:25px;
-
-border-bottom:1px solid #3b1111;
-
-}
-
-
-
-.player-heading h1{
-
-font-size:45px;
-
-color:#ff2020;
-
-text-shadow:
-
-0 0 25px red;
-
-}
-
-
-
-.player-heading h3{
-
-margin-top:10px;
-
-color:#ffcc00;
-
-}
-
-
-
-.player-heading p{
-
-margin-top:15px;
-
-color:#aaa;
-
-}
-
-
-
-
-
-.winning-card{
-
-
-width:180px;
-
-padding:25px;
-
-
-text-align:center;
-
-
-background:#06150d;
-
-
-border:1px solid #00ff88;
-
-
-border-radius:15px;
-
-
-box-shadow:
-
-0 0 30px rgba(0,255,120,.4);
-
-}
-
-
-
-.winning-card h2{
-
-font-size:32px;
-
-color:#00ff88;
-
-margin-top:10px;
-
-}
-
-
-
-
-/* =========================
-PROFILE BODY
-========================= */
-
-
-.profile-layout{
-
-
-display:grid;
-
-
-grid-template-columns:320px 1fr;
-
-
-gap:25px;
-
-
-margin-top:30px;
-
-
-}
-
-
-
-.profile-left,
-.profile-table{
-
-
-background:#100404;
-
-
-border:1px solid #4a1111;
-
-
-border-radius:15px;
-
-
-padding:20px;
-
-
-}
-
-
-
-
-.photo-box{
-
-
-background:#050505;
-
-padding:5px;
-
-border:2px solid red;
-
-border-radius:18px;
-
-
-box-shadow:
-
-0 0 30px red;
-
-
-}
-
-
-
-
-.profile-photo{
-
-
-width:100%;
-
-height:360px;
-
-
-object-fit:contain;
-
-
-border-radius:12px;
-
-
-}
-
-
-
-
-/* INFO */
-
-
-.info-box{
-
-
-margin-top:20px;
-
-
-padding:18px;
-
-
-background:
-
-linear-gradient(
-145deg,
-#180000,
-#070707
-);
-
-
-border:1px solid rgba(255,0,0,.35);
-
-
-border-radius:15px;
-
-
-}
-
-
-
-.info-box h3{
-
-color:#ff2020;
-
-margin-bottom:15px;
-
-}
-
-
-
-.info-item{
-
-
-display:flex;
-
-
-justify-content:space-between;
-
-
-padding:12px 0;
-
-
-border-bottom:
-
-1px solid rgba(255,255,255,.08);
-
-
-}
-
-
-
-.info-item label{
-
-color:#999;
-
-}
-
-
-
-.info-item strong{
-
-color:white;
-
-}
-
-
-
-
-/* TABLE */
-
-
-.profile-table h2{
-
-color:#ff2020;
-
-margin-bottom:20px;
-
-}
-
-
-
-.profile-table table{
-
-width:100%;
-
-border-collapse:collapse;
-
-}
-
-
-
-.profile-table th{
-
-color:red;
-
-padding:12px;
-
-text-align:left;
-
-}
-
-
-
-.profile-table td{
-
-color:#ddd;
-
-padding:15px;
-
-border-bottom:
-
-1px solid #301010;
-
-}
-
-
-
-
-
-/* =========================
-FLOATING CONTACT
-========================= */
-
-
-.floating-contact{
-
-
-position:fixed;
-
-
-right:25px;
-
-
-bottom:25px;
-
-
-z-index:99999;
-
-
-display:flex;
-
-
-flex-direction:column;
-
-
-align-items:center;
-
-
-}
-
-
-
-.floating-links{
-
-
-display:flex;
-
-
-flex-direction:column;
-
-
-gap:12px;
-
-
-margin-bottom:15px;
-
-
-}
-
-
-
-.floating-link{
-
-
-width:50px;
-
-
-height:50px;
-
-
-border-radius:50%;
-
-
-display:flex;
-
-
-align-items:center;
-
-
-justify-content:center;
-
-
-color:white;
-
-
-font-size:22px;
-
-
-opacity:0;
-
-
-transform:translateY(20px) scale(.5);
-
-
-transition:.35s;
-
-
-pointer-events:none;
-
-
-}
-
-
-
-.floating-contact:hover .floating-link,
-.floating-contact.is-open .floating-link{
-
-
-opacity:1;
-
-
-transform:translateY(0) scale(1);
-
-
-pointer-events:auto;
-
-
-}
-
-
-
-.whatsapp{
-
-background:#25D366;
-
-box-shadow:0 0 20px #25D366;
-
-}
-
-
-
-.discord{
-
-background:#5865F2;
-
-box-shadow:0 0 20px #5865F2;
-
-}
-
-
-
-.floating-main-button{
-
-
-width:70px;
-
-
-height:70px;
-
-
-border-radius:50%;
-
-
-border:none;
-
-
-background:
-
-linear-gradient(
-135deg,
-#ff2020,
-#800000
-);
-
-
-display:flex;
-
-
-align-items:center;
-
-
-justify-content:center;
-
-
-cursor:pointer;
-
-
-box-shadow:
-
-0 0 30px red;
-
-
-}
-
-
-
-.contact-icon{
-
-
-width:100%;
-
-height:100%;
-
-
-object-fit:contain;
-
-
-padding:8px;
-
-
-}
-
-
-
-
-
-/* =========================
-FINAL RESPONSIVE
-========================= */
-
-
-@media(max-width:900px){
-
-
-.profile-header{
-
-flex-direction:column;
-
-gap:25px;
-
-text-align:center;
-
-}
-
-
-
-.profile-layout{
-
-grid-template-columns:1fr;
-
-}
-
-
-
-.player-heading h1{
-
-font-size:35px;
-
-}
-
-
-}
-
-
-
-@media(max-width:600px){
-
-
-.player-card{
-
-width:300px;
-
-}
-
-
-
-.profile-photo{
-
-height:300px;
-
-}
-
-
-
-.floating-main-button{
-
-width:60px;
-
-height:60px;
-
-}
-
-
-
-.profile-layout{
-
-gap:15px;
-
-}
-
-
-}
-/* =========================
-TOURNAMENT SECTION
-========================= */
-
-.tournaments{
-
-padding:90px 20px;
-
-text-align:center;
-
-}
-
-
-.tournament-header h2,
-.tournaments > h2{
-
-font-size:45px;
-
-color:white;
-
-text-shadow:0 0 20px red;
-
-margin-bottom:15px;
-
-}
-
-
-
-.tournament-header p{
-
-color:#aaa;
-
-margin-bottom:40px;
-
-}
-
-
-
-.tournament-container{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:30px;
-
-max-width:1100px;
-
-margin:40px auto;
-
-}
-
-
-
-.tournament-card{
-
-background:
-
-linear-gradient(
-145deg,
-#220000,
-#050505
-);
-
-
-border:1px solid red;
-
-border-radius:20px;
-
-padding:30px;
-
-
-box-shadow:
-
-0 0 30px rgba(255,0,0,.3);
-
-
-transition:.35s;
-
-}
-
-
-
-.tournament-card:hover{
-
-transform:translateY(-10px);
-
-
-box-shadow:
-
-0 0 50px red;
-
-}
-
-
-
-.tournament-top{
-
-display:flex;
-
-justify-content:space-between;
-
-}
-
-
-
-.status{
-
-background:red;
-
-padding:6px 15px;
-
-border-radius:20px;
-
-font-size:12px;
-
-}
-
-
-
-.tournament-icon{
-
-font-size:30px;
-
-}
-
-
-
-.tournament-card h3{
-
-margin:25px 0;
-
-color:white;
-
-}
-
-
-
-.tournament-info{
-
-background:#111;
-
-padding:15px;
-
-border-radius:12px;
-
-}
-
-
-
-.tournament-info p{
-
-color:#ddd;
-
-}
-
-
-
-.tournament-card button,
-.join-card button{
-
-
-margin-top:20px;
-
-padding:12px 30px;
-
-border:none;
-
-border-radius:30px;
-
-
-background:red;
-
-color:white;
-
-font-weight:bold;
-
-
-box-shadow:0 0 20px red;
-
-}
-
-
-
-.join-card{
-
-max-width:700px;
-
-margin:60px auto;
-
-padding:40px;
-
-background:#150000;
-
-border:1px solid red;
-
-border-radius:25px;
-
-}
-
-
-
-@media(max-width:900px){
-
-.tournament-container{
-
-grid-template-columns:1fr;
-
-}
-
-}
-/* =========================
-   PREMIUM GAME SECTION
-========================= */
-
-
-.games{
-
-padding:90px 20px;
-
-text-align:center;
-
-}
-
-
-
-.games-header h2{
-
-font-size:45px;
-
-font-weight:1000;
-
-color:white;
-
-text-shadow:
-
-0 0 20px red,
-0 0 40px rgba(255,0,0,.5);
-
-}
-
-
-
-.games-header p{
-
-color:#aaa;
-
-margin-top:10px;
-
-letter-spacing:2px;
-
-}
-
-
-
-
-
-.game-container{
-
-display:grid;
-
-grid-template-columns:repeat(2,380px);
-
-justify-content:center;
-
-gap:45px;
-
-margin:60px auto;
-
-}
-
-
-
-
-
-/* =========================
-PREMIUM TEAM CARD FINAL
-========================= */
-
-
-.game-card{
-
-position:relative;
-
-padding:40px 35px;
-
-
-background:
-
-linear-gradient(
-145deg,
-rgba(40,0,0,.95),
-rgba(5,5,5,.98)
-);
-
-
-
-border:
-
-1px solid rgba(255,0,0,.7);
-
-
-
-border-radius:28px;
-
-
-
-min-height:430px;
-
-
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-
-
-box-shadow:
-
-0 20px 50px rgba(0,0,0,.7),
-0 0 35px rgba(255,0,0,.25);
-
-
-
-transition:.4s ease;
-
-
-}
-
-
-
-.game-card:hover{
-
-
-transform:
-
-translateY(-12px);
-
-
-
-box-shadow:
-
-
-0 25px 60px rgba(0,0,0,.8),
-0 0 55px rgba(255,0,0,.6);
-
-
-
-}
-
-
-
-
-.game-card h3{
-
-
-margin-top:25px;
-
-
-font-size:30px;
-
-
-color:#ff2020;
-
-
-
-text-shadow:
-
-0 0 20px red;
-
-
-
-}
-
-
-
-.game-description{
-
-
-margin-top:8px;
-
-
-color:#ccc;
-
-
-
-}
-
-
-/* =========================
-LIVE STATUS
-========================= */
-
-
-.live-badge{
-
-
-position:absolute;
-
-
-top:18px;
-
-
-right:18px;
-
-
-
-display:flex;
-
-
-align-items:center;
-
-
-gap:8px;
-
-
-
-font-size:11px;
-
-
-font-weight:900;
-
-
-
-color:white;
-
-
-
-}
-
-
-
-.live-dot{
-
-
-width:9px;
-
-
-height:9px;
-
-
-background:#00ff88;
-
-
-
-border-radius:50%;
-
-
-
-box-shadow:
-
-
-0 0 15px #00ff88;
-
-
-
-animation:
-
-livePulse 1.5s infinite;
-
-
-
-}
-
-
-
-@keyframes livePulse{
-
-
-50%{
-
-
-opacity:.4;
-
-
-transform:scale(1.4);
-
-
-}
-
-
-}
-
-
-
-
-
-/* =========================
-GAME ICON
-========================= */
-
-
-.game-icon{
-
-
-font-size:60px;
-
-
-filter:
-
-drop-shadow(0 0 20px red);
-
-
-
-}
-
-
-
-
-.game-card h3{
-
-
-margin:20px 0;
-
-
-
-font-size:28px;
-
-
-
-color:#ff2020;
-
-
-
-text-shadow:
-
-0 0 15px red;
-
-
-
-}
-
-
-
-
-
-.game-description{
-
-
-color:#ddd;
-
-
-font-size:16px;
-
-
-
-}
-
-
-
-
-
-/* =========================
-GAME STAT BOX
-========================= */
-
-
-.game-stats{
-
-
-display:grid;
-
-
-
-grid-template-columns:
-
-1fr 1fr;
-
-
-
-gap:15px;
-
-
-
-margin-top:35px;
-
-
-
-padding:20px;
-
-
-
-background:
-
-rgba(255,255,255,.04);
-
-
-
-border-radius:18px;
-
-
-
-}
-
-
-
-
-
-.game-stats div{
-
-
-padding:15px;
-
-
-
-background:#080808;
-
-
-
-border-radius:12px;
-
-
-
-border:
-
-1px solid rgba(255,0,0,.35);
-
-
-
-transition:.3s;
-
-
-
-}
-
-
-
-.game-stats div:hover{
-
-
-transform:
-
-translateY(-5px);
-
-
-
-box-shadow:
-
-0 0 20px red;
-
-
-
-}
-
-
-
-
-.game-stats p{
-
-
-color:#999;
-
-
-
-font-size:12px;
-
-
-
-margin-bottom:8px;
-
-
-
-}
-
-
-
-
-.game-stats strong{
-
-
-display:block;
-
-
-font-size:30px;
-
-
-
-color:white;
-
-
-
-text-shadow:
-
-
-0 0 15px red;
-
-
-
-animation:
-
-numberGlow 2s infinite;
-
-
-
-}
-
-
-
-
-@keyframes numberGlow{
-
-
-50%{
-
-
-text-shadow:
-
-
-0 0 25px red,
-0 0 45px rgba(255,0,0,.8);
-
-
-
-}
-
-
-
-}
-
-
-
-
-
-.game-stats div:hover strong{
-
-
-color:#ff2020;
-
-
-transform:scale(1.1);
-
-
-
-transition:.3s;
-
-
-
-}
-
-
-
-
-
-/* =========================
-ACTIVE ROSTER BUTTON
-========================= */
-
-
-.game-status{
-
-
-margin-top:30px;
-
-
-
-display:inline-flex;
-
-
-
-padding:
-
-10px 30px;
-
-
-
-border-radius:30px;
-
-
-
-background:
-
-linear-gradient(
-135deg,
-#00ff88,
-#008844
-);
-
-
-
-color:white;
-
-
-
-font-weight:900;
-
-
-
-box-shadow:
-
-
-0 0 25px rgba(0,255,100,.5);
-
-
-
-}
-
-
-
-
-
-/* =========================
-MOBILE RESPONSIVE
-========================= */
-
-
-@media(max-width:800px){
-
-
-.game-container{
-
-grid-template-columns:1fr;
-
-gap:30px;
-
-padding:0 15px;
-
-}
-
-
-
-.game-card{
-
-width:100%;
-
-min-height:420px;
-
-padding:35px 25px;
-
-}
-
-
-
-.games-header h2{
-
-font-size:32px;
-
-letter-spacing:2px;
-
-}
-
-
-
-.games-header p{
-
-font-size:13px;
-
-}
-
-
-
-.game-icon{
-
-font-size:55px;
-
-}
-
-
-
-.game-card h3{
-
-font-size:24px;
-
-}
-
-
-
-.game-stats{
-
-grid-template-columns:1fr 1fr;
-
-gap:12px;
-
-padding:15px;
-
-}
-
-
-
-.game-stats strong{
-
-font-size:26px;
-
-}
-
-
-
-.game-status{
-
-padding:10px 25px;
-
-}
-
-
-
-}
-
-
-
-@media(max-width:500px){
-
-
-.game-stats{
-
-grid-template-columns:1fr;
-
-}
-
-
-
-.game-card{
-
-min-height:auto;
-
-}
-
-
-
-.games{
-
-padding:60px 15px;
-
-}
-
-
-
-.games-header h2{
-
-font-size:28px;
-
-}
-
-
-
-}
-/* =========================
-PREMIUM JOIN CTA
-========================= */
-
-
-.premium-contact{
-
-max-width:900px;
-
-margin:90px auto 40px;
-
-padding:70px 30px;
-
-
-text-align:center;
-
-
-position:relative;
-
-
-overflow:hidden;
-
-
-
-background:
-
-linear-gradient(
-145deg,
-#250000,
-#050505
-);
-
-
-
-border:
-
-1px solid rgba(255,0,0,.7);
-
-
-
-border-radius:35px;
-
-
-
-box-shadow:
-
-0 0 50px rgba(255,0,0,.35);
-
-
-
-}
-
-
-
-.premium-contact::before{
-
-
-content:"";
-
-
-position:absolute;
-
-
-width:300px;
-
-
-height:300px;
-
-
-top:-150px;
-
-
-left:50%;
-
-
-transform:translateX(-50%);
-
-
-background:red;
-
-
-filter:blur(150px);
-
-
-opacity:.25;
-
-
-}
-
-
-
-
-.premium-contact h2{
-
-
-position:relative;
-
-
-font-size:45px;
-
-
-font-weight:1000;
-
-
-letter-spacing:3px;
-
-
-
-color:white;
-
-
-
-text-shadow:
-
-
-0 0 20px red;
-
-
-}
-
-
-
-.premium-contact p{
-
-
-position:relative;
-
-
-margin-top:20px;
-
-
-font-size:18px;
-
-
-color:#bbb;
-
-
-}
-
-
-
-
-.premium-contact button{
-
-
-position:relative;
-
-
-margin-top:35px;
-
-
-padding:15px 45px;
-
-
-
-border:none;
-
-
-border-radius:50px;
-
-
-
-background:
-
-linear-gradient(
-135deg,
-#ff2020,
-#990000
-);
-
-
-
-color:white;
-
-
-font-weight:900;
-
-
-font-size:16px;
-
-
-
-cursor:pointer;
-
-
-
-box-shadow:
-
-
-0 0 30px red;
-
-
-
-transition:.35s;
-
-
-}
-
-
-
-
-.premium-contact button:hover{
-
-
-transform:
-
-scale(1.1);
-
-
-
-box-shadow:
-
-
-0 0 60px red;
-
-
-}
-
-
-
-
-@media(max-width:600px){
-
-
-.premium-contact{
-
-padding:50px 20px;
-
-}
-
-
-
-.premium-contact h2{
-
-font-size:30px;
-
-}
-/* =========================
-   PREMIUM PLAYER PROFILE FINAL
+PLAYER PROFILE PART 1
+MAIN + HEADER + PHOTO
 ========================= */
 
 
@@ -2996,37 +12,19 @@ margin:80px auto;
 
 padding:30px;
 
-}
-
-
-/* =========================
-HEADER
-========================= */
-
-
-.profile-header{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-gap:30px;
-
-padding:40px;
-
-
 background:
 
 linear-gradient(
 145deg,
-#200000,
+#150000,
 #050505
 );
 
 
-border:1px solid rgba(255,0,0,.5);
+border:
+
+1px solid rgba(255,0,0,.45);
+
 
 border-radius:30px;
 
@@ -3041,10 +39,61 @@ box-shadow:
 
 
 
+/* =========================
+HEADER
+========================= */
+
+
+.profile-header{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+gap:40px;
+
+
+padding:40px;
+
+
+
+background:
+
+linear-gradient(
+145deg,
+#220000,
+#080808
+);
+
+
+
+border-radius:25px;
+
+
+
+border:
+
+1px solid rgba(255,0,0,.5);
+
+
+
+}
+
+
+
+
 
 .player-heading{
 
+
 flex:1;
+
 
 }
 
@@ -3056,12 +105,16 @@ flex:1;
 font-size:48px;
 
 
+font-weight:900;
+
+
 color:white;
+
 
 
 text-shadow:
 
-0 0 20px red;
+0 0 25px red;
 
 
 }
@@ -3074,10 +127,10 @@ text-shadow:
 margin-top:15px;
 
 
-color:#ff2020;
-
-
 font-size:24px;
+
+
+color:#ff2020;
 
 
 }
@@ -3090,7 +143,7 @@ font-size:24px;
 margin-top:10px;
 
 
-color:#aaa;
+color:#ffcc00;
 
 
 }
@@ -3100,10 +153,10 @@ color:#aaa;
 .player-heading p{
 
 
-margin-top:15px;
+margin-top:18px;
 
 
-color:#ddd;
+color:#aaa;
 
 
 font-size:18px;
@@ -3115,13 +168,16 @@ font-size:18px;
 
 
 
-/* WINNING CARD */
+
+/* =========================
+WINNING CARD
+========================= */
 
 
 .winning-card{
 
 
-width:240px;
+width:230px;
 
 
 padding:30px;
@@ -3130,18 +186,21 @@ padding:30px;
 text-align:center;
 
 
-
 background:
+
 
 linear-gradient(
 145deg,
-#111,
+#071a10,
 #050505
 );
 
 
 
-border:1px solid #00ff88;
+border:
+
+1px solid #00ff88;
+
 
 
 border-radius:25px;
@@ -3150,9 +209,7 @@ border-radius:25px;
 
 box-shadow:
 
-
-0 0 35px rgba(0,255,100,.35);
-
+0 0 35px rgba(0,255,100,.4);
 
 
 }
@@ -3165,10 +222,10 @@ box-shadow:
 color:#00ff88;
 
 
-font-weight:900;
-
-
 font-size:14px;
+
+
+font-weight:900;
 
 
 }
@@ -3187,28 +244,40 @@ font-size:42px;
 color:white;
 
 
+
 text-shadow:
 
 0 0 20px #00ff88;
 
 
 }
+
+
+
+
+
 /* =========================
-MAIN PROFILE LAYOUT
+PROFILE LAYOUT
 ========================= */
 
 
 .profile-layout{
 
+
 display:grid;
+
 
 grid-template-columns:330px 1fr;
 
+
 gap:30px;
+
 
 margin-top:40px;
 
+
 align-items:start;
+
 
 }
 
@@ -3217,11 +286,15 @@ align-items:start;
 .profile-left,
 .profile-right{
 
+
 display:flex;
+
 
 flex-direction:column;
 
+
 gap:25px;
+
 
 }
 
@@ -3230,13 +303,15 @@ gap:25px;
 
 
 /* =========================
-PLAYER PHOTO
+PLAYER IMAGE
 ========================= */
 
 
 .photo-box{
 
+
 padding:10px;
+
 
 
 background:
@@ -3248,43 +323,52 @@ linear-gradient(
 );
 
 
+
 border-radius:25px;
+
 
 
 box-shadow:
 
-0 0 35px rgba(255,0,0,.6);
+
+0 0 40px rgba(255,0,0,.6);
 
 
 }
+
+
 
 
 
 .profile-photo{
 
+
 width:100%;
+
 
 height:380px;
 
+
 object-fit:cover;
+
 
 display:block;
 
+
+
 border-radius:20px;
 
+
 }
-
-
-
-
-
 /* =========================
-COMMON BOX STYLE
+PLAYER PROFILE PART 2
+INFO + SOCIAL + HISTORY
 ========================= */
 
 
-.info-box,
-.profile-table{
+/* COMMON CARD */
+
+.info-box{
 
 
 background:
@@ -3292,7 +376,7 @@ background:
 linear-gradient(
 145deg,
 #180000,
-#050505
+#070707
 );
 
 
@@ -3306,14 +390,14 @@ border:
 border-radius:25px;
 
 
-
 padding:25px;
 
 
 
 box-shadow:
 
-0 0 30px rgba(255,0,0,.15);
+0 0 30px rgba(255,0,0,.18);
+
 
 
 }
@@ -3321,8 +405,7 @@ box-shadow:
 
 
 
-.info-box h3,
-.profile-table h2{
+.info-box h3{
 
 
 color:#ff2020;
@@ -3340,8 +423,10 @@ margin-bottom:25px;
 
 
 
+
+
 /* =========================
-PLAYER INFORMATION FIX
+PLAYER INFORMATION
 ========================= */
 
 
@@ -3360,15 +445,23 @@ justify-content:space-between;
 gap:20px;
 
 
-
-padding:13px 0;
-
+padding:14px 0;
 
 
 border-bottom:
 
 1px solid rgba(255,255,255,.08);
 
+
+
+}
+
+
+
+.info-item:last-child{
+
+
+border-bottom:none;
 
 
 }
@@ -3397,13 +490,13 @@ flex:0 0 120px;
 color:white;
 
 
+font-size:15px;
+
+
 text-align:right;
 
 
 flex:1;
-
-
-font-size:14px;
 
 
 word-break:break-word;
@@ -3415,15 +508,20 @@ word-break:break-word;
 
 
 
+
+
 .player-status.active{
 
 
 color:#00ff88;
 
 
+font-weight:900;
+
+
 text-shadow:
 
-0 0 10px #00ff88;
+0 0 12px #00ff88;
 
 
 }
@@ -3432,10 +530,8 @@ text-shadow:
 
 
 
-
-
 /* =========================
-SOCIAL LINKS FIX
+SOCIAL LINKS
 ========================= */
 
 
@@ -3461,8 +557,7 @@ gap:12px;
 width:100%;
 
 
-height:52px;
-
+height:55px;
 
 
 display:flex;
@@ -3474,15 +569,12 @@ align-items:center;
 justify-content:flex-start;
 
 
+
 gap:15px;
 
 
 
-padding:0 18px;
-
-
-
-border-radius:15px;
+padding:0 20px;
 
 
 
@@ -3496,7 +588,12 @@ border:
 
 
 
+border-radius:15px;
+
+
+
 color:white;
+
 
 
 font-size:15px;
@@ -3516,9 +613,11 @@ transition:.3s;
 transform:translateX(8px);
 
 
+
 box-shadow:
 
 0 0 25px red;
+
 
 
 }
@@ -3531,7 +630,7 @@ box-shadow:
 width:25px;
 
 
-font-size:20px;
+font-size:22px;
 
 
 text-align:center;
@@ -3543,48 +642,147 @@ text-align:center;
 
 .profile-social .fa-facebook-f{
 
+
 color:#1877f2;
 
+
 }
+
 
 
 .profile-social .fa-instagram{
 
+
 color:#ff3cac;
 
+
 }
+
 
 
 .profile-social .fa-youtube{
 
+
 color:red;
 
+
 }
+
 
 
 .profile-social .fa-tiktok{
 
+
 color:white;
 
-}
 
+}
 
 
 
 
 
 /* =========================
-TABLE DESIGN
+TEAM HISTORY
+========================= */
+
+
+.info-box p{
+
+
+color:#ddd;
+
+
+font-size:17px;
+
+
+line-height:1.8;
+
+
+}
+
+
+
+.info-box p span{
+
+
+color:#ff2020;
+
+
+font-weight:800;
+
+
+}
+/* =========================
+PLAYER PROFILE PART 3
+TABLE + VIDEO + RESPONSIVE
+========================= */
+
+
+
+/* =========================
+TABLE SECTION
 ========================= */
 
 
 .profile-table{
 
 
-width:100%;
+background:
+
+linear-gradient(
+145deg,
+#180000,
+#070707
+);
+
+
+
+border:
+
+1px solid rgba(255,0,0,.35);
+
+
+
+border-radius:25px;
+
+
+
+padding:25px;
+
+
+
+box-shadow:
+
+0 0 30px rgba(255,0,0,.18);
+
 
 
 }
+
+
+
+
+.profile-table h2{
+
+
+color:#ff2020;
+
+
+font-size:24px;
+
+
+margin-bottom:25px;
+
+
+
+text-shadow:
+
+0 0 15px red;
+
+
+}
+
 
 
 
@@ -3597,7 +795,11 @@ width:100%;
 border-collapse:collapse;
 
 
+overflow:hidden;
+
+
 }
+
 
 
 
@@ -3610,10 +812,19 @@ padding:15px;
 color:#ff2020;
 
 
+font-size:14px;
+
+
 text-align:left;
 
 
+background:
+
+rgba(255,0,0,.08);
+
+
 }
+
 
 
 
@@ -3631,19 +842,41 @@ border-bottom:
 1px solid rgba(255,255,255,.08);
 
 
+font-size:14px;
+
+
 }
 
 
 
-.profile-table tr:hover{
+
+.profile-table tr{
+
+
+transition:.3s;
+
+
+}
+
+
+
+.profile-table tbody tr:hover{
 
 
 background:
 
-rgba(255,0,0,.08);
+rgba(255,0,0,.12);
+
+
+
+transform:
+
+scale(1.01);
+
 
 
 }
+
 
 
 
@@ -3651,14 +884,14 @@ rgba(255,0,0,.08);
 
 
 /* =========================
-VIDEO HIGHLIGHTS FIX
+VIDEO HIGHLIGHTS
 ========================= */
 
 
 .video-gallery{
 
 
-width:100%;
+margin-top:30px;
 
 
 }
@@ -3676,21 +909,27 @@ grid-template-columns:
 repeat(2,1fr);
 
 
+gap:25px;
 
-gap:20px;
 
 
 }
 
 
 
+
 .video-card{
 
 
+background:#050505;
+
+
+
+border-radius:20px;
+
+
+
 overflow:hidden;
-
-
-border-radius:18px;
 
 
 
@@ -3700,20 +939,17 @@ border:
 
 
 
-background:#050505;
-
-
-
 box-shadow:
 
-0 0 20px rgba(255,0,0,.25);
+0 0 25px rgba(255,0,0,.25);
 
 
 
-transition:.3s;
+transition:.35s;
 
 
 }
+
 
 
 
@@ -3723,16 +959,18 @@ transition:.3s;
 width:100%;
 
 
-height:220px;
+height:250px;
 
 
-border:0;
+border:none;
 
 
 display:block;
 
 
+
 }
+
 
 
 
@@ -3747,10 +985,11 @@ translateY(-8px);
 
 box-shadow:
 
-0 0 40px red;
+0 0 45px red;
 
 
 }
+
 
 
 
@@ -3758,40 +997,11 @@ box-shadow:
 
 
 /* =========================
-DESKTOP BALANCE
+FINAL RESPONSIVE
 ========================= */
 
 
-.profile-right{
-
-
-min-height:100%;
-
-
-}
-
-
-
-
-
-.video-gallery{
-
-
-margin-top:auto;
-
-
-}
-
-
-
-
-
-/* =========================
-RESPONSIVE
-========================= */
-
-
-@media(max-width:900px){
+@media(max-width:1000px){
 
 
 .profile-layout{
@@ -3801,6 +1011,7 @@ grid-template-columns:1fr;
 
 
 }
+
 
 
 
@@ -3817,6 +1028,16 @@ text-align:center;
 
 
 
+.winning-card{
+
+
+width:100%;
+
+
+}
+
+
+
 .video-grid{
 
 
@@ -3826,12 +1047,57 @@ grid-template-columns:1fr 1fr;
 }
 
 
+
 }
 
 
 
 
+
 @media(max-width:600px){
+
+
+.esports-profile{
+
+
+padding:15px;
+
+
+margin:40px auto;
+
+
+}
+
+
+
+.player-heading h1{
+
+
+font-size:32px;
+
+
+}
+
+
+
+.player-heading h3{
+
+
+font-size:20px;
+
+
+}
+
+
+
+.profile-photo{
+
+
+height:300px;
+
+
+}
+
 
 
 .info-item{
@@ -3843,7 +1109,7 @@ flex-direction:column;
 align-items:flex-start;
 
 
-gap:5px;
+gap:6px;
 
 
 }
@@ -3853,7 +1119,7 @@ gap:5px;
 .info-item label{
 
 
-flex:auto;
+flex:none;
 
 
 }
@@ -3880,23 +1146,24 @@ grid-template-columns:1fr;
 
 
 
-.profile-photo{
+.profile-table{
 
 
-height:300px;
+padding:18px;
+
+
+}
+
+
+
+.profile-table{
+
+
+overflow-x:auto;
 
 
 }
 
-
-
-.esports-profile{
-
-
-padding:15px;
-
-
-}
 
 
 }
