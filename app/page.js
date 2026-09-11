@@ -14,56 +14,133 @@ export default function Home() {
 
     <main className="home-animation">
 
+
       <Navbar />
 
-      <section className="hero">
 
-        <div className="hero-logo">
+
+      <section className="hero reveal-header">
+
+
+        <div className="hero-logo reveal-photo">
+
           <Image
+
             src={logo}
+
             width={140}
+
             height={140}
+
             alt="Over Power Esports Logo"
+
+            priority
+
           />
+
         </div>
 
+
+
+
         <h1>
+
           OVER POWER ESPORTS
+
         </h1>
 
+
+
         <p>
+
           Victory is our Mission
+
         </p>
+
+
 
         <button>
-          Join Team
+
+          JOIN TEAM
+
         </button>
 
+
+
       </section>
 
 
-      <Teams />
-
-      <Tournaments />
-
-      <Games />
 
 
-      <section className="contact">
+
+      <section className="reveal-card">
+
+        <Teams />
+
+      </section>
+
+
+
+
+
+      <section className="reveal-card reveal-delay-1">
+
+        <Tournaments />
+
+      </section>
+
+
+
+
+
+      <section className="reveal-card reveal-delay-2">
+
+        <Games />
+
+      </section>
+
+
+
+
+
+
+      <section className="contact premium-contact">
+
 
         <h2>
-          Ready To Join?
+
+          READY TO JOIN?
+
         </h2>
 
+
+
         <p>
+
           Become part of Over Power Esports
+
         </p>
+
+
+
+        <button>
+
+          JOIN TEAM
+
+        </button>
+
+
 
       </section>
 
 
-      {/* FLOATING CONTACT BUTTON */}
+
+
+
+
       <FloatingContact />
+
+
 
     </main>
 
