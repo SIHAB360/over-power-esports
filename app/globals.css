@@ -2279,49 +2279,33 @@ transform:scale(1.6);
 
 content:"LIVE STATS";
 
-
 position:absolute;
-
 
 top:15px;
 
 left:15px;
 
-
 padding:5px 12px;
-
 
 font-size:10px;
 
-
 font-weight:900;
-
 
 letter-spacing:1px;
 
-
 color:white;
 
-
-background:
-
-linear-gradient(
-135deg,
-#ff0000,
-#800000
-);
-
+background:#ff2020;
 
 border-radius:20px;
-
 
 box-shadow:
 
 0 0 15px red;
 
+z-index:2;
 
 }
-
 
 
 
