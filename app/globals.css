@@ -3211,3 +3211,18 @@ p{
   object-fit: contain;
   display: block;
 }
+/* Global Website Font */
+
+html,
+body {
+  font-family: var(--font-orbitron), sans-serif;
+}
+
+button,
+input,
+select,
+textarea,
+option,
+a {
+  font-family: inherit;
+}
