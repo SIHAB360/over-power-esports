@@ -215,41 +215,40 @@ export default function JoinTeamPage() {
 
           <a href="/register" className="primary-button">
             CONTINUE TO VERIFICATION <span>→</span>
-          </a>
-
-                          .join-page :global(.navbar) {
-  margin-bottom: 35px;
-}
-    
+          </a> 
         </section>
       </div>
 
-      <style jsx>{`
-        .join-page {
-          min-height: 100vh;
-          padding: 35px 16px 90px;
-          color: #ffffff;
-          background:
-            radial-gradient(
-              circle at 50% 0%,
-              rgba(255, 0, 58, 0.25),
-              transparent 420px
-            ),
-            linear-gradient(135deg, #050507, #210007, #030305);
-        }
+  <style jsx>{`
+  .join-page :global(.navbar) {
+    margin-bottom: 35px;
+  }
 
-        .join-container {
-          width: min(1080px, 100%);
-          margin: auto;
-        }
+  .join-page {
+    min-height: 100vh;
+    padding: 35px 16px 90px;
+    color: #ffffff;
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(255, 0, 58, 0.25),
+        transparent 420px
+      ),
+      linear-gradient(135deg, #050507, #210007, #030305);
+  }
 
-        .back-link {
-          display: inline-block;
-          margin-bottom: 35px;
-          color: #a9a9af;
-          font-size: 13px;
-          text-decoration: none;
-        }
+  .join-container {
+    width: min(1080px, 100%);
+    margin: auto;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 35px;
+    color: #a9a9af;
+    font-size: 13px;
+    text-decoration: none;
+  }
 
         .back-link:hover {
           color: #ff2348;
