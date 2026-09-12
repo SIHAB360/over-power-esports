@@ -1,4 +1,5 @@
 "use client";
+import Navbar from "../components/Navbar";
 
 const socialLinks = [
   { name: "Facebook Page", icon: "f", href: "#" },
@@ -42,8 +43,10 @@ const rules = [
 
 export default function JoinTeamPage() {
   return (
-    <main className="join-page">
-      <div className="join-container">
+   <main className="join-page">
+  <Navbar />
+
+  <div className="join-container">
         <a href="/" className="back-link">
           ← Back to Home
         </a>
@@ -216,7 +219,11 @@ export default function JoinTeamPage() {
         </section>
       </div>
 
-      <style jsx>{`
+      <style jsx>
+            .join-page :global(.navbar) {
+  margin-bottom: 35px;
+}
+            {`
         .join-page {
           min-height: 100vh;
           padding: 35px 16px 90px;
