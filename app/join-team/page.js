@@ -542,42 +542,97 @@ export default function JoinTeamPage() {
         .link-grid .dc {
           border-color: rgba(88, 101, 242, 0.6);
         }
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
 
-        .contact-grid {
-          grid-template-columns: repeat(3, 1fr);
-        }
+.contact-card {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 105px;
+  padding: 18px;
+  color: #fff;
+  border: 1px solid rgba(255, 35, 75, 0.3);
+  border-radius: 14px;
+  background: rgba(13, 13, 19, 0.86);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
 
-        .contact-card {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 18px;
-          color: #fff;
-          border-radius: 14px;
-          text-decoration: none;
-        }
+.contact-card:hover {
+  transform: translateY(-4px);
+  border-color: #ff244b;
+  box-shadow: 0 0 25px rgba(255, 20, 60, 0.28);
+}
 
-        .contact-icon {
-          color: #2ada70;
-          font-size: 22px;
-          text-shadow: 0 0 12px #2ada70;
-        }
+.contact-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: #2ada70;
+  border: 1px solid rgba(42, 218, 112, 0.5);
+  border-radius: 50%;
+  background: rgba(42, 218, 112, 0.08);
+  box-shadow:
+    0 0 10px rgba(42, 218, 112, 0.8),
+    inset 0 0 8px rgba(42, 218, 112, 0.25);
+  font-size: 18px;
+  animation: contactGlow 2s ease-in-out infinite;
+}
 
-        .contact-card h3 {
-          margin: 6px 0;
-          font-size: 13px;
-        }
+.contact-card > div:nth-child(2) {
+  min-width: 0;
+  text-align: left;
+}
 
-        .contact-card p {
-          margin: 0;
-          color: #aaa;
-          font-size: 11px;
-        }
+.contact-card small {
+  display: block;
+  color: #ff3157;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
 
-        .contact-card > strong {
-          margin-left: auto;
-          color: #ff244b;
-        }
+.contact-card h3 {
+  margin: 6px 0;
+  color: #fff;
+  font-size: 13px;
+}
+
+.contact-card p {
+  margin: 0;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.contact-card > strong {
+  margin-left: 0;
+  color: #ff244b;
+  font-size: 20px;
+}
+
+@keyframes contactGlow {
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 20px rgba(42, 218, 112, 1);
+  }
+}
+
+@media (max-width: 720px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+        
 
         .final-card {
           margin-top: 70px;
