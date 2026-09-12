@@ -25,20 +25,20 @@ const contacts = [
   {
     role: "TEAM MANAGER",
     name: "MD SHABUDDIN",
-    number: "+8801715393876",
-  href: "https://wa.me/8801715393876",
+    number: "+880 1715 393876",
+    href: "https://wa.me/8801715393876",
   },
   {
     role: "MAIN TEAM IGL",
     name: "REJWAN AHAMMED",
-    number: "+8801756-622595",
-     href: "https://wa.me/8801756622595",
+    number: "+880 1756 622595",
+    href: "https://wa.me/8801756622595",
   },
   {
     role: "ELITE TEAM IGL",
     name: "SAWON AHMED",
-    number: "+8801614998044",
-    href: "https://wa.me/8801614-998044",
+    number: "+880 1614 998044",
+    href: "https://wa.me/8801614998044",
   },
 ];
 
@@ -57,7 +57,8 @@ export default function JoinTeamPage() {
 
         <section className="hero-card">
           <div className="live-badge">
-            <span /> RECRUITMENT OPEN
+            <span />
+            RECRUITMENT OPEN
           </div>
 
           <p className="eyebrow">OVER POWER ESPORTS</p>
@@ -78,8 +79,10 @@ export default function JoinTeamPage() {
 
         <section className="notice-card">
           <div className="notice-icon">!</div>
+
           <div>
             <h3>Before You Continue</h3>
+
             <p>
               Read all rules carefully and join our official communities for
               updates, trials and announcements.
@@ -90,6 +93,7 @@ export default function JoinTeamPage() {
         <section className="content-section">
           <div className="section-heading">
             <span>01</span>
+
             <div>
               <small>TEAM POLICY</small>
               <h2>Rules & Regulations</h2>
@@ -109,6 +113,7 @@ export default function JoinTeamPage() {
         <section className="content-section">
           <div className="section-heading">
             <span>02</span>
+
             <div>
               <small>OFFICIAL NETWORK</small>
               <h2>Stay Connected</h2>
@@ -118,7 +123,9 @@ export default function JoinTeamPage() {
           <div className="network-grid">
             <div className="info-card">
               <small>SOCIAL MEDIA</small>
+
               <h3>Follow Over Power</h3>
+
               <p>
                 Get official news, match updates, player announcements and
                 exclusive content.
@@ -141,7 +148,9 @@ export default function JoinTeamPage() {
 
             <div className="info-card">
               <small>COMMUNITY HUB</small>
+
               <h3>Join Our Community</h3>
+
               <p>
                 Connect with players, staff and other members of the Over Power
                 community.
@@ -165,6 +174,7 @@ export default function JoinTeamPage() {
         <section className="content-section">
           <div className="section-heading">
             <span>03</span>
+
             <div>
               <small>DIRECT SUPPORT</small>
               <h2>Contact Team Staff</h2>
@@ -173,23 +183,39 @@ export default function JoinTeamPage() {
 
           <div className="contact-grid">
             {contacts.map((contact) => (
-              <a
-                href={contact.href}
-                target="_blank"
-                rel="noreferrer"
-                className="contact-card"
-                key={contact.role}
-              >
-                <div className="contact-icon">◉</div>
+              <article className="staff-card" key={contact.role}>
+                <div className="staff-top">
+                  <div className="staff-avatar">
+                    {contact.name
+                      .split(" ")
+                      .map((word) => word[0])
+                      .join("")
+                      .slice(0, 2)}
+                  </div>
 
-                <div>
-                  <small>{contact.role}</small>
-                  <h3>{contact.name}</h3>
-                  <p>{contact.number}</p>
+                  <span className="availability">
+                    <i />
+                    AVAILABLE
+                  </span>
                 </div>
 
-                <strong>↗</strong>
-              </a>
+                <small>{contact.role}</small>
+
+                <h3>{contact.name}</h3>
+
+                <p>{contact.number}</p>
+
+                <a
+                  href={contact.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="whatsapp-cta"
+                >
+                  <span>◉</span>
+                  CHAT ON WHATSAPP
+                  <b>↗</b>
+                </a>
+              </article>
             ))}
           </div>
         </section>
@@ -198,7 +224,9 @@ export default function JoinTeamPage() {
           <div className="pulse-line" />
 
           <small>READY FOR THE NEXT LEVEL?</small>
+
           <h2>Prove Your Power</h2>
+
           <p>Complete verification and submit your player registration.</p>
 
           <a href="/register" className="main-button">
@@ -326,7 +354,7 @@ export default function JoinTeamPage() {
         .eyebrow,
         .section-heading small,
         .info-card > small,
-        .contact-card small,
+        .staff-card > small,
         .final-card > small {
           color: #ff3157;
           font-size: 10px;
@@ -342,7 +370,8 @@ export default function JoinTeamPage() {
         h2,
         h3,
         .main-button,
-        .live-badge {
+        .live-badge,
+        .staff-avatar {
           font-family: var(--font-orbitron), sans-serif;
         }
 
@@ -451,16 +480,16 @@ export default function JoinTeamPage() {
         .network-grid,
         .contact-grid {
           display: grid;
-          gap: 14px;
+          gap: 16px;
         }
 
         .rules-grid {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .rule-card,
         .info-card,
-        .contact-card {
+        .staff-card {
           border: 1px solid rgba(255, 40, 75, 0.25);
           background: rgba(13, 13, 19, 0.82);
           transition: 0.3s;
@@ -468,9 +497,9 @@ export default function JoinTeamPage() {
 
         .rule-card:hover,
         .info-card:hover,
-        .contact-card:hover {
+        .staff-card:hover {
           border-color: #ff244b;
-          box-shadow: 0 0 22px rgba(255, 20, 60, 0.18);
+          box-shadow: 0 0 22px rgba(255, 20, 60, 0.2);
           transform: translateY(-3px);
         }
 
@@ -495,7 +524,7 @@ export default function JoinTeamPage() {
         }
 
         .network-grid {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .info-card {
@@ -510,7 +539,7 @@ export default function JoinTeamPage() {
 
         .link-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 9px;
           margin-top: 20px;
         }
@@ -528,6 +557,7 @@ export default function JoinTeamPage() {
           font-size: 10px;
           font-weight: 700;
           text-decoration: none;
+          transition: 0.3s;
         }
 
         .link-grid a:hover {
@@ -542,97 +572,112 @@ export default function JoinTeamPage() {
         .link-grid .dc {
           border-color: rgba(88, 101, 242, 0.6);
         }
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
 
-.contact-card p {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  margin: 0;
-  padding: 6px 10px;
-  color: #35e878;
-  border: 1px solid rgba(53, 232, 120, 0.45);
-  border-radius: 6px;
-  background: rgba(53, 232, 120, 0.08);
-  box-shadow: 0 0 10px rgba(53, 232, 120, 0.18);
-  font-size: 10px;
-  font-weight: 700;
-}
+        .contact-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
 
-.contact-card:hover {
-  transform: translateY(-4px);
-  border-color: #ff244b;
-  box-shadow: 0 0 25px rgba(255, 20, 60, 0.28);
-}
+        .staff-card {
+          position: relative;
+          overflow: hidden;
+          padding: 22px;
+          border-radius: 16px;
+        }
 
-.contact-icon {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  color: #2ada70;
-  border: 1px solid rgba(42, 218, 112, 0.5);
-  border-radius: 50%;
-  background: rgba(42, 218, 112, 0.08);
-  box-shadow:
-    0 0 10px rgba(42, 218, 112, 0.8),
-    inset 0 0 8px rgba(42, 218, 112, 0.25);
-  font-size: 18px;
-  animation: contactGlow 2s ease-in-out infinite;
-}
+        .staff-card::after {
+          position: absolute;
+          right: -35px;
+          bottom: -35px;
+          width: 100px;
+          height: 100px;
+          content: "";
+          border-radius: 50%;
+          background: #ff1744;
+          filter: blur(55px);
+          opacity: 0.16;
+        }
 
-.contact-card > div:nth-child(2) {
-  min-width: 0;
-  text-align: left;
-}
+        .staff-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 22px;
+        }
 
-.contact-card small {
-  display: block;
-  color: #ff3157;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-}
+        .staff-avatar {
+          display: grid;
+          width: 58px;
+          height: 58px;
+          place-items: center;
+          color: #fff;
+          border: 1px solid #ff244b;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #ff244b, #600014);
+          box-shadow: 0 0 22px rgba(255, 20, 60, 0.65);
+          font-size: 16px;
+          font-weight: 900;
+        }
 
-.contact-card h3 {
-  margin: 6px 0;
-  color: #fff;
-  font-size: 13px;
-}
+        .availability {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #35e878;
+          font-size: 9px;
+          font-weight: 800;
+          letter-spacing: 1px;
+        }
 
-.contact-card p {
-  margin: 0;
-  color: #aaa;
-  font-size: 11px;
-}
+        .availability i {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #35e878;
+          box-shadow: 0 0 12px #35e878;
+          animation: staffBlink 1.5s infinite;
+        }
 
-.contact-card > strong {
-  margin-left: 0;
-  color: #ff244b;
-  font-size: 20px;
-}
+        .staff-card h3 {
+          margin: 10px 0 8px;
+          color: #fff;
+          font-size: 16px;
+        }
 
-@keyframes contactGlow {
-  50% {
-    opacity: 0.55;
-    box-shadow: 0 0 20px rgba(42, 218, 112, 1);
-  }
-}
+        .staff-card > p {
+          margin: 0 0 20px;
+          color: #aaa;
+          font-size: 12px;
+        }
 
-@media (max-width: 720px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-}
+        .whatsapp-cta {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          min-height: 42px;
+          padding: 0 12px;
+          color: #35e878;
+          border: 1px solid rgba(53, 232, 120, 0.45);
+          border-radius: 8px;
+          background: rgba(53, 232, 120, 0.07);
+          box-shadow: 0 0 12px rgba(53, 232, 120, 0.12);
+          font-size: 10px;
+          font-weight: 800;
+          text-decoration: none;
+          transition: 0.3s ease;
+        }
 
+        .whatsapp-cta:hover {
+          color: #fff;
+          background: #159447;
+          box-shadow: 0 0 22px rgba(53, 232, 120, 0.55);
+        }
 
-
-
-        
+        .whatsapp-cta b {
+          color: #fff;
+          font-size: 17px;
+        }
 
         .final-card {
           margin-top: 70px;
@@ -660,6 +705,12 @@ export default function JoinTeamPage() {
         @keyframes blink {
           50% {
             opacity: 0.25;
+          }
+        }
+
+        @keyframes staffBlink {
+          50% {
+            opacity: 0.3;
           }
         }
 
