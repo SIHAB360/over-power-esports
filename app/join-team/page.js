@@ -122,7 +122,7 @@ export default function JoinTeamPage() {
             <p>
               Read all rules carefully and join our official communities for
               updates, trials and announcements.
-            </p>
+          </p>
           </div>
         </section>
 
@@ -130,15 +130,17 @@ export default function JoinTeamPage() {
           <div className="section-heading">
             <span>01</span>
 
-           <div>
-  <small>THE OVER POWER STANDARD</small>
+            <div>
+              <small>THE OVER POWER STANDARD</small>
 
-  <h2>PLAY WITH DISCIPLINE. COMPETE WITH HONOUR.</h2>
+              <h2>PLAY WITH DISCIPLINE. COMPETE WITH HONOUR.</h2>
 
-  <p className="rules-tagline">
-    Every member represents the name, values and future of Over Power Esports.
-  </p>
-</div>
+              <p className="rules-tagline">
+                Every member represents the name, values and future of Over
+                Power Esports.
+              </p>
+            </div>
+          </div>
 
           <div className="rules-grid">
             {rules.map((rule, index) => (
@@ -154,6 +156,7 @@ export default function JoinTeamPage() {
           <div className="section-heading">
             <span>02</span>
 
+              
             <div>
               <small>OFFICIAL NETWORK</small>
               <h2>Stay Connected</h2>
