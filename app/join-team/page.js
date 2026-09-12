@@ -222,11 +222,14 @@ export default function JoinTeamPage() {
         <section className="final-card">
           <div className="pulse-line" />
 
-          <small>READY FOR THE NEXT LEVEL?</small>
+          <small>OFFICIAL PLAYER APPLICATION</small>
 
-          <h2>Prove Your Power</h2>
+          <h2>REGISTER FOR OVER POWER ESPORTS</h2>
 
-          <p>Complete verification and submit your player registration.</p>
+         <p>
+  Enter your official verification code to unlock the Over Power Esports
+  player registration form.
+</p>
 
           <a href="/register" className="main-button">
             CONTINUE TO VERIFICATION <span>→</span>
