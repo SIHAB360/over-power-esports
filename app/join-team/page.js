@@ -9,15 +9,51 @@ const socialLinks = [
 ];
 
 const rules = [
-  "Players must provide correct personal and gaming information.",
-  "Respect teammates, opponents, managers and staff.",
-  "Cheating, hacking, account sharing and harassment are prohibited.",
-  "Follow the instructions of the manager, coach and IGL.",
-  "Attend official practice, scrims and tournaments regularly.",
-  "Inform staff before missing any official activity.",
-  "Keep internal team information and strategies private.",
-  "Management may conduct trials before selection.",
-  "Management may suspend or remove players for serious violations.",
+  "সকল খেলোয়াড়কে সঠিক ব্যক্তিগত, যোগাযোগ ও গেমিং তথ্য প্রদান করতে হবে।",
+
+  "টিমের সকল সদস্য, প্রতিপক্ষ, ম্যানেজার, কোচ ও স্টাফের সঙ্গে সম্মানজনক আচরণ করতে হবে।",
+
+  "চিটিং, হ্যাকিং, স্ক্রিপ্ট, থার্ড-পার্টি সফটওয়্যার ও যেকোনো ধরনের unfair advantage সম্পূর্ণ নিষিদ্ধ।",
+
+  "অ্যাকাউন্ট শেয়ারিং, boosting, smurfing এবং অন্যের অ্যাকাউন্ট ব্যবহার করা যাবে না।",
+
+  "অফিশিয়াল ম্যাচ, স্ক্রিম ও প্র্যাকটিসে সময়মতো উপস্থিত থাকতে হবে {বাধ্যতামূলক}।",
+
+  "অনুপস্থিত থাকতে হলে নির্ধারিত সময়ের আগে ম্যানেজার বা IGL-কে জানাতে হবে।",
+
+  "প্র্যাকটিস চলাকালে IGL, কোচ ও ম্যানেজারের নির্দেশনা অনুসরণ করতে হবে {বাধ্যতামূলক}।",
+
+  "টিমের ভেতরের কৌশল, কমিউনিকেশন, স্ক্রিম তথ্য ও অভ্যন্তরীণ বিষয় বাইরে প্রকাশ করা যাবে না।",
+
+  "ম্যাচ বা প্র্যাকটিস চলাকালে toxic behaviour, rage, trolling ও unnecessary arguments করা যাবে না।",
+
+  "টিমের voice communication পরিষ্কার, সংক্ষিপ্ত ও ম্যাচ-কেন্দ্রিক রাখতে হবে।",
+
+  "কোনো খেলোয়াড় নিজের প্রতিপক্ষ বা স্টাফকে অপমান, হুমকি বা হয়রানি করতে পারবে না।",
+
+  "টিমের নাম, লোগো, জার্সি ও ব্র্যান্ডের সুনাম ক্ষুণ্ণ হয়—এমন কোনো কাজ করা যাবে না।",
+
+  "অফিশিয়াল সোশ্যাল মিডিয়া পোস্ট, ছবি বা ভিডিও প্রকাশের আগে ম্যানেজমেন্টের অনুমতি নিতে হবে।",
+
+  "টিমের হয়ে কোনো public statement, interview বা sponsorship deal দেওয়ার আগে ম্যানেজমেন্টকে জানাতে হবে।",
+
+  "নির্ধারিত tournament rules, registration deadline এবং match schedule মেনে চলতে হবে {বাধ্যতামূলক}।",
+
+  "খেলোয়াড়দের নিজস্ব device, stable internet connection এবং প্রয়োজনীয় gaming setup প্রস্তুত রাখতে হবে।",
+
+  "ট্রায়াল, performance review ও roster পরিবর্তনের সিদ্ধান্ত ম্যানেজমেন্ট নিতে পারবে।",
+
+  "দলগত পারফরম্যান্স, teamwork, discipline ও consistency-এর ভিত্তিতে খেলোয়াড়ের position নির্ধারণ করা হবে।",
+
+  "যেকোনো সমস্যা ম্যানেজার এর মাধ্যমে শান্তিপূর্ণভাবে সমাধান করতে হবে।",
+
+  "গুরুতর নিয়মভঙ্গের ক্ষেত্রে ম্যানেজার warning, suspension, roster removal বা permanent termination করতে পারবেন।",
+
+  "টিম ত্যাগ করতে হলে নির্দিষ্ট notice period এক মাস আগে ম্যানেজমেন্টকে জানাতে হবে।",
+
+  "টিমের কোনো confidential তথ্য, password বা private document অন্য কারও সঙ্গে শেয়ার করা যাবে না।",
+
+  "প্রত্যেক খেলোয়াড়কে টিমের উন্নতি, discipline এবং positive competitive environment বজায় রাখতে সহযোগিতা করতে হবে।",
 ];
 
 const contacts = [
