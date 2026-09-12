@@ -184,37 +184,39 @@ export default function JoinTeamPage() {
             </div>
           </div>
 
-          <div className="contact-grid">
-            {contacts.map((contact) => (
-              <div className="staff-avatar">
-  <img src={contact.image} alt={contact.name} />
+         <div className="contact-grid">
+  {contacts.map((contact) => (
+    <article className="staff-card" key={contact.role}>
+      <div className="staff-top">
+        <div className="staff-avatar">
+          <img src={contact.image} alt={contact.name} />
+        </div>
+
+        <span className="availability">
+          <i />
+          AVAILABLE
+        </span>
+      </div>
+
+      <small>{contact.role}</small>
+
+      <h3>{contact.name}</h3>
+
+      <p>{contact.number}</p>
+
+      <a
+        href={contact.href}
+        target="_blank"
+        rel="noreferrer"
+        className="whatsapp-cta"
+      >
+        <span>◉</span>
+        CHAT ON WHATSAPP
+        <b>↗</b>
+      </a>
+    </article>
+  ))}
 </div>
-
-                  <span className="availability">
-                    <i />
-                    AVAILABLE
-                  </span>
-                </div>
-
-                <small>{contact.role}</small>
-
-                <h3>{contact.name}</h3>
-
-                <p>{contact.number}</p>
-
-                <a
-                  href={contact.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="whatsapp-cta"
-                >
-                  <span>◉</span>
-                  CHAT ON WHATSAPP
-                  <b>↗</b>
-                </a>
-              </article>
-            ))}
-          </div>
         </section>
 
         <section className="final-card">
