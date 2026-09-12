@@ -528,52 +528,64 @@ export default function JoinTeamPage() {
   line-height: 1.8;
 }
 
-        .rules-grid,
-        .network-grid,
-        .contact-grid {
-          display: grid;
-          gap: 16px;
-        }
-
         .rules-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
 
-        .rule-card,
-        .info-card,
-        .staff-card {
-          border: 1px solid rgba(255, 40, 75, 0.25);
-          background: rgba(13, 13, 19, 0.82);
-          transition: 0.3s;
-        }
+.rule-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-height: 92px;
+  padding: 22px 24px;
+  border: 1px solid rgba(255, 20, 70, 0.45);
+  border-radius: 14px;
+  background: rgba(10, 10, 15, 0.82);
+  box-shadow:
+    inset 0 0 20px rgba(255, 0, 55, 0.04),
+    0 0 18px rgba(255, 0, 55, 0.06);
+}
 
-        .rule-card:hover,
-        .info-card:hover,
-        .staff-card:hover {
-          border-color: #ff244b;
-          box-shadow: 0 0 22px rgba(255, 20, 60, 0.2);
-          transform: translateY(-3px);
-        }
+.rule-card b {
+  flex: 0 0 28px;
+  color: #ff164b;
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
 
-        .rule-card {
-          display: flex;
-          gap: 15px;
-          padding: 20px;
-          border-radius: 12px;
-        }
+.rules-tagline,
+.rule-card p {
+  font-family: "Kalpurush", sans-serif;
+  font-weight: normal;
+  letter-spacing: 0;
+  line-height: 1.8;
+}
 
-        .rule-card b {
-          color: #ff244b;
-          font-family: var(--font-orbitron), sans-serif;
-          font-size: 12px;
-        }
+.rule-card p {
+  margin: 0;
+  color: #eeeeee;
+  font-size: 16px;
+  text-align: left;
+}
 
-        .rule-card p {
-          margin: 0;
-          color: #d1d1d6;
-          font-size: 13px;
-          line-height: 1.6;
-        }
+@media (max-width: 700px) {
+  .rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rule-card {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .rule-card p {
+    font-size: 15px;
+  }
+}
 
         .network-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
