@@ -27,18 +27,21 @@ const contacts = [
     name: "MD SHABUDDIN",
     number: "+880 1715 393876",
     href: "https://wa.me/8801715393876",
+    image: "/team/md-shabuddin.jpg",
   },
   {
     role: "MAIN TEAM IGL",
     name: "REJWAN AHAMMED",
     number: "+880 1756 622595",
     href: "https://wa.me/8801756622595",
+    image: "/team/rejwan-ahammed.jpg",
   },
   {
     role: "ELITE TEAM IGL",
     name: "SAWON AHMED",
     number: "+880 1614 998044",
     href: "https://wa.me/8801614998044",
+    image: "/team/sawon-ahmed.jpg",
   },
 ];
 
