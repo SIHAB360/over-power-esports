@@ -1,6 +1,7 @@
 import FloatingContact from "./components/FloatingContact";
 import Image from "next/image";
 import logo from "./assets/logo.png";
+import Link from "next/link";
 
 import Navbar from "./components/Navbar";
 import Tournaments from "./components/Tournaments";
@@ -99,10 +100,9 @@ export default function Home() {
           Become part of Over Power Esports
         </p>
 
-
-        <button>
-          JOIN TEAM
-        </button>
+<Link href="/join-team">
+  JOIN TEAM
+</Link>
 
 
       </section>
