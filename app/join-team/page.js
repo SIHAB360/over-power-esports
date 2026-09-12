@@ -513,10 +513,23 @@ export default function JoinTeamPage() {
           font-weight: 900;
         }
 
-        .section-heading h2 {
-          margin: 5px 0 0;
-          font-size: clamp(21px, 4vw, 32px);
-        }
+        .rules-tagline {
+  max-width: 650px;
+  margin: 12px 0 0;
+  color: #aaaab2;
+  font-family: "Hind Siliguri", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.8;
+}
+
+.rule-card p {
+  font-family: "Hind Siliguri", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
 
         .rules-grid,
         .network-grid,
