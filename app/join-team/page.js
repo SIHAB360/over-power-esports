@@ -50,8 +50,6 @@ export default function JoinTeamPage() {
       <div className="light-orb orb-one" />
       <div className="light-orb orb-two" />
 
-      <Navbar />
-
       <div className="join-container">
         <a href="/" className="back-link">
           ← Back to Home
