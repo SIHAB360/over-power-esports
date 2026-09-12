@@ -186,15 +186,9 @@ export default function JoinTeamPage() {
 
           <div className="contact-grid">
             {contacts.map((contact) => (
-              <article className="staff-card" key={contact.role}>
-                <div className="staff-top">
-                  <div className="staff-avatar">
-                    {contact.name
-                      .split(" ")
-                      .map((word) => word[0])
-                      .join("")
-                      .slice(0, 2)}
-                  </div>
+              <div className="staff-avatar">
+  <img src={contact.image} alt={contact.name} />
+</div>
 
                   <span className="availability">
                     <i />
@@ -607,19 +601,26 @@ export default function JoinTeamPage() {
           margin-bottom: 22px;
         }
 
-        .staff-avatar {
-          display: grid;
-          width: 58px;
-          height: 58px;
-          place-items: center;
-          color: #fff;
-          border: 1px solid #ff244b;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #ff244b, #600014);
-          box-shadow: 0 0 22px rgba(255, 20, 60, 0.65);
-          font-size: 16px;
-          font-weight: 900;
-        }
+       .staff-avatar {
+  width: 58px;
+  height: 58px;
+  padding: 3px;
+  overflow: hidden;
+  border: 2px solid #ff244b;
+  border-radius: 50%;
+  background: #600014;
+  box-shadow:
+    0 0 18px rgba(255, 20, 60, 0.75),
+    0 0 35px rgba(255, 20, 60, 0.3);
+}
+
+.staff-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
         .availability {
           display: flex;
