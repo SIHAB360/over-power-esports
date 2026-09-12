@@ -26,19 +26,19 @@ const contacts = [
     role: "TEAM MANAGER",
     name: "MD SHABUDDIN",
     number: "01715-393876",
-    href: "#",
+  href: "https://wa.me/01715-393876",
   },
   {
     role: "MAIN TEAM IGL",
     name: "REJWAN AHAMMED",
     number: "01756-622595",
-    href: "#",
+     href: "https://wa.me/01756-622595",
   },
   {
     role: "ELITE TEAM IGL",
     name: "SAWON AHMED",
     number: "01614-998044",
-    href: "#",
+    href: "https://wa.me/01614-998044",
   },
 ];
 
@@ -548,19 +548,19 @@ export default function JoinTeamPage() {
   gap: 16px;
 }
 
-.contact-card {
-  display: grid;
-  grid-template-columns: 36px minmax(0, 1fr) auto;
+.contact-card p {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  min-height: 105px;
-  padding: 18px;
-  color: #fff;
-  border: 1px solid rgba(255, 35, 75, 0.3);
-  border-radius: 14px;
-  background: rgba(13, 13, 19, 0.86);
-  text-decoration: none;
-  transition: 0.3s ease;
+  width: fit-content;
+  margin: 0;
+  padding: 6px 10px;
+  color: #35e878;
+  border: 1px solid rgba(53, 232, 120, 0.45);
+  border-radius: 6px;
+  background: rgba(53, 232, 120, 0.08);
+  box-shadow: 0 0 10px rgba(53, 232, 120, 0.18);
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .contact-card:hover {
