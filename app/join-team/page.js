@@ -72,8 +72,8 @@ export default function JoinTeamPage() {
             competitive esports family.
           </p>
 
-          <a href="/register" className="main-button">
-            START YOUR JOURNEY <span>→</span>
+          <a href="#team-information" className="main-button">
+            VIEW REQUIREMENTS <span>↓</span>
           </a>
         </section>
 
@@ -90,7 +90,7 @@ export default function JoinTeamPage() {
           </div>
         </section>
 
-        <section className="content-section">
+        <section id="team-information" className="content-section">
           <div className="section-heading">
             <span>01</span>
 
