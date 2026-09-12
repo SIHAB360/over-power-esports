@@ -1,14 +1,27 @@
 "use client";
+
 import Navbar from "../components/Navbar";
 
 const socialLinks = [
-  { name: "Facebook Page", icon: "f", href: "#" },
+  { name: "Facebook", icon: "f", href: "#" },
   { name: "Instagram", icon: "◎", href: "#" },
   { name: "TikTok", icon: "♪", href: "#" },
   { name: "YouTube", icon: "▶", href: "#" },
 ];
 
-const whatsappContacts = [
+const rules = [
+  "Players must provide correct personal and gaming information.",
+  "Respect teammates, opponents, managers and staff.",
+  "Cheating, hacking, account sharing and harassment are prohibited.",
+  "Follow the instructions of the manager, coach and IGL.",
+  "Attend official practice, scrims and tournaments regularly.",
+  "Inform staff before missing any official activity.",
+  "Keep internal team information and strategies private.",
+  "Management may conduct trials before selection.",
+  "Management may suspend or remove players for serious violations.",
+];
+
+const contacts = [
   {
     role: "TEAM MANAGER",
     name: "Manager Name",
@@ -29,62 +42,56 @@ const whatsappContacts = [
   },
 ];
 
-const rules = [
-  "Players must provide correct personal and gaming information.",
-  "Every player must behave respectfully with teammates, opponents and staff.",
-  "Cheating, hacking, account sharing, toxicity and harassment are strictly prohibited.",
-  "Players must follow the instructions of the manager, coach and IGL.",
-  "Players must attend official practice, scrims and tournaments regularly.",
-  "A player must inform the team staff before missing any official activity.",
-  "Internal team information, discussions and strategies must remain private.",
-  "The management may conduct trials before confirming a player.",
-  "The management may suspend or remove any player for serious violations.",
-];
-
 export default function JoinTeamPage() {
   return (
-   <main className="join-page">
-  <Navbar />
+    <main className="join-page">
+      <div className="light-orb orb-one" />
+      <div className="light-orb orb-two" />
 
-  <div className="join-container">
+      <Navbar />
+
+      <div className="join-container">
         <a href="/" className="back-link">
           ← Back to Home
         </a>
 
-        <section className="join-hero">
+        <section className="hero-card">
+          <div className="live-badge">
+            <span /> RECRUITMENT OPEN
+          </div>
+
           <p className="eyebrow">OVER POWER ESPORTS</p>
 
-          <h1>JOIN THE TEAM</h1>
+          <h1>
+            JOIN THE <span>TEAM</span>
+          </h1>
 
           <p className="hero-text">
-            Read our rules, connect with our official communities and start
-            your journey with Over Power Esports.
+            Step into the arena, represent the power and become part of our
+            competitive esports family.
           </p>
 
-          <a href="/register" className="primary-button">
-            JOIN TEAM <span>→</span>
+          <a href="/register" className="main-button">
+            START YOUR JOURNEY <span>→</span>
           </a>
         </section>
 
-        <section className="important-box">
-          <div className="important-icon">!</div>
-
+        <section className="notice-card">
+          <div className="notice-icon">!</div>
           <div>
-            <h2>Important Notice</h2>
-
+            <h3>Before You Continue</h3>
             <p>
-              Please read all rules carefully before continuing. By joining the
-              team, you agree to follow our rules and respect the team members.
+              Read all rules carefully and join our official communities for
+              updates, trials and announcements.
             </p>
           </div>
         </section>
 
-        <section className="page-section">
-          <div className="section-title">
+        <section className="content-section">
+          <div className="section-heading">
             <span>01</span>
-
             <div>
-              <p>TEAM POLICY</p>
+              <small>TEAM POLICY</small>
               <h2>Rules & Regulations</h2>
             </div>
           </div>
@@ -92,42 +99,38 @@ export default function JoinTeamPage() {
           <div className="rules-grid">
             {rules.map((rule, index) => (
               <div className="rule-card" key={rule}>
-                <strong>{String(index + 1).padStart(2, "0")}</strong>
-                <span>{rule}</span>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+                <p>{rule}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="page-section">
-          <div className="section-title">
+        <section className="content-section">
+          <div className="section-heading">
             <span>02</span>
-
             <div>
-              <p>OFFICIAL LINKS</p>
+              <small>OFFICIAL NETWORK</small>
               <h2>Stay Connected</h2>
             </div>
           </div>
 
-          <div className="connection-grid">
-            <div className="connection-card">
-              <p className="card-label">SOCIAL MEDIA</p>
-
+          <div className="network-grid">
+            <div className="info-card">
+              <small>SOCIAL MEDIA</small>
               <h3>Follow Over Power</h3>
-
-              <p className="card-description">
-                Follow our official social media pages for team updates,
-                announcements and content.
+              <p>
+                Get official news, match updates, player announcements and
+                exclusive content.
               </p>
 
-              <div className="button-grid">
+              <div className="link-grid">
                 {socialLinks.map((link) => (
                   <a
-                    key={link.name}
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="social-button"
+                    key={link.name}
                   >
                     <span>{link.icon}</span>
                     {link.name}
@@ -136,33 +139,21 @@ export default function JoinTeamPage() {
               </div>
             </div>
 
-            <div className="connection-card">
-              <p className="card-label">COMMUNITY</p>
-
+            <div className="info-card">
+              <small>COMMUNITY HUB</small>
               <h3>Join Our Community</h3>
-
-              <p className="card-description">
-                Connect with players, managers and team members through our
-                official communities.
+              <p>
+                Connect with players, staff and other members of the Over Power
+                community.
               </p>
 
-              <div className="button-grid">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="community-button whatsapp"
-                >
+              <div className="link-grid">
+                <a href="#" target="_blank" rel="noreferrer" className="wa">
                   <span>◉</span>
                   WhatsApp Community
                 </a>
 
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="community-button discord"
-                >
+                <a href="#" target="_blank" rel="noreferrer" className="dc">
                   <span>◈</span>
                   Discord Server
                 </a>
@@ -171,31 +162,30 @@ export default function JoinTeamPage() {
           </div>
         </section>
 
-        <section className="page-section">
-          <div className="section-title">
+        <section className="content-section">
+          <div className="section-heading">
             <span>03</span>
-
             <div>
-              <p>DIRECT CONTACT</p>
+              <small>DIRECT SUPPORT</small>
               <h2>Contact Team Staff</h2>
             </div>
           </div>
 
           <div className="contact-grid">
-            {whatsappContacts.map((contact) => (
+            {contacts.map((contact) => (
               <a
-                key={contact.role}
                 href={contact.href}
                 target="_blank"
                 rel="noreferrer"
                 className="contact-card"
+                key={contact.role}
               >
-                <div className="whatsapp-icon">◉</div>
+                <div className="contact-icon">◉</div>
 
                 <div>
-                  <p>{contact.role}</p>
+                  <small>{contact.role}</small>
                   <h3>{contact.name}</h3>
-                  <small>{contact.number}</small>
+                  <p>{contact.number}</p>
                 </div>
 
                 <strong>↗</strong>
@@ -204,179 +194,261 @@ export default function JoinTeamPage() {
           </div>
         </section>
 
-        <section className="final-box">
-          <p>READY FOR THE NEXT LEVEL?</p>
+        <section className="final-card">
+          <div className="pulse-line" />
 
-          <h2>Start Your Registration</h2>
+          <small>READY FOR THE NEXT LEVEL?</small>
+          <h2>Prove Your Power</h2>
+          <p>Complete verification and submit your player registration.</p>
 
-          <span>
-            Complete the verification process to access the registration form.
-          </span>
-
-          <a href="/register" className="primary-button">
+          <a href="/register" className="main-button">
             CONTINUE TO VERIFICATION <span>→</span>
-          </a> 
+          </a>
         </section>
       </div>
 
-  <style jsx>{`
-  .join-page :global(.navbar) {
-    margin-bottom: 35px;
-  }
-
-  .join-page {
-    min-height: 100vh;
-    padding: 35px 16px 90px;
-    color: #ffffff;
-    background:
-      radial-gradient(
-        circle at 50% 0%,
-        rgba(255, 0, 58, 0.25),
-        transparent 420px
-      ),
-      linear-gradient(135deg, #050507, #210007, #030305);
-  }
-
-  .join-container {
-    width: min(1080px, 100%);
-    margin: auto;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 35px;
-    color: #a9a9af;
-    font-size: 13px;
-    text-decoration: none;
-  }
-
-        .back-link:hover {
-          color: #ff2348;
+      <style jsx>{`
+        .join-page {
+          position: relative;
+          min-height: 100vh;
+          overflow: hidden;
+          padding: 30px 18px 90px;
+          color: #fff;
+          background:
+            radial-gradient(circle at 50% 0%, #43000d 0%, transparent 38%),
+            linear-gradient(135deg, #050506, #160006 55%, #030304);
         }
 
-        .join-hero {
-          padding: 60px 25px;
+        .join-page :global(.navbar) {
+          position: relative;
+          z-index: 5;
+          margin-bottom: 35px;
+        }
+
+        .light-orb {
+          position: absolute;
+          width: 260px;
+          height: 260px;
+          border-radius: 50%;
+          pointer-events: none;
+          filter: blur(80px);
+          opacity: 0.22;
+          animation: floatLight 6s ease-in-out infinite alternate;
+        }
+
+        .orb-one {
+          top: 150px;
+          left: -120px;
+          background: #ff003c;
+        }
+
+        .orb-two {
+          top: 700px;
+          right: -130px;
+          background: #8b001e;
+          animation-delay: 2s;
+        }
+
+        .join-container {
+          position: relative;
+          z-index: 2;
+          width: min(1080px, 100%);
+          margin: auto;
+        }
+
+        .back-link {
+          display: inline-block;
+          margin-bottom: 25px;
+          color: #aaa;
+          font-size: 13px;
+          text-decoration: none;
+          transition: 0.3s;
+        }
+
+        .back-link:hover {
+          color: #ff2149;
+        }
+
+        .hero-card,
+        .final-card {
+          position: relative;
+          overflow: hidden;
           text-align: center;
-          border: 1px solid rgba(255, 30, 65, 0.5);
-          border-radius: 22px;
-          background: linear-gradient(
-            145deg,
-            rgba(255, 0, 50, 0.15),
-            rgba(10, 10, 16, 0.9)
-          );
-          box-shadow: 0 0 50px rgba(255, 0, 50, 0.12);
+          border: 1px solid rgba(255, 28, 70, 0.55);
+          border-radius: 24px;
+          background: linear-gradient(145deg, #250008, #09090c 75%);
+          box-shadow:
+            0 0 35px rgba(255, 0, 50, 0.13),
+            inset 0 0 35px rgba(255, 0, 50, 0.04);
+        }
+
+        .hero-card {
+          padding: 70px 25px;
+        }
+
+        .hero-card::before,
+        .final-card::before {
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 70%;
+          height: 1px;
+          content: "";
+          background: #ff1744;
+          box-shadow: 0 0 18px #ff1744;
+          animation: scanLine 4s linear infinite;
+        }
+
+        .live-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 22px;
+          padding: 8px 14px;
+          color: #ff5270;
+          border: 1px solid rgba(255, 35, 75, 0.45);
+          border-radius: 30px;
+          background: rgba(255, 20, 60, 0.08);
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+        }
+
+        .live-badge span {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #ff1744;
+          box-shadow: 0 0 12px #ff1744;
+          animation: blink 1.2s infinite;
         }
 
         .eyebrow,
-        .card-label,
-        .section-title p,
-        .final-box > p {
-          margin: 0;
-          color: #ff2448;
-          font-size: 11px;
+        .section-heading small,
+        .info-card > small,
+        .contact-card small,
+        .final-card > small {
+          color: #ff3157;
+          font-size: 10px;
           font-weight: 800;
           letter-spacing: 2px;
         }
 
-        .join-hero h1 {
-          margin: 15px 0;
+        .eyebrow {
+          margin: 0 0 12px;
+        }
+
+        h1,
+        h2,
+        h3,
+        .main-button,
+        .live-badge {
           font-family: var(--font-orbitron), sans-serif;
-          font-size: clamp(30px, 7vw, 68px);
+        }
+
+        h1 {
+          margin: 0;
+          font-size: clamp(36px, 8vw, 78px);
           letter-spacing: 3px;
         }
 
-        .hero-text {
-          max-width: 620px;
-          margin: 0 auto 30px;
-          color: #c4c4ca;
-          font-size: 15px;
-          line-height: 1.7;
+        h1 span {
+          color: #ff244b;
+          text-shadow: 0 0 24px rgba(255, 25, 65, 0.75);
         }
 
-        .primary-button {
+        .hero-text {
+          max-width: 590px;
+          margin: 22px auto 30px;
+          color: #b9b9c0;
+          font-size: 14px;
+          line-height: 1.8;
+        }
+
+        .main-button {
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-          gap: 10px;
-          min-height: 45px;
-          padding: 0 21px;
-          color: #ffffff;
+          gap: 12px;
+          min-height: 48px;
+          padding: 0 24px;
+          color: #fff;
           border-radius: 8px;
-          background: linear-gradient(90deg, #ed0d36, #ff3455);
-          box-shadow: 0 8px 25px rgba(255, 25, 60, 0.25);
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.8px;
+          background: linear-gradient(100deg, #d90732, #ff3155);
+          box-shadow: 0 0 24px rgba(255, 20, 55, 0.4);
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 1px;
           text-decoration: none;
-          transition: 0.2s ease;
+          transition: 0.3s;
         }
 
-        .primary-button:hover {
-          transform: translateY(-2px);
-          filter: brightness(1.15);
+        .main-button:hover {
+          transform: translateY(-3px) scale(1.03);
+          box-shadow: 0 0 38px rgba(255, 20, 55, 0.75);
         }
 
-        .important-box {
+        .notice-card {
           display: flex;
-          gap: 16px;
-          align-items: flex-start;
-          margin-top: 22px;
-          padding: 22px;
-          border: 1px solid rgba(255, 40, 70, 0.3);
-          border-radius: 16px;
-          background: rgba(15, 15, 20, 0.8);
+          gap: 15px;
+          align-items: center;
+          margin-top: 20px;
+          padding: 20px;
+          border-left: 3px solid #ff2149;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.045);
         }
 
-        .important-icon {
+        .notice-icon {
           display: grid;
-          width: 30px;
-          height: 30px;
+          width: 32px;
+          height: 32px;
           flex-shrink: 0;
           place-items: center;
           border-radius: 50%;
-          background: #ef173e;
+          background: #f01640;
+          box-shadow: 0 0 18px rgba(255, 20, 60, 0.65);
           font-weight: 900;
         }
 
-        .important-box h2 {
-          margin: 0 0 7px;
-          font-family: var(--font-orbitron), sans-serif;
-          font-size: 17px;
+        .notice-card h3 {
+          margin: 0 0 5px;
+          font-size: 15px;
         }
 
-        .important-box p {
+        .notice-card p,
+        .info-card p,
+        .final-card p {
           margin: 0;
-          color: #aaaaaf;
+          color: #aaaab2;
           font-size: 13px;
           line-height: 1.7;
         }
 
-        .page-section {
+        .content-section {
           margin-top: 65px;
         }
 
-        .section-title {
+        .section-heading {
           display: flex;
           gap: 16px;
           align-items: center;
-          margin-bottom: 23px;
+          margin-bottom: 22px;
         }
 
-        .section-title > span {
-          color: #ff2348;
+        .section-heading > span {
+          color: #ff244b;
           font-family: var(--font-orbitron), sans-serif;
-          font-size: 21px;
+          font-size: 22px;
           font-weight: 900;
         }
 
-        .section-title h2 {
+        .section-heading h2 {
           margin: 5px 0 0;
-          font-family: var(--font-orbitron), sans-serif;
           font-size: clamp(21px, 4vw, 32px);
         }
 
         .rules-grid,
-        .connection-grid,
+        .network-grid,
         .contact-grid {
           display: grid;
           gap: 14px;
@@ -386,87 +458,89 @@ export default function JoinTeamPage() {
           grid-template-columns: repeat(2, 1fr);
         }
 
-        .rule-card {
-          display: flex;
-          gap: 14px;
-          padding: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.035);
+        .rule-card,
+        .info-card,
+        .contact-card {
+          border: 1px solid rgba(255, 40, 75, 0.25);
+          background: rgba(13, 13, 19, 0.82);
+          transition: 0.3s;
         }
 
-        .rule-card strong {
-          color: #ff2348;
+        .rule-card:hover,
+        .info-card:hover,
+        .contact-card:hover {
+          border-color: #ff244b;
+          box-shadow: 0 0 22px rgba(255, 20, 60, 0.18);
+          transform: translateY(-3px);
+        }
+
+        .rule-card {
+          display: flex;
+          gap: 15px;
+          padding: 20px;
+          border-radius: 12px;
+        }
+
+        .rule-card b {
+          color: #ff244b;
           font-family: var(--font-orbitron), sans-serif;
           font-size: 12px;
         }
 
-        .rule-card span {
-          color: #d0d0d5;
+        .rule-card p {
+          margin: 0;
+          color: #d1d1d6;
           font-size: 13px;
-          line-height: 1.65;
+          line-height: 1.6;
         }
 
-        .connection-grid {
+        .network-grid {
           grid-template-columns: repeat(2, 1fr);
         }
 
-        .connection-card {
+        .info-card {
           padding: 25px;
-          border: 1px solid rgba(255, 40, 70, 0.28);
           border-radius: 16px;
-          background: rgba(12, 12, 18, 0.8);
         }
 
-        .connection-card h3 {
-          margin: 11px 0 8px;
-          font-family: var(--font-orbitron), sans-serif;
+        .info-card h3 {
+          margin: 12px 0 8px;
           font-size: 17px;
         }
 
-        .card-description {
-          margin: 0 0 20px;
-          color: #aaaab0;
-          font-size: 13px;
-          line-height: 1.7;
-        }
-
-        .button-grid {
+        .link-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 9px;
+          margin-top: 20px;
         }
 
-        .social-button,
-        .community-button {
+        .link-grid a {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
           min-height: 42px;
-          padding: 0 10px;
-          color: #ffffff;
-          border: 1px solid rgba(255, 255, 255, 0.14);
+          padding: 8px;
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.13);
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.04);
           font-size: 10px;
           font-weight: 700;
           text-decoration: none;
-          transition: 0.2s ease;
         }
 
-        .social-button:hover,
-        .community-button:hover {
-          border-color: #ff2348;
-          background: rgba(255, 25, 60, 0.13);
+        .link-grid a:hover {
+          border-color: #ff244b;
+          background: rgba(255, 20, 60, 0.12);
         }
 
-        .whatsapp {
-          border-color: rgba(37, 211, 102, 0.4);
+        .link-grid .wa {
+          border-color: rgba(37, 211, 102, 0.45);
         }
 
-        .discord {
-          border-color: rgba(88, 101, 242, 0.55);
+        .link-grid .dc {
+          border-color: rgba(88, 101, 242, 0.6);
         }
 
         .contact-grid {
@@ -478,84 +552,100 @@ export default function JoinTeamPage() {
           align-items: center;
           gap: 12px;
           padding: 18px;
-          color: #ffffff;
-          border: 1px solid rgba(255, 40, 70, 0.28);
+          color: #fff;
           border-radius: 14px;
-          background: rgba(12, 12, 18, 0.8);
           text-decoration: none;
-          transition: 0.2s ease;
         }
 
-        .contact-card:hover {
-          transform: translateY(-2px);
-          border-color: #ff2348;
-        }
-
-        .whatsapp-icon {
-          color: #22d66b;
-          font-size: 21px;
-        }
-
-        .contact-card p {
-          margin: 0 0 5px;
-          color: #ff2348;
-          font-size: 9px;
-          font-weight: 800;
-          letter-spacing: 1px;
+        .contact-icon {
+          color: #2ada70;
+          font-size: 22px;
+          text-shadow: 0 0 12px #2ada70;
         }
 
         .contact-card h3 {
-          margin: 0 0 4px;
+          margin: 6px 0;
           font-size: 13px;
         }
 
-        .contact-card small {
-          color: #aaaaaf;
+        .contact-card p {
+          margin: 0;
+          color: #aaa;
           font-size: 11px;
         }
 
         .contact-card > strong {
           margin-left: auto;
-          color: #ff2348;
+          color: #ff244b;
         }
 
-        .final-box {
-          margin-top: 65px;
-          padding: 45px 20px;
-          text-align: center;
-          border: 1px solid rgba(255, 40, 70, 0.35);
-          border-radius: 17px;
-          background: linear-gradient(
-            140deg,
-            rgba(255, 0, 48, 0.16),
-            rgba(15, 15, 22, 0.9)
-          );
+        .final-card {
+          margin-top: 70px;
+          padding: 50px 20px;
         }
 
-        .final-box h2 {
-          margin: 10px 0;
-          font-family: var(--font-orbitron), sans-serif;
-          font-size: clamp(22px, 5vw, 36px);
+        .final-card h2 {
+          margin: 12px 0;
+          font-size: clamp(24px, 5vw, 38px);
         }
 
-        .final-box > span {
-          display: block;
-          margin-bottom: 24px;
-          color: #aaaaaf;
-          font-size: 13px;
+        .final-card p {
+          margin-bottom: 25px;
         }
 
-        @media (max-width: 700px) {
+        .pulse-line {
+          width: 90px;
+          height: 2px;
+          margin: 0 auto 25px;
+          background: #ff244b;
+          box-shadow: 0 0 18px #ff244b;
+          animation: pulse 1.5s infinite;
+        }
+
+        @keyframes blink {
+          50% {
+            opacity: 0.25;
+          }
+        }
+
+        @keyframes pulse {
+          50% {
+            opacity: 0.35;
+            transform: scaleX(0.55);
+          }
+        }
+
+        @keyframes scanLine {
+          to {
+            left: 130%;
+          }
+        }
+
+        @keyframes floatLight {
+          to {
+            transform: translateY(35px) scale(1.15);
+          }
+        }
+
+        @media (max-width: 720px) {
           .rules-grid,
-          .connection-grid,
+          .network-grid,
           .contact-grid {
             grid-template-columns: 1fr;
+          }
+
+          .hero-card {
+            padding: 55px 18px;
           }
         }
 
         @media (max-width: 430px) {
-          .button-grid {
+          .link-grid {
             grid-template-columns: 1fr;
+          }
+
+          .join-page {
+            padding-inline: 12px;
           }
         }
       `}</style>
