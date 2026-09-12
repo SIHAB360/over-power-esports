@@ -24,20 +24,20 @@ const rules = [
 const contacts = [
   {
     role: "TEAM MANAGER",
-    name: "Manager Name",
-    number: "Add WhatsApp Number",
+    name: "MD SHABUDDIN",
+    number: "01715-393876",
     href: "#",
   },
   {
     role: "MAIN TEAM IGL",
-    name: "IGL Name",
-    number: "Add WhatsApp Number",
+    name: "REJWAN AHAMMED",
+    number: "01756-622595",
     href: "#",
   },
   {
     role: "ELITE TEAM IGL",
-    name: "IGL Name",
-    number: "Add WhatsApp Number",
+    name: "SAWON AHMED",
+    number: "01614-998044",
     href: "#",
   },
 ];
