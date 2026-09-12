@@ -825,6 +825,212 @@ export default function JoinTeamPage() {
             padding-inline: 12px;
           }
         }
+        /* FINAL PREMIUM RULES UPDATE */
+
+.content-section {
+  position: relative;
+  margin-top: 85px;
+  padding: 42px 0;
+}
+
+.content-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 180px;
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ff174d,
+    #ff6b86,
+    #ff174d,
+    transparent
+  );
+  box-shadow:
+    0 0 10px #ff174d,
+    0 0 25px #ff174d;
+  animation: sectionGlow 2s ease-in-out infinite;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.section-heading > span {
+  flex: 0 0 32px;
+  color: #ff244b;
+  font-family: var(--font-orbitron), sans-serif;
+  font-size: 25px;
+  font-weight: 900;
+  text-shadow:
+    0 0 8px #ff174d,
+    0 0 20px #ff174d;
+}
+
+.section-heading > div {
+  flex: 1;
+}
+
+.section-heading small {
+  display: block;
+  margin-bottom: 10px;
+  color: #ff244b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px #ff174d;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(22px, 3vw, 38px);
+  line-height: 1.2;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+}
+
+@font-face {
+  font-family: "Kalpurush";
+  src: url("/kalpurush.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.rules-tagline {
+  margin: 12px 0 0;
+  color: #35f58b;
+  font-family: "Kalpurush", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  text-shadow: 0 0 14px rgba(53, 245, 139, 0.7);
+}
+
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.rule-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  min-height: 108px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 23, 77, 0.6);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 23, 77, 0.14),
+      rgba(12, 8, 14, 0.96) 58%
+    );
+  box-shadow:
+    inset 0 0 25px rgba(255, 23, 77, 0.06),
+    0 0 20px rgba(255, 23, 77, 0.1);
+  transition: 0.35s ease;
+}
+
+.rule-card::before {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  height: 1px;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ff174d,
+    #ff91a8,
+    #ff174d,
+    transparent
+  );
+  box-shadow: 0 0 15px #ff174d;
+  animation: cardScan 4s linear infinite;
+}
+
+.rule-card:hover {
+  transform: translateY(-6px);
+  border-color: #ff174d;
+  box-shadow:
+    inset 0 0 35px rgba(255, 23, 77, 0.13),
+    0 0 20px rgba(255, 23, 77, 0.3),
+    0 0 45px rgba(255, 23, 77, 0.16);
+}
+
+.rule-card b {
+  flex: 0 0 32px;
+  color: #ff174d;
+  font-family: var(--font-orbitron), sans-serif;
+  font-size: 14px;
+  text-shadow:
+    0 0 8px #ff174d,
+    0 0 18px #ff174d;
+}
+
+.rule-card p {
+  margin: 0;
+  color: #f2f2f2;
+  font-family: "Kalpurush", sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.9;
+  letter-spacing: 0;
+  text-align: left;
+}
+
+@keyframes sectionGlow {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateX(-50%) scaleX(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+}
+
+@keyframes cardScan {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 130%;
+  }
+}
+
+@media (max-width: 720px) {
+  .rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading h2 {
+    font-size: 22px;
+  }
+
+  .rule-card {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .rule-card p {
+    font-size: 15px;
+  }
+}
       `}</style>
     </main>
   );
