@@ -25,20 +25,20 @@ const contacts = [
   {
     role: "TEAM MANAGER",
     name: "MD SHABUDDIN",
-    number: "01715-393876",
-  href: "https://wa.me/01715-393876",
+    number: "+8801715393876",
+  href: "https://wa.me/8801715393876",
   },
   {
     role: "MAIN TEAM IGL",
     name: "REJWAN AHAMMED",
-    number: "01756-622595",
-     href: "https://wa.me/01756-622595",
+    number: "+8801756-622595",
+     href: "https://wa.me/8801756622595",
   },
   {
     role: "ELITE TEAM IGL",
     name: "SAWON AHMED",
-    number: "01614-998044",
-    href: "https://wa.me/01614-998044",
+    number: "+8801614998044",
+    href: "https://wa.me/8801614-998044",
   },
 ];
 
