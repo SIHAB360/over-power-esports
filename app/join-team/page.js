@@ -216,14 +216,15 @@ export default function JoinTeamPage() {
           <a href="/register" className="primary-button">
             CONTINUE TO VERIFICATION <span>→</span>
           </a>
+
+                          .join-page :global(.navbar) {
+  margin-bottom: 35px;
+}
+    
         </section>
       </div>
 
-      <style jsx>
-            .join-page :global(.navbar) {
-  margin-bottom: 35px;
-}
-            {`
+      <style jsx>{`
         .join-page {
           min-height: 100vh;
           padding: 35px 16px 90px;
