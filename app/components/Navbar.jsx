@@ -11,11 +11,6 @@ export default function Navbar() {
         <a href="/teams">Teams</a>
         <a href="/tournaments">Tournaments</a>
         <a href="/rankings">Rankings</a>
-
-        <span className="recruitment-status">
-          <i></i>
-          RECRUITMENT OPEN
-        </span>
       </div>
     </nav>
   );
