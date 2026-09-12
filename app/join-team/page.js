@@ -130,11 +130,15 @@ export default function JoinTeamPage() {
           <div className="section-heading">
             <span>01</span>
 
-            <div>
-              <small>TEAM POLICY</small>
-              <h2>Rules & Regulations</h2>
-            </div>
-          </div>
+           <div>
+  <small>THE OVER POWER STANDARD</small>
+
+  <h2>PLAY WITH DISCIPLINE. COMPETE WITH HONOUR.</h2>
+
+  <p className="rules-tagline">
+    Every member represents the name, values and future of Over Power Esports.
+  </p>
+</div>
 
           <div className="rules-grid">
             {rules.map((rule, index) => (
