@@ -513,19 +513,19 @@ export default function JoinTeamPage() {
           font-weight: 900;
         }
 
-        .rules-tagline,
-.rule-card p {
-  font-family: "Noto Serif Bengali", serif;
-  font-weight: 500;
-  letter-spacing: 0;
+       @font-face {
+  font-family: "Kalpurush";
+  src: url("/kalpurush.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
+.rules-tagline,
 .rule-card p {
-  font-family: "Hind Siliguri", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.7;
+  font-family: "Kalpurush", sans-serif;
+  font-weight: normal;
   letter-spacing: 0;
+  line-height: 1.8;
 }
 
         .rules-grid,
