@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "../components/Navbar";
 
 const socialLinks = [
   { name: "Facebook", icon: "f", href: "#" },
