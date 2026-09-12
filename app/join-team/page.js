@@ -513,14 +513,11 @@ export default function JoinTeamPage() {
           font-weight: 900;
         }
 
-        .rules-tagline {
-  max-width: 650px;
-  margin: 12px 0 0;
-  color: #aaaab2;
-  font-family: "Hind Siliguri", sans-serif;
-  font-size: 15px;
+        .rules-tagline,
+.rule-card p {
+  font-family: "Noto Serif Bengali", serif;
   font-weight: 500;
-  line-height: 1.8;
+  letter-spacing: 0;
 }
 
 .rule-card p {
