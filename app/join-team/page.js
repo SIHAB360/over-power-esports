@@ -2,7 +2,7 @@
 
 
 const socialLinks = [
-  { name: "Facebook", icon: "f", href: "#" },
+  { name: "Facebook", icon: "f", href: "https://www.facebook.com/profile.php?id=61590595667810" },
   { name: "Instagram", icon: "◎", href: "#" },
   { name: "TikTok", icon: "♪", href: "#" },
   { name: "YouTube", icon: "▶", href: "#" },
