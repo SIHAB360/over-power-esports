@@ -56,12 +56,11 @@ export default function RegisterPage() {
 
         <h1>
           ENTER THE
-          <span> ARENA</span>
+          <span> REGISTER FORM</span>
         </h1>
 
         <p className="subtitle">
-          Verify your official registration code to unlock the player
-          application portal.
+          প্লেয়ার রেজিস্ট্রেশন চালু করতে ম্যানেজার থেকে দেওয়া অফিসিয়াল কোডটি নিচে লিখুন।
         </p>
 
         <div className="divider">
