@@ -200,12 +200,12 @@ export default function JoinTeamPage() {
               </p>
 
               <div className="link-grid">
-                <a href="#" target="_blank" rel="noreferrer" className="wa">
+                <a href="https://chat.whatsapp.com/JUQ9j32a73VJby7nucgzWo" target="_blank" rel="noreferrer" className="wa">
                   <span>◉</span>
                   WhatsApp Community
                 </a>
 
-                <a href="#" target="_blank" rel="noreferrer" className="dc">
+                <a href="https://discord.gg/4HrJ5zRCh" target="_blank" rel="noreferrer" className="dc">
                   <span>◈</span>
                   Discord Server
                 </a>
