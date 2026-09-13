@@ -894,7 +894,246 @@ export default function JoinTeamPage() {
         .final-card p {
           margin-bottom: 25px;
         }
+@media (min-width: 721px) {
+  .contact-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 20px !important;
+    align-items: stretch !important;
+  }
+}
 
+.staff-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 315px;
+  padding: 24px !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 25, 75, 0.6) !important;
+  border-radius: 20px !important;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 25, 75, 0.2),
+      transparent 42%
+    ),
+    linear-gradient(145deg, #210611, #08080d 70%) !important;
+  box-shadow:
+    inset 0 0 30px rgba(255, 20, 65, 0.08),
+    0 0 22px rgba(255, 20, 65, 0.16) !important;
+  transition: 0.4s ease;
+}
+
+.staff-card::before {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  height: 2px;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ff174d,
+    #ff9bae,
+    #ff174d,
+    transparent
+  );
+  box-shadow: 0 0 18px #ff174d;
+  animation: staffScan 3.5s linear infinite;
+}
+
+.staff-card::after {
+  position: absolute;
+  right: -35px;
+  bottom: -35px;
+  width: 120px;
+  height: 120px;
+  content: "";
+  border-radius: 50%;
+  background: #ff174d;
+  filter: blur(58px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.staff-card:hover {
+  transform: translateY(-8px) !important;
+  border-color: #ff174d !important;
+  box-shadow:
+    0 0 25px rgba(255, 20, 65, 0.45),
+    0 0 55px rgba(255, 20, 65, 0.18),
+    inset 0 0 35px rgba(255, 20, 65, 0.12) !important;
+}
+
+.staff-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px !important;
+}
+
+.staff-avatar {
+  position: relative;
+  display: grid;
+  width: 68px !important;
+  height: 68px !important;
+  padding: 3px !important;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid #ff244b !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #ff174d, #5c0018) !important;
+  box-shadow:
+    0 0 12px #ff174d,
+    0 0 28px rgba(255, 20, 65, 0.8),
+    inset 0 0 12px rgba(255, 255, 255, 0.25) !important;
+  animation: avatarGlow 2s ease-in-out infinite;
+}
+
+.staff-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #43ff9b !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px #35e878;
+}
+
+.availability i {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50%;
+  background: #43ff9b !important;
+  box-shadow:
+    0 0 8px #43ff9b,
+    0 0 18px #43ff9b !important;
+  animation: statusBlink 1.3s infinite;
+}
+
+.staff-card > small {
+  position: relative;
+  z-index: 2;
+  color: #ff3157 !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px #ff3157;
+}
+
+.staff-card h3 {
+  position: relative;
+  z-index: 2;
+  margin: 12px 0 8px !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.staff-card > p {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 22px !important;
+  color: #bdbdc7 !important;
+  font-size: 13px !important;
+  text-align: center;
+}
+
+.whatsapp-cta {
+  position: relative;
+  z-index: 3;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px !important;
+  margin-top: auto;
+  padding: 0 15px !important;
+  color: #49ff9d !important;
+  border: 1px solid rgba(53, 232, 120, 0.7) !important;
+  border-radius: 11px !important;
+  background: linear-gradient(
+    90deg,
+    rgba(37, 211, 102, 0.14),
+    rgba(37, 211, 102, 0.04)
+  ) !important;
+  box-shadow:
+    0 0 12px rgba(53, 232, 120, 0.18),
+    inset 0 0 12px rgba(53, 232, 120, 0.05);
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  text-decoration: none;
+  transition: 0.35s ease;
+}
+
+.whatsapp-cta:hover {
+  color: #ffffff !important;
+  border-color: #43ff9b !important;
+  background: #168d4d !important;
+  box-shadow:
+    0 0 18px rgba(53, 232, 120, 0.65),
+    0 0 35px rgba(53, 232, 120, 0.25);
+}
+
+.whatsapp-cta span {
+  color: #43ff9b;
+  font-size: 17px;
+  text-shadow: 0 0 12px #43ff9b;
+}
+
+.whatsapp-cta b {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+@keyframes staffScan {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 130%;
+  }
+}
+
+@keyframes avatarGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 12px #ff174d,
+      0 0 25px rgba(255, 20, 65, 0.6);
+  }
+
+  50% {
+    box-shadow:
+      0 0 20px #ff174d,
+      0 0 42px rgba(255, 20, 65, 0.95);
+  }
+}
+
+@keyframes statusBlink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 720px) {
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
         .pulse-line {
           width: 90px;
           height: 2px;
