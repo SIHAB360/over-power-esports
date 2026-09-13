@@ -1017,6 +1017,88 @@ export default function PlayerRegister() {
             padding: 24px 18px;
           }
         }
+
+
+
+
+
+
+
+
+
+.op-registration-page {
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255, 0, 70, 0.25), transparent 28%),
+    radial-gradient(circle at 90% 20%, rgba(0, 180, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(170, 0, 255, 0.2), transparent 35%),
+    #030308 !important;
+}
+
+.op-section {
+  border: 1px solid rgba(255, 35, 75, 0.55) !important;
+  border-left: 4px solid #ff1744 !important;
+  background:
+    linear-gradient(145deg, rgba(35, 7, 15, 0.96), rgba(9, 9, 14, 0.98)) !important;
+  box-shadow:
+    0 0 25px rgba(255, 0, 55, 0.14),
+    inset 0 0 30px rgba(255, 0, 55, 0.06) !important;
+}
+
+.op-section:hover {
+  border-color: #ff1744 !important;
+  box-shadow:
+    0 0 35px rgba(255, 0, 55, 0.3),
+    inset 0 0 35px rgba(255, 0, 55, 0.1) !important;
+}
+
+.op-input,
+.op-textarea,
+.op-file {
+  border-color: rgba(255, 45, 80, 0.55) !important;
+  background: rgba(18, 15, 20, 0.95) !important;
+}
+
+.op-input:focus,
+.op-textarea:focus {
+  border-color: #ff1744 !important;
+  box-shadow:
+    0 0 0 3px rgba(255, 23, 68, 0.18),
+    0 0 25px rgba(255, 23, 68, 0.3) !important;
+}
+
+.choice {
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.choice:hover {
+  border-color: rgba(255, 35, 75, 0.45);
+  background: rgba(255, 25, 70, 0.12);
+  box-shadow: 0 0 15px rgba(255, 25, 70, 0.12);
+}
+
+.op-submit {
+  background: linear-gradient(100deg, #c9002f, #ff174d, #ff5175) !important;
+  background-size: 200% 100%;
+  box-shadow:
+    0 0 25px rgba(255, 0, 45, 0.55),
+    0 0 55px rgba(255, 0, 45, 0.18) !important;
+  animation: submitGlow 3s ease-in-out infinite;
+}
+
+@keyframes submitGlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+
+        
       `}</style>
     </main>
   );
