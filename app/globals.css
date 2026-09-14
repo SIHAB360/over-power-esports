@@ -112,6 +112,25 @@ NAVBAR
 
 .navbar{
 
+position:fixed;
+
+
+top:18px;
+
+
+left:50%;
+
+
+transform:translateX(-50%);
+
+
+
+width:calc(100% - 40px);
+
+
+max-width:1400px;
+
+
 
 display:flex;
 
@@ -120,6 +139,7 @@ justify-content:space-between;
 
 
 align-items:center;
+
 
 
 padding:20px 50px;
@@ -151,7 +171,13 @@ box-shadow:
 0 0 30px rgba(255,0,0,.15);
 
 
+
+z-index:9999;
+
+
+
 }
+
 
 
 
@@ -166,6 +192,12 @@ font-weight:900;
 
 
 letter-spacing:2px;
+
+
+color:white;
+
+
+white-space:nowrap;
 
 
 }
@@ -198,6 +230,7 @@ gap:35px;
 
 
 }
+
 
 
 
@@ -268,6 +301,55 @@ color:#ff2020;
 
 
 width:100%;
+
+
+}
+
+
+
+/* MOBILE FIX */
+
+
+@media(max-width:768px){
+
+
+.navbar{
+
+
+top:12px;
+
+
+width:calc(100% - 24px);
+
+
+padding:14px 18px;
+
+
+}
+
+
+
+.logo{
+
+
+font-size:16px;
+
+
+letter-spacing:1px;
+
+
+}
+
+
+
+.nav-links{
+
+
+display:none;
+
+
+}
+
 
 
 }
