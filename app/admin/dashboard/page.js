@@ -971,9 +971,7 @@ font-size:38px;
 
 .brand h2{
 
-
 font-size:28px;
-
 
 }
 
@@ -984,6 +982,7 @@ font-size:28px;
 
 
 `}</style>
+
 
 </main>
 
@@ -999,17 +998,21 @@ return(
 
 <div className="card">
 
+
 <h3>
 {title}
 </h3>
+
 
 <p>
 {text}
 </p>
 
+
 <button>
 OPEN
 </button>
+
 
 </div>
 
