@@ -49,39 +49,44 @@ export default function Navbar() {
 
           position: fixed;
 
-          top: 15px;
+          top: 18px;
 
           left: 50%;
 
           transform: translateX(-50%);
 
-          width: calc(100% - 50px);
+          width: calc(100% - 40px);
 
           max-width: 1400px;
 
-          display: flex;
+          display:flex;
 
-          justify-content: space-between;
+          justify-content:space-between;
 
-          align-items: center;
+          align-items:center;
 
-          padding: 15px 30px;
+          padding:16px 28px;
+
 
           background:
-          rgba(10,0,5,0.72);
+          rgba(10,0,5,.75);
 
-          backdrop-filter:
-          blur(18px);
+
+          backdrop-filter:blur(18px);
+
 
           border:
-          1px solid rgba(255,0,60,0.35);
+          1px solid rgba(255,0,60,.35);
 
-          border-radius: 18px;
+
+          border-radius:18px;
+
 
           box-shadow:
-          0 0 30px rgba(255,0,60,0.18);
+          0 0 25px rgba(255,0,60,.2);
 
-          z-index: 50;
+
+          z-index:50;
 
         }
 
@@ -89,13 +94,15 @@ export default function Navbar() {
 
         .logo {
 
-          color: white;
+          color:white;
 
-          font-size: 24px;
+          font-size:24px;
 
-          font-weight: 800;
+          font-weight:800;
 
-          letter-spacing: 3px;
+          letter-spacing:3px;
+
+          white-space:nowrap;
 
         }
 
@@ -103,7 +110,7 @@ export default function Navbar() {
 
         .logo span {
 
-          color: #ff1744;
+          color:#ff1744;
 
           text-shadow:
           0 0 15px #ff1744;
@@ -118,7 +125,7 @@ export default function Navbar() {
 
           align-items:center;
 
-          gap:15px;
+          gap:14px;
 
         }
 
@@ -130,24 +137,27 @@ export default function Navbar() {
 
           color:white;
 
-          font-size:14px;
+          font-size:13px;
 
           letter-spacing:2px;
 
-          padding:10px 24px;
+
+          padding:9px 22px;
+
 
           border-radius:20px;
+
 
           border:
           1px solid rgba(255,0,60,.6);
 
+
           background:
           rgba(255,0,60,.08);
 
+
           transition:.3s;
 
-          box-shadow:
-          0 0 12px rgba(255,0,60,.25);
 
         }
 
@@ -160,17 +170,19 @@ export default function Navbar() {
           box-shadow:
           0 0 25px #ff1744;
 
-          transform:translateY(-2px);
-
         }
 
 
 
+        /* Premium Hamburger */
+
         .menu-btn {
 
-          width:42px;
 
-          height:42px;
+          width:44px;
+
+          height:44px;
+
 
           display:flex;
 
@@ -182,31 +194,27 @@ export default function Navbar() {
 
           gap:5px;
 
+
           background:
           rgba(255,0,60,.08);
+
 
           border:
           1px solid rgba(255,0,60,.6);
 
+
           border-radius:50%;
+
 
           cursor:pointer;
 
+
           transition:.3s;
 
-          box-shadow:
-          0 0 15px rgba(255,0,60,.5);
-
-        }
-
-
-
-        .menu-btn:hover {
-
-          transform:scale(1.1);
 
           box-shadow:
-          0 0 30px #ff1744;
+          0 0 18px rgba(255,0,60,.5);
+
 
         }
 
@@ -214,30 +222,69 @@ export default function Navbar() {
 
         .menu-btn span {
 
-          width:6px;
 
-          height:6px;
+          width:18px;
 
-          background:#ff1744;
+          height:2px;
 
-          border-radius:50%;
 
-          display:block;
+          background:white;
+
+
+          border-radius:10px;
+
 
           box-shadow:
-          0 0 12px #ff1744;
+          0 0 8px #fff;
+
+
+          transition:.3s;
+
 
         }
 
 
 
-        @media(max-width:600px){
+        .menu-btn:hover {
+
+
+          transform:scale(1.08);
+
+
+          box-shadow:
+          0 0 30px #ff1744;
+
+
+        }
+
+
+
+        .menu-btn:hover span {
+
+
+          background:#ff1744;
+
+
+        }
+
+
+
+
+
+        /* Mobile Responsive */
+
+        @media(max-width:768px){
+
 
           .navbar {
 
-            width:calc(100% - 30px);
 
-            padding:14px 18px;
+            top:12px;
+
+            width:calc(100% - 24px);
+
+            padding:14px 16px;
+
 
           }
 
@@ -245,9 +292,21 @@ export default function Navbar() {
 
           .logo {
 
-            font-size:16px;
 
-            letter-spacing:2px;
+            font-size:15px;
+
+            letter-spacing:1.5px;
+
+
+          }
+
+
+
+          .nav-actions {
+
+
+            gap:8px;
+
 
           }
 
@@ -255,9 +314,64 @@ export default function Navbar() {
 
           .login-btn {
 
-            display:none;
+
+            padding:7px 14px;
+
+            font-size:11px;
+
 
           }
+
+
+
+          .menu-btn {
+
+
+            width:38px;
+
+            height:38px;
+
+
+          }
+
+
+        }
+
+
+
+
+
+        @media(max-width:420px){
+
+
+          .logo {
+
+
+            font-size:13px;
+
+
+          }
+
+
+
+          .login-btn {
+
+
+            display:none;
+
+
+          }
+
+
+
+          .navbar {
+
+
+            padding:12px 14px;
+
+
+          }
+
 
         }
 
