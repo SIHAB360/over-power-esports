@@ -1019,13 +1019,6 @@ export default function PlayerRegister() {
         }
 
 
-
-
-
-
-
-
-
 .op-registration-page {
   background:
     radial-gradient(circle at 10% 10%, rgba(255, 0, 70, 0.25), transparent 28%),
@@ -1117,6 +1110,37 @@ export default function PlayerRegister() {
 .field label {
   color: #ffffff !important;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+.op-file {
+  min-height: 56px !important;
+  padding: 8px !important;
+  color: #e5e5e5 !important;
+  border: 1px dashed #ff3157 !important;
+  background: rgba(255, 20, 60, 0.06) !important;
+}
+
+.op-file::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 16px;
+  color: #ffffff;
+  border: 1px solid #ff3157;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #c90035, #ff3157);
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.op-file::file-selector-button:hover {
+  background: linear-gradient(135deg, #ff174d, #ff6685);
+  box-shadow: 0 0 15px rgba(255, 23, 77, 0.55);
+}
+
+.op-submit {
+  min-height: 58px !important;
+  font-size: 16px !important;
+  letter-spacing: 1.2px !important;
 }
         
       `}</style>
