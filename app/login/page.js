@@ -71,7 +71,7 @@ console.log("Checking profile table...");
     }
 
 
-
+console.log("ROLE:", profile.role);
     if(profile.role === "admin"){
 
 
