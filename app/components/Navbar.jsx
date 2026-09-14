@@ -89,7 +89,7 @@ padding:0 28px;
 
 background:
 
-rgba(5,5,5,.45);
+rgba(5,5,5,.75);
 
 
 backdrop-filter:
