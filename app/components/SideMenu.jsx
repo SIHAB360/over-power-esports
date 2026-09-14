@@ -6,10 +6,12 @@ export default function SideMenu({ open, close }) {
     <>
 
 
-      <div
-        className={`op-overlay ${open ? "show" : ""}`}
-        onClick={close}
-      />
+    {open && (
+  <div
+    className="op-overlay"
+    onClick={close}
+  />
+)}
 
 
 
