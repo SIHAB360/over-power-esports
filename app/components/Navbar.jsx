@@ -101,14 +101,8 @@ export default function Navbar() {
 
 
 
-.nav-actions {
-
-  display:flex;
-
-  align-items:center;
-
-  gap:10px;
-
+.nav-actions{
+  margin-left:auto;
 }
 
 
