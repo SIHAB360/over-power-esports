@@ -1,5 +1,3 @@
-// app/admin/dashboard/page.js
-
 "use client";
 
 import { supabase } from "../../lib/supabase";
@@ -23,18 +21,15 @@ checkAdmin();
 
 const checkAdmin = async()=>{
 
-
 const {data:{user}} = await supabase.auth.getUser();
 
 
 if(!user){
 
 window.location.href="/login";
-
 return;
 
 }
-
 
 
 const {data:profile,error} = await supabase
@@ -52,11 +47,9 @@ const {data:profile,error} = await supabase
 if(error || profile?.role?.toLowerCase() !== "admin"){
 
 window.location.href="/login";
-
 return;
 
 }
-
 
 
 setAdminEmail(profile.email);
@@ -99,13 +92,13 @@ return(
 
 
 
+
 return(
 
 <main className="admin-page">
 
 
 <div className="dashboard-wrapper">
-
 
 
 <header>
@@ -116,6 +109,7 @@ return(
 <h1>
 OVER POWER
 </h1>
+
 
 <h2>
 ADMIN PANEL
@@ -128,7 +122,6 @@ ESPORTS COMMAND CENTER
 
 
 </div>
-
 
 
 
@@ -147,6 +140,7 @@ LOGOUT
 </div>
 
 
+
 </header>
 
 
@@ -156,42 +150,17 @@ LOGOUT
 <section className="dashboard-grid">
 
 
+<Card title="PLAYERS" text="Manage player accounts"/>
 
-<Card
-title="PLAYERS"
-text="Manage player accounts"
-/>
+<Card title="MATCHES" text="Create & control matches"/>
 
+<Card title="TOURNAMENTS" text="Tournament management"/>
 
-<Card
-title="MATCHES"
-text="Create & control matches"
-/>
+<Card title="PROFIT" text="Income calculation"/>
 
+<Card title="SALARY" text="Player salary control"/>
 
-<Card
-title="TOURNAMENTS"
-text="Tournament management"
-/>
-
-
-<Card
-title="PROFIT"
-text="Income calculation"
-/>
-
-
-<Card
-title="SALARY"
-text="Player salary control"
-/>
-
-
-<Card
-title="VERIFICATION"
-text="Generate access codes"
-/>
-
+<Card title="VERIFICATION" text="Generate access codes"/>
 
 
 </section>
@@ -199,6 +168,7 @@ text="Generate access codes"
 
 
 </div>
+
 
 
 
@@ -212,21 +182,24 @@ min-height:100vh;
 
 padding:50px;
 
+
 background:
 
 radial-gradient(circle at top left,#ff202044,transparent 35%),
 
-radial-gradient(circle at bottom right,#ff202022,transparent 40%),
+radial-gradient(circle at bottom right,#ff202033,transparent 40%),
 
 linear-gradient(
 135deg,
 #050505,
-#180000
+#160000
 );
+
 
 color:white;
 
 }
+
 
 
 
@@ -237,6 +210,7 @@ max-width:1400px;
 margin:auto;
 
 }
+
 
 
 
@@ -255,6 +229,8 @@ margin-bottom:70px;
 
 
 
+
+
 .brand h1{
 
 font-size:58px;
@@ -269,11 +245,13 @@ font-weight:900;
 
 
 
+
+
 .brand h2{
 
-margin:5px 0;
-
 font-size:42px;
+
+margin:5px 0;
 
 color:#ff2020;
 
@@ -281,9 +259,12 @@ letter-spacing:10px;
 
 text-shadow:
 
-0 0 30px #ff2020;
+0 0 25px #ff2020;
+
 
 }
+
+
 
 
 
@@ -300,6 +281,7 @@ font-size:14px;
 
 
 
+
 .profile-box{
 
 display:flex;
@@ -310,19 +292,27 @@ gap:25px;
 
 padding:18px 25px;
 
+
 border-radius:25px;
+
 
 background:
 
 rgba(255,255,255,.05);
 
+
+
 border:
 
-1px solid rgba(255,32,32,.3);
+1px solid rgba(255,32,32,.35);
+
+
 
 backdrop-filter:blur(20px);
 
+
 }
+
 
 
 
@@ -337,7 +327,9 @@ font-size:13px;
 
 
 
+
 button{
+
 
 background:
 
@@ -347,19 +339,28 @@ linear-gradient(
 #900000
 );
 
+
+
 border:none;
+
 
 padding:14px 35px;
 
+
 border-radius:30px;
+
 
 color:white;
 
+
 font-weight:900;
+
 
 letter-spacing:2px;
 
+
 cursor:pointer;
+
 
 
 box-shadow:
@@ -367,71 +368,67 @@ box-shadow:
 0 0 25px rgba(255,32,32,.5);
 
 
+
+transition:.3s;
+
+
+
 }
+
+
+
+button:hover{
+
+transform:scale(1.05);
+
+}
+
+
 
 
 
 .dashboard-grid{
 
+
 display:grid;
+
 
 grid-template-columns:repeat(3,1fr);
 
+
 gap:35px;
 
-}
 
+}
 
 
 
 
 .card{
 
-height:260px;
+
+height:250px;
+
 
 padding:35px;
 
-border-radius:28px;
+
+border-radius:30px;
+
+
 
 background:
 
 linear-gradient(
+
 145deg,
-rgba(255,255,255,.10),
+
+rgba(255,255,255,.12),
+
 rgba(10,0,0,.85)
+
 );
 
-
-border:1px solid rgba(255,40,40,.35);
-
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:flex-start;
-
-
-position:relative;
-
-
-overflow:hidden;
-
-
-
-box-shadow:
-
-0 20px 60px rgba(0,0,0,.6),
-
-inset 0 0 40px rgba(255,30,30,.08);
-
-
-transition:.4s;
-
-
-}
 
 
 border:
@@ -440,28 +437,53 @@ border:
 
 
 
+display:flex;
+
+
+flex-direction:column;
+
+
+justify-content:center;
+
+
+align-items:flex-start;
+
+
+
+
 box-shadow:
 
-inset 0 0 40px rgba(255,32,32,.08),
 
-0 20px 50px rgba(0,0,0,.6);
+0 25px 60px rgba(0,0,0,.7),
+
+
+inset 0 0 40px rgba(255,32,32,.08);
 
 
 
 transition:.4s;
 
 
+
 }
+
+
 
 
 
 .card:hover{
 
+
 transform:translateY(-12px);
+
+
 
 box-shadow:
 
+
 0 0 60px rgba(255,32,32,.5);
+
+
 
 }
 
@@ -470,162 +492,146 @@ box-shadow:
 
 .card h3{
 
-font-size:30px;
+
+font-size:28px;
+
 
 letter-spacing:3px;
 
+
+margin:0;
+
+
+color:white;
+
+
+
+text-shadow:
+
+0 0 15px rgba(255,255,255,.3);
+
+
+
 }
+
+
 
 
 
 .card p{
 
-color:#aaa;
 
-margin-top:20px;
+margin-top:18px;
+
+
+color:#999;
+
+
+font-size:15px;
+
 
 }
-
 
 
 
 
 .card button{
 
-margin-top:40px;
 
-width:100%;
+margin-top:35px;
+
+
+width:150px;
+
+
+height:45px;
+
+
+padding:0;
+
+
 
 background:
 
 transparent;
 
+
 border:
 
 1px solid #ff2020;
 
-}
 
+}
 
 
 
 .card button:hover{
 
+
 background:#ff2020;
-
-}
-
-
-.card-icon{
-
-width:45px;
-
-height:45px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-border-radius:50%;
-
-
-background:
-
-rgba(255,32,32,.15);
-
-
-color:#ff2020;
-
-
-margin-bottom:20px;
 
 
 box-shadow:
 
-0 0 25px rgba(255,32,32,.5);
+0 0 30px #ff2020;
 
 
 }
 
 
-
-.card h3{
-
-font-size:28px;
-
-color:white;
-
-margin:0;
-
-
-letter-spacing:3px;
-
-
-}
-
-
-.card p{
-
-color:#999 !important;
-
-font-size:15px;
-
-margin-top:15px;
-
-
-}
-
-
-
-.card button{
-
-margin-top:30px;
-
-
-width:140px;
-
-
-}
 
 
 .loading{
 
+
 height:100vh;
+
 
 background:#050505;
 
+
 display:flex;
+
 
 justify-content:center;
 
+
 align-items:center;
 
+
 }
+
 
 
 
 .loader{
 
+
 width:70px;
+
 
 height:70px;
 
+
 border-radius:50%;
+
 
 border:6px solid #222;
 
+
 border-top-color:#ff2020;
 
+
 animation:spin 1s linear infinite;
+
+
 
 }
 
 
 
 @keyframes spin{
+
 
 to{
 
@@ -637,7 +643,9 @@ transform:rotate(360deg);
 
 
 
+
 @media(max-width:900px){
+
 
 header{
 
@@ -648,11 +656,13 @@ gap:30px;
 }
 
 
+
 .dashboard-grid{
 
 grid-template-columns:1fr;
 
 }
+
 
 
 }
@@ -670,19 +680,18 @@ grid-template-columns:1fr;
 
 
 
+
 function Card({title,text}){
 
 return(
 
 <div className="card">
 
-<div className="card-icon">
-◈
-</div>
 
 <h3>
 {title}
 </h3>
+
 
 <p>
 {text}
