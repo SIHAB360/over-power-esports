@@ -105,172 +105,6 @@ font-family:inherit;
 
 
 
-/* =========================
-NAVBAR
-========================= */
-
-
-.navbar{
-
-
-display:flex;
-
-
-justify-content:space-between;
-
-
-align-items:center;
-
-
-padding:20px 50px;
-
-
-
-background:
-
-rgba(10,10,10,.85);
-
-
-
-border:
-
-1px solid rgba(255,0,0,.35);
-
-
-
-border-radius:18px;
-
-
-
-backdrop-filter:blur(12px);
-
-
-
-box-shadow:
-
-0 0 30px rgba(255,0,0,.15);
-
-
-}
-
-
-
-
-.logo{
-
-
-font-size:28px;
-
-
-font-weight:900;
-
-
-letter-spacing:2px;
-
-
-}
-
-
-
-.logo span{
-
-
-color:#ff2020;
-
-
-text-shadow:
-
-0 0 20px red;
-
-
-}
-
-
-
-
-.nav-links{
-
-
-display:flex;
-
-
-gap:35px;
-
-
-}
-
-
-
-
-.nav-links a{
-
-
-color:white;
-
-
-font-weight:bold;
-
-
-position:relative;
-
-
-}
-
-
-
-.nav-links a::after{
-
-
-content:"";
-
-
-position:absolute;
-
-
-bottom:-8px;
-
-
-left:0;
-
-
-width:0;
-
-
-height:2px;
-
-
-background:red;
-
-
-box-shadow:
-
-0 0 10px red;
-
-
-transition:.3s;
-
-
-}
-
-
-
-.nav-links a:hover{
-
-
-color:#ff2020;
-
-
-}
-
-
-
-.nav-links a:hover::after{
-
-
-width:100%;
-
-
-}
 
 
 
@@ -850,35 +684,6 @@ border-radius:25px;
 border:
 
 1px solid rgba(255,0,0,.5);
-
-
-}
-
-
-
-.player-heading{
-
-flex:1;
-
-}
-
-
-
-.player-heading h1{
-
-
-font-size:48px;
-
-
-color:white;
-
-
-text-shadow:
-
-0 0 25px red;
-
-
-}
 
 
 
@@ -3226,4 +3031,9 @@ textarea,
 option,
 a {
   font-family: inherit;
+}
+.navbar,
+.logo,
+.nav-links{
+  all:unset;
 }
