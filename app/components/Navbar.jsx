@@ -47,108 +47,84 @@ export default function Navbar() {
 
         .navbar {
 
-  position: fixed;
+          position: fixed;
 
-  top: 20px;
+          top: 15px;
 
-  left: 50%;
+          left: 50%;
 
-  transform: translateX(-50%);
+          transform: translateX(-50%);
 
-  width: calc(100% - 60px);
+          width: calc(100% - 50px);
 
-  max-width: 1400px;
+          max-width: 1400px;
 
+          display: flex;
 
-  display:flex;
+          justify-content: space-between;
 
-  justify-content:space-between;
+          align-items: center;
 
-  align-items:center;
+          padding: 15px 30px;
 
+          background:
+          rgba(10,0,5,0.72);
 
-  padding:18px 35px;
+          backdrop-filter:
+          blur(18px);
 
+          border:
+          1px solid rgba(255,0,60,0.35);
 
-  background:
-  rgba(10,0,5,0.65);
+          border-radius: 18px;
 
+          box-shadow:
+          0 0 30px rgba(255,0,60,0.18);
 
-  backdrop-filter:
-  blur(15px);
+          z-index: 50;
 
-
-  border:
-  1px solid rgba(255,0,60,.35);
-
-
-  border-radius:18px;
-
-
-  box-shadow:
-
-  0 0 25px rgba(255,0,60,.15);
-
-
-  z-index:50;
-
-}
+        }
 
 
 
-.logo{
+        .logo {
 
-  color:white;
+          color: white;
 
-  font-size:24px;
+          font-size: 24px;
 
-  font-weight:800;
+          font-weight: 800;
 
-  letter-spacing:3px;
+          letter-spacing: 3px;
 
-}
-
-
-
-.logo span{
-
-  color:#ff1744;
-
-  text-shadow:
-
-  0 0 15px #ff1744;
-
-}
+        }
 
 
 
-@media(max-width:600px){
+        .logo span {
 
-.navbar{
+          color: #ff1744;
 
-width:calc(100% - 30px);
+          text-shadow:
+          0 0 15px #ff1744;
 
-padding:15px 20px;
-
-}
-
-
-.logo{
-
-font-size:16px;
-
-}
-
-.login-btn{
-
-display:none;
-
-}
-
-}
+        }
 
 
-        .login-btn{
+
+        .nav-actions {
+
+          display:flex;
+
+          align-items:center;
+
+          gap:15px;
+
+        }
+
+
+
+        .login-btn {
 
           text-decoration:none;
 
@@ -158,39 +134,43 @@ display:none;
 
           letter-spacing:2px;
 
-          padding:10px 22px;
-
-          border:1px solid rgba(255,0,60,.6);
+          padding:10px 24px;
 
           border-radius:20px;
 
-          background:rgba(255,0,60,.08);
+          border:
+          1px solid rgba(255,0,60,.6);
+
+          background:
+          rgba(255,0,60,.08);
 
           transition:.3s;
 
           box-shadow:
-          0 0 12px rgba(255,0,60,.3);
+          0 0 12px rgba(255,0,60,.25);
 
         }
 
 
-        .login-btn:hover{
+
+        .login-btn:hover {
 
           background:#ff1744;
-
-          color:white;
 
           box-shadow:
           0 0 25px #ff1744;
 
+          transform:translateY(-2px);
+
         }
 
 
 
-        .menu-btn{
+        .menu-btn {
 
-          width:45px;
-          height:45px;
+          width:42px;
+
+          height:42px;
 
           display:flex;
 
@@ -202,34 +182,28 @@ display:none;
 
           gap:5px;
 
-
           background:
           rgba(255,0,60,.08);
-
 
           border:
           1px solid rgba(255,0,60,.6);
 
-
           border-radius:50%;
-
 
           cursor:pointer;
 
+          transition:.3s;
 
           box-shadow:
           0 0 15px rgba(255,0,60,.5);
-
-
-          transition:.3s;
 
         }
 
 
 
-        .menu-btn:hover{
+        .menu-btn:hover {
 
-          transform:scale(1.08);
+          transform:scale(1.1);
 
           box-shadow:
           0 0 30px #ff1744;
@@ -238,18 +212,52 @@ display:none;
 
 
 
-        .menu-btn span{
+        .menu-btn span {
 
-          width:5px;
+          width:6px;
 
-          height:5px;
+          height:6px;
 
           background:#ff1744;
 
           border-radius:50%;
 
+          display:block;
+
           box-shadow:
-          0 0 10px #ff1744;
+          0 0 12px #ff1744;
+
+        }
+
+
+
+        @media(max-width:600px){
+
+          .navbar {
+
+            width:calc(100% - 30px);
+
+            padding:14px 18px;
+
+          }
+
+
+
+          .logo {
+
+            font-size:16px;
+
+            letter-spacing:2px;
+
+          }
+
+
+
+          .login-btn {
+
+            display:none;
+
+          }
 
         }
 
