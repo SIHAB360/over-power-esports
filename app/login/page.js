@@ -34,9 +34,11 @@ export default function LoginPage() {
       />
 
 
-      <button>
-        Login
-      </button>
+      <button
+  onClick={handleLogin}
+>
+  Login
+</button>
 
 
     </main>
