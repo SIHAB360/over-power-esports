@@ -4,7 +4,9 @@ import { useState } from "react";
 import SideMenu from "./SideMenu";
 
 export default function Navbar() {
+
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   return (
     <>
@@ -32,7 +34,9 @@ export default function Navbar() {
             <span></span>
           </button>
 
+
         </div>
+
 
       </nav>
 
@@ -43,376 +47,346 @@ export default function Navbar() {
       />
 
 
-      <style jsx>{`
 
-        .navbar {
+<style jsx>{`
 
-  position: fixed;
+/* MAIN NAVBAR */
 
-  top: 12px;
+.navbar{
 
-  left: 50%;
+  position:fixed;
 
-  transform: translateX(-50%);
+  top:18px;
 
-  width: calc(100% - 24px);
+  left:50%;
+
+  transform:translateX(-50%);
+
+
+  width:calc(100% - 40px);
+
+  max-width:1400px;
+
+
+  height:70px;
+
 
   display:flex;
 
-  justify-content:space-between;
-
   align-items:center;
 
-  padding:14px 18px;
+  justify-content:space-between;
 
-  background:rgba(10,0,5,.75);
 
-  backdrop-filter:blur(15px);
+  padding:0 28px;
+
+
+  background:rgba(10,0,5,0.55);
+
+
+  backdrop-filter:blur(18px);
+
 
   border:1px solid rgba(255,0,60,.35);
 
+
   border-radius:18px;
 
-  z-index:50;
+
+  box-shadow:
+  0 0 25px rgba(255,0,60,.18);
+
+
+  z-index:999;
 
 }
 
 
-.logo {
 
-  color:white;
+/* LOGO */
 
-  font-size:18px;
+.logo{
+
+  color:#ffffff;
+
+  font-size:22px;
 
   font-weight:800;
 
-  letter-spacing:2px;
+  letter-spacing:3px;
 
   white-space:nowrap;
 
 }
 
 
-.logo span {
+.logo span{
 
   color:#ff1744;
 
+  text-shadow:
+  0 0 12px #ff1744;
+
 }
 
 
+
+/* RIGHT AREA */
 
 .nav-actions{
-  margin-left:auto;
-}
-
-
-.login-btn {
-
-  padding:8px 16px;
-
-  font-size:12px;
-
-}
-
-
-
-.menu-btn {
-
-  width:40px;
-
-  height:40px;
 
   display:flex;
 
-  justify-content:center;
+  align-items:center;
+
+  gap:14px;
+
+}
+
+
+
+/* LOGIN */
+
+.login-btn{
+
+  display:flex;
 
   align-items:center;
 
-  flex-direction:column;
+  justify-content:center;
 
-  gap:4px;
+
+  height:38px;
+
+  padding:0 22px;
+
+
+  color:white;
+
+  text-decoration:none;
+
+
+  font-size:13px;
+
+  letter-spacing:2px;
+
+
+  border-radius:20px;
+
+
+  border:1px solid rgba(255,0,60,.7);
+
+
+  background:
+  rgba(255,0,60,.08);
+
+
+  box-shadow:
+  0 0 12px rgba(255,0,60,.3);
+
+
+  transition:.3s;
+
+}
+
+
+.login-btn:hover{
+
+ background:#ff1744;
+
+ box-shadow:
+ 0 0 25px #ff1744;
 
 }
 
 
 
-.menu-btn span {
+/* MENU BUTTON */
 
-  width:18px;
-
-  height:2px;
-
-  background:white;
-
-  display:block;
-
-  border-radius:5px;
-
-}
+.menu-btn{
 
 
+ width:42px;
 
-@media(max-width:600px){
-
-  .navbar{
-
-    padding:12px 14px;
-
-  }
+ height:42px;
 
 
-  .logo{
+ display:flex;
 
-    font-size:14px;
+ flex-direction:column;
 
-    letter-spacing:1px;
+ justify-content:center;
 
-  }
-
-
-  .login-btn{
-
-    padding:7px 12px;
-
-    font-size:11px;
-
-  }
+ align-items:center;
 
 
-  .menu-btn{
+ gap:5px;
 
-    width:36px;
 
-    height:36px;
+ border-radius:50%;
 
-  }
+
+ border:1px solid rgba(255,0,60,.6);
+
+
+ background:
+ rgba(255,0,60,.08);
+
+
+ cursor:pointer;
+
+
+ box-shadow:
+ 0 0 18px rgba(255,0,60,.5);
+
+
+ transition:.3s;
 
 
 }
 
 
-@media(max-width:380px){
-
-  .login-btn{
-
-    display:none;
-
-  }
+.menu-btn span{
 
 
-  .logo{
+ width:18px;
 
-    font-size:13px;
+ height:2px;
 
-  }
+
+ background:white;
+
+
+ border-radius:10px;
+
+
+ box-shadow:
+ 0 0 8px white;
+
+
+}
+
+
+.menu-btn:hover{
+
+ transform:scale(1.1);
+
+ box-shadow:
+ 0 0 30px #ff1744;
+
+}
+
+
+.menu-btn:hover span{
+
+ background:#ff1744;
 
 }
 
 
 
-        /* Premium Hamburger */
 
-        .menu-btn {
+/* TABLET */
 
+@media(max-width:768px){
 
-          width:44px;
 
-          height:44px;
+.navbar{
 
+ height:62px;
 
-          display:flex;
+ width:calc(100% - 24px);
 
-          flex-direction:column;
+ padding:0 16px;
 
-          justify-content:center;
+ top:12px;
 
-          align-items:center;
+}
 
-          gap:5px;
 
 
-          background:
-          rgba(255,0,60,.08);
+.logo{
 
+ font-size:15px;
 
-          border:
-          1px solid rgba(255,0,60,.6);
+ letter-spacing:1.5px;
 
+}
 
-          border-radius:50%;
 
 
-          cursor:pointer;
+.login-btn{
 
+ height:34px;
 
-          transition:.3s;
+ padding:0 15px;
 
+ font-size:11px;
 
-          box-shadow:
-          0 0 18px rgba(255,0,60,.5);
+}
 
 
-        }
 
+.menu-btn{
 
+ width:38px;
 
-        .menu-btn span {
+ height:38px;
 
+}
 
-          width:18px;
 
-          height:2px;
 
+}
 
-          background:white;
 
 
-          border-radius:10px;
 
 
-          box-shadow:
-          0 0 8px #fff;
+/* SMALL MOBILE */
 
+@media(max-width:420px){
 
-          transition:.3s;
 
+.navbar{
 
-        }
+ height:58px;
 
+}
 
 
-        .menu-btn:hover {
 
+.logo{
 
-          transform:scale(1.08);
+ font-size:13px;
 
+}
 
-          box-shadow:
-          0 0 30px #ff1744;
 
 
-        }
+.login-btn{
 
+ display:none;
 
+}
 
-        .menu-btn:hover span {
 
 
-          background:#ff1744;
+.menu-btn{
 
+ width:36px;
 
-        }
+ height:36px;
 
+}
 
 
+}
 
 
-        /* Mobile Responsive */
 
-        @media(max-width:768px){
+`}</style>
 
-
-          .navbar {
-
-
-            top:12px;
-
-            width:calc(100% - 24px);
-
-            padding:14px 16px;
-
-
-          }
-
-
-
-          .logo {
-
-
-            font-size:15px;
-
-            letter-spacing:1.5px;
-
-
-          }
-
-
-
-          .nav-actions {
-
-
-            gap:8px;
-
-
-          }
-
-
-
-          .login-btn {
-
-
-            padding:7px 14px;
-
-            font-size:11px;
-
-
-          }
-
-
-
-          .menu-btn {
-
-
-            width:38px;
-
-            height:38px;
-
-
-          }
-
-
-        }
-
-
-
-
-
-        @media(max-width:420px){
-
-
-          .logo {
-
-
-            font-size:13px;
-
-
-          }
-
-
-
-          .login-btn {
-
-
-            display:none;
-
-
-          }
-
-
-
-          .navbar {
-
-
-            padding:12px 14px;
-
-
-          }
-
-
-        }
-
-
-      `}</style>
 
     </>
   );
