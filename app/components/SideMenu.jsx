@@ -1,35 +1,38 @@
 "use client";
 
 export default function SideMenu({ open, close }) {
+
   return (
     <>
+
       <div
-        className={`menu-overlay ${open ? "show" : ""}`}
+        className={`overlay ${open ? "active" : ""}`}
         onClick={close}
-      ></div>
+      />
 
-      <div className={`side-menu ${open ? "active" : ""}`}>
 
-        <button className="close-btn" onClick={close}>
+      <aside className={`side-menu ${open ? "show" : ""}`}>
+
+        <button
+          className="close"
+          onClick={close}
+        >
           ✕
         </button>
 
-        <div className="menu-logo">
+
+        <div className="side-logo">
           OVER POWER <span>ESPORTS</span>
         </div>
 
 
-        <div className="menu-links">
+        <div className="links">
 
           <a href="/">HOME</a>
 
-          <a href="/players">
-            PLAYERS
-          </a>
+          <a href="/players">PLAYERS</a>
 
-          <a href="/teams">
-            TEAMS
-          </a>
+          <a href="/teams">TEAMS</a>
 
           <a href="/tournaments">
             TOURNAMENTS
@@ -47,191 +50,288 @@ export default function SideMenu({ open, close }) {
             LOGIN
           </a>
 
+
         </div>
 
 
-        <div className="menu-footer">
+
+        <div className="footer">
           OVER POWER ESPORTS
-          <br />
+          <br/>
           PLAY WITH DISCIPLINE
         </div>
 
-      </div>
 
 
-      <style jsx>{`
+      </aside>
 
-        .menu-overlay {
-          position: fixed;
-          inset:0;
-          background:rgba(0,0,0,0.55);
-          backdrop-filter:blur(8px);
-          opacity:0;
-          pointer-events:none;
-          transition:.4s;
-          z-index:90;
-        }
 
 
-        .menu-overlay.show{
-          opacity:1;
-          pointer-events:auto;
-        }
+<style jsx>{`
 
+.overlay{
 
-        .side-menu{
+position:fixed;
 
-          position:fixed;
-          top:0;
-          right:-420px;
+inset:0;
 
-          width:380px;
-          height:100vh;
+background:rgba(0,0,0,.55);
 
-          background:
-          rgba(10,0,5,.85);
+backdrop-filter:blur(5px);
 
-          border-left:
-          1px solid rgba(255,0,60,.6);
+opacity:0;
 
-          box-shadow:
-          0 0 40px rgba(255,0,60,.5);
+pointer-events:none;
 
-          backdrop-filter:blur(20px);
+transition:.4s;
 
-          padding:40px 35px;
+z-index:90;
 
-          transition:.45s ease;
+}
 
-          z-index:100;
 
-        }
+.overlay.active{
 
+opacity:1;
 
-        .side-menu.active{
-          right:0;
-        }
+pointer-events:auto;
 
+}
 
 
-        .close-btn{
 
-          position:absolute;
-          right:25px;
-          top:20px;
+.side-menu{
 
-          background:none;
-          border:none;
 
-          color:white;
-          font-size:28px;
+position:fixed;
 
-          cursor:pointer;
 
-        }
+top:0;
 
+right:-420px;
 
 
-        .menu-logo{
+width:360px;
 
-          margin-top:40px;
+height:100vh;
 
-          color:white;
 
-          font-size:24px;
+background:
 
-          font-weight:800;
+rgba(8,0,5,.96);
 
-          letter-spacing:2px;
 
-        }
+border-left:
 
+1px solid rgba(255,0,60,.5);
 
-        .menu-logo span{
 
-          color:#ff1744;
+box-shadow:
 
-        }
+-10px 0 40px rgba(255,0,60,.35);
 
 
 
-        .menu-links{
+padding:90px 40px 40px;
 
-          margin-top:50px;
 
-          display:flex;
 
-          flex-direction:column;
+transition:.45s ease;
 
-          gap:20px;
 
-        }
+z-index:100;
 
 
+}
 
-        .menu-links a{
 
-          color:white;
 
-          text-decoration:none;
+.side-menu.show{
 
-          font-size:18px;
+right:0;
 
-          letter-spacing:2px;
+}
 
-          padding:12px;
 
-          border-left:2px solid transparent;
 
-          transition:.3s;
+.close{
 
-        }
 
+position:absolute;
 
+top:25px;
 
-        .menu-links a:hover{
+right:25px;
 
-          color:#ff1744;
 
-          border-left:2px solid #ff1744;
+width:40px;
 
-          padding-left:25px;
+height:40px;
 
-          text-shadow:
-          0 0 15px #ff1744;
 
-        }
+border-radius:50%;
 
 
+background:
 
-        .menu-footer{
+rgba(255,0,60,.1);
 
-          position:absolute;
 
-          bottom:40px;
+border:
 
-          color:#888;
+1px solid #ff1744;
 
-          font-size:12px;
 
-          letter-spacing:2px;
+color:white;
 
-        }
 
+font-size:20px;
 
 
-        @media(max-width:600px){
+cursor:pointer;
 
-          .side-menu{
 
-            width:85%;
+}
 
-          }
 
-        }
 
+.side-logo{
 
-      `}</style>
+
+font-size:24px;
+
+font-weight:800;
+
+letter-spacing:2px;
+
+color:white;
+
+}
+
+
+
+.side-logo span{
+
+color:#ff1744;
+
+}
+
+
+
+.links{
+
+
+display:flex;
+
+flex-direction:column;
+
+
+gap:22px;
+
+
+margin-top:50px;
+
+
+}
+
+
+
+.links a{
+
+
+color:white;
+
+
+text-decoration:none;
+
+
+font-size:18px;
+
+
+letter-spacing:2px;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.links a:hover{
+
+
+color:#ff1744;
+
+
+padding-left:15px;
+
+
+text-shadow:
+
+0 0 15px #ff1744;
+
+
+}
+
+
+
+.footer{
+
+
+position:absolute;
+
+
+bottom:40px;
+
+
+color:#777;
+
+
+font-size:12px;
+
+
+letter-spacing:2px;
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.side-menu{
+
+width:85%;
+
+padding:85px 30px 30px;
+
+}
+
+
+
+.side-logo{
+
+font-size:18px;
+
+}
+
+
+
+.links a{
+
+font-size:16px;
+
+}
+
+
+
+}
+
+
+`}</style>
+
 
     </>
   );
