@@ -7,96 +7,95 @@ import { useState } from "react";
 export default function LoginPage() {
 
 
-const [email,setEmail]=useState("");
-const [password,setPassword]=useState("");
-const [loading,setLoading]=useState(false);
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
 
 
 
-const handleLogin = async()=>{
+  const handleLogin = async()=>{
 
 
-if(!email || !password){
+    if(!email || !password){
 
-alert("Enter email and password");
-return;
+      alert("Enter email and password");
+      return;
 
-}
-
-
-setLoading(true);
+    }
 
 
-
-const {data,error}=await supabase.auth.signInWithPassword({
-
-email:email.trim(),
-
-password,
-
-});
+    setLoading(true);
 
 
 
-if(error){
+    const {data,error} = await supabase.auth.signInWithPassword({
 
-alert(error.message);
+      email: email.trim(),
 
-setLoading(false);
+      password,
 
-return;
-
-}
+    });
 
 
 
+    if(error){
 
-const {data:profile,error:profileError}=await supabase
+      alert(error.message);
 
-.from("profiles")
+      setLoading(false);
 
-.select("role")
+      return;
 
-.eq("id",data.user.id)
-
-.single();
-
-
-
-if(profileError){
-
-alert("Profile not found");
-
-setLoading(false);
-
-return;
-
-}
+    }
 
 
 
-if(profile.role==="admin"){
+    const {data:profile,error:profileError} = await supabase
 
-window.location.href="/admin/dashboard";
+    .from("profiles")
 
-}
+    .select("role")
 
-else if(profile.role==="player"){
+    .eq("id",data.user.id)
 
-window.location.href="/player/dashboard";
-
-}
-
-else{
-
-alert("Invalid Role");
-
-}
+    .single();
 
 
 
-};
+    if(profileError){
 
+      alert("Profile not found");
+
+      setLoading(false);
+
+      return;
+
+    }
+
+
+
+    if(profile.role==="admin"){
+
+      window.location.href="/admin/dashboard";
+
+    }
+
+
+    else if(profile.role==="player"){
+
+      window.location.href="/player/dashboard";
+
+    }
+
+
+    else{
+
+      alert("Invalid Role");
+
+    }
+
+
+  };
 
 
 
@@ -106,10 +105,16 @@ return (
 <main className="login-page">
 
 
+<div className="light one"></div>
+<div className="light two"></div>
+<div className="light three"></div>
+
+
+
 <div className="login-card">
 
 
-<div className="logo">
+<div className="brand">
 
 OVER POWER
 
@@ -127,7 +132,7 @@ LOGIN
 
 
 <p>
-Enter your account credentials
+ENTER YOUR ACCOUNT
 </p>
 
 
@@ -168,21 +173,7 @@ onChange={(e)=>setPassword(e.target.value)}
 
 
 
-<div className="footer">
-
-OVER POWER ESPORTS
-
-<br/>
-
-PLAY WITH DISCIPLINE
-
 </div>
-
-
-
-</div>
-
-
 
 
 
@@ -198,13 +189,71 @@ justify-content:center;
 
 align-items:center;
 
+overflow:hidden;
 
-background:
+position:relative;
 
-radial-gradient(circle at top,#700000,#050505 70%);
+background:#030303;
+
+}
 
 
-padding:20px;
+
+.light{
+
+position:absolute;
+
+border-radius:50%;
+
+filter:blur(100px);
+
+}
+
+
+
+.one{
+
+width:350px;
+
+height:350px;
+
+background:#ff003c;
+
+top:-100px;
+
+left:-100px;
+
+}
+
+
+
+.two{
+
+width:400px;
+
+height:400px;
+
+background:#6a00ff;
+
+right:-150px;
+
+top:100px;
+
+}
+
+
+
+.three{
+
+width:300px;
+
+height:300px;
+
+background:#008cff;
+
+bottom:-120px;
+
+left:40%;
 
 }
 
@@ -222,7 +271,6 @@ padding:45px;
 border-radius:25px;
 
 
-
 background:
 
 rgba(255,255,255,.08);
@@ -235,25 +283,27 @@ backdrop-filter:blur(25px);
 
 border:
 
-1px solid rgba(255,0,60,.4);
+1px solid rgba(255,255,255,.15);
 
 
 
 box-shadow:
 
+0 0 50px rgba(255,0,80,.35);
 
-0 0 50px rgba(255,0,60,.25);
 
 
 text-align:center;
 
+
+z-index:2;
 
 
 }
 
 
 
-.logo{
+.brand{
 
 
 font-size:30px;
@@ -269,17 +319,16 @@ color:white;
 
 
 
-.logo span{
+.brand span{
 
 
 display:block;
 
 color:#ff1744;
 
-
 text-shadow:
 
-0 0 20px #ff1744;
+0 0 20px red;
 
 
 }
@@ -288,12 +337,11 @@ text-shadow:
 
 h1{
 
-
-margin-top:35px;
-
-font-size:38px;
-
 color:white;
+
+font-size:40px;
+
+margin:30px 0 10px;
 
 
 }
@@ -302,11 +350,9 @@ color:white;
 
 p{
 
-
 color:#aaa;
 
-margin-bottom:30px;
-
+letter-spacing:3px;
 
 }
 
@@ -319,13 +365,15 @@ width:100%;
 
 height:55px;
 
-margin-bottom:18px;
-
+margin-top:18px;
 
 padding:0 20px;
 
 
-border-radius:15px;
+background:
+
+rgba(0,0,0,.5);
+
 
 
 border:
@@ -334,18 +382,10 @@ border:
 
 
 
-background:
-
-rgba(0,0,0,.45);
-
+border-radius:15px;
 
 
 color:white;
-
-
-font-size:16px;
-
-
 
 outline:none;
 
@@ -356,13 +396,11 @@ outline:none;
 
 input:focus{
 
-
 border-color:#ff1744;
-
 
 box-shadow:
 
-0 0 15px rgba(255,23,68,.5);
+0 0 20px rgba(255,0,60,.5);
 
 
 }
@@ -374,15 +412,14 @@ button{
 
 width:100%;
 
-
 height:55px;
+
+margin-top:25px;
 
 
 border:none;
 
-
 border-radius:30px;
-
 
 
 background:
@@ -390,16 +427,14 @@ background:
 linear-gradient(
 135deg,
 #ff1744,
-#990000
+#7200ff
 );
 
 
 
 color:white;
 
-
 font-size:18px;
-
 
 font-weight:800;
 
@@ -407,11 +442,9 @@ font-weight:800;
 cursor:pointer;
 
 
-
 box-shadow:
 
-0 0 25px rgba(255,0,60,.5);
-
+0 0 30px rgba(255,0,80,.6);
 
 
 transition:.3s;
@@ -423,36 +456,9 @@ transition:.3s;
 
 button:hover{
 
-
 transform:scale(1.05);
 
-
-box-shadow:
-
-0 0 40px rgba(255,0,60,.8);
-
-
 }
-
-
-
-.footer{
-
-
-margin-top:35px;
-
-
-font-size:11px;
-
-
-letter-spacing:3px;
-
-
-color:#777;
-
-
-}
-
 
 
 
@@ -461,21 +467,12 @@ color:#777;
 
 .login-card{
 
+width:90%;
 
-width:100%;
-
-padding:35px 25px;
-
+padding:30px 20px;
 
 }
 
-
-
-.logo{
-
-font-size:24px;
-
-}
 
 
 h1{
