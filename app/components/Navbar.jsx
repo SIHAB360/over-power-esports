@@ -45,11 +45,107 @@ export default function Navbar() {
 
       <style jsx>{`
 
-        .nav-actions{
-          display:flex;
-          align-items:center;
-          gap:15px;
-        }
+        .navbar {
+
+  position: fixed;
+
+  top: 20px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: calc(100% - 60px);
+
+  max-width: 1400px;
+
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+
+  padding:18px 35px;
+
+
+  background:
+  rgba(10,0,5,0.65);
+
+
+  backdrop-filter:
+  blur(15px);
+
+
+  border:
+  1px solid rgba(255,0,60,.35);
+
+
+  border-radius:18px;
+
+
+  box-shadow:
+
+  0 0 25px rgba(255,0,60,.15);
+
+
+  z-index:50;
+
+}
+
+
+
+.logo{
+
+  color:white;
+
+  font-size:24px;
+
+  font-weight:800;
+
+  letter-spacing:3px;
+
+}
+
+
+
+.logo span{
+
+  color:#ff1744;
+
+  text-shadow:
+
+  0 0 15px #ff1744;
+
+}
+
+
+
+@media(max-width:600px){
+
+.navbar{
+
+width:calc(100% - 30px);
+
+padding:15px 20px;
+
+}
+
+
+.logo{
+
+font-size:16px;
+
+}
+
+.login-btn{
+
+display:none;
+
+}
+
+}
 
 
         .login-btn{
