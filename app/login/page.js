@@ -35,7 +35,45 @@ export default function LoginPage() {
 
 
 
-    alert("Login Successful");
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", data.user.id)
+      .single();
+
+
+
+    if(profileError){
+
+      alert("Profile not found");
+
+      return;
+
+    }
+
+
+
+    if(profile.role === "admin"){
+
+      window.location.href="/admin/dashboard";
+
+    }
+
+
+
+    else if(profile.role === "player"){
+
+      window.location.href="/player/dashboard";
+
+    }
+
+
+
+    else{
+
+      alert("Invalid user role");
+
+    }
 
 
   };
