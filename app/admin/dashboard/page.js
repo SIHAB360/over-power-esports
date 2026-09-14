@@ -51,8 +51,6 @@ const {data:profile,error} = await supabase
 
 if(error){
 
-console.log("PROFILE ERROR:", error);
-
 window.location.href="/login";
 
 return;
@@ -61,22 +59,11 @@ return;
 
 
 
-
-console.log("FULL PROFILE:", profile);
-console.log("ROLE VALUE:", profile.role);
-console.log("ROLE TYPE:", typeof profile.role);
-
-
-
-
-  
 const role = profile?.role?.trim().toLowerCase();
 
 
 
 if(role !== "admin"){
-
-console.log("CURRENT ROLE:", role);
 
 window.location.href="/login";
 
@@ -96,6 +83,7 @@ setLoading(false);
 
 
 
+
 const logout = async()=>{
 
 
@@ -105,6 +93,16 @@ window.location.href="/login";
 
 
 };
+
+
+
+
+const openPage=(page)=>{
+
+window.location.href=page;
+
+};
+
 
 
 
@@ -152,11 +150,14 @@ OVER POWER
 <span> ADMIN</span>
 </h1>
 
+
 <p>
 COMMAND CENTER
 </p>
 
+
 </div>
+
 
 
 
@@ -166,6 +167,7 @@ COMMAND CENTER
 <span>
 {adminEmail}
 </span>
+
 
 
 <button onClick={logout}>
@@ -178,6 +180,7 @@ LOGOUT
 
 
 </header>
+
 
 
 
@@ -196,11 +199,12 @@ LOGOUT
 Manage player accounts
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/players")}>
 OPEN
 </button>
 
 </div>
+
 
 
 
@@ -215,11 +219,12 @@ OPEN
 Create & control matches
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/matches")}>
 OPEN
 </button>
 
 </div>
+
 
 
 
@@ -234,11 +239,12 @@ OPEN
 Tournament management
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/tournaments")}>
 OPEN
 </button>
 
 </div>
+
 
 
 
@@ -253,11 +259,12 @@ OPEN
 Income calculation
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/profit")}>
 OPEN
 </button>
 
 </div>
+
 
 
 
@@ -272,11 +279,12 @@ OPEN
 Player salary control
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/salary")}>
 OPEN
 </button>
 
 </div>
+
 
 
 
@@ -291,7 +299,7 @@ OPEN
 Generate 24h codes
 </p>
 
-<button>
+<button onClick={()=>openPage("/admin/codes")}>
 OPEN
 </button>
 
@@ -305,29 +313,83 @@ OPEN
 
 
 
+
+
 <style jsx>{`
 
 .admin-page{
-
 
 min-height:100vh;
 
 padding:40px;
 
+position:relative;
+
+overflow:hidden;
+
 background:
 
-radial-gradient(circle at top,#8b0020,#050505 60%);
+radial-gradient(circle at top left,#ff003c55,transparent 35%),
+radial-gradient(circle at top right,#7000ff55,transparent 35%),
+radial-gradient(circle at bottom,#008cff33,transparent 30%),
+#050505;
 
 
 color:white;
 
+}
+
+
+
+.admin-page::before{
+
+content:"";
+
+position:absolute;
+
+width:500px;
+
+height:500px;
+
+background:#ff1744;
+
+filter:blur(180px);
+
+top:-200px;
+
+left:-150px;
+
+opacity:.35;
+
+}
+
+
+
+.admin-page::after{
+
+content:"";
+
+position:absolute;
+
+width:450px;
+
+height:450px;
+
+background:#7000ff;
+
+filter:blur(180px);
+
+bottom:-200px;
+
+right:-150px;
+
+opacity:.35;
 
 }
 
 
 
 .loading{
-
 
 height:100vh;
 
@@ -341,6 +403,7 @@ background:#050505;
 
 color:white;
 
+font-size:22px;
 
 }
 
@@ -348,21 +411,21 @@ color:white;
 
 .loader{
 
+width:70px;
 
-width:60px;
+height:70px;
 
-height:60px;
+border:6px solid #222;
 
-border:5px solid #333;
+border-top:6px solid #ff1744;
 
-border-top:5px solid #ff1744;
+border-right:6px solid #7000ff;
 
 border-radius:50%;
 
 animation:spin 1s linear infinite;
 
 margin:auto;
-
 
 }
 
@@ -381,8 +444,12 @@ transform:rotate(360deg);
 
 
 
+
 header{
 
+position:relative;
+
+z-index:2;
 
 display:flex;
 
@@ -392,75 +459,75 @@ align-items:center;
 
 margin-bottom:50px;
 
-
 }
+
 
 
 
 h1{
 
+font-size:45px;
 
-font-size:42px;
+letter-spacing:5px;
 
-letter-spacing:4px;
+text-shadow:
 
+0 0 20px rgba(255,255,255,.3);
 
 }
+
 
 
 
 h1 span{
 
-
 color:#ff1744;
 
-text-shadow:0 0 20px red;
+text-shadow:
 
+0 0 25px #ff1744;
 
 }
+
 
 
 
 header p{
 
-
 color:#aaa;
 
-letter-spacing:5px;
-
+letter-spacing:8px;
 
 }
+
 
 
 
 .right{
 
-
 display:flex;
 
 align-items:center;
 
-gap:20px;
-
+gap:25px;
 
 }
+
 
 
 
 .right span{
 
+color:#ddd;
 
 font-size:13px;
-
-color:#aaa;
-
 
 }
 
 
 
-button{
 
+button{
 
 background:
 
@@ -471,77 +538,144 @@ linear-gradient(
 );
 
 
+
 border:none;
 
 color:white;
 
-padding:12px 25px;
+padding:14px 32px;
 
-border-radius:30px;
+border-radius:35px;
+
+font-weight:900;
 
 cursor:pointer;
-
-font-weight:800;
 
 
 box-shadow:
 
-0 0 25px rgba(255,0,80,.5);
+0 0 25px rgba(255,0,80,.7);
 
+
+transition:.3s;
 
 }
+
+
+
+
+button:hover{
+
+transform:scale(1.08);
+
+
+box-shadow:
+
+0 0 45px rgba(255,0,80,1);
+
+}
+
 
 
 
 .dashboard-grid{
 
+position:relative;
+
+z-index:2;
 
 display:grid;
 
 grid-template-columns:repeat(3,1fr);
 
-gap:25px;
-
+gap:30px;
 
 }
+
+
 
 
 
 .card{
 
+padding:40px;
 
-padding:35px;
-
-border-radius:25px;
+border-radius:30px;
 
 
 background:
 
-rgba(255,255,255,.08);
+linear-gradient(
+145deg,
+rgba(255,255,255,.12),
+rgba(255,255,255,.04)
+);
+
 
 
 border:
 
-1px solid rgba(255,0,80,.4);
+1px solid rgba(255,0,90,.45);
 
 
-backdrop-filter:blur(20px);
+
+backdrop-filter:blur(25px);
+
 
 
 box-shadow:
 
-0 0 35px rgba(255,0,80,.2);
+inset 0 0 30px rgba(255,255,255,.05),
+
+0 0 35px rgba(255,0,80,.25);
+
+
+
+transition:.4s;
 
 
 }
 
 
 
+
+.card:hover{
+
+
+transform:
+
+translateY(-12px)
+scale(1.03);
+
+
+
+border-color:#ff1744;
+
+
+
+box-shadow:
+
+
+0 0 60px rgba(255,0,80,.7),
+
+inset 0 0 30px rgba(255,0,80,.2);
+
+
+}
+
+
+
+
 .card h2{
 
+font-size:25px;
 
 color:#ff1744;
 
+
+text-shadow:
+
+0 0 15px #ff1744;
 
 }
 
@@ -549,9 +683,9 @@ color:#ff1744;
 
 .card p{
 
+color:#ccc;
 
-color:#bbb;
-
+font-size:16px;
 
 }
 
@@ -559,29 +693,9 @@ color:#bbb;
 
 .card button{
 
-
-margin-top:20px;
+margin-top:25px;
 
 width:100%;
-
-
-}
-
-
-
-.card:hover{
-
-
-transform:translateY(-8px);
-
-
-transition:.3s;
-
-
-box-shadow:
-
-0 0 50px rgba(255,0,80,.5);
-
 
 }
 
@@ -598,13 +712,15 @@ grid-template-columns:1fr;
 }
 
 
+
 header{
 
 flex-direction:column;
 
-gap:20px;
+gap:25px;
 
 }
+
 
 
 .right{
@@ -612,6 +728,7 @@ gap:20px;
 flex-direction:column;
 
 }
+
 
 
 }
