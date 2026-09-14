@@ -224,7 +224,6 @@ box-shadow:
 
 
 
-
 .op-menu-btn{
 
 
@@ -270,6 +269,12 @@ box-shadow:
 transition:.3s;
 
 
+padding:0;
+
+
+overflow:hidden;
+
+
 }
 
 
@@ -277,15 +282,16 @@ transition:.3s;
 .op-menu-btn span{
 
 
+display:block;
+
+
 width:18px;
+
 
 height:2px;
 
 
-display:block;
-
-
-background:white;
+background:#ffffff;
 
 
 border-radius:10px;
@@ -293,7 +299,10 @@ border-radius:10px;
 
 box-shadow:
 
-0 0 8px white;
+0 0 8px #ffffff;
+
+
+flex-shrink:0;
 
 
 }
@@ -338,6 +347,52 @@ height:58px;
 
 
 padding:0 14px;
+
+
+}
+
+
+
+.op-menu-btn{
+
+
+width:38px;
+
+height:38px;
+
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+
+gap:4px;
+
+
+padding:0;
+
+
+flex-shrink:0;
+
+
+}
+
+
+
+.op-menu-btn span{
+
+
+width:16px;
+
+
+height:2px;
+
+
+}
 
 
 }
