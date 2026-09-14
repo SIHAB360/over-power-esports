@@ -1096,7 +1096,28 @@ export default function PlayerRegister() {
     background-position: 100% 50%;
   }
 }
+<input
+          className="op-input"
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+        />
+            .op-input::placeholder,
+.op-textarea::placeholder {
+  color: #d0d0d0 !important;
+  opacity: 1 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
 
+.op-section h3,
+.field label {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
 
         
       `}</style>
@@ -1131,28 +1152,6 @@ function Field({
           required={required}
         />
       ) : (
-        <input
-          className="op-input"
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          required={required}
-        />
-            .op-input::placeholder,
-.op-textarea::placeholder {
-  color: #d0d0d0 !important;
-  opacity: 1 !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
-}
-
-.op-section h3,
-.field label {
-  color: #ffffff !important;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
-}
       )}
     </div>
   );
