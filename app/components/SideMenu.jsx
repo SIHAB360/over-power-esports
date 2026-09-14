@@ -99,7 +99,7 @@ backdrop-filter:
 blur(12px);
 
 
-z-index:1000;
+z-index:9998;
 
 
 }
@@ -165,10 +165,13 @@ transition:
 
 
 
-z-index:1001;
+z-index:9999;
 
 
 overflow-y:auto;
+
+
+isolation:isolate;
 
 
 }
@@ -239,6 +242,9 @@ box-shadow:
 
 
 transition:.3s;
+
+
+z-index:10000;
 
 
 }
