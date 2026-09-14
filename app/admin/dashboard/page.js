@@ -387,21 +387,51 @@ gap:35px;
 
 .card{
 
-height:250px;
+height:260px;
 
-padding:40px;
+padding:35px;
 
-border-radius:30px;
-
+border-radius:28px;
 
 background:
 
 linear-gradient(
 145deg,
-rgba(255,255,255,.12),
-rgba(0,0,0,.7)
+rgba(255,255,255,.10),
+rgba(10,0,0,.85)
 );
 
+
+border:1px solid rgba(255,40,40,.35);
+
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:flex-start;
+
+
+position:relative;
+
+
+overflow:hidden;
+
+
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.6),
+
+inset 0 0 40px rgba(255,30,30,.08);
+
+
+transition:.4s;
+
+
+}
 
 
 border:
@@ -486,7 +516,79 @@ background:#ff2020;
 }
 
 
+.card-icon{
 
+width:45px;
+
+height:45px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+border-radius:50%;
+
+
+background:
+
+rgba(255,32,32,.15);
+
+
+color:#ff2020;
+
+
+margin-bottom:20px;
+
+
+box-shadow:
+
+0 0 25px rgba(255,32,32,.5);
+
+
+}
+
+
+
+.card h3{
+
+font-size:28px;
+
+color:white;
+
+margin:0;
+
+
+letter-spacing:3px;
+
+
+}
+
+
+.card p{
+
+color:#999 !important;
+
+font-size:15px;
+
+margin-top:15px;
+
+
+}
+
+
+
+.card button{
+
+margin-top:30px;
+
+
+width:140px;
+
+
+}
 
 
 .loading{
@@ -574,10 +676,13 @@ return(
 
 <div className="card">
 
+<div className="card-icon">
+◈
+</div>
+
 <h3>
 {title}
 </h3>
-
 
 <p>
 {text}
