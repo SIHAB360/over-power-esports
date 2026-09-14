@@ -20,7 +20,7 @@ export default function SideMenu({ open, close }) {
 
         <button
           className="op-close"
-          onClick={close}
+       onMouseDown={close}
         >
           ×
         </button>
