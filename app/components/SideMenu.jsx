@@ -88,19 +88,19 @@ position:fixed;
 
 inset:0;
 
-
 background:
 
-rgba(0,0,0,.45);
-
+rgba(0,0,0,.55);
 
 backdrop-filter:
 
-blur(12px);
+blur(10px);
 
 
 z-index:9998;
 
+
+cursor:pointer;
 
 }
 
@@ -201,9 +201,17 @@ right:25px;
 
 
 
-width:42px;
+width:48px;
 
-height:42px;
+height:48px;
+
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
 
 
 
@@ -213,13 +221,17 @@ border-radius:50%;
 
 border:
 
-1px solid rgba(255,0,60,.7);
+1px solid rgba(255,0,60,.8);
 
 
 
 background:
 
-rgba(255,0,60,.12);
+linear-gradient(
+145deg,
+rgba(255,30,60,.25),
+rgba(20,0,10,.8)
+);
 
 
 
@@ -227,7 +239,10 @@ color:white;
 
 
 
-font-size:26px;
+font-size:30px;
+
+
+font-weight:400;
 
 
 
@@ -237,17 +252,50 @@ cursor:pointer;
 
 box-shadow:
 
-0 0 20px rgba(255,0,60,.5);
+0 0 18px rgba(255,0,60,.5),
+inset 0 0 15px rgba(255,0,60,.2);
 
 
 
-transition:.3s;
+backdrop-filter:
+
+blur(10px);
+
+
+
+transition:.35s;
+
 
 
 z-index:10000;
 
 
 }
+
+
+
+.op-close:hover{
+
+
+transform:
+
+rotate(90deg) scale(1.1);
+
+
+
+background:#ff2020;
+
+
+
+box-shadow:
+
+0 0 35px #ff2020;
+
+
+}
+
+
+
 
 
 .op-close:hover{
