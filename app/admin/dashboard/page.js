@@ -61,6 +61,15 @@ return;
 
 
 
+
+console.log("FULL PROFILE:", profile);
+console.log("ROLE VALUE:", profile.role);
+console.log("ROLE TYPE:", typeof profile.role);
+
+
+
+
+  
 const role = profile?.role?.trim().toLowerCase();
 
 
