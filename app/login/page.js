@@ -48,7 +48,7 @@ export default function LoginPage() {
     alert("Auth Success");
 console.log("USER ID:", data.user.id);
 
-
+console.log("Checking profile table...");
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
