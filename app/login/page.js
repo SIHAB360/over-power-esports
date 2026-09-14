@@ -1,21 +1,55 @@
-
 "use client";
-import { supabase } from "../lib/supabase";
 
+import { supabase } from "../lib/supabase";
 import { useState } from "react";
 
+
 export default function LoginPage() {
+
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
 
+
+  const handleLogin = async () => {
+
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+
+      email,
+
+      password,
+
+    });
+
+
+
+    if(error){
+
+      alert(error.message);
+
+      return;
+
+    }
+
+
+
+    alert("Login Successful");
+
+
+  };
+
+
+
   return (
     <main>
+
 
       <h1>
         Login
       </h1>
+
 
 
       <input
@@ -26,6 +60,7 @@ export default function LoginPage() {
       />
 
 
+
       <input
         type="password"
         placeholder="Password"
@@ -34,11 +69,13 @@ export default function LoginPage() {
       />
 
 
+
       <button
-  onClick={handleLogin}
->
-  Login
-</button>
+        onClick={handleLogin}
+      >
+        Login
+      </button>
+
 
 
     </main>
