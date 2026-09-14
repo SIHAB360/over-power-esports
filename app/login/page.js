@@ -9,14 +9,24 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
 
   const handleLogin = async () => {
 
 
-    console.log("EMAIL:", email);
-    console.log("PASSWORD:", password);
+    if(!email || !password){
+
+      alert("Please enter email and password");
+
+      return;
+
+    }
+
+
+
+    setLoading(true);
 
 
 
@@ -30,14 +40,11 @@ export default function LoginPage() {
 
 
 
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-
-
-
     if(error){
 
       alert(error.message);
+
+      setLoading(false);
 
       return;
 
@@ -45,33 +52,30 @@ export default function LoginPage() {
 
 
 
-    alert("Auth Success");
-console.log("USER ID:", data.user.id);
-
-console.log("Checking profile table...");
     const { data: profile, error: profileError } = await supabase
+
       .from("profiles")
+
       .select("role")
+
       .eq("id", data.user.id)
+
       .single();
-
-
-
-    console.log("PROFILE:", profile);
-    console.log("PROFILE ERROR:", profileError);
 
 
 
     if(profileError){
 
-      alert(profileError.message);
+      alert("Profile not found");
+
+      setLoading(false);
 
       return;
 
     }
 
 
-console.log("ROLE:", profile.role);
+
     if(profile.role === "admin"){
 
 
@@ -93,7 +97,9 @@ console.log("ROLE:", profile.role);
     else{
 
 
-      alert("Invalid Role");
+      alert("Invalid user role");
+
+      setLoading(false);
 
 
     }
@@ -101,6 +107,7 @@ console.log("ROLE:", profile.role);
 
 
   };
+
 
 
 
@@ -147,9 +154,11 @@ console.log("ROLE:", profile.role);
 
         onClick={handleLogin}
 
+        disabled={loading}
+
       >
 
-        Login
+        {loading ? "Logging in..." : "Login"}
 
       </button>
 
