@@ -125,24 +125,6 @@ z-index:1000;
 
 }
 
-
-
-.op-overlay.show{
-
-
-opacity:1;
-
-
-visibility:visible;
-
-
-}
-
-
-
-
-
-
 .op-side-menu{
 
 
