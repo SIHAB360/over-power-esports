@@ -49,7 +49,25 @@ const {data:profile,error} = await supabase
 
 
 
-if(error || profile?.role !== "admin"){
+if(error){
+
+console.log("PROFILE ERROR:", error);
+
+window.location.href="/login";
+
+return;
+
+}
+
+
+
+const role = profile?.role?.trim().toLowerCase();
+
+
+
+if(role !== "admin"){
+
+console.log("CURRENT ROLE:", role);
 
 window.location.href="/login";
 
