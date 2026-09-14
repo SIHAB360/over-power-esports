@@ -117,13 +117,6 @@ backdrop-filter:
 blur(8px);
 
 
-
-opacity:0;
-
-
-visibility:hidden;
-
-
 transition:.4s;
 
 
