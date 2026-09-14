@@ -8,6 +8,7 @@ export default function AdminDashboard(){
 
 
 const [loading,setLoading]=useState(true);
+const [adminEmail,setAdminEmail]=useState("");
 
 
 
@@ -36,11 +37,11 @@ return;
 
 
 
-const {data:profile} = await supabase
+const {data:profile,error} = await supabase
 
 .from("profiles")
 
-.select("role")
+.select("role,email")
 
 .eq("id",user.id)
 
@@ -48,7 +49,7 @@ const {data:profile} = await supabase
 
 
 
-if(profile?.role !== "admin"){
+if(error || profile?.role !== "admin"){
 
 window.location.href="/login";
 
@@ -57,6 +58,8 @@ return;
 }
 
 
+
+setAdminEmail(profile.email);
 
 setLoading(false);
 
@@ -86,7 +89,15 @@ return(
 
 <main className="loading">
 
+<div>
+
+<div className="loader"></div>
+
+<p>
 LOADING ADMIN PANEL...
+</p>
+
+</div>
 
 </main>
 
@@ -111,20 +122,32 @@ return(
 
 <h1>
 OVER POWER
-<span> ADMIN PANEL</span>
+<span> ADMIN</span>
 </h1>
 
 <p>
-CONTROL CENTER
+COMMAND CENTER
 </p>
 
 </div>
 
 
 
+<div className="right">
+
+
+<span>
+{adminEmail}
+</span>
+
+
 <button onClick={logout}>
 LOGOUT
 </button>
+
+
+</div>
+
 
 
 </header>
@@ -143,10 +166,15 @@ LOGOUT
 </h2>
 
 <p>
-Manage Players
+Manage player accounts
 </p>
 
+<button>
+OPEN
+</button>
+
 </div>
+
 
 
 
@@ -157,10 +185,15 @@ Manage Players
 </h2>
 
 <p>
-Create & Control Matches
+Create & control matches
 </p>
 
+<button>
+OPEN
+</button>
+
 </div>
+
 
 
 
@@ -171,10 +204,15 @@ Create & Control Matches
 </h2>
 
 <p>
-Tournament Management
+Tournament management
 </p>
 
+<button>
+OPEN
+</button>
+
 </div>
+
 
 
 
@@ -185,10 +223,15 @@ Tournament Management
 </h2>
 
 <p>
-Income & Profit Control
+Income calculation
 </p>
 
+<button>
+OPEN
+</button>
+
 </div>
+
 
 
 
@@ -199,22 +242,31 @@ Income & Profit Control
 </h2>
 
 <p>
-Player Salary System
+Player salary control
 </p>
 
+<button>
+OPEN
+</button>
+
 </div>
+
 
 
 
 <div className="card">
 
 <h2>
-🔐 CODES
+🔐 VERIFICATION
 </h2>
 
 <p>
-Verification Code Control
+Generate 24h codes
 </p>
+
+<button>
+OPEN
+</button>
 
 </div>
 
@@ -233,13 +285,11 @@ Verification Code Control
 
 min-height:100vh;
 
-
 padding:40px;
-
 
 background:
 
-radial-gradient(circle at top,#700000,#050505 70%);
+radial-gradient(circle at top,#8b0020,#050505 60%);
 
 
 color:white;
@@ -256,17 +306,51 @@ height:100vh;
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
+
+justify-content:center;
 
 background:#050505;
 
 color:white;
 
-font-size:25px;
 
 }
+
+
+
+.loader{
+
+
+width:60px;
+
+height:60px;
+
+border:5px solid #333;
+
+border-top:5px solid #ff1744;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+margin:auto;
+
+
+}
+
+
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
 
 
 
@@ -289,9 +373,9 @@ margin-bottom:50px;
 h1{
 
 
-font-size:38px;
+font-size:42px;
 
-letter-spacing:3px;
+letter-spacing:4px;
 
 
 }
@@ -302,6 +386,9 @@ h1 span{
 
 
 color:#ff1744;
+
+text-shadow:0 0 20px red;
+
 
 }
 
@@ -319,6 +406,32 @@ letter-spacing:5px;
 
 
 
+.right{
+
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+
+}
+
+
+
+.right span{
+
+
+font-size:13px;
+
+color:#aaa;
+
+
+}
+
+
+
 button{
 
 
@@ -327,31 +440,26 @@ background:
 linear-gradient(
 135deg,
 #ff1744,
-#990000
+#7000ff
 );
 
 
 border:none;
 
+color:white;
 
-padding:14px 30px;
-
+padding:12px 25px;
 
 border-radius:30px;
 
-
-color:white;
-
+cursor:pointer;
 
 font-weight:800;
 
 
-cursor:pointer;
-
-
 box-shadow:
 
-0 0 25px rgba(255,0,60,.5);
+0 0 25px rgba(255,0,80,.5);
 
 
 }
@@ -363,9 +471,7 @@ box-shadow:
 
 display:grid;
 
-
 grid-template-columns:repeat(3,1fr);
-
 
 gap:25px;
 
@@ -379,7 +485,6 @@ gap:25px;
 
 padding:35px;
 
-
 border-radius:25px;
 
 
@@ -390,7 +495,7 @@ rgba(255,255,255,.08);
 
 border:
 
-1px solid rgba(255,0,60,.35);
+1px solid rgba(255,0,80,.4);
 
 
 backdrop-filter:blur(20px);
@@ -398,25 +503,7 @@ backdrop-filter:blur(20px);
 
 box-shadow:
 
-0 0 30px rgba(255,0,60,.15);
-
-
-transition:.3s;
-
-
-}
-
-
-
-.card:hover{
-
-
-transform:translateY(-8px);
-
-
-box-shadow:
-
-0 0 40px rgba(255,0,60,.5);
+0 0 35px rgba(255,0,80,.2);
 
 
 }
@@ -433,30 +520,71 @@ color:#ff1744;
 
 
 
+.card p{
+
+
+color:#bbb;
+
+
+}
+
+
+
+.card button{
+
+
+margin-top:20px;
+
+width:100%;
+
+
+}
+
+
+
+.card:hover{
+
+
+transform:translateY(-8px);
+
+
+transition:.3s;
+
+
+box-shadow:
+
+0 0 50px rgba(255,0,80,.5);
+
+
+}
+
+
+
 
 @media(max-width:800px){
 
 
 .dashboard-grid{
 
-
 grid-template-columns:1fr;
-
 
 }
 
 
-
 header{
-
 
 flex-direction:column;
 
 gap:20px;
 
-
 }
 
+
+.right{
+
+flex-direction:column;
+
+}
 
 
 }
