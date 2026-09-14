@@ -1118,7 +1118,6 @@ export default function PlayerRegister() {
   color: #ffffff !important;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
-
         
       `}</style>
     </main>
@@ -1142,6 +1141,7 @@ function Field({
           {label} {required && <span className="required">*</span>}
         </label>
       )}
+
       {textarea ? (
         <textarea
           className="op-textarea"
@@ -1152,7 +1152,16 @@ function Field({
           required={required}
         />
       ) : (
-            )}
+        <input
+          className="op-input"
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+        />
+      )}
     </div>
   );
 }
