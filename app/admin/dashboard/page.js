@@ -185,14 +185,12 @@ padding:50px;
 
 background:
 
-radial-gradient(circle at top left,#ff202044,transparent 35%),
-
-radial-gradient(circle at bottom right,#ff202033,transparent 40%),
+radial-gradient(circle at top,#ff202033,transparent 35%),
 
 linear-gradient(
-135deg,
+180deg,
 #050505,
-#160000
+#100000
 );
 
 
@@ -205,7 +203,7 @@ color:white;
 
 .dashboard-wrapper{
 
-max-width:1400px;
+max-width:1300px;
 
 margin:auto;
 
@@ -219,15 +217,24 @@ header{
 
 display:flex;
 
-justify-content:space-between;
+justify-content:center;
 
 align-items:center;
 
-margin-bottom:70px;
+position:relative;
+
+margin-bottom:80px;
 
 }
 
 
+
+
+.brand{
+
+text-align:center;
+
+}
 
 
 
@@ -235,7 +242,7 @@ margin-bottom:70px;
 
 font-size:58px;
 
-letter-spacing:8px;
+letter-spacing:10px;
 
 margin:0;
 
@@ -246,20 +253,22 @@ font-weight:900;
 
 
 
-
 .brand h2{
 
 font-size:42px;
 
-margin:5px 0;
+margin:10px 0;
+
 
 color:#ff2020;
 
-letter-spacing:10px;
+
+letter-spacing:12px;
+
 
 text-shadow:
 
-0 0 25px #ff2020;
+0 0 30px #ff2020;
 
 
 }
@@ -270,13 +279,15 @@ text-shadow:
 
 .brand p{
 
-color:#888;
+font-size:13px;
 
 letter-spacing:8px;
 
-font-size:14px;
+color:#888;
+
 
 }
+
 
 
 
@@ -284,11 +295,14 @@ font-size:14px;
 
 .profile-box{
 
-display:flex;
 
-align-items:center;
+position:absolute;
 
-gap:25px;
+right:0;
+
+top:10px;
+
+
 
 padding:18px 25px;
 
@@ -296,34 +310,46 @@ padding:18px 25px;
 border-radius:25px;
 
 
+
 background:
 
-rgba(255,255,255,.05);
+rgba(255,255,255,.06);
 
 
 
 border:
 
-1px solid rgba(255,32,32,.35);
+1px solid rgba(255,32,32,.4);
 
 
 
 backdrop-filter:blur(20px);
 
 
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+align-items:center;
+
+
+
 }
+
 
 
 
 
 .profile-box span{
 
+font-size:12px;
+
 color:#aaa;
 
-font-size:13px;
-
 }
-
 
 
 
@@ -331,23 +357,27 @@ font-size:13px;
 button{
 
 
-background:
+height:45px;
 
-linear-gradient(
-135deg,
-#ff2020,
-#900000
-);
 
+padding:0 35px;
+
+
+
+border-radius:30px;
 
 
 border:none;
 
 
-padding:14px 35px;
+background:
 
+linear-gradient(
+135deg,
+#ff2020,
+#990000
+);
 
-border-radius:30px;
 
 
 color:white;
@@ -368,19 +398,6 @@ box-shadow:
 0 0 25px rgba(255,32,32,.5);
 
 
-
-transition:.3s;
-
-
-
-}
-
-
-
-button:hover{
-
-transform:scale(1.05);
-
 }
 
 
@@ -388,7 +405,6 @@ transform:scale(1.05);
 
 
 .dashboard-grid{
-
 
 display:grid;
 
@@ -404,10 +420,11 @@ gap:35px;
 
 
 
+
 .card{
 
 
-height:250px;
+height:240px;
 
 
 padding:35px;
@@ -419,14 +436,11 @@ border-radius:30px;
 
 background:
 
+
 linear-gradient(
-
 145deg,
-
 rgba(255,255,255,.12),
-
-rgba(10,0,0,.85)
-
+rgba(0,0,0,.8)
 );
 
 
@@ -439,30 +453,23 @@ border:
 
 display:flex;
 
-
 flex-direction:column;
 
-
 justify-content:center;
-
-
-align-items:flex-start;
-
 
 
 
 box-shadow:
 
 
-0 25px 60px rgba(0,0,0,.7),
+0 20px 50px rgba(0,0,0,.7),
 
 
-inset 0 0 40px rgba(255,32,32,.08);
+inset 0 0 30px rgba(255,32,32,.08);
 
 
 
-transition:.4s;
-
+transition:.3s;
 
 
 }
@@ -470,19 +477,17 @@ transition:.4s;
 
 
 
-
 .card:hover{
 
 
-transform:translateY(-12px);
+transform:translateY(-10px);
 
 
 
 box-shadow:
 
 
-0 0 60px rgba(255,32,32,.5);
-
+0 0 50px rgba(255,32,32,.5);
 
 
 }
@@ -496,7 +501,7 @@ box-shadow:
 font-size:28px;
 
 
-letter-spacing:3px;
+letter-spacing:4px;
 
 
 margin:0;
@@ -505,15 +510,7 @@ margin:0;
 color:white;
 
 
-
-text-shadow:
-
-0 0 15px rgba(255,255,255,.3);
-
-
-
 }
-
 
 
 
@@ -521,39 +518,28 @@ text-shadow:
 .card p{
 
 
-margin-top:18px;
+margin-top:15px;
 
 
 color:#999;
-
-
-font-size:15px;
 
 
 }
 
 
 
-
 .card button{
 
 
-margin-top:35px;
+margin-top:30px;
 
 
 width:150px;
 
 
-height:45px;
 
+background:transparent;
 
-padding:0;
-
-
-
-background:
-
-transparent;
 
 
 border:
@@ -565,15 +551,11 @@ border:
 
 
 
+
 .card button:hover{
 
 
 background:#ff2020;
-
-
-box-shadow:
-
-0 0 30px #ff2020;
 
 
 }
@@ -581,23 +563,18 @@ box-shadow:
 
 
 
-.loading{
 
+.loading{
 
 height:100vh;
 
-
-background:#050505;
-
-
 display:flex;
-
 
 justify-content:center;
 
-
 align-items:center;
 
+background:#050505;
 
 }
 
@@ -606,12 +583,9 @@ align-items:center;
 
 .loader{
 
-
 width:70px;
 
-
 height:70px;
-
 
 border-radius:50%;
 
@@ -625,8 +599,8 @@ border-top-color:#ff2020;
 animation:spin 1s linear infinite;
 
 
-
 }
+
 
 
 
@@ -647,11 +621,21 @@ transform:rotate(360deg);
 @media(max-width:900px){
 
 
+.profile-box{
+
+position:static;
+
+margin-top:30px;
+
+
+}
+
+
+
 header{
 
 flex-direction:column;
 
-gap:30px;
 
 }
 
@@ -660,6 +644,7 @@ gap:30px;
 .dashboard-grid{
 
 grid-template-columns:1fr;
+
 
 }
 
