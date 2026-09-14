@@ -282,6 +282,9 @@ width:18px;
 height:2px;
 
 
+display:block;
+
+
 background:white;
 
 
