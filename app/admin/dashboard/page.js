@@ -984,3 +984,36 @@ font-size:28px;
 
 
 `}</style>
+</style>
+
+</main>
+
+);
+
+}
+
+
+
+function Card({title,text}){
+
+return(
+
+<div className="card">
+
+<h3>
+{title}
+</h3>
+
+<p>
+{text}
+</p>
+
+<button>
+OPEN
+</button>
+
+</div>
+
+);
+
+}
