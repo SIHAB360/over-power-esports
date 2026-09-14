@@ -110,7 +110,7 @@ box-shadow:
 0 0 35px rgba(255,0,60,.15);
 
 
-z-index:999;
+z-index:9999;
 
 }
 
