@@ -10,28 +10,35 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
 
-        <div className="logo">
+      <nav className="op-navbar">
+
+
+        <div className="op-logo">
           OVER POWER <span>ESPORTS</span>
         </div>
 
 
-        <div className="nav-actions">
 
-          <a href="/login" className="login-btn">
+        <div className="op-actions">
+
+
+          <a href="/login" className="op-login">
             LOGIN
           </a>
 
 
+
           <button
-            className="menu-btn"
+            className="op-menu-btn"
             onClick={() => setMenuOpen(true)}
             aria-label="Open Menu"
           >
+
             <span></span>
             <span></span>
             <span></span>
+
           </button>
 
 
@@ -39,6 +46,7 @@ export default function Navbar() {
 
 
       </nav>
+
 
 
       <SideMenu
@@ -50,342 +58,360 @@ export default function Navbar() {
 
 <style jsx>{`
 
-/* MAIN NAVBAR */
+.op-navbar{
 
-.navbar{
+position:fixed;
 
-  position:fixed;
+top:18px;
 
-  top:18px;
+left:50%;
 
-  left:50%;
-
-  transform:translateX(-50%);
+transform:translateX(-50%);
 
 
-  width:calc(100% - 40px);
+width:calc(100% - 40px);
 
-  max-width:1400px;
-
-
-  height:70px;
+max-width:1400px;
 
 
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
+height:68px;
 
 
-  padding:0 28px;
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
 
 
-  background:rgba(10,0,5,0.55);
+padding:0 28px;
 
 
-  backdrop-filter:blur(18px);
+background:
+
+rgba(5,5,5,.45);
 
 
-  border:1px solid rgba(255,0,60,.35);
+backdrop-filter:
+
+blur(20px);
 
 
-  border-radius:18px;
+border:
+
+1px solid rgba(255,0,60,.35);
 
 
-  box-shadow:
-  0 0 25px rgba(255,0,60,.18);
+border-radius:20px;
 
 
-  z-index:999;
+box-shadow:
 
-}
-
-
-
-/* LOGO */
-
-.logo{
-
-  color:#ffffff;
-
-  font-size:22px;
-
-  font-weight:800;
-
-  letter-spacing:3px;
-
-  white-space:nowrap;
-
-}
+0 0 35px rgba(255,0,60,.15);
 
 
-.logo span{
-
-  color:#ff1744;
-
-  text-shadow:
-  0 0 12px #ff1744;
+z-index:999;
 
 }
 
 
 
-/* RIGHT AREA */
+.op-logo{
 
-.nav-actions{
+color:white;
 
-  display:flex;
+font-size:22px;
 
-  align-items:center;
+font-weight:900;
 
-  gap:14px;
+letter-spacing:3px;
 
-}
-
-
-
-/* LOGIN */
-
-.login-btn{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-
-  height:38px;
-
-  padding:0 22px;
-
-
-  color:white;
-
-  text-decoration:none;
-
-
-  font-size:13px;
-
-  letter-spacing:2px;
-
-
-  border-radius:20px;
-
-
-  border:1px solid rgba(255,0,60,.7);
-
-
-  background:
-  rgba(255,0,60,.08);
-
-
-  box-shadow:
-  0 0 12px rgba(255,0,60,.3);
-
-
-  transition:.3s;
-
-}
-
-
-.login-btn:hover{
-
- background:#ff1744;
-
- box-shadow:
- 0 0 25px #ff1744;
+white-space:nowrap;
 
 }
 
 
 
-/* MENU BUTTON */
+.op-logo span{
 
-.menu-btn{
+color:#ff2020;
 
+text-shadow:
 
- width:42px;
+0 0 15px #ff2020;
 
- height:42px;
-
-
- display:flex;
-
- flex-direction:column;
-
- justify-content:center;
-
- align-items:center;
+}
 
 
- gap:5px;
+
+.op-actions{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
 
 
- border-radius:50%;
+
+.op-login{
 
 
- border:1px solid rgba(255,0,60,.6);
+height:38px;
+
+padding:0 25px;
 
 
- background:
- rgba(255,0,60,.08);
+display:flex;
+
+align-items:center;
+
+justify-content:center;
 
 
- cursor:pointer;
+color:white;
 
 
- box-shadow:
- 0 0 18px rgba(255,0,60,.5);
+font-size:13px;
+
+font-weight:700;
+
+letter-spacing:2px;
 
 
- transition:.3s;
+text-decoration:none;
+
+
+border-radius:25px;
+
+
+border:
+
+1px solid rgba(255,0,60,.7);
+
+
+
+background:
+
+rgba(255,0,60,.10);
+
+
+
+box-shadow:
+
+0 0 15px rgba(255,0,60,.3);
+
+
+transition:.3s;
 
 
 }
 
 
-.menu-btn span{
 
+.op-login:hover{
 
- width:18px;
+background:#ff2020;
 
- height:2px;
+box-shadow:
 
-
- background:white;
-
-
- border-radius:10px;
-
-
- box-shadow:
- 0 0 8px white;
-
-
-}
-
-
-.menu-btn:hover{
-
- transform:scale(1.1);
-
- box-shadow:
- 0 0 30px #ff1744;
-
-}
-
-
-.menu-btn:hover span{
-
- background:#ff1744;
+0 0 30px #ff2020;
 
 }
 
 
 
 
-/* TABLET */
+
+.op-menu-btn{
+
+
+width:42px;
+
+height:42px;
+
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+
+gap:5px;
+
+
+border-radius:50%;
+
+
+border:
+
+1px solid rgba(255,0,60,.7);
+
+
+
+background:
+
+rgba(255,0,60,.12);
+
+
+cursor:pointer;
+
+
+box-shadow:
+
+0 0 20px rgba(255,0,60,.5);
+
+
+transition:.3s;
+
+
+}
+
+
+
+.op-menu-btn span{
+
+
+width:18px;
+
+height:2px;
+
+
+background:white;
+
+
+border-radius:10px;
+
+
+box-shadow:
+
+0 0 8px white;
+
+
+}
+
+
+
+.op-menu-btn:hover{
+
+transform:scale(1.1);
+
+box-shadow:
+
+0 0 35px #ff2020;
+
+}
+
+
+
+.op-menu-btn:hover span{
+
+background:#ff2020;
+
+}
+
+
+
+
 
 @media(max-width:768px){
 
 
-.navbar{
-
- height:62px;
-
- width:calc(100% - 24px);
-
- padding:0 16px;
-
- top:12px;
-
-}
+.op-navbar{
 
 
-
-.logo{
-
- font-size:15px;
-
- letter-spacing:1.5px;
-
-}
+top:12px;
 
 
-
-.login-btn{
-
- height:34px;
-
- padding:0 15px;
-
- font-size:11px;
-
-}
+width:calc(100% - 24px);
 
 
+height:58px;
 
-.menu-btn{
 
- width:38px;
-
- height:38px;
-
-}
-
+padding:0 14px;
 
 
 }
 
 
 
+.op-logo{
 
+font-size:14px;
 
-/* SMALL MOBILE */
-
-@media(max-width:420px){
-
-
-.navbar{
-
- height:58px;
+letter-spacing:1px;
 
 }
 
 
 
-.logo{
+.op-actions{
 
- font-size:13px;
-
-}
-
-
-
-.login-btn{
-
- display:none;
+gap:8px;
 
 }
 
 
 
-.menu-btn{
+.op-login{
 
- width:36px;
 
- height:36px;
+height:32px;
+
+padding:0 14px;
+
+
+font-size:10px;
+
 
 }
 
 
+
+.op-menu-btn{
+
+width:36px;
+
+height:36px;
+
 }
 
+
+
+}
+
+
+
+@media(max-width:400px){
+
+
+.op-login{
+
+display:none;
+
+}
+
+
+
+.op-logo{
+
+font-size:13px;
+
+}
+
+
+
+}
 
 
 `}</style>
+
 
 
     </>
