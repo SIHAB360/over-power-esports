@@ -376,9 +376,11 @@ font-size:10px;
 
 .op-menu-btn{
 
-width:36px;
+width:38px;
 
-height:36px;
+height:38px;
+
+flex-shrink:0;
 
 }
 
@@ -393,7 +395,7 @@ height:36px;
 
 .op-login{
 
-display:none;
+display:flex;
 
 }
 
