@@ -5,46 +5,70 @@ export default function SideMenu({ open, close }) {
   return (
     <>
 
+
       <div
-        className={`overlay ${open ? "active" : ""}`}
+        className={`op-overlay ${open ? "show" : ""}`}
         onClick={close}
       />
 
 
-      <aside className={`side-menu ${open ? "show" : ""}`}>
+
+      <aside className={`op-side-menu ${open ? "open" : ""}`}>
+
+
 
         <button
-          className="close"
+          className="op-close"
           onClick={close}
         >
-          ✕
+          ×
         </button>
 
 
-        <div className="side-logo">
-          OVER POWER <span>ESPORTS</span>
+
+        <div className="op-side-logo">
+
+          OVER POWER
+          <span>
+            ESPORTS
+          </span>
+
         </div>
 
 
-        <div className="links">
 
-          <a href="/">HOME</a>
+        <div className="op-menu-links">
 
-          <a href="/players">PLAYERS</a>
 
-          <a href="/teams">TEAMS</a>
+          <a href="/">
+            HOME
+          </a>
+
+
+          <a href="/players">
+            PLAYERS
+          </a>
+
+
+          <a href="/teams">
+            TEAMS
+          </a>
+
 
           <a href="/tournaments">
             TOURNAMENTS
           </a>
 
+
           <a href="/rankings">
             RANKINGS
           </a>
 
+
           <a href="/join-team">
             JOIN TEAM
           </a>
+
 
           <a href="/login">
             LOGIN
@@ -55,52 +79,76 @@ export default function SideMenu({ open, close }) {
 
 
 
-        <div className="footer">
+        <div className="op-side-footer">
+
           OVER POWER ESPORTS
+
           <br/>
+
           PLAY WITH DISCIPLINE
+
         </div>
 
-
-
-      </aside>
 
 
 
 <style jsx>{`
 
-.overlay{
+
+
+.op-overlay{
+
 
 position:fixed;
 
+
 inset:0;
 
-background:rgba(0,0,0,.55);
 
-backdrop-filter:blur(5px);
+background:
+
+rgba(0,0,0,.55);
+
+
+backdrop-filter:
+
+blur(8px);
+
+
 
 opacity:0;
 
-pointer-events:none;
+
+visibility:hidden;
+
 
 transition:.4s;
 
-z-index:90;
+
+z-index:1000;
+
 
 }
 
 
-.overlay.active{
+
+.op-overlay.show{
+
 
 opacity:1;
 
-pointer-events:auto;
+
+visibility:visible;
+
 
 }
 
 
 
-.side-menu{
+
+
+
+.op-side-menu{
 
 
 position:fixed;
@@ -108,27 +156,14 @@ position:fixed;
 
 top:0;
 
-right:-420px;
+
+left:-420px;
 
 
-width:360px;
+width:380px;
+
 
 height:100vh;
-
-
-background:
-
-rgba(8,0,5,.96);
-
-
-border-left:
-
-1px solid rgba(255,0,60,.5);
-
-
-box-shadow:
-
--10px 0 40px rgba(255,0,60,.35);
 
 
 
@@ -136,107 +171,187 @@ padding:90px 40px 40px;
 
 
 
+background:
+
+rgba(10,10,10,.45);
+
+
+
+backdrop-filter:
+
+blur(25px);
+
+
+
+border-right:
+
+1px solid rgba(255,0,60,.45);
+
+
+
+box-shadow:
+
+
+20px 0 50px rgba(255,0,60,.25),
+
+
+inset -10px 0 40px rgba(255,0,60,.08);
+
+
+
+
 transition:.45s ease;
 
 
-z-index:100;
+z-index:1001;
+
+
+
+overflow:hidden;
 
 
 }
 
 
 
-.side-menu.show{
+.op-side-menu.open{
 
-right:0;
+
+left:0;
+
 
 }
 
 
 
-.close{
+
+
+
+.op-close{
 
 
 position:absolute;
 
+
 top:25px;
+
 
 right:25px;
 
 
-width:40px;
 
-height:40px;
+width:42px;
+
+
+height:42px;
+
 
 
 border-radius:50%;
 
 
-background:
-
-rgba(255,0,60,.1);
-
 
 border:
 
-1px solid #ff1744;
+1px solid rgba(255,0,60,.7);
+
+
+
+background:
+
+rgba(255,0,60,.12);
+
 
 
 color:white;
 
 
-font-size:20px;
+font-size:28px;
 
 
 cursor:pointer;
 
 
+
+box-shadow:
+
+0 0 20px rgba(255,0,60,.5);
+
+
 }
 
 
 
-.side-logo{
 
 
-font-size:24px;
+.op-side-logo{
 
-font-weight:800;
 
-letter-spacing:2px;
+font-size:26px;
+
+
+font-weight:900;
+
+
+letter-spacing:3px;
+
 
 color:white;
 
-}
 
-
-
-.side-logo span{
-
-color:#ff1744;
 
 }
 
 
+.op-side-logo span{
 
-.links{
+
+display:block;
+
+
+color:#ff2020;
+
+
+text-shadow:
+
+0 0 20px red;
+
+
+
+}
+
+
+
+
+
+
+.op-menu-links{
+
+
+margin-top:55px;
+
 
 
 display:flex;
 
+
 flex-direction:column;
 
 
-gap:22px;
 
+gap:18px;
 
-margin-top:50px;
 
 
 }
 
 
 
-.links a{
+
+.op-menu-links a{
+
+
+position:relative;
 
 
 color:white;
@@ -248,89 +363,209 @@ text-decoration:none;
 font-size:18px;
 
 
+font-weight:700;
+
+
+
 letter-spacing:2px;
+
+
+
+padding:12px 0;
+
 
 
 transition:.3s;
 
 
-}
-
-
-
-.links a:hover{
-
-
-color:#ff1744;
-
-
-padding-left:15px;
-
-
-text-shadow:
-
-0 0 15px #ff1744;
-
 
 }
 
 
 
-.footer{
+
+.op-menu-links a::before{
+
+
+content:"";
 
 
 position:absolute;
 
 
-bottom:40px;
+left:0;
 
 
-color:#777;
+bottom:0;
 
 
-font-size:12px;
+
+width:0;
+
+
+height:2px;
+
+
+background:#ff2020;
+
+
+
+box-shadow:
+
+0 0 15px red;
+
+
+
+transition:.3s;
+
+
+
+}
+
+
+
+.op-menu-links a:hover{
+
+
+color:#ff2020;
+
+
+padding-left:15px;
+
+
+
+text-shadow:
+
+0 0 15px red;
+
+
+}
+
+
+
+.op-menu-links a:hover::before{
+
+
+width:100%;
+
+
+}
+
+
+
+
+
+
+.op-side-footer{
+
+
+position:absolute;
+
+
+bottom:35px;
+
+
+left:40px;
+
+
+
+font-size:11px;
 
 
 letter-spacing:2px;
 
 
+color:#777;
+
+
+
 }
+
+
+
+
+
 
 
 
 @media(max-width:600px){
 
 
-.side-menu{
+
+.op-side-menu{
+
 
 width:85%;
 
-padding:85px 30px 30px;
+
+padding:80px 28px 30px;
+
+
 
 }
 
 
 
-.side-logo{
 
-font-size:18px;
+.op-side-logo{
+
+
+font-size:20px;
+
+
 
 }
 
 
 
-.links a{
+.op-menu-links{
+
+
+margin-top:40px;
+
+
+gap:15px;
+
+
+
+}
+
+
+
+.op-menu-links a{
+
 
 font-size:16px;
 
+
+}
+
+
+
+.op-side-footer{
+
+
+left:28px;
+
+
 }
 
 
 
 }
+
+
+
+
+
 
 
 `}</style>
+
+
+
+      </aside>
+
 
 
     </>
