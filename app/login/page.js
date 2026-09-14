@@ -12,110 +12,76 @@ export default function LoginPage() {
 
 
 
-  const handleLogin = async () => {
+ const handleLogin = async () => {
 
   alert("Button clicked");
-    const { data, error } = await supabase.auth.signInWithPassword({
-
-      email,
-
-      password,
-
-    });
 
 
+  const { data, error } = await supabase.auth.signInWithPassword({
 
-    if(error){
+    email,
 
-      alert(error.message);
+    password,
 
-      return;
-
-    }
+  });
 
 
 
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", data.user.id)
-      .single();
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
 
 
 
-    if(profileError){
-
-      alert("Profile not found");
-
-      return;
-
-    }
+  alert("Auth Success");
 
 
 
-    if(profile.role === "admin"){
-
-      window.location.href="/admin/dashboard";
-
-    }
-
-
-
-    else if(profile.role === "player"){
-
-      window.location.href="/player/dashboard";
-
-    }
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .single();
 
 
 
-    else{
+  if(profileError){
 
-      alert("Invalid user role");
+    alert(profileError.message);
 
-    }
+    return;
 
-
-  };
-
-
-
-  return (
-    <main>
-
-
-      <h1>
-        Login
-      </h1>
+  }
 
 
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e)=>setEmail(e.target.value)}
-      />
+  alert("Role: " + profile.role);
 
 
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e)=>setPassword(e.target.value)}
-      />
+  if(profile.role === "admin"){
+
+    window.location.href="/admin/dashboard";
+
+  }
 
 
+  else if(profile.role === "player"){
 
-      <button
-        onClick={handleLogin}
-      >
-        Login
-      </button>
+    window.location.href="/player/dashboard";
 
+  }
 
 
-    </main>
-  );
-}
+  else{
+
+    alert("Invalid Role");
+
+  }
+
+
+};
