@@ -828,7 +828,9 @@ font-size:32px;
 
 }
 
-</style>
+
+`}</style>
+
 
 </main>
 
