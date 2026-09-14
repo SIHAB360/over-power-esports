@@ -47,130 +47,172 @@ export default function Navbar() {
 
         .navbar {
 
-          position: fixed;
+  position: fixed;
 
-          top: 18px;
+  top: 12px;
 
-          left: 50%;
+  left: 50%;
 
-          transform: translateX(-50%);
+  transform: translateX(-50%);
 
-          width: calc(100% - 40px);
+  width: calc(100% - 24px);
 
-          max-width: 1400px;
+  display:flex;
 
-          display:flex;
+  justify-content:space-between;
 
-          justify-content:space-between;
+  align-items:center;
 
-          align-items:center;
+  padding:14px 18px;
 
-          padding:16px 28px;
+  background:rgba(10,0,5,.75);
 
+  backdrop-filter:blur(15px);
 
-          background:
-          rgba(10,0,5,.75);
+  border:1px solid rgba(255,0,60,.35);
 
+  border-radius:18px;
 
-          backdrop-filter:blur(18px);
+  z-index:50;
 
+}
 
-          border:
-          1px solid rgba(255,0,60,.35);
 
+.logo {
 
-          border-radius:18px;
+  color:white;
 
+  font-size:18px;
 
-          box-shadow:
-          0 0 25px rgba(255,0,60,.2);
+  font-weight:800;
 
+  letter-spacing:2px;
 
-          z-index:50;
+  white-space:nowrap;
 
-        }
+}
 
 
+.logo span {
 
-        .logo {
+  color:#ff1744;
 
-          color:white;
+}
 
-          font-size:24px;
 
-          font-weight:800;
 
-          letter-spacing:3px;
+.nav-actions {
 
-          white-space:nowrap;
+  display:flex;
 
-        }
+  align-items:center;
 
+  gap:10px;
 
+}
 
-        .logo span {
 
-          color:#ff1744;
+.login-btn {
 
-          text-shadow:
-          0 0 15px #ff1744;
+  padding:8px 16px;
 
-        }
+  font-size:12px;
 
+}
 
 
-        .nav-actions {
 
-          display:flex;
+.menu-btn {
 
-          align-items:center;
+  width:40px;
 
-          gap:14px;
+  height:40px;
 
-        }
+  display:flex;
 
+  justify-content:center;
 
+  align-items:center;
 
-        .login-btn {
+  flex-direction:column;
 
-          text-decoration:none;
+  gap:4px;
 
-          color:white;
+}
 
-          font-size:13px;
 
-          letter-spacing:2px;
 
+.menu-btn span {
 
-          padding:9px 22px;
+  width:18px;
 
+  height:2px;
 
-          border-radius:20px;
+  background:white;
 
+  display:block;
 
-          border:
-          1px solid rgba(255,0,60,.6);
+  border-radius:5px;
 
+}
 
-          background:
-          rgba(255,0,60,.08);
 
 
-          transition:.3s;
+@media(max-width:600px){
 
+  .navbar{
 
-        }
+    padding:12px 14px;
 
+  }
 
 
-        .login-btn:hover {
+  .logo{
 
-          background:#ff1744;
+    font-size:14px;
 
-          box-shadow:
-          0 0 25px #ff1744;
+    letter-spacing:1px;
 
-        }
+  }
+
+
+  .login-btn{
+
+    padding:7px 12px;
+
+    font-size:11px;
+
+  }
+
+
+  .menu-btn{
+
+    width:36px;
+
+    height:36px;
+
+  }
+
+
+}
+
+
+@media(max-width:380px){
+
+  .login-btn{
+
+    display:none;
+
+  }
+
+
+  .logo{
+
+    font-size:13px;
+
+  }
+
+}
 
 
 
