@@ -185,15 +185,15 @@ padding:50px;
 
 background:
 
-radial-gradient(circle at top,#ff174433,transparent 35%),
+radial-gradient(circle at top,#ff003344,transparent 35%),
 
-radial-gradient(circle at bottom right,#ff174422,transparent 40%),
+radial-gradient(circle at bottom right,#ff003322,transparent 35%),
 
 
 linear-gradient(
 180deg,
-#030303,
-#120004
+#050505,
+#160005
 );
 
 
@@ -226,11 +226,10 @@ align-items:center;
 
 position:relative;
 
-margin-bottom:80px;
-
-text-align:center;
+margin-bottom:70px;
 
 }
+
 
 
 
@@ -243,46 +242,45 @@ text-align:center;
 
 
 
-
 .brand h1{
 
 font-size:60px;
 
-letter-spacing:12px;
+letter-spacing:10px;
 
 margin:0;
 
 font-weight:900;
 
+
 text-shadow:
 
 0 0 25px rgba(255,255,255,.25);
 
+
 }
-
-
 
 
 
 .brand h2{
 
-font-size:44px;
+font-size:42px;
 
-margin:10px 0;
+margin:8px 0;
 
 
 color:#ff1744;
 
 
-letter-spacing:12px;
+letter-spacing:10px;
 
 
 text-shadow:
 
-0 0 30px #ff1744;
+0 0 25px #ff1744;
+
 
 }
-
 
 
 
@@ -291,11 +289,13 @@ text-shadow:
 
 font-size:13px;
 
-letter-spacing:9px;
+letter-spacing:8px;
 
 color:#888;
 
+
 }
+
 
 
 
@@ -305,15 +305,17 @@ color:#888;
 
 position:absolute;
 
-right:0;
+right:20px;
 
 top:20px;
 
 
-padding:20px 30px;
+
+padding:20px 25px;
 
 
 border-radius:25px;
+
 
 
 background:
@@ -322,9 +324,9 @@ linear-gradient(
 
 145deg,
 
-rgba(255,255,255,.10),
+rgba(255,0,60,.15),
 
-rgba(0,0,0,.7)
+rgba(0,0,0,.75)
 
 );
 
@@ -332,7 +334,7 @@ rgba(0,0,0,.7)
 
 border:
 
-1px solid rgba(255,20,70,.5);
+1px solid rgba(255,30,70,.7);
 
 
 
@@ -360,14 +362,16 @@ gap:15px;
 
 
 
+
+
 .profile-box span{
 
 font-size:12px;
 
 color:#aaa;
 
-
 }
+
 
 
 
@@ -381,10 +385,7 @@ height:45px;
 padding:0 35px;
 
 
-border-radius:15px;
-
-
-border:1px solid rgba(255,40,70,.8);
+border-radius:12px;
 
 
 background:
@@ -401,6 +402,9 @@ linear-gradient(
 
 
 
+border:none;
+
+
 color:white;
 
 
@@ -413,29 +417,9 @@ letter-spacing:2px;
 cursor:pointer;
 
 
-
 box-shadow:
-
 
 0 0 25px rgba(255,0,60,.5);
-
-
-transition:.3s;
-
-
-}
-
-
-
-button:hover{
-
-transform:scale(1.05);
-
-
-box-shadow:
-
-
-0 0 45px rgba(255,0,60,.9);
 
 
 }
@@ -475,14 +459,14 @@ padding:35px;
 border-radius:25px;
 
 
-background:
 
+background:
 
 linear-gradient(
 
 145deg,
 
-rgba(255,0,60,.12),
+rgba(255,0,60,.15),
 
 rgba(5,5,5,.85)
 
@@ -492,7 +476,7 @@ rgba(5,5,5,.85)
 
 border:
 
-1px solid rgba(255,30,70,.55);
+1px solid rgba(255,30,70,.65);
 
 
 
@@ -509,15 +493,14 @@ justify-content:center;
 box-shadow:
 
 
-inset 0 0 40px rgba(255,0,60,.08),
+0 20px 60px rgba(0,0,0,.8),
 
 
-0 20px 60px rgba(0,0,0,.8);
+inset 0 0 40px rgba(255,0,60,.08);
 
 
 
 position:relative;
-
 
 overflow:hidden;
 
@@ -534,17 +517,23 @@ transition:.4s;
 
 .card::before{
 
+
 content:"";
+
 
 position:absolute;
 
+
 top:0;
 
-left:20%;
 
-width:60%;
+left:25%;
 
-height:1px;
+
+width:50%;
+
+
+height:2px;
 
 
 background:#ff1744;
@@ -560,21 +549,18 @@ box-shadow:
 
 
 
-
 .card:hover{
 
 
-transform:translateY(-12px);
+transform:translateY(-10px);
 
 
 
 box-shadow:
 
 
-0 0 60px rgba(255,0,60,.55),
+0 0 60px rgba(255,0,60,.6);
 
-
-inset 0 0 40px rgba(255,0,60,.15);
 
 
 }
@@ -582,21 +568,19 @@ inset 0 0 40px rgba(255,0,60,.15);
 
 
 
-
 .card h3{
 
 
-font-size:30px;
+font-size:28px;
 
 
-letter-spacing:4px;
+letter-spacing:3px;
 
 
 margin:0;
 
 
 color:white;
-
 
 
 text-shadow:
@@ -609,20 +593,20 @@ text-shadow:
 
 
 
-
 .card p{
 
 
 margin-top:18px;
 
 
-color:#999;
+color:#aaa;
 
 
 font-size:15px;
 
 
 }
+
 
 
 
@@ -647,12 +631,10 @@ border:
 1px solid #ff1744;
 
 
-
 border-radius:12px;
 
 
 }
-
 
 
 
@@ -662,8 +644,12 @@ border-radius:12px;
 background:#ff1744;
 
 
-}
+box-shadow:
 
+0 0 30px #ff1744;
+
+
+}
 
 
 
@@ -675,6 +661,9 @@ background:#ff1744;
 height:100vh;
 
 
+background:#050505;
+
+
 display:flex;
 
 
@@ -684,10 +673,8 @@ justify-content:center;
 align-items:center;
 
 
-background:#050505;
-
-
 }
+
 
 
 
@@ -696,6 +683,7 @@ background:#050505;
 
 
 width:70px;
+
 
 height:70px;
 
@@ -726,7 +714,6 @@ transform:rotate(360deg);
 
 }
 
-
 }
 
 
@@ -736,19 +723,19 @@ transform:rotate(360deg);
 @media(max-width:900px){
 
 
-.profile-box{
+header{
 
-position:static;
-
-margin-top:30px;
+flex-direction:column;
 
 }
 
 
 
-header{
+.profile-box{
 
-flex-direction:column;
+position:static;
+
+margin-top:30px;
 
 }
 
@@ -762,28 +749,11 @@ grid-template-columns:1fr;
 
 
 
-.brand h1{
-
-font-size:38px;
-
-}
-
-
-
-.brand h2{
-
-font-size:30px;
-
-}
-
-
-
 }
 
 
 
 `}</style>
-
 </main>
 
 );
