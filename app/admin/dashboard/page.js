@@ -4,209 +4,274 @@ import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
 
 
-export default function AdminDashboard() {
+export default function AdminDashboard(){
 
 
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+const [loading,setLoading]=useState(true);
 
 
 
-  useEffect(()=>{
+useEffect(()=>{
 
+checkAdmin();
 
-    checkAdmin();
+},[]);
 
 
-  },[]);
 
+const checkAdmin = async()=>{
 
 
-  const checkAdmin = async()=>{
+const {data:{user}} = await supabase.auth.getUser();
 
 
-    const { data:{ user } } = await supabase.auth.getUser();
 
+if(!user){
 
+window.location.href="/login";
 
-    if(!user){
+return;
 
-      window.location.href="/login";
+}
 
-      return;
 
-    }
 
+const {data:profile} = await supabase
 
+.from("profiles")
 
-    const { data:profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+.select("role")
 
+.eq("id",user.id)
 
+.single();
 
-    if(profile?.role !== "admin"){
 
-      window.location.href="/login";
 
-      return;
+if(profile?.role !== "admin"){
 
-    }
+window.location.href="/login";
 
+return;
 
+}
 
-    setUser(user);
 
-    setLoading(false);
 
+setLoading(false);
 
 
-  };
+};
 
 
 
 
-  const logout = async()=>{
+const logout = async()=>{
 
 
-    await supabase.auth.signOut();
+await supabase.auth.signOut();
 
+window.location.href="/login";
 
-    window.location.href="/login";
 
+};
 
-  };
 
 
 
-  if(loading){
+if(loading){
 
-    return (
 
-      <main>
+return(
 
-        <h1>
-          Loading Admin Panel...
-        </h1>
+<main className="loading">
 
-      </main>
+LOADING ADMIN PANEL...
 
-    );
+</main>
 
-  }
+);
 
 
+}
 
 
-  return (
 
-    <main className="admin">
+return(
 
 
-      <header className="top">
+<main className="admin-page">
 
-        <h1>
-          OVER POWER ADMIN PANEL
-        </h1>
 
 
-        <button onClick={logout}>
-          Logout
-        </button>
+<header>
 
 
-      </header>
+<div>
 
+<h1>
+OVER POWER
+<span> ADMIN PANEL</span>
+</h1>
 
+<p>
+CONTROL CENTER
+</p>
 
-      <section className="cards">
+</div>
 
 
-        <div className="card">
 
-          <h2>
-            Players
-          </h2>
+<button onClick={logout}>
+LOGOUT
+</button>
 
-          <p>
-            Manage all players
-          </p>
 
-        </div>
+</header>
 
 
 
-        <div className="card">
 
-          <h2>
-            Matches
-          </h2>
+<section className="dashboard-grid">
 
-          <p>
-            Create and manage matches
-          </p>
 
-        </div>
 
+<div className="card">
 
+<h2>
+👥 PLAYERS
+</h2>
 
-        <div className="card">
+<p>
+Manage Players
+</p>
 
-          <h2>
-            Profit
-          </h2>
+</div>
 
-          <p>
-            Control tournament profit
-          </p>
 
-        </div>
 
+<div className="card">
 
+<h2>
+🎮 MATCHES
+</h2>
 
-        <div className="card">
+<p>
+Create & Control Matches
+</p>
 
-          <h2>
-            Salaries
-          </h2>
+</div>
 
-          <p>
-            Manage player salary
-          </p>
 
-        </div>
 
+<div className="card">
 
+<h2>
+🏆 TOURNAMENTS
+</h2>
 
-      </section>
+<p>
+Tournament Management
+</p>
+
+</div>
+
+
+
+<div className="card">
+
+<h2>
+💰 PROFIT
+</h2>
+
+<p>
+Income & Profit Control
+</p>
+
+</div>
+
+
+
+<div className="card">
+
+<h2>
+💳 SALARY
+</h2>
+
+<p>
+Player Salary System
+</p>
+
+</div>
+
+
+
+<div className="card">
+
+<h2>
+🔐 CODES
+</h2>
+
+<p>
+Verification Code Control
+</p>
+
+</div>
+
+
+
+</section>
+
 
 
 
 
 <style jsx>{`
 
-.admin{
+.admin-page{
+
 
 min-height:100vh;
 
+
 padding:40px;
 
+
 background:
-linear-gradient(
-135deg,
-#400000,
-#050505
-);
+
+radial-gradient(circle at top,#700000,#050505 70%);
+
 
 color:white;
+
 
 }
 
 
 
-.top{
+.loading{
+
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#050505;
+
+color:white;
+
+font-size:25px;
+
+}
+
+
+
+header{
+
 
 display:flex;
 
@@ -214,15 +279,41 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:40px;
+margin-bottom:50px;
+
 
 }
 
 
 
-.top h1{
+h1{
 
-font-size:32px;
+
+font-size:38px;
+
+letter-spacing:3px;
+
+
+}
+
+
+
+h1 span{
+
+
+color:#ff1744;
+
+}
+
+
+
+header p{
+
+
+color:#aaa;
+
+letter-spacing:5px;
+
 
 }
 
@@ -230,29 +321,54 @@ font-size:32px;
 
 button{
 
-background:#ff2020;
 
-color:white;
+background:
+
+linear-gradient(
+135deg,
+#ff1744,
+#990000
+);
+
 
 border:none;
 
-padding:12px 25px;
 
-border-radius:25px;
+padding:14px 30px;
+
+
+border-radius:30px;
+
+
+color:white;
+
+
+font-weight:800;
+
 
 cursor:pointer;
+
+
+box-shadow:
+
+0 0 25px rgba(255,0,60,.5);
+
 
 }
 
 
 
-.cards{
+.dashboard-grid{
+
 
 display:grid;
 
-grid-template-columns:repeat(4,1fr);
+
+grid-template-columns:repeat(3,1fr);
+
 
 gap:25px;
+
 
 }
 
@@ -260,21 +376,48 @@ gap:25px;
 
 .card{
 
+
+padding:35px;
+
+
+border-radius:25px;
+
+
 background:
 
 rgba(255,255,255,.08);
 
+
 border:
 
-1px solid rgba(255,0,60,.4);
+1px solid rgba(255,0,60,.35);
 
-padding:30px;
 
-border-radius:20px;
+backdrop-filter:blur(20px);
+
 
 box-shadow:
 
-0 0 30px rgba(255,0,60,.2);
+0 0 30px rgba(255,0,60,.15);
+
+
+transition:.3s;
+
+
+}
+
+
+
+.card:hover{
+
+
+transform:translateY(-8px);
+
+
+box-shadow:
+
+0 0 40px rgba(255,0,60,.5);
+
 
 }
 
@@ -282,19 +425,38 @@ box-shadow:
 
 .card h2{
 
-color:#ff2020;
+
+color:#ff1744;
+
 
 }
+
 
 
 
 @media(max-width:800px){
 
-.cards{
+
+.dashboard-grid{
+
 
 grid-template-columns:1fr;
 
+
 }
+
+
+
+header{
+
+
+flex-direction:column;
+
+gap:20px;
+
+
+}
+
 
 
 }
@@ -304,9 +466,11 @@ grid-template-columns:1fr;
 `}</style>
 
 
-    </main>
 
-  );
+</main>
+
+
+);
 
 
 }
