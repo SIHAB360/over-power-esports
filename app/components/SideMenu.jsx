@@ -5,12 +5,12 @@ export default function SideMenu({ open, close }) {
   return (
     <>
 
-      {open && (
-        <div
-          className="op-overlay"
-          onClick={close}
-        />
-      )}
+   {open && (
+  <div
+    className="op-overlay"
+    onClick={() => close()}
+  />
+)}
 
 
 
@@ -111,6 +111,7 @@ cursor:pointer;
 
 .op-side-menu{
 
+pointer-events:auto;
 
 position:fixed;
 
