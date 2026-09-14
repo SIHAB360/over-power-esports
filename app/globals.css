@@ -423,8 +423,6 @@ z-index:-1;
 
 
 }
-
-
 .hero-logo{
 
 
@@ -434,7 +432,7 @@ width:140px;
 height:140px;
 
 
-margin:40px auto 0;
+margin:120px auto 0;
 
 
 
@@ -461,16 +459,25 @@ box-shadow:
 
 
 
-opacity:0;
+opacity:1;
+
 
 
 animation:
 
-logoEntry 1.2s ease forwards,
-logoFloat 3s ease-in-out 1.2s infinite;
+logoFloat 3s ease-in-out infinite;
+
+
+
+position:relative;
+
+
+z-index:1;
 
 
 }
+
+
 
 
 
