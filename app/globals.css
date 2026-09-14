@@ -425,9 +425,6 @@ z-index:-1;
 }
 
 
-
-
-
 .hero-logo{
 
 
@@ -437,7 +434,7 @@ width:140px;
 height:140px;
 
 
-margin:auto;
+margin:40px auto 0;
 
 
 
@@ -467,13 +464,6 @@ box-shadow:
 opacity:0;
 
 
-transform:
-
-translateY(-120px)
-scale(.7);
-
-
-
 animation:
 
 logoEntry 1.2s ease forwards,
@@ -481,7 +471,6 @@ logoFloat 3s ease-in-out 1.2s infinite;
 
 
 }
-
 
 
 
@@ -514,8 +503,8 @@ opacity:0;
 
 transform:
 
-translateY(-120px)
-scale(.7);
+translateY(-40px)
+scale(.85);
 
 
 }
@@ -569,6 +558,8 @@ translateY(-10px);
 
 
 }
+
+
 
 
 
