@@ -59,11 +59,7 @@ return;
 
 
 
-const role = profile?.role?.trim().toLowerCase();
-
-
-
-if(role !== "admin"){
+if(profile?.role?.toLowerCase() !== "admin"){
 
 window.location.href="/login";
 
@@ -97,15 +93,6 @@ window.location.href="/login";
 
 
 
-const openPage=(page)=>{
-
-window.location.href=page;
-
-};
-
-
-
-
 
 if(loading){
 
@@ -114,45 +101,41 @@ return(
 
 <main className="loading">
 
-<div>
-
 <div className="loader"></div>
-
-<p>
-LOADING ADMIN PANEL...
-</p>
-
-</div>
 
 </main>
 
 );
 
-
 }
+
+
 
 
 
 return(
 
-
 <main className="admin-page">
-
 
 
 <header>
 
 
-<div>
+<div className="brand">
 
 <h1>
+
 OVER POWER
-<span> ADMIN</span>
+
+<span>
+ADMIN
+</span>
+
 </h1>
 
 
 <p>
-COMMAND CENTER
+CONTROL CENTER
 </p>
 
 
@@ -160,23 +143,24 @@ COMMAND CENTER
 
 
 
+<div className="admin-info">
 
-<div className="right">
 
+<div className="email">
 
-<span>
 {adminEmail}
-</span>
 
+</div>
 
 
 <button onClick={logout}>
+
 LOGOUT
+
 </button>
 
 
 </div>
-
 
 
 </header>
@@ -191,15 +175,13 @@ LOGOUT
 
 <div className="card">
 
-<h2>
-👥 PLAYERS
-</h2>
+<h2>PLAYERS</h2>
 
 <p>
 Manage player accounts
 </p>
 
-<button onClick={()=>openPage("/admin/players")}>
+<button>
 OPEN
 </button>
 
@@ -208,18 +190,15 @@ OPEN
 
 
 
-
 <div className="card">
 
-<h2>
-🎮 MATCHES
-</h2>
+<h2>MATCHES</h2>
 
 <p>
 Create & control matches
 </p>
 
-<button onClick={()=>openPage("/admin/matches")}>
+<button>
 OPEN
 </button>
 
@@ -228,18 +207,15 @@ OPEN
 
 
 
-
 <div className="card">
 
-<h2>
-🏆 TOURNAMENTS
-</h2>
+<h2>TOURNAMENTS</h2>
 
 <p>
 Tournament management
 </p>
 
-<button onClick={()=>openPage("/admin/tournaments")}>
+<button>
 OPEN
 </button>
 
@@ -248,18 +224,15 @@ OPEN
 
 
 
-
 <div className="card">
 
-<h2>
-💰 PROFIT
-</h2>
+<h2>PROFIT</h2>
 
 <p>
 Income calculation
 </p>
 
-<button onClick={()=>openPage("/admin/profit")}>
+<button>
 OPEN
 </button>
 
@@ -268,18 +241,15 @@ OPEN
 
 
 
-
 <div className="card">
 
-<h2>
-💳 SALARY
-</h2>
+<h2>SALARY</h2>
 
 <p>
 Player salary control
 </p>
 
-<button onClick={()=>openPage("/admin/salary")}>
+<button>
 OPEN
 </button>
 
@@ -288,18 +258,15 @@ OPEN
 
 
 
-
 <div className="card">
 
-<h2>
-🔐 VERIFICATION
-</h2>
+<h2>VERIFICATION</h2>
 
 <p>
-Generate 24h codes
+Generate access codes
 </p>
 
-<button onClick={()=>openPage("/admin/codes")}>
+<button>
 OPEN
 </button>
 
@@ -308,14 +275,7 @@ OPEN
 
 
 </section>
-
-
-
-
-
-
-
-<style jsx>{`
+  <style jsx>{`
 
 .admin-page{
 
@@ -323,19 +283,18 @@ min-height:100vh;
 
 padding:40px;
 
-position:relative;
-
-overflow:hidden;
-
 background:
 
-radial-gradient(circle at top left,#ff003c55,transparent 35%),
-radial-gradient(circle at top right,#7000ff55,transparent 35%),
-radial-gradient(circle at bottom,#008cff33,transparent 30%),
+radial-gradient(circle at top,#ff202033,transparent 35%),
+
 #050505;
 
 
 color:white;
+
+position:relative;
+
+overflow:hidden;
 
 }
 
@@ -347,19 +306,19 @@ content:"";
 
 position:absolute;
 
-width:500px;
+width:600px;
 
-height:500px;
+height:600px;
 
-background:#ff1744;
+background:#ff2020;
 
 filter:blur(180px);
 
-top:-200px;
+top:-250px;
 
-left:-150px;
+left:-200px;
 
-opacity:.35;
+opacity:.18;
 
 }
 
@@ -371,73 +330,19 @@ content:"";
 
 position:absolute;
 
-width:450px;
+width:500px;
 
-height:450px;
+height:500px;
 
-background:#7000ff;
+background:#ff2020;
 
-filter:blur(180px);
+filter:blur(200px);
 
-bottom:-200px;
+bottom:-250px;
 
 right:-150px;
 
-opacity:.35;
-
-}
-
-
-
-.loading{
-
-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:#050505;
-
-color:white;
-
-font-size:22px;
-
-}
-
-
-
-.loader{
-
-width:70px;
-
-height:70px;
-
-border:6px solid #222;
-
-border-top:6px solid #ff1744;
-
-border-right:6px solid #7000ff;
-
-border-radius:50%;
-
-animation:spin 1s linear infinite;
-
-margin:auto;
-
-}
-
-
-
-@keyframes spin{
-
-100%{
-
-transform:rotate(360deg);
-
-}
+opacity:.15;
 
 }
 
@@ -455,70 +360,51 @@ display:flex;
 
 justify-content:space-between;
 
-align-items:center;
+align-items:flex-start;
 
-margin-bottom:50px;
+margin-bottom:60px;
 
 }
 
 
 
+.brand h1{
 
-h1{
+font-size:44px;
 
-font-size:45px;
+font-weight:900;
 
 letter-spacing:5px;
 
+margin:0;
+
+
+}
+
+
+
+.brand h1 span{
+
+display:block;
+
+color:#ff2020;
+
 text-shadow:
 
-0 0 20px rgba(255,255,255,.3);
+0 0 20px #ff2020;
+
 
 }
 
 
 
+.brand p{
 
-h1 span{
+margin-top:12px;
 
-color:#ff1744;
+color:#999;
 
-text-shadow:
-
-0 0 25px #ff1744;
-
-}
-
-
-
-
-header p{
-
-color:#aaa;
-
-letter-spacing:8px;
-
-}
-
-
-
-
-.right{
-
-display:flex;
-
-align-items:center;
-
-gap:25px;
-
-}
-
-
-
-
-.right span{
-
-color:#ddd;
+letter-spacing:6px;
 
 font-size:13px;
 
@@ -527,53 +413,90 @@ font-size:13px;
 
 
 
-button{
+
+.admin-info{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:flex-end;
+
+gap:18px;
+
+}
+
+
+
+.email{
+
+font-size:13px;
+
+color:#aaa;
+
+}
+
+
+
+
+
+.admin-info button{
+
+
+width:160px;
+
+height:45px;
+
+
+border-radius:30px;
+
+
+border:1px solid rgba(255,32,32,.7);
+
 
 background:
 
-linear-gradient(
-135deg,
-#ff1744,
-#7000ff
-);
+rgba(255,32,32,.12);
 
-
-
-border:none;
 
 color:white;
 
-padding:14px 32px;
 
-border-radius:35px;
+font-weight:800;
 
-font-weight:900;
+
+letter-spacing:2px;
+
 
 cursor:pointer;
 
 
+
 box-shadow:
 
-0 0 25px rgba(255,0,80,.7);
+0 0 20px rgba(255,32,32,.35);
 
 
 transition:.3s;
 
+
 }
 
 
 
+.admin-info button:hover{
 
-button:hover{
 
-transform:scale(1.08);
+background:#ff2020;
 
 
 box-shadow:
 
-0 0 45px rgba(255,0,80,1);
+0 0 40px #ff2020;
+
 
 }
+
 
 
 
@@ -584,11 +507,13 @@ position:relative;
 
 z-index:2;
 
+
 display:grid;
 
 grid-template-columns:repeat(3,1fr);
 
 gap:30px;
+
 
 }
 
@@ -598,43 +523,55 @@ gap:30px;
 
 .card{
 
-padding:40px;
 
-border-radius:30px;
+padding:35px;
+
+
+min-height:220px;
+
+
+border-radius:25px;
 
 
 background:
 
 linear-gradient(
+
 145deg,
-rgba(255,255,255,.12),
-rgba(255,255,255,.04)
+
+rgba(255,255,255,.08),
+
+rgba(0,0,0,.65)
+
 );
 
 
 
 border:
 
-1px solid rgba(255,0,90,.45);
+1px solid rgba(255,32,32,.35);
 
 
 
-backdrop-filter:blur(25px);
+backdrop-filter:blur(20px);
 
 
 
 box-shadow:
 
-inset 0 0 30px rgba(255,255,255,.05),
 
-0 0 35px rgba(255,0,80,.25);
-
+inset 0 0 30px rgba(255,255,255,.03),
 
 
-transition:.4s;
+0 0 35px rgba(255,32,32,.15);
+
+
+
+transition:.35s;
 
 
 }
+
 
 
 
@@ -644,88 +581,246 @@ transition:.4s;
 
 transform:
 
-translateY(-12px)
-scale(1.03);
+translateY(-10px);
 
 
-
-border-color:#ff1744;
+border-color:#ff2020;
 
 
 
 box-shadow:
 
 
-0 0 60px rgba(255,0,80,.7),
+0 0 45px rgba(255,32,32,.5);
 
-inset 0 0 30px rgba(255,0,80,.2);
 
 
 }
+
 
 
 
 
 .card h2{
 
+
 font-size:25px;
 
-color:#ff1744;
+
+letter-spacing:2px;
+
+
+color:white;
+
 
 
 text-shadow:
 
-0 0 15px #ff1744;
+0 0 10px rgba(255,255,255,.3);
+
+
 
 }
+
 
 
 
 .card p{
 
-color:#ccc;
 
-font-size:16px;
+color:#999;
+
+
+margin-top:15px;
+
+
+font-size:15px;
+
 
 }
+
 
 
 
 .card button{
 
-margin-top:25px;
+
+margin-top:35px;
+
 
 width:100%;
 
+
+height:45px;
+
+
+
+border-radius:25px;
+
+
+
+border:1px solid rgba(255,32,32,.6);
+
+
+
+background:
+
+rgba(255,32,32,.1);
+
+
+
+color:white;
+
+
+
+font-weight:700;
+
+
+
+cursor:pointer;
+
+
+
+transition:.3s;
+
+
+
+}
+
+
+
+.card button:hover{
+
+
+background:#ff2020;
+
+
+box-shadow:
+
+0 0 30px #ff2020;
+
+
 }
 
 
 
 
-@media(max-width:800px){
 
 
-.dashboard-grid{
+.loading{
 
-grid-template-columns:1fr;
+
+height:100vh;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+
+background:#050505;
+
+
+
+color:white;
+
 
 }
 
+
+
+
+.loader{
+
+
+width:65px;
+
+
+height:65px;
+
+
+border-radius:50%;
+
+
+border:
+
+5px solid #222;
+
+
+border-top-color:#ff2020;
+
+
+animation:
+
+spin 1s linear infinite;
+
+
+}
+
+
+
+@keyframes spin{
+
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+
+}
+
+
+
+
+
+@media(max-width:900px){
 
 
 header{
 
+
 flex-direction:column;
 
-gap:25px;
+
+gap:30px;
+
 
 }
 
 
 
-.right{
+.admin-info{
 
-flex-direction:column;
+
+align-items:flex-start;
+
+
+}
+
+
+
+.dashboard-grid{
+
+
+grid-template-columns:1fr;
+
+
+}
+
+
+
+.brand h1{
+
+
+font-size:32px;
+
 
 }
 
@@ -736,13 +831,3 @@ flex-direction:column;
 
 
 `}</style>
-
-
-
-</main>
-
-
-);
-
-
-}
