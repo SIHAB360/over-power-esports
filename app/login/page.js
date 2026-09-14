@@ -14,7 +14,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
 
-
+  alert("Button clicked");
     const { data, error } = await supabase.auth.signInWithPassword({
 
       email,
