@@ -15,31 +15,24 @@ export default function LoginPage() {
   const handleLogin = async () => {
 
 
-    alert("Button clicked");
+    console.log("EMAIL:", email);
+    console.log("PASSWORD:", password);
 
 
 
     const { data, error } = await supabase.auth.signInWithPassword({
 
-  email,
+      email: email.trim(),
 
-  password,
+      password,
 
-});
-
-
-console.log("DATA:", data);
-console.log("ERROR:", error);
+    });
 
 
 
-if(error){
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
 
-  alert(error.message);
-
-  return;
-
-}
 
 
     if(error){
@@ -64,6 +57,11 @@ if(error){
 
 
 
+    console.log("PROFILE:", profile);
+    console.log("PROFILE ERROR:", profileError);
+
+
+
     if(profileError){
 
       alert(profileError.message);
@@ -71,10 +69,6 @@ if(error){
       return;
 
     }
-
-
-
-    alert("Role: " + profile.role);
 
 
 
@@ -87,7 +81,6 @@ if(error){
     }
 
 
-
     else if(profile.role === "player"){
 
 
@@ -95,7 +88,6 @@ if(error){
 
 
     }
-
 
 
     else{
