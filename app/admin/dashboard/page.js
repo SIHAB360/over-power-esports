@@ -738,11 +738,48 @@ font-size:28px;
 
 `}</style>
 
+</style>
 
 
 </main>
 
 
 );
+
+}
+
+
+
+function Card({number,title,text}){
+
+
+return(
+
+<div className="card">
+
+<div className="card-number">
+{number}
+</div>
+
+
+<h3>
+{title}
+</h3>
+
+
+<p>
+{text}
+</p>
+
+
+<button>
+OPEN PANEL →
+</button>
+
+
+</div>
+
+);
+
 
 }
