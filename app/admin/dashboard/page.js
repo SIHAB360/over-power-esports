@@ -496,15 +496,13 @@ box-shadow:
 
 .dashboard-grid{
 
-
 display:grid;
-
 
 grid-template-columns:repeat(3,1fr);
 
-
 gap:35px;
 
+margin-top:20px;
 
 }
 
@@ -514,26 +512,54 @@ gap:35px;
 
 .card{
 
-
 height:280px;
-
 
 padding:35px;
 
-
-
-border-radius:35px;
-
+border-radius:30px;
 
 
 background:
 
-
 linear-gradient(
 145deg,
 rgba(255,255,255,.10),
-rgba(0,0,0,.80)
+rgba(10,0,5,.85)
 );
+
+
+border:
+
+1px solid rgba(255,20,60,.45);
+
+
+backdrop-filter:blur(25px);
+
+
+position:relative;
+
+overflow:hidden;
+
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.8),
+
+inset 0 0 40px rgba(255,20,60,.15);
+
+
+
+transition:.4s;
+
+}
 
 
 
@@ -585,20 +611,17 @@ transition:.4s;
 
 .card:hover{
 
-
-transform:translateY(-15px);
-
-
-
-box-shadow:
-
-
-0 0 70px rgba(255,20,60,.55);
-
+transform:translateY(-12px);
 
 
 border-color:#ff1744;
 
+
+box-shadow:
+
+0 0 70px rgba(255,20,60,.55),
+
+inset 0 0 40px rgba(255,20,60,.25);
 
 
 }
@@ -609,35 +632,25 @@ border-color:#ff1744;
 
 .card::before{
 
-
 content:"";
-
 
 position:absolute;
 
-
 top:0;
 
+left:15%;
 
-left:20%;
-
-
-width:60%;
-
+width:70%;
 
 height:2px;
-
 
 
 background:#ff1744;
 
 
-
 box-shadow:
 
-
 0 0 25px #ff1744;
-
 
 
 }
@@ -648,12 +661,38 @@ box-shadow:
 
 .card-icon{
 
-
 font-size:45px;
 
+width:70px;
 
-margin-bottom:20px;
+height:70px;
 
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+border-radius:20px;
+
+
+background:
+
+rgba(255,20,60,.12);
+
+
+border:
+
+1px solid rgba(255,20,60,.5);
+
+
+box-shadow:
+
+0 0 30px rgba(255,20,60,.25);
+
+
+margin-bottom:25px;
 
 }
 
@@ -709,12 +748,17 @@ margin-top:30px;
 
 height:45px;
 
-border-radius:25px;
+
+border-radius:20px;
+
 
 background:
 
-rgba(255,20,60,.12);
-
+linear-gradient(
+135deg,
+rgba(255,20,60,.25),
+rgba(255,20,60,.05)
+);
 
 
 border:
@@ -722,16 +766,20 @@ border:
 1px solid #ff1744;
 
 
-
 color:white;
+
 
 font-weight:900;
 
+
 letter-spacing:2px;
+
 
 cursor:pointer;
 
+
 transition:.3s;
+
 
 }
 
