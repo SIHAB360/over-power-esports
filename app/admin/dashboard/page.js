@@ -887,12 +887,11 @@ font-size:28px;
 
 }
 
-
-
 }
 
-
 `}</style>
+
+
 </main>
 
 );
