@@ -61,8 +61,8 @@ export default function LoginPage() {
     .single();
 
     
-console.log("AUTH USER:", data.user);
-console.log("PROFILE:", profile);
+console.log("LOGIN USER ID:", data.user.id);
+console.log("PROFILE DATA:", profile);
 console.log("PROFILE ERROR:", profileError);
 
     
