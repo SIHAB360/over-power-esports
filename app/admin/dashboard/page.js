@@ -530,6 +530,39 @@ REVENUE
             grid-template-columns: 1fr;
           }
         }
+        .stats-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-bottom:50px;
+}
+
+.stat-card{
+padding:24px 20px;
+border-radius:20px;
+background:linear-gradient(
+145deg,
+rgba(255,20,60,.12),
+rgba(0,0,0,.75)
+);
+border:1px solid rgba(255,20,60,.4);
+box-shadow:
+0 15px 40px rgba(0,0,0,.5),
+inset 0 0 25px rgba(255,20,60,.05);
+text-align:center;
+}
+
+.stat-card span{
+font-size:10px;
+letter-spacing:3px;
+color:#888;
+}
+
+.stat-card h2{
+font-size:30px;
+margin:12px 0 0;
+color:#fff;
+}
       `}</style>
     </main>
   );
