@@ -79,14 +79,16 @@ players.map((player)=>(
 
 
 <h2>
-{player.email}
+{player.full_name || "Unnamed Player"}
 </h2>
 
+<p>
+Email: {player.email}
+</p>
 
 <p>
 ROLE : {player.role || "PLAYER"}
 </p>
-
 
 </div>
 
