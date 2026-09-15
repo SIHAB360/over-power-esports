@@ -171,10 +171,6 @@ LOGOUT
 
 </header>
 
-
-
-
-
 <section className="dashboard-grid">
 
 
@@ -227,29 +223,6 @@ text="Generate access codes"
 
 
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style jsx>{`
 
@@ -1037,20 +1010,6 @@ font-size:28px;
 }
 
 `}</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </style>
 
