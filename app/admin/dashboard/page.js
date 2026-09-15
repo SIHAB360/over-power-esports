@@ -743,7 +743,6 @@ font-size:28px;
 
 </main>
 
-
 );
 
 }
@@ -752,10 +751,10 @@ font-size:28px;
 
 function Card({number,title,text}){
 
-
 return(
 
 <div className="card">
+
 
 <div className="card-number">
 {number}
@@ -780,6 +779,5 @@ OPEN PANEL →
 </div>
 
 );
-
 
 }
