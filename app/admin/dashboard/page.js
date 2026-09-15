@@ -177,10 +177,12 @@ REVENUE
         <span>→</span>
       </button>
     </div>
-  ))}
+    ))}
 </div>
 
-      <style jsx>{`
+</div>
+
+<style jsx>{`
         .admin-page {
           min-height: 100vh;
           background: #050505;
