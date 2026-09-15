@@ -683,8 +683,6 @@ font-size:28px;
 
 );
 
-}
-
 
 
 function Card({title,text}){
