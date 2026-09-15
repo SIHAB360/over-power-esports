@@ -513,55 +513,97 @@ REVENUE
         }
 
         @media (max-width: 640px) {
-          .container {
-            padding: 30px 16px 50px;
-          }
-          .header {
-            flex-direction: column;
-            gap: 24px;
-          }
-          .brand h1 {
-            font-size: 36px;
-          }
-          .brand h2 {
-            font-size: 20px;
-          }
-          .cards-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-        .stats-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-margin-bottom:50px;
+  .container {
+    padding: 30px 16px 50px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .brand h1 {
+    font-size: 36px;
+  }
+
+  .brand h2 {
+    font-size: 20px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.stat-card{
-padding:24px 20px;
-border-radius:20px;
-background:linear-gradient(
-145deg,
-rgba(255,20,60,.12),
-rgba(0,0,0,.75)
-);
-border:1px solid rgba(255,20,60,.4);
-box-shadow:
-0 15px 40px rgba(0,0,0,.5),
-inset 0 0 25px rgba(255,20,60,.05);
-text-align:center;
+
+/* =========================
+   DASHBOARD STATS
+========================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 50px;
 }
 
-.stat-card span{
-font-size:10px;
-letter-spacing:3px;
-color:#888;
+.stat-card {
+  padding: 24px 20px;
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 20, 60, .12),
+      rgba(0, 0, 0, .75)
+    );
+
+  border: 1px solid rgba(255, 20, 60, .4);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, .5),
+    inset 0 0 25px rgba(255, 20, 60, .05);
+
+  text-align: center;
 }
 
-.stat-card h2{
-font-size:30px;
-margin:12px 0 0;
-color:#fff;
+.stat-card span {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #888;
+}
+
+.stat-card h2 {
+  font-size: 30px;
+  margin: 12px 0 0;
+  color: #fff;
+}
+
+
+/* =========================
+   STATS RESPONSIVE
+========================= */
+
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 35px;
+  }
+
+  .stat-card {
+    padding: 20px 16px;
+  }
+
+  .stat-card h2 {
+    font-size: 26px;
+  }
 }
       `}</style>
     </main>
