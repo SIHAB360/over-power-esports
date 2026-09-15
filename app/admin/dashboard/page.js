@@ -748,7 +748,6 @@ transform:rotate(360deg);
 
 
 
-
 @media(max-width:900px){
 
 .profile-box{
@@ -791,14 +790,20 @@ font-size:28px;
 
 }
 
+}
 
 `}</style>
+
+
+</div>
 
 </main>
 
 );
 
 }
+
+
 
 function Card({title,text}){
 
