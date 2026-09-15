@@ -153,26 +153,32 @@ REVENUE
 
 </section>
 
-        {/* Cards Grid */}
-        <div className="cards-grid">
-          {cards.map((card) => (
-            <div key={card.num} className="card">
-              <div className="card-top">
-                <div className="icon-box">{card.icon}</div>
-                <span className="number">{card.num}</span>
-              </div>
-
-              <h3>{card.title}</h3>
-              <p>{card.desc}</p>
-
-              <button className="action-btn">
-                OPEN PANEL
-                <span>→</span>
-              </button>
-            </div>
-          ))}
-        </div>
+       {/* Cards Grid */}
+<div className="cards-grid">
+  {cards.map((card) => (
+    <div key={card.num} className="card">
+      <div className="card-top">
+        <div className="icon-box">{card.icon}</div>
+        <span className="number">{card.num}</span>
       </div>
+
+      <h3>{card.title}</h3>
+      <p>{card.desc}</p>
+
+      <button
+        className="action-btn"
+        onClick={() => {
+          if (card.href) {
+            window.location.href = card.href;
+          }
+        }}
+      >
+        OPEN PANEL
+        <span>→</span>
+      </button>
+    </div>
+  ))}
+</div>
 
       <style jsx>{`
         .admin-page {
