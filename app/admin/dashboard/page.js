@@ -42,384 +42,413 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="loading">
-        <div className="loader"></div>
-        <p className="loading-text">INITIALIZING COMMAND CENTER...</p>
+      <div className="loading-screen">
+        <div className="loader-ring"></div>
+        <p>INITIALIZING COMMAND CENTER</p>
       </div>
     );
   }
 
   return (
-    <main className="admin-page">
-      {/* Background Effects */}
-      <div className="bg-glow glow-1"></div>
-      <div className="bg-glow glow-2"></div>
-      <div className="bg-glow glow-3"></div>
-      <div className="grid-overlay"></div>
+    <main className="admin-root">
+      {/* Background Layers */}
+      <div className="bg-layer">
+        <div className="glow glow-top-left"></div>
+        <div className="glow glow-bottom-right"></div>
+        <div className="glow glow-center"></div>
+        <div className="grid-lines"></div>
+      </div>
 
-      <div className="dashboard-wrapper">
-        <header>
-          <div className="brand">
-            <span className="label">ADMIN CONTROL CENTER</span>
-            <h1>OVER POWER</h1>
-            <h2>ADMIN PANEL</h2>
-            <p>ESPORTS COMMAND CENTER</p>
+      <div className="content-wrapper">
+        {/* Header */}
+        <header className="admin-header">
+          <div className="brand-block">
+            <span className="top-label">ADMIN CONTROL CENTER</span>
+            <h1 className="main-title">OVER POWER</h1>
+            <h2 className="sub-title">ADMIN PANEL</h2>
+            <p className="tagline">ESPORTS COMMAND CENTER</p>
           </div>
 
-          <div className="profile-box">
-            <div className="profile-avatar">A</div>
-            <span className="email">{adminEmail}</span>
+          <div className="user-panel">
+            <div className="avatar">A</div>
+            <span className="user-email">{adminEmail}</span>
             <button className="logout-btn" onClick={logout}>
               LOGOUT
             </button>
           </div>
         </header>
 
-        <section className="dashboard-grid">
-          <Card
-            number="01"
-            icon="👥"
-            title="PLAYERS"
-            text="Manage player accounts"
-            color="#ff1744"
-          />
-          <Card
-            number="02"
-            icon="⚔"
-            title="MATCHES"
-            text="Create and control matches"
-            color="#ff2d55"
-          />
-          <Card
-            number="03"
-            icon="🏆"
-            title="TOURNAMENTS"
-            text="Tournament management"
-            color="#ff1744"
-          />
-          <Card
-            number="04"
-            icon="💰"
-            title="PROFIT"
-            text="Income calculation"
-            color="#ff3d71"
-          />
-          <Card
-            number="05"
-            icon="💳"
-            title="SALARY"
-            text="Player salary control"
-            color="#ff1744"
-          />
-          <Card
-            number="06"
-            icon="🔐"
-            title="VERIFICATION"
-            text="Generate access codes"
-            color="#ff2d55"
-          />
+        {/* Cards Grid */}
+        <section className="cards-grid">
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">👥</span>
+              <span className="card-num">01</span>
+            </div>
+            <h3>PLAYERS</h3>
+            <p>Manage player accounts</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
+
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">⚔</span>
+              <span className="card-num">02</span>
+            </div>
+            <h3>MATCHES</h3>
+            <p>Create and control matches</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
+
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">🏆</span>
+              <span className="card-num">03</span>
+            </div>
+            <h3>TOURNAMENTS</h3>
+            <p>Tournament management</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
+
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">💰</span>
+              <span className="card-num">04</span>
+            </div>
+            <h3>PROFIT</h3>
+            <p>Income calculation</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
+
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">💳</span>
+              <span className="card-num">05</span>
+            </div>
+            <h3>SALARY</h3>
+            <p>Player salary control</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
+
+          <div className="glass-card">
+            <div className="card-header">
+              <span className="card-icon">🔐</span>
+              <span className="card-num">06</span>
+            </div>
+            <h3>VERIFICATION</h3>
+            <p>Generate access codes</p>
+            <button className="card-action">OPEN PANEL →</button>
+          </div>
         </section>
       </div>
 
       <style jsx>{`
-        .admin-page {
+        /* ========== ROOT & BACKGROUND ========== */
+        .admin-root {
           min-height: 100vh;
-          padding: 60px 40px;
           background: #050505;
-          color: white;
+          color: #fff;
           position: relative;
-          overflow: hidden;
-          font-family: "Inter", system-ui, -apple-system, sans-serif;
+          overflow-x: hidden;
+          font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        /* Background Glow Effects */
-        .bg-glow {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(120px);
-          opacity: 0.18;
+        .bg-layer {
+          position: fixed;
+          inset: 0;
           pointer-events: none;
           z-index: 0;
         }
-        .glow-1 {
-          width: 700px;
-          height: 700px;
+
+        .glow {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(140px);
+        }
+
+        .glow-top-left {
+          width: 650px;
+          height: 650px;
           background: #ff1744;
-          top: -250px;
-          left: -200px;
+          top: -280px;
+          left: -220px;
+          opacity: 0.22;
         }
-        .glow-2 {
-          width: 500px;
-          height: 500px;
+
+        .glow-bottom-right {
+          width: 550px;
+          height: 550px;
           background: #ff0040;
-          bottom: -150px;
-          right: -100px;
-          opacity: 0.12;
+          bottom: -200px;
+          right: -150px;
+          opacity: 0.15;
         }
-        .glow-3 {
+
+        .glow-center {
           width: 400px;
           height: 400px;
           background: #ff2d55;
-          top: 40%;
+          top: 45%;
           left: 50%;
-          transform: translateX(-50%);
-          opacity: 0.08;
+          transform: translate(-50%, -50%);
+          opacity: 0.07;
         }
 
-        .grid-overlay {
+        .grid-lines {
           position: absolute;
           inset: 0;
           background-image: linear-gradient(
-              rgba(255, 23, 68, 0.03) 1px,
+              rgba(255, 23, 68, 0.04) 1px,
               transparent 1px
             ),
-            linear-gradient(90deg, rgba(255, 23, 68, 0.03) 1px, transparent 1px);
-          background-size: 60px 60px;
-          pointer-events: none;
-          z-index: 0;
+            linear-gradient(90deg, rgba(255, 23, 68, 0.04) 1px, transparent 1px);
+          background-size: 70px 70px;
         }
 
-        .dashboard-wrapper {
-          max-width: 1400px;
-          margin: 0 auto;
+        /* ========== CONTENT WRAPPER ========== */
+        .content-wrapper {
           position: relative;
           z-index: 2;
+          max-width: 1320px;
+          margin: 0 auto;
+          padding: 50px 40px 80px;
         }
 
-        /* Header */
-        header {
+        /* ========== HEADER ========== */
+        .admin-header {
           display: flex;
           justify-content: center;
           align-items: center;
           position: relative;
-          margin-bottom: 80px;
+          margin-bottom: 70px;
         }
 
-        .brand {
+        .brand-block {
           text-align: center;
         }
 
-        .label {
-          display: inline-block;
+        .top-label {
+          display: block;
           font-size: 11px;
-          letter-spacing: 8px;
+          letter-spacing: 7px;
           color: #ff1744;
           font-weight: 600;
-          text-shadow: 0 0 20px rgba(255, 23, 68, 0.8);
-          margin-bottom: 12px;
+          text-shadow: 0 0 18px rgba(255, 23, 68, 0.9);
+          margin-bottom: 10px;
         }
 
-        .brand h1 {
-          font-size: 72px;
-          letter-spacing: 14px;
-          margin: 0;
+        .main-title {
+          font-size: 68px;
           font-weight: 900;
-          background: linear-gradient(180deg, #ffffff 30%, #ff8a9b);
+          letter-spacing: 12px;
+          margin: 0;
+          line-height: 1;
+          background: linear-gradient(180deg, #ffffff 20%, #ff9aab 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          text-shadow: 0 0 40px rgba(255, 255, 255, 0.25);
-          line-height: 1;
+          background-clip: text;
+          filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.25));
         }
 
-        .brand h2 {
-          font-size: 42px;
-          letter-spacing: 10px;
-          margin: 8px 0 0;
+        .sub-title {
+          font-size: 38px;
           font-weight: 800;
+          letter-spacing: 9px;
+          margin: 6px 0 0;
           color: #ff1744;
-          text-shadow: 0 0 30px rgba(255, 23, 68, 0.7);
+          text-shadow: 0 0 28px rgba(255, 23, 68, 0.75);
         }
 
-        .brand p {
+        .tagline {
           font-size: 12px;
-          letter-spacing: 6px;
+          letter-spacing: 5px;
           color: #777;
           margin-top: 14px;
           font-weight: 500;
         }
 
-        /* Profile Box */
-        .profile-box {
+        /* User Panel */
+        .user-panel {
           position: absolute;
           right: 0;
-          top: 10px;
-          padding: 18px 22px;
-          border-radius: 24px;
-          background: rgba(20, 5, 10, 0.6);
-          border: 1px solid rgba(255, 23, 68, 0.35);
+          top: 8px;
+          background: rgba(15, 3, 8, 0.7);
+          border: 1px solid rgba(255, 23, 68, 0.4);
+          border-radius: 22px;
+          padding: 16px 20px;
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.15),
+          box-shadow: 0 0 35px rgba(255, 23, 68, 0.18),
             inset 0 0 20px rgba(255, 23, 68, 0.05);
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 12px;
-          min-width: 200px;
+          gap: 10px;
+          min-width: 190px;
         }
 
-        .profile-avatar {
-          width: 42px;
-          height: 42px;
+        .avatar {
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #ff1744, #990022);
+          background: linear-gradient(135deg, #ff1744, #b30022);
           display: flex;
           align-items: center;
           justify-content: center;
           font-weight: 800;
-          font-size: 18px;
-          box-shadow: 0 0 20px rgba(255, 23, 68, 0.5);
+          font-size: 17px;
+          box-shadow: 0 0 18px rgba(255, 23, 68, 0.55);
         }
 
-        .email {
+        .user-email {
           font-size: 11px;
           color: #bbb;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.3px;
         }
 
         .logout-btn {
-          height: 40px;
-          padding: 0 32px;
-          border-radius: 20px;
+          height: 38px;
+          padding: 0 28px;
+          border-radius: 19px;
           border: none;
           background: linear-gradient(135deg, #ff1744, #c4002b);
           color: white;
           font-weight: 800;
-          letter-spacing: 2px;
           font-size: 12px;
+          letter-spacing: 1.5px;
           cursor: pointer;
-          box-shadow: 0 0 25px rgba(255, 23, 68, 0.45);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 0 22px rgba(255, 23, 68, 0.5);
+          transition: all 0.25s ease;
         }
 
         .logout-btn:hover {
-          transform: translateY(-2px) scale(1.03);
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.7);
+          transform: translateY(-2px);
+          box-shadow: 0 0 32px rgba(255, 23, 68, 0.75);
         }
 
-        /* Dashboard Grid */
-        .dashboard-grid {
+        /* ========== CARDS GRID ========== */
+        .cards-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 28px;
+          gap: 26px;
         }
 
-        /* Card Styles */
-        .card {
-          height: 280px;
-          padding: 32px;
-          border-radius: 28px;
-          background: rgba(18, 4, 8, 0.55);
-          border: 1px solid rgba(255, 23, 68, 0.25);
-          backdrop-filter: blur(18px);
-          -webkit-backdrop-filter: blur(18px);
-          position: relative;
-          overflow: hidden;
+        /* ========== GLASS CARD ========== */
+        .glass-card {
+          background: rgba(18, 4, 9, 0.65);
+          border: 1px solid rgba(255, 23, 68, 0.32);
+          border-radius: 26px;
+          padding: 30px 28px 26px;
+          min-height: 265px;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6),
-            inset 0 0 40px rgba(255, 23, 68, 0.04);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55),
+            inset 0 0 35px rgba(255, 23, 68, 0.04);
+          transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card::before {
+        .glass-card::before {
           content: "";
           position: absolute;
           top: 0;
-          left: 0;
-          right: 0;
+          left: 12%;
+          right: 12%;
           height: 2px;
           background: linear-gradient(
             90deg,
             transparent,
-            #ff1744,
+            #ff1744 30%,
+            #ff1744 70%,
             transparent
           );
-          opacity: 0.7;
+          opacity: 0.85;
         }
 
-        .card::after {
+        .glass-card::after {
           content: "";
           position: absolute;
-          inset: 0;
+          top: 0;
+          right: 0;
+          width: 140px;
+          height: 140px;
           background: radial-gradient(
-            circle at top right,
-            rgba(255, 23, 68, 0.12),
-            transparent 60%
+            circle,
+            rgba(255, 23, 68, 0.15) 0%,
+            transparent 70%
           );
           pointer-events: none;
         }
 
-        .card:hover {
-          transform: translateY(-12px);
-          border-color: rgba(255, 23, 68, 0.6);
-          box-shadow: 0 30px 70px rgba(255, 23, 68, 0.25),
-            0 0 0 1px rgba(255, 23, 68, 0.3),
-            inset 0 0 50px rgba(255, 23, 68, 0.08);
+        .glass-card:hover {
+          transform: translateY(-10px);
+          border-color: rgba(255, 23, 68, 0.65);
+          box-shadow: 0 28px 60px rgba(255, 23, 68, 0.22),
+            0 0 0 1px rgba(255, 23, 68, 0.25),
+            inset 0 0 40px rgba(255, 23, 68, 0.07);
         }
 
-        .card-top {
+        .card-header {
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
+          align-items: center;
+          margin-bottom: 22px;
         }
 
         .card-icon {
-          font-size: 36px;
-          filter: drop-shadow(0 0 12px rgba(255, 23, 68, 0.6));
+          font-size: 34px;
+          filter: drop-shadow(0 0 10px rgba(255, 23, 68, 0.55));
           transition: transform 0.3s ease;
         }
 
-        .card:hover .card-icon {
-          transform: scale(1.1);
+        .glass-card:hover .card-icon {
+          transform: scale(1.12);
         }
 
-        .card-number {
+        .card-num {
           font-size: 13px;
-          letter-spacing: 4px;
-          color: #ff1744;
           font-weight: 700;
+          letter-spacing: 3px;
+          color: #ff1744;
           opacity: 0.9;
         }
 
-        .card-content h3 {
-          font-size: 26px;
-          letter-spacing: 3px;
-          margin: 0 0 8px;
+        .glass-card h3 {
+          font-size: 24px;
           font-weight: 800;
+          letter-spacing: 2.5px;
+          margin: 0 0 8px;
           color: #fff;
-          text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
-        .card-content p {
+        .glass-card p {
           font-size: 14px;
           color: #999;
-          margin: 0;
-          line-height: 1.4;
+          margin: 0 0 28px;
+          line-height: 1.45;
+          flex-grow: 1;
         }
 
-        .card-btn {
+        .card-action {
           height: 44px;
+          width: 100%;
           border-radius: 22px;
+          border: 1px solid rgba(255, 23, 68, 0.5);
           background: rgba(255, 23, 68, 0.12);
-          border: 1px solid rgba(255, 23, 68, 0.45);
-          color: white;
+          color: #fff;
           font-weight: 800;
-          letter-spacing: 1.5px;
           font-size: 13px;
+          letter-spacing: 1.5px;
           cursor: pointer;
           transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
           position: relative;
           overflow: hidden;
         }
 
-        .card-btn::before {
+        .card-action::before {
           content: "";
           position: absolute;
           inset: 0;
@@ -428,47 +457,48 @@ export default function AdminDashboard() {
           transition: opacity 0.3s ease;
         }
 
-        .card:hover .card-btn {
+        .glass-card:hover .card-action {
           border-color: #ff1744;
-          box-shadow: 0 0 25px rgba(255, 23, 68, 0.4);
+          box-shadow: 0 0 22px rgba(255, 23, 68, 0.4);
         }
 
-        .card:hover .card-btn::before {
+        .glass-card:hover .card-action::before {
           opacity: 1;
         }
 
-        .card-btn span {
+        .card-action span,
+        .card-action {
           position: relative;
           z-index: 1;
         }
 
-        /* Loading */
-        .loading {
-          height: 100vh;
+        /* ========== LOADING ========== */
+        .loading-screen {
+          min-height: 100vh;
+          background: #050505;
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: center;
-          background: #050505;
-          gap: 24px;
+          justify-content: center;
+          gap: 22px;
         }
 
-        .loader {
-          width: 64px;
-          height: 64px;
+        .loader-ring {
+          width: 58px;
+          height: 58px;
           border-radius: 50%;
           border: 4px solid rgba(255, 23, 68, 0.15);
           border-top-color: #ff1744;
-          animation: spin 0.9s linear infinite;
-          box-shadow: 0 0 30px rgba(255, 23, 68, 0.3);
+          animation: spin 0.85s linear infinite;
+          box-shadow: 0 0 25px rgba(255, 23, 68, 0.35);
         }
 
-        .loading-text {
-          font-size: 13px;
-          letter-spacing: 4px;
+        .loading-screen p {
+          font-size: 12px;
+          letter-spacing: 3.5px;
           color: #ff1744;
           font-weight: 600;
-          animation: pulse 1.5s ease-in-out infinite;
+          animation: pulse 1.6s ease-in-out infinite;
         }
 
         @keyframes spin {
@@ -480,64 +510,50 @@ export default function AdminDashboard() {
         @keyframes pulse {
           0%,
           100% {
-            opacity: 0.5;
+            opacity: 0.45;
           }
           50% {
             opacity: 1;
           }
         }
 
-        /* Responsive */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 1100px) {
-          .dashboard-grid {
+          .cards-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
 
         @media (max-width: 700px) {
-          .admin-page {
-            padding: 40px 20px;
+          .content-wrapper {
+            padding: 35px 18px 60px;
           }
-          .dashboard-grid {
-            grid-template-columns: 1fr;
-          }
-          .profile-box {
-            position: static;
-            margin: 30px auto 0;
-          }
-          header {
+
+          .admin-header {
             flex-direction: column;
+            gap: 30px;
           }
-          .brand h1 {
+
+          .user-panel {
+            position: static;
+          }
+
+          .main-title {
             font-size: 42px;
             letter-spacing: 6px;
           }
-          .brand h2 {
-            font-size: 28px;
+
+          .sub-title {
+            font-size: 26px;
             letter-spacing: 4px;
+          }
+
+          .cards-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
           }
         }
       `}</style>
     </main>
-  );
-}
-
-function Card({ number, icon, title, text }) {
-  return (
-    <div className="card">
-      <div className="card-top">
-        <div className="card-icon">{icon}</div>
-        <div className="card-number">{number}</div>
-      </div>
-
-      <div className="card-content">
-        <h3>{title}</h3>
-        <p>{text}</p>
-      </div>
-
-      <button className="card-btn">
-        <span>OPEN PANEL →</span>
-      </button>
-    </div>
   );
 }
