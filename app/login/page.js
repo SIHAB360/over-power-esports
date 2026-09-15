@@ -60,7 +60,12 @@ export default function LoginPage() {
 
     .single();
 
+    
+console.log("AUTH USER:", user);
+console.log("PROFILE:", profile);
+console.log("PROFILE ERROR:", error);
 
+    
 
     if(profileError){
 
