@@ -250,33 +250,89 @@ text="Generate access codes"
 
 min-height:100vh;
 
-padding:60px 50px;
+padding:70px 50px;
+
 
 background:
 
 radial-gradient(
-circle at top left,
-rgba(255,20,60,.25),
-transparent 35%
+circle at top,
+rgba(255,20,60,.30),
+transparent 30%
 ),
 
 radial-gradient(
 circle at bottom right,
-rgba(255,20,60,.15),
-transparent 40%
+rgba(255,20,60,.18),
+transparent 35%
 ),
 
+
 linear-gradient(
-135deg,
+180deg,
 #050505,
-#180004
+#140003
 );
+
 
 color:white;
 
 overflow:hidden;
 
+position:relative;
+
 }
+
+
+
+
+
+.admin-page::before{
+
+content:"";
+
+position:absolute;
+
+width:600px;
+
+height:600px;
+
+background:#ff1744;
+
+filter:blur(220px);
+
+opacity:.12;
+
+top:-300px;
+
+left:-250px;
+
+}
+
+
+
+.admin-page::after{
+
+content:"";
+
+position:absolute;
+
+width:500px;
+
+height:500px;
+
+background:#ff1744;
+
+filter:blur(220px);
+
+opacity:.10;
+
+right:-250px;
+
+bottom:-200px;
+
+}
+
 
 
 
@@ -286,7 +342,13 @@ max-width:1400px;
 
 margin:auto;
 
+position:relative;
+
+z-index:2;
+
 }
+
+
 
 
 
@@ -300,9 +362,10 @@ align-items:center;
 
 position:relative;
 
-margin-bottom:90px;
+margin-bottom:100px;
 
 }
+
 
 
 
@@ -318,49 +381,59 @@ text-align:center;
 
 font-size:12px;
 
-letter-spacing:10px;
+letter-spacing:12px;
 
 color:#ff1744;
 
+text-shadow:
+
+0 0 15px #ff1744;
+
 }
+
+
 
 
 
 .brand h1{
 
-font-size:64px;
+font-size:70px;
 
-letter-spacing:14px;
+letter-spacing:16px;
 
-margin:15px 0 0;
+margin:18px 0 0;
 
 font-weight:900;
 
-color:white;
 
 text-shadow:
 
-0 0 30px rgba(255,255,255,.3);
+0 0 25px rgba(255,255,255,.35);
 
 }
+
 
 
 
 .brand h2{
 
-font-size:44px;
+font-size:46px;
 
-letter-spacing:12px;
+letter-spacing:14px;
 
-margin:10px 0;
+margin:12px 0;
+
 
 color:#ff1744;
 
+
 text-shadow:
 
-0 0 35px #ff1744;
+0 0 40px #ff1744;
 
 }
+
+
 
 
 
@@ -368,16 +441,18 @@ text-shadow:
 
 font-size:13px;
 
-letter-spacing:8px;
+letter-spacing:10px;
 
-color:#888;
+color:#999;
 
 }
 
 
 
 
+
 .profile-box{
+
 
 position:absolute;
 
@@ -385,33 +460,44 @@ right:0;
 
 top:20px;
 
-padding:22px 28px;
 
-border-radius:28px;
+padding:25px 30px;
+
+
+border-radius:30px;
+
 
 background:
 
-rgba(255,255,255,.06);
+linear-gradient(
+145deg,
+rgba(255,255,255,.12),
+rgba(0,0,0,.75)
+);
+
+
 
 border:
 
-1px solid rgba(255,20,60,.5);
+1px solid rgba(255,20,60,.55);
 
-backdrop-filter:blur(20px);
+
+
+backdrop-filter:blur(25px);
+
+
 
 box-shadow:
 
-0 0 40px rgba(255,20,60,.25);
 
-display:flex;
+0 0 40px rgba(255,20,60,.25),
 
-flex-direction:column;
+inset 0 0 30px rgba(255,20,60,.08);
 
-align-items:center;
 
-gap:15px;
 
 }
+
 
 
 
@@ -428,13 +514,18 @@ color:#aaa;
 
 .logout-btn{
 
-height:45px;
+height:46px;
 
-padding:0 35px;
+padding:0 40px;
 
-border-radius:25px;
+margin-top:15px;
+
+
+border-radius:30px;
+
 
 border:none;
+
 
 background:
 
@@ -444,52 +535,88 @@ linear-gradient(
 #990022
 );
 
+
+
 color:white;
+
 
 font-weight:900;
 
-letter-spacing:2px;
 
-cursor:pointer;
+letter-spacing:3px;
+
+
 
 box-shadow:
 
 0 0 30px rgba(255,20,60,.5);
 
+
+
+cursor:pointer;
+
+
+transition:.3s;
+
 }
+
+
+
+
+.logout-btn:hover{
+
+transform:scale(1.05);
+
+box-shadow:
+
+0 0 50px #ff1744;
+
+}
+
 
 
 
 
 .dashboard-grid{
 
+
 display:grid;
+
 
 grid-template-columns:repeat(3,1fr);
 
-gap:35px;
+
+gap:40px;
+
 
 }
 
 
 
 
-
 .card{
 
-height:260px;
+
+height:270px;
+
 
 padding:35px;
 
-border-radius:30px;
+
+
+border-radius:32px;
+
+
 
 background:
+
 
 linear-gradient(
 145deg,
 rgba(255,255,255,.10),
-rgba(0,0,0,.75)
+rgba(0,0,0,.80)
 );
+
 
 
 border:
@@ -497,187 +624,296 @@ border:
 1px solid rgba(255,20,60,.45);
 
 
-backdrop-filter:blur(20px);
+
+backdrop-filter:blur(25px);
+
 
 
 position:relative;
 
+
+
 overflow:hidden;
+
 
 
 display:flex;
 
+
 flex-direction:column;
+
 
 justify-content:center;
 
 
+
+
 box-shadow:
 
-0 25px 70px rgba(0,0,0,.7),
 
-inset 0 0 40px rgba(255,20,60,.08);
+0 30px 70px rgba(0,0,0,.8),
+
+
+inset 0 0 40px rgba(255,20,60,.10);
+
 
 
 transition:.4s;
 
+
+
 }
+
 
 
 
 
 .card:hover{
 
-transform:translateY(-12px);
+
+transform:translateY(-15px);
+
+
+
+border-color:#ff1744;
+
+
 
 box-shadow:
 
-0 0 60px rgba(255,20,60,.5);
+
+0 0 70px rgba(255,20,60,.55);
+
+
 
 }
+
 
 
 
 
 .card::before{
 
+
 content:"";
+
 
 position:absolute;
 
+
 top:0;
 
-left:25%;
 
-width:50%;
+left:20%;
+
+
+width:60%;
+
 
 height:2px;
 
+
 background:#ff1744;
+
 
 box-shadow:
 
-0 0 20px #ff1744;
+0 0 25px #ff1744;
+
 
 }
+
 
 
 
 
 .card-number{
 
-font-size:12px;
+
+font-size:13px;
+
 
 color:#ff1744;
 
-letter-spacing:5px;
 
-margin-bottom:20px;
+letter-spacing:6px;
+
+
+margin-bottom:18px;
+
 
 }
+
 
 
 
 
 .card h3{
 
-font-size:30px;
 
-letter-spacing:4px;
+font-size:32px;
+
+
+letter-spacing:5px;
+
 
 margin:0;
 
+
+text-shadow:
+
+0 0 15px rgba(255,255,255,.25);
+
+
 }
+
 
 
 
 .card p{
 
-color:#999;
+
+color:#aaa;
+
 
 margin-top:15px;
 
+
+font-size:15px;
+
+
 }
+
 
 
 
 
 .card button{
 
+
 margin-top:35px;
 
-height:45px;
+
+height:48px;
+
+
 
 border-radius:25px;
 
+
+
 background:
 
-rgba(255,20,60,.1);
+linear-gradient(
+135deg,
+rgba(255,20,60,.20),
+rgba(255,20,60,.05)
+);
+
+
 
 border:
 
 1px solid #ff1744;
 
+
+
 color:white;
+
 
 font-weight:900;
 
+
+letter-spacing:2px;
+
+
+
 cursor:pointer;
 
+
+
+transition:.3s;
+
+
+
 }
+
 
 
 
 
 .card button:hover{
 
+
 background:#ff1744;
+
 
 box-shadow:
 
-0 0 30px #ff1744;
+
+0 0 35px #ff1744;
+
+
 
 }
+
+
 
 
 
 .loading{
 
+
 height:100vh;
+
 
 display:flex;
 
+
 justify-content:center;
+
 
 align-items:center;
 
+
 background:#050505;
 
+
 }
+
 
 
 
 
 .loader{
 
+
 width:70px;
+
 
 height:70px;
 
+
 border-radius:50%;
+
 
 border:6px solid #222;
 
+
 border-top-color:#ff1744;
 
+
 animation:spin 1s linear infinite;
+
 
 }
 
 
 
 
+
 @keyframes spin{
+
 
 to{
 
@@ -689,12 +925,15 @@ transform:rotate(360deg);
 
 
 
+
 @media(max-width:900px){
 
 
 .dashboard-grid{
 
+
 grid-template-columns:1fr;
+
 
 }
 
@@ -702,9 +941,12 @@ grid-template-columns:1fr;
 
 .profile-box{
 
+
 position:static;
 
+
 margin-top:30px;
+
 
 }
 
@@ -712,7 +954,9 @@ margin-top:30px;
 
 header{
 
+
 flex-direction:column;
+
 
 }
 
@@ -720,7 +964,7 @@ flex-direction:column;
 
 .brand h1{
 
-font-size:38px;
+font-size:40px;
 
 }
 
@@ -736,8 +980,8 @@ font-size:28px;
 }
 
 
-`}</style>
 
+`}</style>
 
 </main>
 
