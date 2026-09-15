@@ -738,8 +738,6 @@ font-size:28px;
 
 `}</style>
 
-</style>
-
 
 </main>
 
