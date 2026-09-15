@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 export default function AdminDashboard(){
 
-
 const [loading,setLoading] = useState(true);
 const [adminEmail,setAdminEmail] = useState("");
 
@@ -20,9 +19,7 @@ checkAdmin();
 
 
 
-
 const checkAdmin = async()=>{
-
 
 const {
 data:{
@@ -74,7 +71,6 @@ setLoading(false);
 
 
 
-
 const logout = async()=>{
 
 await supabase.auth.signOut();
@@ -82,7 +78,6 @@ await supabase.auth.signOut();
 window.location.href="/login";
 
 };
-
 
 
 
@@ -106,7 +101,6 @@ return(
 
 return(
 
-
 <main className="admin-page">
 
 
@@ -120,7 +114,7 @@ return(
 <div className="brand">
 
 
-<span className="top-label">
+<span className="label">
 ADMIN CONTROL CENTER
 </span>
 
@@ -136,12 +130,11 @@ ADMIN PANEL
 
 
 <p>
-ESPORTS MANAGEMENT SYSTEM
+ESPORTS COMMAND CENTER
 </p>
 
 
 </div>
-
 
 
 
@@ -152,6 +145,7 @@ ESPORTS MANAGEMENT SYSTEM
 <span>
 {adminEmail}
 </span>
+
 
 
 <button 
@@ -167,8 +161,8 @@ LOGOUT
 </div>
 
 
-</header>
 
+</header>
 
 
 
@@ -179,46 +173,41 @@ LOGOUT
 <Card
 number="01"
 icon="👥"
-title="PLAYER MANAGEMENT"
-text="Manage player accounts and profiles"
+title="PLAYERS"
+text="Manage player accounts"
 />
-
 
 
 <Card
 number="02"
 icon="⚔"
-title="MATCH CENTER"
+title="MATCHES"
 text="Create and control matches"
 />
-
 
 
 <Card
 number="03"
 icon="🏆"
-title="TOURNAMENT HUB"
-text="Tournament operations"
+title="TOURNAMENTS"
+text="Tournament management"
 />
-
 
 
 <Card
 number="04"
 icon="💰"
-title="FINANCE CONTROL"
-text="Income and profit tracking"
+title="PROFIT"
+text="Income calculation"
 />
-
 
 
 <Card
 number="05"
 icon="💳"
-title="SALARY SYSTEM"
-text="Player salary management"
+title="SALARY"
+text="Player salary control"
 />
-
 
 
 <Card
@@ -231,8 +220,6 @@ text="Generate access codes"
 
 
 </section>
-
-</div>
   <style jsx>{`
 
 .admin-page{
@@ -241,80 +228,35 @@ min-height:100vh;
 
 padding:70px 50px;
 
+
 background:
 
 radial-gradient(
 circle at top left,
-rgba(255,20,60,.35),
+rgba(255,20,60,.30),
 transparent 35%
 ),
 
+
 radial-gradient(
 circle at bottom right,
-rgba(255,20,60,.18),
+rgba(255,20,60,.15),
 transparent 40%
 ),
 
+
 linear-gradient(
 180deg,
-#030303,
-#120003
+#050505,
+#130003
 );
+
 
 color:white;
 
 position:relative;
 
 overflow:hidden;
-
-}
-
-
-
-
-.admin-page::before{
-
-content:"";
-
-position:absolute;
-
-width:700px;
-
-height:700px;
-
-background:#ff1744;
-
-filter:blur(220px);
-
-opacity:.12;
-
-top:-350px;
-
-left:-250px;
-
-}
-
-
-
-.admin-page::after{
-
-content:"";
-
-position:absolute;
-
-width:600px;
-
-height:600px;
-
-background:#ff1744;
-
-filter:blur(240px);
-
-opacity:.10;
-
-right:-250px;
-
-bottom:-250px;
 
 }
 
@@ -348,9 +290,10 @@ align-items:center;
 
 position:relative;
 
-margin-bottom:100px;
+margin-bottom:90px;
 
 }
+
 
 
 
@@ -363,7 +306,9 @@ text-align:center;
 
 
 
-.top-label{
+
+
+.label{
 
 font-size:12px;
 
@@ -386,17 +331,11 @@ font-size:72px;
 
 letter-spacing:18px;
 
-margin:15px 0 0;
+margin:20px 0 5px;
 
 font-weight:900;
 
-
-text-shadow:
-
-0 0 35px rgba(255,255,255,.4);
-
 }
-
 
 
 
@@ -406,18 +345,15 @@ font-size:48px;
 
 letter-spacing:14px;
 
-margin:8px 0;
-
+margin:0;
 
 color:#ff1744;
 
-
 text-shadow:
 
-0 0 45px #ff1744;
+0 0 40px #ff1744;
 
 }
-
 
 
 
@@ -436,6 +372,7 @@ color:#888;
 
 .profile-box{
 
+
 position:absolute;
 
 right:0;
@@ -447,6 +384,7 @@ padding:25px 30px;
 
 
 border-radius:30px;
+
 
 
 background:
@@ -472,7 +410,7 @@ backdrop-filter:blur(25px);
 box-shadow:
 
 
-0 0 50px rgba(255,20,60,.35);
+0 0 40px rgba(255,20,60,.3);
 
 
 
@@ -504,22 +442,24 @@ color:#aaa;
 
 
 
+
 .logout-btn{
 
-height:46px;
+
+height:45px;
 
 
-padding:0 45px;
+padding:0 40px;
 
 
-border-radius:30px;
+border-radius:25px;
 
 
 border:none;
 
 
-background:
 
+background:
 
 linear-gradient(
 135deg,
@@ -538,7 +478,6 @@ font-weight:900;
 letter-spacing:3px;
 
 
-
 cursor:pointer;
 
 
@@ -546,12 +485,10 @@ cursor:pointer;
 box-shadow:
 
 
-0 0 35px rgba(255,20,60,.6);
-
+0 0 30px rgba(255,20,60,.5);
 
 
 }
-
 
 
 
@@ -574,13 +511,15 @@ gap:35px;
 
 
 
+
 .card{
 
 
-height:300px;
+height:280px;
 
 
 padding:35px;
+
 
 
 border-radius:35px;
@@ -593,26 +532,18 @@ background:
 linear-gradient(
 145deg,
 rgba(255,255,255,.10),
-rgba(0,0,0,.75)
+rgba(0,0,0,.80)
 );
 
 
 
 border:
 
-
 1px solid rgba(255,20,60,.45);
 
 
 
 backdrop-filter:blur(25px);
-
-
-
-position:relative;
-
-
-overflow:hidden;
 
 
 
@@ -626,13 +557,20 @@ justify-content:center;
 
 
 
+position:relative;
+
+
+overflow:hidden;
+
+
+
 box-shadow:
 
 
-0 30px 80px rgba(0,0,0,.8),
+0 30px 70px rgba(0,0,0,.8),
 
 
-inset 0 0 50px rgba(255,20,60,.08);
+inset 0 0 40px rgba(255,20,60,.10);
 
 
 
@@ -647,17 +585,20 @@ transition:.4s;
 
 .card:hover{
 
+
 transform:translateY(-15px);
-
-
-border-color:#ff1744;
 
 
 
 box-shadow:
 
 
-0 0 80px rgba(255,20,60,.55);
+0 0 70px rgba(255,20,60,.55);
+
+
+
+border-color:#ff1744;
+
 
 
 }
@@ -668,26 +609,35 @@ box-shadow:
 
 .card::before{
 
+
 content:"";
+
 
 position:absolute;
 
+
 top:0;
 
-left:15%;
 
-width:70%;
+left:20%;
+
+
+width:60%;
+
 
 height:2px;
 
 
+
 background:#ff1744;
+
 
 
 box-shadow:
 
 
 0 0 25px #ff1744;
+
 
 
 }
@@ -698,9 +648,12 @@ box-shadow:
 
 .card-icon{
 
+
 font-size:45px;
 
+
 margin-bottom:20px;
+
 
 }
 
@@ -709,34 +662,40 @@ margin-bottom:20px;
 
 .card-number{
 
+
 font-size:12px;
+
 
 letter-spacing:6px;
 
+
 color:#ff1744;
 
+
 }
-
-
-
-
 .card h3{
 
-font-size:25px;
+font-size:28px;
 
-letter-spacing:3px;
+letter-spacing:4px;
 
-margin:12px 0;
+margin:15px 0 0;
 
+color:white;
+
+text-shadow:
+
+0 0 15px rgba(255,255,255,.3);
 
 }
-
 
 
 
 .card p{
 
-color:#aaa;
+margin-top:15px;
+
+color:#999;
 
 font-size:15px;
 
@@ -750,9 +709,7 @@ margin-top:30px;
 
 height:45px;
 
-
 border-radius:25px;
-
 
 background:
 
@@ -768,12 +725,13 @@ border:
 
 color:white;
 
-
 font-weight:900;
 
+letter-spacing:2px;
 
 cursor:pointer;
 
+transition:.3s;
 
 }
 
@@ -783,16 +741,120 @@ cursor:pointer;
 
 background:#ff1744;
 
-
 box-shadow:
 
-0 0 40px #ff1744;
+0 0 35px #ff1744;
 
 }
 
-`}
-</style>
-  </style>
+
+
+
+
+.loading{
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:#050505;
+
+}
+
+
+
+
+
+.loader{
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+
+border:6px solid #222;
+
+
+border-top-color:#ff1744;
+
+
+animation:spin 1s linear infinite;
+
+}
+
+
+
+@keyframes spin{
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+.dashboard-grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.profile-box{
+
+position:static;
+
+margin-top:30px;
+
+}
+
+
+
+header{
+
+flex-direction:column;
+
+}
+
+
+
+.brand h1{
+
+font-size:40px;
+
+letter-spacing:8px;
+
+}
+
+
+
+.brand h2{
+
+font-size:28px;
+
+}
+
+
+}
+
+
+
+`}</style>
 
 
 </div>
@@ -824,11 +886,13 @@ return(
 </div>
 
 
+
 <div className="card-number">
 
 {number}
 
 </div>
+
 
 
 <h3>
@@ -838,11 +902,13 @@ return(
 </h3>
 
 
+
 <p>
 
 {text}
 
 </p>
+
 
 
 <button>
@@ -852,12 +918,10 @@ OPEN PANEL →
 </button>
 
 
+
 </div>
 
 );
 
 
 }
-
-
-</div>
