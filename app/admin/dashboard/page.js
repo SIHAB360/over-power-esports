@@ -276,7 +276,7 @@ export default function AdminDashboard() {
           gap: 24px;
         }
 
-        /* Card Style - Matching the reference */
+        /* Card */
         .card {
           background: rgba(12, 3, 6, 0.85);
           border: 1px solid rgba(255, 23, 68, 0.4);
@@ -284,7 +284,7 @@ export default function AdminDashboard() {
           padding: 28px 26px 24px;
           position: relative;
           overflow: hidden;
-          transition: all 0.35s ease;
+          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
           box-shadow: 0 0 0 1px rgba(255, 23, 68, 0.1),
             0 15px 40px rgba(0, 0, 0, 0.5);
         }
@@ -308,11 +308,32 @@ export default function AdminDashboard() {
           pointer-events: none;
         }
 
+        .card::after {
+          content: "";
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(
+            circle at center,
+            rgba(255, 23, 68, 0.08) 0%,
+            transparent 60%
+          );
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
+        }
+
         .card:hover {
-          transform: translateY(-8px);
-          border-color: rgba(255, 23, 68, 0.7);
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.25),
-            0 20px 50px rgba(0, 0, 0, 0.6);
+          transform: translateY(-6px);
+          border-color: rgba(255, 23, 68, 0.75);
+          box-shadow: 0 0 45px rgba(255, 23, 68, 0.28),
+            0 18px 40px rgba(0, 0, 0, 0.55);
+        }
+
+        .card:hover::after {
+          opacity: 1;
         }
 
         .card-top {
@@ -371,22 +392,25 @@ export default function AdminDashboard() {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          transition: all 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          position: relative;
+          overflow: hidden;
         }
 
         .action-btn:hover {
           background: linear-gradient(135deg, #ff1744, #c4002b);
           border-color: #ff1744;
-          box-shadow: 0 0 25px rgba(255, 23, 68, 0.45);
+          box-shadow: 0 0 28px rgba(255, 23, 68, 0.5);
+          transform: translateY(-1px);
         }
 
         .action-btn span {
           font-size: 16px;
-          transition: transform 0.25s ease;
+          transition: transform 0.3s ease;
         }
 
         .action-btn:hover span {
-          transform: translateX(4px);
+          transform: translateX(5px);
         }
 
         /* Loading */
