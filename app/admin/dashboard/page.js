@@ -87,6 +87,65 @@ export default function AdminDashboard() {
             </div>
           </div>
         </header>
+  <section className="stats-grid">
+
+
+<div className="stat-card">
+
+<span>
+TOTAL PLAYERS
+</span>
+
+<h2>
+120
+</h2>
+
+</div>
+
+
+
+<div className="stat-card">
+
+<span>
+ACTIVE MATCHES
+</span>
+
+<h2>
+08
+</h2>
+
+</div>
+
+
+
+<div className="stat-card">
+
+<span>
+TOURNAMENTS
+</span>
+
+<h2>
+05
+</h2>
+
+</div>
+
+
+
+<div className="stat-card">
+
+<span>
+REVENUE
+</span>
+
+<h2>
+৳45000
+</h2>
+
+</div>
+
+
+</section>
 
         {/* Cards Grid */}
         <div className="cards-grid">
