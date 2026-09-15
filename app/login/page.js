@@ -61,9 +61,9 @@ export default function LoginPage() {
     .single();
 
     
-console.log("AUTH USER:", user);
+console.log("AUTH USER:", data.user);
 console.log("PROFILE:", profile);
-console.log("PROFILE ERROR:", error);
+console.log("PROFILE ERROR:", profileError);
 
     
 
@@ -79,14 +79,14 @@ console.log("PROFILE ERROR:", error);
 
 
 
-    if(profile.role==="admin"){
+if(profile.role?.toLowerCase()==="admin"){
 
       window.location.href="/admin/dashboard";
 
     }
 
 
-    else if(profile.role==="player"){
+else if(profile.role?.toLowerCase()==="player"){
 
       window.location.href="/player/dashboard";
 
