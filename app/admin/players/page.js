@@ -27,10 +27,11 @@ const {data,error}=await supabase
 .order("created_at",{ascending:false});
 
 
+console.log("PLAYERS DATA:", data);
+console.log("PLAYERS ERROR:", error);
+
 if(!error){
-
-setPlayers(data || []);
-
+  setPlayers(data || []);
 }
 
 
