@@ -677,13 +677,13 @@ font-size:28px;
 }
 
 `}</style>
-
+</div>
 
 </main>
 
 );
 
-
+}
 
 function Card({title,text}){
 
@@ -707,4 +707,5 @@ OPEN
 
 );
 
+}
 }
