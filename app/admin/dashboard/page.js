@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 
 export default function AdminDashboard(){
 
-
 const [loading,setLoading] = useState(true);
 const [adminEmail,setAdminEmail] = useState("");
 
@@ -77,11 +76,9 @@ setLoading(false);
 
 const logout = async()=>{
 
-
 await supabase.auth.signOut();
 
 window.location.href="/login";
-
 
 };
 
@@ -106,8 +103,8 @@ return(
 
 
 
-return(
 
+return(
 
 <main className="admin-page">
 
@@ -145,9 +142,7 @@ ESPORTS COMMAND CENTER
 </p>
 
 
-
 </div>
-
 
 
 
@@ -160,7 +155,6 @@ ESPORTS COMMAND CENTER
 </span>
 
 
-
 <button 
 className="logout-btn"
 onClick={logout}
@@ -171,9 +165,7 @@ LOGOUT
 </button>
 
 
-
 </div>
-
 
 
 </header>
@@ -183,7 +175,6 @@ LOGOUT
 
 
 <section className="dashboard-grid">
-
 
 
 <Card
@@ -235,15 +226,6 @@ text="Generate access codes"
 
 
 </section>
-
-
-
-
-
-</div>
-
-
-
 <style jsx>{`
 
 .admin-page{
@@ -257,21 +239,22 @@ background:
 
 radial-gradient(
 circle at top,
-rgba(255,20,60,.30),
-transparent 30%
+rgba(255,20,60,.25),
+transparent 35%
 ),
+
 
 radial-gradient(
 circle at bottom right,
-rgba(255,20,60,.18),
-transparent 35%
+rgba(255,20,60,.15),
+transparent 40%
 ),
 
 
 linear-gradient(
 180deg,
 #050505,
-#140003
+#120003
 );
 
 
@@ -282,7 +265,6 @@ overflow:hidden;
 position:relative;
 
 }
-
 
 
 
@@ -327,7 +309,7 @@ filter:blur(220px);
 
 opacity:.10;
 
-right:-250px;
+right:-200px;
 
 bottom:-200px;
 
@@ -377,6 +359,8 @@ text-align:center;
 
 
 
+
+
 .top-label{
 
 font-size:12px;
@@ -394,21 +378,20 @@ text-shadow:
 
 
 
-
 .brand h1{
 
 font-size:70px;
 
 letter-spacing:16px;
 
-margin:18px 0 0;
+margin:20px 0 0;
 
 font-weight:900;
 
 
 text-shadow:
 
-0 0 25px rgba(255,255,255,.35);
+0 0 35px rgba(255,255,255,.35);
 
 }
 
@@ -421,7 +404,7 @@ font-size:46px;
 
 letter-spacing:14px;
 
-margin:12px 0;
+margin:10px 0;
 
 
 color:#ff1744;
@@ -443,7 +426,7 @@ font-size:13px;
 
 letter-spacing:10px;
 
-color:#999;
+color:#888;
 
 }
 
@@ -452,7 +435,6 @@ color:#999;
 
 
 .profile-box{
-
 
 position:absolute;
 
@@ -489,12 +471,16 @@ backdrop-filter:blur(25px);
 
 box-shadow:
 
-
-0 0 40px rgba(255,20,60,.25),
-
-inset 0 0 30px rgba(255,20,60,.08);
+0 0 40px rgba(255,20,60,.25);
 
 
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:15px;
 
 }
 
@@ -512,16 +498,14 @@ color:#aaa;
 
 
 
+
 .logout-btn{
 
-height:46px;
+height:45px;
 
 padding:0 40px;
 
-margin-top:15px;
-
-
-border-radius:30px;
+border-radius:25px;
 
 
 border:none;
@@ -546,14 +530,14 @@ font-weight:900;
 letter-spacing:3px;
 
 
+cursor:pointer;
+
+
 
 box-shadow:
 
 0 0 30px rgba(255,20,60,.5);
 
-
-
-cursor:pointer;
 
 
 transition:.3s;
@@ -567,6 +551,7 @@ transition:.3s;
 
 transform:scale(1.05);
 
+
 box-shadow:
 
 0 0 50px #ff1744;
@@ -576,18 +561,13 @@ box-shadow:
 
 
 
-
 .dashboard-grid{
-
 
 display:grid;
 
-
 grid-template-columns:repeat(3,1fr);
 
-
-gap:40px;
-
+gap:35px;
 
 }
 
@@ -596,20 +576,16 @@ gap:40px;
 
 .card{
 
-
-height:270px;
-
+height:250px;
 
 padding:35px;
 
 
-
-border-radius:32px;
+border-radius:30px;
 
 
 
 background:
-
 
 linear-gradient(
 145deg,
@@ -625,12 +601,11 @@ border:
 
 
 
-backdrop-filter:blur(25px);
+backdrop-filter:blur(20px);
 
 
 
 position:relative;
-
 
 
 overflow:hidden;
@@ -639,20 +614,15 @@ overflow:hidden;
 
 display:flex;
 
-
 flex-direction:column;
-
 
 justify-content:center;
 
 
 
-
 box-shadow:
 
-
-0 30px 70px rgba(0,0,0,.8),
-
+0 25px 70px rgba(0,0,0,.8),
 
 inset 0 0 40px rgba(255,20,60,.10);
 
@@ -660,55 +630,39 @@ inset 0 0 40px rgba(255,20,60,.10);
 
 transition:.4s;
 
-
-
 }
-
 
 
 
 
 .card:hover{
 
-
-transform:translateY(-15px);
-
+transform:translateY(-12px);
 
 
 border-color:#ff1744;
 
 
-
 box-shadow:
 
-
-0 0 70px rgba(255,20,60,.55);
-
-
+0 0 60px rgba(255,20,60,.55);
 
 }
 
 
 
 
-
 .card::before{
-
 
 content:"";
 
-
 position:absolute;
-
 
 top:0;
 
-
 left:20%;
 
-
 width:60%;
-
 
 height:2px;
 
@@ -720,50 +674,36 @@ box-shadow:
 
 0 0 25px #ff1744;
 
-
 }
-
 
 
 
 
 .card-number{
 
-
 font-size:13px;
-
 
 color:#ff1744;
 
-
 letter-spacing:6px;
 
-
 margin-bottom:18px;
-
 
 }
 
 
 
 
-
 .card h3{
 
-
-font-size:32px;
-
+font-size:30px;
 
 letter-spacing:5px;
-
 
 margin:0;
 
 
-text-shadow:
-
-0 0 15px rgba(255,255,255,.25);
-
+color:white;
 
 }
 
@@ -772,15 +712,11 @@ text-shadow:
 
 .card p{
 
-
 color:#aaa;
-
-
-margin-top:15px;
-
 
 font-size:15px;
 
+margin-top:15px;
 
 }
 
@@ -790,12 +726,10 @@ font-size:15px;
 
 .card button{
 
-
 margin-top:35px;
 
 
-height:48px;
-
+height:45px;
 
 
 border-radius:25px;
@@ -804,11 +738,7 @@ border-radius:25px;
 
 background:
 
-linear-gradient(
-135deg,
-rgba(255,20,60,.20),
-rgba(255,20,60,.05)
-);
+rgba(255,20,60,.10);
 
 
 
@@ -831,29 +761,21 @@ letter-spacing:2px;
 cursor:pointer;
 
 
-
 transition:.3s;
-
-
 
 }
 
 
 
 
-
 .card button:hover{
-
 
 background:#ff1744;
 
 
 box-shadow:
 
-
 0 0 35px #ff1744;
-
-
 
 }
 
@@ -863,36 +785,26 @@ box-shadow:
 
 .loading{
 
-
 height:100vh;
-
 
 display:flex;
 
-
 justify-content:center;
-
 
 align-items:center;
 
-
 background:#050505;
-
 
 }
 
 
 
 
-
 .loader{
-
 
 width:70px;
 
-
 height:70px;
-
 
 border-radius:50%;
 
@@ -905,15 +817,12 @@ border-top-color:#ff1744;
 
 animation:spin 1s linear infinite;
 
-
 }
 
 
 
 
-
 @keyframes spin{
-
 
 to{
 
@@ -925,15 +834,13 @@ transform:rotate(360deg);
 
 
 
-
+`}</style>
 @media(max-width:900px){
 
 
 .dashboard-grid{
 
-
 grid-template-columns:1fr;
-
 
 }
 
@@ -941,12 +848,9 @@ grid-template-columns:1fr;
 
 .profile-box{
 
-
 position:static;
 
-
 margin-top:30px;
-
 
 }
 
@@ -954,9 +858,7 @@ margin-top:30px;
 
 header{
 
-
 flex-direction:column;
-
 
 }
 
@@ -966,6 +868,8 @@ flex-direction:column;
 
 font-size:40px;
 
+letter-spacing:8px;
+
 }
 
 
@@ -974,7 +878,10 @@ font-size:40px;
 
 font-size:28px;
 
+letter-spacing:6px;
+
 }
+
 
 
 }
@@ -982,6 +889,9 @@ font-size:28px;
 
 
 `}</style>
+
+
+</div>
 
 </main>
 
@@ -991,7 +901,9 @@ font-size:28px;
 
 
 
+
 function Card({number,title,text}){
+
 
 return(
 
@@ -999,27 +911,40 @@ return(
 
 
 <div className="card-number">
+
 {number}
+
 </div>
 
 
+
 <h3>
+
 {title}
+
 </h3>
 
 
+
 <p>
+
 {text}
+
 </p>
 
 
+
 <button>
+
 OPEN PANEL →
+
 </button>
+
 
 
 </div>
 
 );
+
 
 }
