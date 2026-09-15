@@ -226,7 +226,7 @@ text="Player salary control"
 
 
 
-Card
+<Card
 number="06"
 title="VERIFICATION"
 text="Generate access codes"
