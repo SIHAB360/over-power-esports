@@ -50,7 +50,13 @@ export default function AdminDashboard() {
   }
 
   const cards = [
-    { num: "01", icon: "👥", title: "PLAYERS", desc: "Manage player accounts" },
+   { 
+  num: "01", 
+  icon: "👥", 
+  title: "PLAYERS", 
+  desc: "Manage player accounts",
+  href: "/admin/players"
+},
     { num: "02", icon: "⚔", title: "MATCHES", desc: "Create and control matches" },
     { num: "03", icon: "🏆", title: "TOURNAMENTS", desc: "Tournament management" },
     { num: "04", icon: "💰", title: "PROFIT", desc: "Income calculation" },
