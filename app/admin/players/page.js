@@ -53,6 +53,7 @@ const fetchPlayers = async()=>{
 const {data,error}=await supabase
 .from("players")
 .select("*")
+.eq("role","player")
 .order("created_at",{ascending:false});
 
 
