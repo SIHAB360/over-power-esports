@@ -117,16 +117,18 @@ POSITION : {player.primary_role || "Not Assigned"}
 <p>
 STATUS : {player.status || "Pending"}
 </p>
-  
+
+{
+player.status?.toLowerCase() !== "approved" && (
+
 <button
 className="approve-btn"
+onClick={()=>approvePlayer(player.id)}
 >
 APPROVE PLAYER
 </button>
-  
-</div>
 
-))
+)
 }
 
 
