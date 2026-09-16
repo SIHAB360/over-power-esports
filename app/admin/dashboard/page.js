@@ -1,6 +1,7 @@
 "use client";
 import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
