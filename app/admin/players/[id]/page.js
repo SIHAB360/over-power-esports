@@ -8,10 +8,12 @@ import { useParams } from "next/navigation";
 export default function PlayerProfilePage(){
 
 const params = useParams();
+
 const id = params.id;
 
-const [player,setPlayer]=useState(null);
-const [loading,setLoading]=useState(true);
+
+const [player,setPlayer] = useState(null);
+const [loading,setLoading] = useState(true);
 
 
 
@@ -25,7 +27,8 @@ fetchPlayer();
 
 
 
-const fetchPlayer=async()=>{
+
+const fetchPlayer = async()=>{
 
 const {data,error}=await supabase
 .from("players")
@@ -34,11 +37,16 @@ const {data,error}=await supabase
 .single();
 
 
+console.log("PLAYER DATA:",data);
+console.log("PLAYER ERROR:",error);
+
+
 if(!error){
 
 setPlayer(data);
 
 }
+
 
 setLoading(false);
 
@@ -47,17 +55,35 @@ setLoading(false);
 
 
 
+
 if(loading){
 
-return <div className="loading">LOADING PLAYER...</div>;
+return(
+
+<div className="loading">
+
+LOADING PLAYER...
+
+</div>
+
+)
 
 }
 
 
 
+
 if(!player){
 
-return <div className="loading">PLAYER NOT FOUND</div>;
+return(
+
+<div className="loading">
+
+PLAYER NOT FOUND
+
+</div>
+
+)
 
 }
 
@@ -69,157 +95,208 @@ return(
 <main className="page">
 
 
-<div className="profile-card">
+<div className="profile-container">
 
 
 
-<header className="profile-header">
+<section className="hero">
 
+
+
+<div className="image-box">
 
 <img
 
-src={player.profile_image || player.avatar_url || "/default.png"}
-
-className="player-image"
+src={
+player.profile_image ||
+player.avatar_url ||
+"/default.png"
+}
 
 />
 
+</div>
 
 
-<div>
+
+
+
+<div className="hero-info">
+
 
 <h1>
+
 {player.ign || player.full_name}
+
 </h1>
 
 
 <h3>
+
 {player.primary_role || player.position || "PLAYER"}
+
 </h3>
 
 
 <p>
+
 TEAM : {player.team_name || "NO TEAM"}
+
 </p>
 
 
+
 </div>
 
 
-</header>
+</section>
 
 
 
 
 
-<div className="stats">
+
+<section className="stats">
+
+
+<Stat
+title="MATCHES"
+value={player.matches_played || 0}
+/>
+
+
+<Stat
+title="WINS"
+value={player.wins || 0}
+/>
+
+
+<Stat
+title="STATUS"
+value={player.status || "pending"}
+className={player.status}
+/>
+
+
+
+</section>
+
+
+
+
+
+
+<InfoSection title="PLAYER INFORMATION">
+
+
+<Row title="NAME" value={player.full_name}/>
+
+<Row title="FREE FIRE UID" value={player.freefire_uid}/>
+
+<Row title="EMAIL" value={player.email}/>
+
+<Row title="PHONE" value={player.phone}/>
+
+<Row title="COUNTRY" value={player.country}/>
+
+<Row title="AGE" value={player.age}/>
+
+<Row title="EXPERIENCE" value={player.experience}/>
+
+
+</InfoSection>
+
+
+
+
+
+
+
+<InfoSection title="GAME DETAILS">
+
+
+<Row title="PRIMARY ROLE" value={player.primary_role}/>
+
+<Row title="SECONDARY ROLE" value={player.secondary_role}/>
+
+<Row title="DEVICE" value={player.device}/>
+
+<Row title="INTERNET" value={player.internet_connection}/>
+
+<Row title="PRACTICE TIME" value={player.practice_time}/>
+
+<Row title="GAME EXPERIENCE" value={player.game_experience}/>
+
+<Row title="TOURNAMENT EXPERIENCE" value={player.tournament_experience}/>
+
+<Row title="BR KD RATE" value={player.average_br_kd_rate}/>
+
+<Row title="EXPERT WEAPON" value={player.expert_weapon}/>
+
+
+</InfoSection>
+
+
+
+
+
+
+<InfoSection title="TEAM HISTORY">
+
+
+<Row title="PREVIOUS TEAM" value={player.previous_team}/>
+
+<Row title="JOINING DATE" value={player.joining_date}/>
+
+
+</InfoSection>
+
+
+
+
+
+
+<section className="social">
+
+
+<h2>
+SOCIAL LINKS
+</h2>
 
 
 <div>
-<span>MATCHES</span>
-<strong>{player.matches_played || 0}</strong>
-</div>
 
-
-<div>
-<span>WINS</span>
-<strong>{player.wins || 0}</strong>
-</div>
-
-
-<div>
-<span>STATUS</span>
-
-<strong className={player.status}>
-{player.status}
-</strong>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<Section title="PLAYER INFORMATION">
-
-<Row label="NAME" value={player.full_name}/>
-<Row label="FREE FIRE UID" value={player.freefire_uid}/>
-<Row label="EMAIL" value={player.email}/>
-<Row label="PHONE" value={player.phone}/>
-<Row label="COUNTRY" value={player.country}/>
-<Row label="AGE" value={player.age}/>
-<Row label="EXPERIENCE" value={player.experience}/>
-
-</Section>
-
-
-
-
-
-
-
-<Section title="GAME DETAILS">
-
-<Row label="PRIMARY ROLE" value={player.primary_role}/>
-<Row label="SECONDARY ROLE" value={player.secondary_role}/>
-<Row label="DEVICE" value={player.device}/>
-<Row label="INTERNET" value={player.internet_connection}/>
-<Row label="PRACTICE TIME" value={player.practice_time}/>
-<Row label="GAME EXPERIENCE" value={player.game_experience}/>
-<Row label="TOURNAMENT EXPERIENCE" value={player.tournament_experience}/>
-<Row label="BR KD" value={player.average_br_kd_rate}/>
-<Row label="EXPERT WEAPON" value={player.expert_weapon}/>
-
-</Section>
-
-
-
-
-
-
-
-<Section title="TEAM HISTORY">
-
-<Row label="PREVIOUS TEAM" value={player.previous_team}/>
-<Row label="JOINING DATE" value={player.joining_date}/>
-
-</Section>
-
-
-
-
-
-
-
-<section className="section">
-
-<h2>SOCIAL LINKS</h2>
-
-
-<div className="links">
 
 {player.facebook_link &&
-<a href={player.facebook_link}>Facebook</a>
+<a href={player.facebook_link}>
+FACEBOOK
+</a>
 }
+
 
 
 {player.instagram_link &&
-<a href={player.instagram_link}>Instagram</a>
+<a href={player.instagram_link}>
+INSTAGRAM
+</a>
 }
+
 
 
 {player.youtube_link &&
-<a href={player.youtube_link}>Youtube</a>
+<a href={player.youtube_link}>
+YOUTUBE
+</a>
 }
+
 
 
 {player.tiktok_link &&
-<a href={player.tiktok_link}>TikTok</a>
+<a href={player.tiktok_link}>
+TIKTOK
+</a>
 }
+
 
 
 </div>
@@ -232,295 +309,6 @@ TEAM : {player.team_name || "NO TEAM"}
 
 
 </div>
-
-
-
-
-
-<style jsx>{`
-
-.page{
-
-min-height:100vh;
-
-background:#050505;
-
-padding:50px 20px;
-
-color:white;
-
-}
-
-
-
-.profile-card{
-
-max-width:900px;
-
-margin:auto;
-
-background:
-linear-gradient(
-145deg,
-rgba(255,0,60,.15),
-#050505
-);
-
-border:1px solid #ff1744;
-
-border-radius:30px;
-
-padding:40px;
-
-box-shadow:
-0 0 50px rgba(255,0,70,.35);
-
-}
-
-
-
-.profile-header{
-
-display:flex;
-
-align-items:center;
-
-gap:30px;
-
-}
-
-
-
-.player-image{
-
-width:140px;
-
-height:140px;
-
-object-fit:cover;
-
-border-radius:20px;
-
-border:2px solid #ff1744;
-
-box-shadow:0 0 25px #ff1744;
-
-}
-
-
-
-h1{
-
-font-size:40px;
-
-color:#ff1744;
-
-margin:0;
-
-}
-
-
-
-h3{
-
-color:white;
-
-}
-
-
-
-.profile-header p{
-
-color:#00ff88;
-
-}
-
-
-
-
-.stats{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:20px;
-
-margin:40px 0;
-
-}
-
-
-
-.stats div{
-
-border:1px solid #333;
-
-padding:20px;
-
-border-radius:15px;
-
-text-align:center;
-
-}
-
-
-
-.stats span{
-
-display:block;
-
-color:#888;
-
-font-size:12px;
-
-}
-
-
-
-.stats strong{
-
-font-size:25px;
-
-}
-
-
-
-.approved{
-
-color:#00ff88;
-
-}
-
-
-
-.pending{
-
-color:#ffc400;
-
-}
-
-
-
-
-
-.section{
-
-margin-top:30px;
-
-padding:25px;
-
-border:1px solid rgba(255,23,68,.4);
-
-border-radius:20px;
-
-}
-
-
-
-.section h2{
-
-color:#ff1744;
-
-font-size:22px;
-
-}
-
-
-
-.row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:10px 0;
-
-border-bottom:1px solid #222;
-
-}
-
-
-
-.label{
-
-color:#888;
-
-}
-
-
-
-.value{
-
-color:#00ff88;
-
-text-align:right;
-
-}
-
-
-
-.links a{
-
-color:#ff1744;
-
-margin-right:20px;
-
-}
-
-
-
-.loading{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:#050505;
-
-color:#ff1744;
-
-font-size:30px;
-
-}
-
-
-
-@media(max-width:700px){
-
-.profile-header{
-
-flex-direction:column;
-
-text-align:center;
-
-}
-
-
-.stats{
-
-grid-template-columns:1fr;
-
-}
-
-
-.row{
-
-flex-direction:column;
-
-gap:5px;
-
-}
-
-}
-
-`}</style>
-
-
 </main>
 
 )
@@ -530,15 +318,22 @@ gap:5px;
 
 
 
-function Section({title,children}){
+
+function InfoSection({title,children}){
 
 return(
 
-<section className="section">
+<section className="info-section">
 
-<h2>{title}</h2>
+<h2>
+{title}
+</h2>
+
+<div className="rows">
 
 {children}
+
+</div>
 
 </section>
 
@@ -549,21 +344,46 @@ return(
 
 
 
-function Row({label,value}){
+
+function Row({title,value}){
 
 return(
 
 <div className="row">
 
-<span className="label">
-{label}
+<span>
+{title}
 </span>
 
 
-<span className="value">
+<strong>
 {value || "N/A"}
+</strong>
+
+
+</div>
+
+)
+
+}
+
+
+
+
+
+function Stat({title,value,className=""}){
+
+return(
+
+<div className="stat-card">
+
+<span>
+{title}
 </span>
 
+<strong className={className}>
+{value}
+</strong>
 
 </div>
 
