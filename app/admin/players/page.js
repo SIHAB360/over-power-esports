@@ -246,7 +246,6 @@ APPROVE PLAYER
 
 
 
-
 </div>
 
 
@@ -369,26 +368,6 @@ box-shadow:
 0 0 40px rgba(255,0,70,.7);
 
 }
-
-
-
-
-.player-card:hover{
-
-
-transform:translateY(-8px);
-
-
-box-shadow:
-
-0 0 35px rgba(255,0,70,.5);
-
-
-}
-
-
-
-
 
 .player-header{
 
@@ -546,7 +525,42 @@ text-transform:uppercase;
 }
 
 
+.view-btn{
 
+margin-top:25px;
+
+width:100%;
+
+padding:14px;
+
+border-radius:12px;
+
+border:1px solid #ff1744;
+
+background:transparent;
+
+color:#ff1744;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+.view-btn:hover{
+
+background:#ff1744;
+
+color:white;
+
+box-shadow:0 0 20px rgba(255,0,70,.6);
+
+transform:scale(1.05);
+
+}
 
 .approve-btn{
 
