@@ -1,7 +1,7 @@
 "use client";
 
 import { supabase } from "../../../lib/supabase";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 
@@ -17,15 +17,14 @@ const [loading,setLoading]=useState(true);
 useEffect(()=>{
 
 if(id){
-getPlayer();
+fetchPlayer();
 }
 
 },[id]);
 
 
 
-const getPlayer=async()=>{
-
+const fetchPlayer=async()=>{
 
 const {data,error}=await supabase
 .from("players")
@@ -34,13 +33,11 @@ const {data,error}=await supabase
 .single();
 
 
-
 if(!error){
 
 setPlayer(data);
 
 }
-
 
 setLoading(false);
 
@@ -50,21 +47,23 @@ setLoading(false);
 
 
 
-if(loading)
+if(loading){
 
 return <div className="loading">
-LOADING...
+LOADING PLAYER...
 </div>;
 
+}
 
 
-if(!player)
+
+if(!player){
 
 return <div className="loading">
 PLAYER NOT FOUND
 </div>;
 
-
+}
 
 
 
@@ -80,7 +79,7 @@ return(
 <section className="hero">
 
 
-<div className="image">
+<div className="image-box">
 
 <img
 src={
@@ -94,7 +93,7 @@ player.avatar_url ||
 
 
 
-<div className="title">
+<div className="hero-info">
 
 <h1>
 {player.ign || player.full_name}
@@ -102,12 +101,12 @@ player.avatar_url ||
 
 
 <h3>
-{player.primary_role || player.position}
+{player.primary_role || player.position || "PLAYER"}
 </h3>
 
 
 <p>
-TEAM : {player.team_name}
+TEAM : {player.team_name || "NO TEAM"}
 </p>
 
 
@@ -123,14 +122,21 @@ TEAM : {player.team_name}
 <div className="stats">
 
 
-<Card title="MATCHES" value={player.matches_played || 0}/>
+<Stat 
+title="MATCHES"
+value={player.matches_played || 0}
+/>
 
-<Card title="WINS" value={player.wins || 0}/>
+
+<Stat 
+title="WINS"
+value={player.wins || 0}
+/>
 
 
-<Card 
-title="STATUS" 
-value={player.status}
+<Stat 
+title="STATUS"
+value={player.status || "pending"}
 />
 
 
@@ -141,10 +147,7 @@ value={player.status}
 
 
 
-
-
 <Section title="PLAYER INFORMATION">
-
 
 <Row title="FULL NAME" value={player.full_name}/>
 
@@ -158,9 +161,10 @@ value={player.status}
 
 <Row title="AGE" value={player.age}/>
 
+<Row title="EXPERIENCE" value={player.experience}/>
+
 
 </Section>
-
 
 
 
@@ -190,21 +194,13 @@ value={player.status}
 
 
 </Section>
-
-
-
-
-
-
-
+// CONTINUATION OF SAME FILE
 
 <Section title="TEAM HISTORY">
-
 
 <Row title="PREVIOUS TEAM" value={player.previous_team}/>
 
 <Row title="JOINING DATE" value={player.joining_date}/>
-
 
 </Section>
 
@@ -212,9 +208,7 @@ value={player.status}
 
 
 
-
 <section className="section">
-
 
 <h2>
 SOCIAL LINKS
@@ -225,43 +219,29 @@ SOCIAL LINKS
 
 
 {player.facebook_link &&
-<a href={player.facebook_link}>
-FACEBOOK
-</a>
+<a href={player.facebook_link}>FACEBOOK</a>
 }
-
 
 
 {player.instagram_link &&
-<a href={player.instagram_link}>
-INSTAGRAM
-</a>
+<a href={player.instagram_link}>INSTAGRAM</a>
 }
-
 
 
 {player.youtube_link &&
-<a href={player.youtube_link}>
-YOUTUBE
-</a>
+<a href={player.youtube_link}>YOUTUBE</a>
 }
-
 
 
 {player.tiktok_link &&
-<a href={player.tiktok_link}>
-TIKTOK
-</a>
+<a href={player.tiktok_link}>TIKTOK</a>
 }
-
 
 
 </div>
 
 
 </section>
-
-
 
 
 
@@ -277,9 +257,8 @@ TIKTOK
 .page{
 
 min-height:100vh;
-
 background:
-radial-gradient(circle,#35000d,#050505 70%);
+radial-gradient(circle,#30000c,#050505 70%);
 
 padding:40px 20px;
 
@@ -288,16 +267,13 @@ color:white;
 }
 
 
-
 .container{
 
-max-width:900px;
+max-width:950px;
 
 margin:auto;
 
 }
-
-
 
 
 
@@ -307,28 +283,28 @@ display:flex;
 
 align-items:center;
 
-gap:40px;
+gap:35px;
 
 padding:30px;
-
-border:1px solid #ff1744;
 
 border-radius:25px;
 
 background:rgba(255,0,60,.08);
 
-box-shadow:0 0 40px rgba(255,0,70,.4);
+border:1px solid rgba(255,23,68,.6);
+
+box-shadow:
+0 0 40px rgba(255,23,68,.35);
 
 }
 
 
 
+.image-box img{
 
-.image img{
+width:160px;
 
-width:180px;
-
-height:180px;
+height:160px;
 
 object-fit:cover;
 
@@ -342,35 +318,34 @@ box-shadow:0 0 30px #ff1744;
 
 
 
+.hero-info h1{
 
-
-.title h1{
-
-font-size:45px;
+font-size:42px;
 
 color:#ff1744;
 
 margin:0;
 
-}
-
-
-
-.title h3{
-
-color:white;
+text-shadow:
+0 0 20px #ff1744;
 
 }
 
 
 
-.title p{
+.hero-info h3{
+
+letter-spacing:3px;
+
+}
+
+
+
+.hero-info p{
 
 color:#00ff88;
 
 }
-
-
 
 
 
@@ -390,15 +365,18 @@ margin:30px 0;
 
 .stat{
 
-background:#120007;
-
-border:1px solid #333;
-
 padding:25px;
+
+background:#100007;
+
+border:1px solid rgba(255,23,68,.5);
 
 border-radius:20px;
 
 text-align:center;
+
+box-shadow:
+0 0 20px rgba(255,0,70,.2);
 
 }
 
@@ -406,9 +384,13 @@ text-align:center;
 
 .stat span{
 
+display:block;
+
 color:#888;
 
-display:block;
+font-size:12px;
+
+letter-spacing:2px;
 
 }
 
@@ -424,23 +406,19 @@ color:#ff1744;
 
 
 
-
-
 .section{
 
 margin-top:25px;
 
 padding:25px;
 
-background:#0b0005;
+background:rgba(0,0,0,.45);
 
-border:1px solid rgba(255,23,68,.5);
+border:1px solid rgba(255,23,68,.35);
 
 border-radius:20px;
 
 }
-
-
 
 
 
@@ -450,9 +428,9 @@ color:#ff1744;
 
 letter-spacing:2px;
 
+margin-bottom:20px;
+
 }
-
-
 
 
 
@@ -462,9 +440,9 @@ display:flex;
 
 justify-content:space-between;
 
-padding:12px 0;
+padding:14px 0;
 
-border-bottom:1px solid #222;
+border-bottom:1px solid rgba(255,255,255,.08);
 
 }
 
@@ -474,6 +452,8 @@ border-bottom:1px solid #222;
 
 color:#888;
 
+font-size:13px;
+
 }
 
 
@@ -482,9 +462,9 @@ color:#888;
 
 color:#00ff88;
 
+text-align:right;
+
 }
-
-
 
 
 
@@ -492,20 +472,19 @@ color:#00ff88;
 
 display:inline-block;
 
-padding:10px 20px;
-
 margin:5px;
 
-border:1px solid #ff1744;
+padding:10px 18px;
 
 border-radius:20px;
+
+border:1px solid #ff1744;
 
 color:#ff1744;
 
 text-decoration:none;
 
 }
-
 
 
 
@@ -529,7 +508,6 @@ font-size:30px;
 
 
 
-
 @media(max-width:700px){
 
 .hero{
@@ -539,6 +517,7 @@ flex-direction:column;
 text-align:center;
 
 }
+
 
 
 .stats{
@@ -558,11 +537,18 @@ gap:8px;
 }
 
 
+
+.row strong{
+
+text-align:left;
+
+}
+
 }
 
 
-`}</style>
 
+`}</style>
 
 
 </main>
@@ -570,7 +556,6 @@ gap:8px;
 )
 
 }
-
 
 
 
@@ -620,7 +605,8 @@ return(
 
 
 
-function Card({title,value}){
+
+function Stat({title,value}){
 
 return(
 
