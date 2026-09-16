@@ -1,66 +1,669 @@
 "use client";
 
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../../lib/supabase";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 
-export default function PlayersPage(){
+export default function PlayerProfilePage(){
 
-const [players,setPlayers]=useState([]);
+const params = useParams();
+
+const id = params.id;
+
+
+const [player,setPlayer]=useState(null);
 const [loading,setLoading]=useState(true);
 
 
 
 useEffect(()=>{
-fetchPlayers();
-},[]);
+
+if(id){
+
+fetchPlayer();
+
+}
+
+},[id]);
 
 
 
-const approvePlayer = async(id)=>{
 
-const {error}=await supabase
+
+const fetchPlayer = async()=>{
+
+
+const {data,error}=await supabase
 .from("players")
-.update({
-status:"approved"
-})
-.eq("id",id);
+.select("*")
+.eq("id",id)
+.single();
 
 
-if(error){
-console.log(error);
-return;
+
+console.log("PLAYER DATA:",data);
+console.log("PLAYER ERROR:",error);
+
+
+
+if(!error){
+
+setPlayer(data);
+
 }
 
 
-fetchPlayers();
+setLoading(false);
+
 
 };
 
 
 
 
-const fetchPlayers = async()=>{
+
+const updateStatus = async(status)=>{
 
 
-const {data,error}=await supabase
+const {error}=await supabase
 .from("players")
-.select("*")
-.order("created_at",{ascending:false});
+.update({
+status:status
+})
+.eq("id",id);
 
 
 
-console.log("PLAYERS DATA:",data);
-console.log("PLAYERS ERROR:",error);
+if(error){
 
+console.log(error);
+return;
 
-
-if(!error){
-setPlayers(data || []);
 }
 
 
-setLoading(false);
+fetchPlayer();
+
+
+};
+
+
+
+
+
+const verifyPlayer = async()=>{
+
+
+const {error}=await supabase
+.from("players")
+.update({
+verified:true
+})
+.eq("id",id);
+
+
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+
+fetchPlayer();
+
+
+};
+
+
+
+
+
+
+if(loading){
+
+return(
+
+<div className="loading">
+LOADING PROFILE...
+</div>
+
+);
+
+}
+
+
+
+
+
+if(!player){
+
+return(
+
+<div className="loading">
+PLAYER NOT FOUND
+</div>
+
+);
+
+}
+
+
+
+
+
+return(
+
+<main className="profile-page">
+
+
+<div className="container">
+
+
+<div className="profile-header">
+
+
+<img
+
+src={
+player.profile_image ||
+player.avatar_url ||
+"/default-avatar.png"
+}
+
+className="profile-image"
+
+/>
+
+
+
+<div>
+
+<h1>
+{player.full_name || "Unknown Player"}
+</h1>
+
+
+<p>
+IGN : {player.ign || "N/A"}
+</p>
+
+
+<p>
+UID : {player.freefire_uid || "N/A"}
+</p>
+
+
+
+<div className="badge">
+
+{
+player.verified
+?
+"VERIFIED PLAYER"
+:
+"UNVERIFIED"
+}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div className="sections">
+
+
+
+<div className="card">
+
+
+<h2>
+PERSONAL INFORMATION
+</h2>
+
+
+<p>Name: {player.full_name}</p>
+
+<p>Email: {player.email}</p>
+
+<p>Phone: {player.phone}</p>
+
+<p>Country: {player.country}</p>
+
+<p>Age: {player.age}</p>
+
+<p>Birth Date: {player.birth_date}</p>
+
+<p>Address: {player.full_address}</p>
+
+
+</div>
+
+
+
+
+
+
+<div className="card">
+
+
+<h2>
+GAMING INFORMATION
+</h2>
+
+
+<p>Team: {player.team_name}</p>
+
+<p>Primary Role: {player.primary_role}</p>
+
+<p>Secondary Role: {player.secondary_role}</p>
+
+<p>Game Experience: {player.game_experience}</p>
+
+<p>Tournament Experience: {player.tournament_experience}</p>
+
+<p>BR/KD Rate: {player.average_br_kd_rate}</p>
+
+<p>Expert Weapon: {player.expert_weapon}</p>
+
+<p>Previous Team: {player.previous_team}</p>
+
+
+</div>
+
+
+
+
+
+
+<div className="card">
+
+
+<h2>
+DEVICE & CONNECTION
+</h2>
+
+
+<p>Device: {player.device}</p>
+
+<p>Internet: {player.internet_connection}</p>
+
+<p>Practice Time: {player.practice_time}</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div className="card">
+
+
+<h2>
+PERFORMANCE
+</h2>
+
+
+<p>Matches: {player.matches_played}</p>
+
+<p>Wins: {player.wins}</p>
+
+<p>Total Kills: {player.total_kills}</p>
+
+
+</div>
+
+
+
+
+
+
+<div className="card">
+
+
+<h2>
+SOCIAL LINKS
+</h2>
+
+
+<p>
+Facebook: {player.facebook_link}
+</p>
+
+
+<p>
+Instagram: {player.instagram_link}
+</p>
+
+
+<p>
+TikTok: {player.tiktok_link}
+</p>
+
+
+<p>
+Youtube: {player.youtube_link}
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div className="admin-panel">
+
+
+<h2>
+ADMIN CONTROL
+</h2>
+
+
+
+<div className="buttons">
+
+
+<button
+onClick={()=>updateStatus("approved")}
+>
+APPROVE
+</button>
+
+
+
+<button
+onClick={()=>updateStatus("rejected")}
+>
+REJECT
+</button>
+
+
+
+
+<button
+onClick={verifyPlayer}
+>
+VERIFY PLAYER
+</button>
+
+
+
+<button
+onClick={()=>updateStatus("suspended")}
+>
+SUSPEND
+</button>
+
+
+</div>
+
+
+
+<p>
+CURRENT STATUS:
+<span>
+{player.status}
+</span>
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<style jsx>{`
+
+.profile-page{
+
+min-height:100vh;
+
+background:#050505;
+
+color:white;
+
+padding:50px;
+
+}
+
+
+
+.container{
+
+max-width:1200px;
+
+margin:auto;
+
+}
+
+
+
+.profile-header{
+
+display:flex;
+
+align-items:center;
+
+gap:30px;
+
+padding:30px;
+
+background:
+linear-gradient(
+145deg,
+rgba(255,0,70,.2),
+rgba(0,0,0,.9)
+);
+
+border:1px solid rgba(255,0,70,.5);
+
+border-radius:25px;
+
+}
+
+
+
+.profile-image{
+
+width:150px;
+
+height:150px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid #ff1744;
+
+}
+
+
+
+h1{
+
+color:#ff1744;
+
+font-size:40px;
+
+}
+
+
+
+.badge{
+
+margin-top:15px;
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+
+
+.sections{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:25px;
+
+margin-top:40px;
+
+}
+
+
+
+.card{
+
+padding:25px;
+
+border-radius:20px;
+
+background:
+
+linear-gradient(
+145deg,
+rgba(255,20,60,.15),
+rgba(0,0,0,.9)
+);
+
+border:1px solid rgba(255,20,70,.4);
+
+}
+
+
+
+.card h2{
+
+color:#ff1744;
+
+font-size:20px;
+
+}
+
+
+
+.admin-panel{
+
+margin-top:40px;
+
+padding:30px;
+
+border-radius:20px;
+
+border:1px solid #ff1744;
+
+}
+
+
+
+.buttons{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+}
+
+
+
+.buttons button{
+
+padding:14px 25px;
+
+border:none;
+
+border-radius:12px;
+
+background:#ff1744;
+
+color:white;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+
+
+.loading{
+
+height:100vh;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:#050505;
+
+color:#ff1744;
+
+}
+
+
+
+
+@media(max-width:900px){
+
+.sections{
+
+grid-template-columns:1fr;
+
+}
+
+
+.profile-header{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+
+}
+
+
+`}</style>
+
+
+</main>
+
+);
+
+}setLoading(false);
 
 };
 
