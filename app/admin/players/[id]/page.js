@@ -17,14 +17,14 @@ const [loading,setLoading]=useState(true);
 useEffect(()=>{
 
 if(id){
-fetchPlayer();
+loadPlayer();
 }
 
 },[id]);
 
 
 
-const fetchPlayer=async()=>{
+const loadPlayer=async()=>{
 
 const {data,error}=await supabase
 .from("players")
@@ -33,11 +33,13 @@ const {data,error}=await supabase
 .single();
 
 
+
 if(!error){
 
 setPlayer(data);
 
 }
+
 
 setLoading(false);
 
@@ -47,23 +49,17 @@ setLoading(false);
 
 
 
-if(loading){
+if(loading)
 
-return <div className="loading">
-LOADING PLAYER...
-</div>;
-
-}
+return <div className="loading">LOADING...</div>;
 
 
 
-if(!player){
+if(!player)
 
-return <div className="loading">
-PLAYER NOT FOUND
-</div>;
+return <div className="loading">PLAYER NOT FOUND</div>;
 
-}
+
 
 
 
@@ -76,24 +72,23 @@ return(
 
 
 
-<section className="hero">
+<div className="hero">
 
-
-<div className="image-box">
 
 <img
+
 src={
 player.profile_image ||
 player.avatar_url ||
 "/default.png"
 }
+
+className="avatar"
 />
 
-</div>
 
 
-
-<div className="hero-info">
+<div>
 
 <h1>
 {player.ign || player.full_name}
@@ -101,7 +96,7 @@ player.avatar_url ||
 
 
 <h3>
-{player.primary_role || player.position || "PLAYER"}
+{player.primary_role || player.position}
 </h3>
 
 
@@ -113,7 +108,7 @@ TEAM : {player.team_name || "NO TEAM"}
 </div>
 
 
-</section>
+</div>
 
 
 
@@ -122,22 +117,13 @@ TEAM : {player.team_name || "NO TEAM"}
 <div className="stats">
 
 
-<Stat 
-title="MATCHES"
-value={player.matches_played || 0}
-/>
+<Stat title="MATCHES" value={player.matches_played || 0}/>
 
 
-<Stat 
-title="WINS"
-value={player.wins || 0}
-/>
+<Stat title="WINS" value={player.wins || 0}/>
 
 
-<Stat 
-title="STATUS"
-value={player.status || "pending"}
-/>
+<Stat title="STATUS" value={player.status || "pending"}/>
 
 
 </div>
@@ -149,66 +135,67 @@ value={player.status || "pending"}
 
 <Section title="PLAYER INFORMATION">
 
-<Row title="FULL NAME" value={player.full_name}/>
 
-<Row title="FREE FIRE UID" value={player.freefire_uid}/>
+<Row label="FULL NAME" value={player.full_name}/>
 
-<Row title="EMAIL" value={player.email}/>
+<Row label="FREE FIRE UID" value={player.freefire_uid}/>
 
-<Row title="PHONE" value={player.phone}/>
+<Row label="EMAIL" value={player.email}/>
 
-<Row title="COUNTRY" value={player.country}/>
+<Row label="PHONE" value={player.phone}/>
 
-<Row title="AGE" value={player.age}/>
+<Row label="COUNTRY" value={player.country}/>
 
-<Row title="EXPERIENCE" value={player.experience}/>
+<Row label="AGE" value={player.age}/>
 
 
 </Section>
-
-
-
-
-
+// PART 2/2
 
 <Section title="GAME DETAILS">
 
+<Row label="PRIMARY ROLE" value={player.primary_role}/>
 
-<Row title="PRIMARY ROLE" value={player.primary_role}/>
+<Row label="SECONDARY ROLE" value={player.secondary_role}/>
 
-<Row title="SECONDARY ROLE" value={player.secondary_role}/>
+<Row label="DEVICE" value={player.device}/>
 
-<Row title="DEVICE" value={player.device}/>
+<Row label="INTERNET" value={player.internet_connection}/>
 
-<Row title="INTERNET" value={player.internet_connection}/>
+<Row label="PRACTICE TIME" value={player.practice_time}/>
 
-<Row title="PRACTICE TIME" value={player.practice_time}/>
+<Row label="GAME EXPERIENCE" value={player.game_experience}/>
 
-<Row title="GAME EXPERIENCE" value={player.game_experience}/>
+<Row label="TOURNAMENT EXPERIENCE" value={player.tournament_experience}/>
 
-<Row title="TOURNAMENT EXPERIENCE" value={player.tournament_experience}/>
+<Row label="BR KD RATE" value={player.average_br_kd_rate}/>
 
-<Row title="BR KD RATE" value={player.average_br_kd_rate}/>
-
-<Row title="EXPERT WEAPON" value={player.expert_weapon}/>
+<Row label="EXPERT WEAPON" value={player.expert_weapon}/>
 
 
 </Section>
-// CONTINUATION OF SAME FILE
+
+
+
+
 
 <Section title="TEAM HISTORY">
 
-<Row title="PREVIOUS TEAM" value={player.previous_team}/>
 
-<Row title="JOINING DATE" value={player.joining_date}/>
+<Row label="PREVIOUS TEAM" value={player.previous_team}/>
+
+<Row label="JOINING DATE" value={player.joining_date}/>
+
 
 </Section>
+
 
 
 
 
 
 <section className="section">
+
 
 <h2>
 SOCIAL LINKS
@@ -245,9 +232,7 @@ SOCIAL LINKS
 
 
 
-
 </div>
-
 
 
 
@@ -257,6 +242,7 @@ SOCIAL LINKS
 .page{
 
 min-height:100vh;
+
 background:
 radial-gradient(circle,#30000c,#050505 70%);
 
@@ -265,6 +251,7 @@ padding:40px 20px;
 color:white;
 
 }
+
 
 
 .container{
@@ -289,18 +276,19 @@ padding:30px;
 
 border-radius:25px;
 
-background:rgba(255,0,60,.08);
+background:
+rgba(255,0,60,.08);
 
-border:1px solid rgba(255,23,68,.6);
+border:1px solid #ff1744;
 
 box-shadow:
-0 0 40px rgba(255,23,68,.35);
+0 0 40px rgba(255,0,70,.4);
 
 }
 
 
 
-.image-box img{
+.avatar{
 
 width:160px;
 
@@ -312,19 +300,20 @@ border-radius:20px;
 
 border:2px solid #ff1744;
 
-box-shadow:0 0 30px #ff1744;
+box-shadow:
+0 0 30px #ff1744;
 
 }
 
 
 
-.hero-info h1{
+.hero h1{
 
-font-size:42px;
-
-color:#ff1744;
+font-size:45px;
 
 margin:0;
+
+color:#ff1744;
 
 text-shadow:
 0 0 20px #ff1744;
@@ -333,7 +322,7 @@ text-shadow:
 
 
 
-.hero-info h3{
+.hero h3{
 
 letter-spacing:3px;
 
@@ -341,7 +330,7 @@ letter-spacing:3px;
 
 
 
-.hero-info p{
+.hero p{
 
 color:#00ff88;
 
@@ -357,7 +346,7 @@ grid-template-columns:repeat(3,1fr);
 
 gap:20px;
 
-margin:30px 0;
+margin:35px 0;
 
 }
 
@@ -369,14 +358,14 @@ padding:25px;
 
 background:#100007;
 
-border:1px solid rgba(255,23,68,.5);
+border:1px solid #ff1744;
 
 border-radius:20px;
 
 text-align:center;
 
 box-shadow:
-0 0 20px rgba(255,0,70,.2);
+0 0 25px rgba(255,0,70,.3);
 
 }
 
@@ -386,11 +375,9 @@ box-shadow:
 
 display:block;
 
-color:#888;
+color:#999;
 
-font-size:12px;
-
-letter-spacing:2px;
+margin-bottom:10px;
 
 }
 
@@ -400,7 +387,7 @@ letter-spacing:2px;
 
 font-size:28px;
 
-color:#ff1744;
+color:#00ff88;
 
 }
 
@@ -412,9 +399,9 @@ margin-top:25px;
 
 padding:25px;
 
-background:rgba(0,0,0,.45);
+background:#090004;
 
-border:1px solid rgba(255,23,68,.35);
+border:1px solid rgba(255,23,68,.5);
 
 border-radius:20px;
 
@@ -428,8 +415,6 @@ color:#ff1744;
 
 letter-spacing:2px;
 
-margin-bottom:20px;
-
 }
 
 
@@ -442,7 +427,7 @@ justify-content:space-between;
 
 padding:14px 0;
 
-border-bottom:1px solid rgba(255,255,255,.08);
+border-bottom:1px solid #222;
 
 }
 
@@ -450,9 +435,7 @@ border-bottom:1px solid rgba(255,255,255,.08);
 
 .row span{
 
-color:#888;
-
-font-size:13px;
+color:#999;
 
 }
 
@@ -462,8 +445,6 @@ font-size:13px;
 
 color:#00ff88;
 
-text-align:right;
-
 }
 
 
@@ -472,9 +453,9 @@ text-align:right;
 
 display:inline-block;
 
-margin:5px;
+padding:10px 20px;
 
-padding:10px 18px;
+margin:5px;
 
 border-radius:20px;
 
@@ -536,16 +517,7 @@ gap:8px;
 
 }
 
-
-
-.row strong{
-
-text-align:left;
-
 }
-
-}
-
 
 
 `}</style>
@@ -556,6 +528,7 @@ text-align:left;
 )
 
 }
+
 
 
 
@@ -579,15 +552,14 @@ return(
 
 
 
-
-function Row({title,value}){
+function Row({label,value}){
 
 return(
 
 <div className="row">
 
 <span>
-{title}
+{label}
 </span>
 
 
