@@ -236,15 +236,16 @@ margin-bottom:60px;
 
 .grid{
 
-max-width:1200px;
+max-width:1100px;
+
 margin:auto;
 
 display:grid;
 
 grid-template-columns:
-repeat(auto-fit,minmax(300px,1fr));
+repeat(3,1fr);
 
-gap:40px;
+gap:35px;
 
 }
 
@@ -252,38 +253,34 @@ gap:40px;
 
 
 .card{
-
 position:relative;
-
 overflow:hidden;
 
 background:
 linear-gradient(
 145deg,
-rgba(255,0,60,.15),
-rgba(0,0,0,.9)
+rgba(255,0,60,.18),
+rgba(5,5,5,.95)
 );
-
 
 border-radius:25px;
 
 padding:28px;
 
-border:1px solid rgba(255,23,68,.6);
+height:470px;
 
+border:1px solid rgba(255,23,68,.7);
 
 box-shadow:
-
-0 0 25px rgba(255,0,70,.25);
-
+0 0 25px rgba(255,0,70,.25),
+inset 0 0 25px rgba(255,0,70,.08);
 
 transition:.4s;
 
-animation:pulse 3s infinite;
-
-
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 }
-
 
 
 
@@ -451,13 +448,23 @@ word-break:break-word;
 
 .status{
 
-border-top:1px solid #333;
+background:
+rgba(255,23,68,.12);
 
-padding-top:15px;
+border:1px solid rgba(255,23,68,.5);
+
+border-radius:20px;
+
+padding:12px 18px;
 
 display:flex;
 
 justify-content:space-between;
+
+align-items:center;
+
+box-shadow:
+0 0 15px rgba(255,0,70,.3);
 
 }
 
