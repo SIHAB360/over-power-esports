@@ -646,21 +646,8 @@ grid-template-columns:1fr;
 `}</style>
 
 
-
 </main>
 
-
 );
-
-
-}
-</style>
-
-
-</main>
-
-
-);
-
 
 }
