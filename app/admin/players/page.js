@@ -441,11 +441,13 @@ p{
 
 color:#00ff88;
 
-word-break:break-word;
+overflow-wrap:anywhere;
+
+word-break:normal;
+
+font-size:14px;
 
 }
-
-
 
 
 .status{
