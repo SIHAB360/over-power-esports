@@ -4,35 +4,27 @@ import { supabase } from "../../../lib/supabase";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-
 export default function PlayerProfilePage(){
 
 const params = useParams();
-
 const id = params.id;
 
-
-const [player,setPlayer]=useState(null);
-const [loading,setLoading]=useState(true);
+const [player,setPlayer] = useState(null);
+const [loading,setLoading] = useState(true);
 
 
 
 useEffect(()=>{
 
 if(id){
-
 fetchPlayer();
-
 }
 
 },[id]);
 
 
 
-
-
 const fetchPlayer = async()=>{
-
 
 const {data,error}=await supabase
 .from("players")
@@ -41,21 +33,15 @@ const {data,error}=await supabase
 .single();
 
 
-
-console.log("PLAYER DATA:",data);
-console.log("PLAYER ERROR:",error);
-
+console.log(data);
+console.log(error);
 
 
 if(!error){
-
 setPlayer(data);
-
 }
 
-
 setLoading(false);
-
 
 };
 
@@ -65,7 +51,6 @@ setLoading(false);
 
 const updateStatus = async(status)=>{
 
-
 const {error}=await supabase
 .from("players")
 .update({
@@ -74,19 +59,16 @@ status:status
 .eq("id",id);
 
 
-
 if(error){
-
 console.log(error);
 return;
-
 }
 
 
 fetchPlayer();
 
-
 };
+
 
 
 
@@ -105,10 +87,8 @@ verified:true
 
 
 if(error){
-
 console.log(error);
 return;
-
 }
 
 
@@ -125,11 +105,9 @@ fetchPlayer();
 if(loading){
 
 return(
-
 <div className="loading">
 LOADING PROFILE...
 </div>
-
 );
 
 }
@@ -137,15 +115,12 @@ LOADING PROFILE...
 
 
 
-
 if(!player){
 
 return(
-
 <div className="loading">
 PLAYER NOT FOUND
 </div>
-
 );
 
 }
@@ -162,21 +137,15 @@ return(
 <div className="container">
 
 
+
 <div className="profile-header">
 
 
-<img
+<div className="avatar">
 
-src={
-player.profile_image ||
-player.avatar_url ||
-"/default-avatar.png"
-}
+{player.full_name?.charAt(0) || "P"}
 
-className="profile-image"
-
-/>
-
+</div>
 
 
 <div>
@@ -192,7 +161,7 @@ IGN : {player.ign || "N/A"}
 
 
 <p>
-UID : {player.freefire_uid || "N/A"}
+FREE FIRE UID : {player.freefire_uid || "N/A"}
 </p>
 
 
@@ -219,31 +188,31 @@ player.verified
 
 
 
-<div className="sections">
+
+
+<div className="grid">
 
 
 
 <div className="card">
 
-
 <h2>
 PERSONAL INFORMATION
 </h2>
 
+<p>Name : {player.full_name}</p>
 
-<p>Name: {player.full_name}</p>
+<p>Email : {player.email}</p>
 
-<p>Email: {player.email}</p>
+<p>Phone : {player.phone}</p>
 
-<p>Phone: {player.phone}</p>
+<p>Country : {player.country}</p>
 
-<p>Country: {player.country}</p>
+<p>Age : {player.age}</p>
 
-<p>Age: {player.age}</p>
+<p>Birth Date : {player.birth_date}</p>
 
-<p>Birth Date: {player.birth_date}</p>
-
-<p>Address: {player.full_address}</p>
+<p>Address : {player.full_address}</p>
 
 
 </div>
@@ -252,30 +221,28 @@ PERSONAL INFORMATION
 
 
 
-
 <div className="card">
-
 
 <h2>
 GAMING INFORMATION
 </h2>
 
 
-<p>Team: {player.team_name}</p>
+<p>Team : {player.team_name}</p>
 
-<p>Primary Role: {player.primary_role}</p>
+<p>Primary Role : {player.primary_role}</p>
 
-<p>Secondary Role: {player.secondary_role}</p>
+<p>Secondary Role : {player.secondary_role}</p>
 
-<p>Game Experience: {player.game_experience}</p>
+<p>Experience : {player.game_experience}</p>
 
-<p>Tournament Experience: {player.tournament_experience}</p>
+<p>Tournament : {player.tournament_experience}</p>
 
-<p>BR/KD Rate: {player.average_br_kd_rate}</p>
+<p>K/D Rate : {player.average_br_kd_rate}</p>
 
-<p>Expert Weapon: {player.expert_weapon}</p>
+<p>Weapon : {player.expert_weapon}</p>
 
-<p>Previous Team: {player.previous_team}</p>
+<p>Previous Team : {player.previous_team}</p>
 
 
 </div>
@@ -285,19 +252,19 @@ GAMING INFORMATION
 
 
 
+
 <div className="card">
 
-
 <h2>
-DEVICE & CONNECTION
+DEVICE INFORMATION
 </h2>
 
 
-<p>Device: {player.device}</p>
+<p>Device : {player.device}</p>
 
-<p>Internet: {player.internet_connection}</p>
+<p>Internet : {player.internet_connection}</p>
 
-<p>Practice Time: {player.practice_time}</p>
+<p>Practice Time : {player.practice_time}</p>
 
 
 </div>
@@ -309,21 +276,21 @@ DEVICE & CONNECTION
 
 
 <div className="card">
-
 
 <h2>
 PERFORMANCE
 </h2>
 
 
-<p>Matches: {player.matches_played}</p>
+<p>Matches : {player.matches_played}</p>
 
-<p>Wins: {player.wins}</p>
+<p>Wins : {player.wins}</p>
 
-<p>Total Kills: {player.total_kills}</p>
+<p>Total Kills : {player.total_kills}</p>
 
 
 </div>
+
 
 
 
@@ -332,33 +299,22 @@ PERFORMANCE
 
 <div className="card">
 
-
 <h2>
 SOCIAL LINKS
 </h2>
 
 
-<p>
-Facebook: {player.facebook_link}
-</p>
+<p>Facebook : {player.facebook_link}</p>
 
+<p>Instagram : {player.instagram_link}</p>
 
-<p>
-Instagram: {player.instagram_link}
-</p>
+<p>Tiktok : {player.tiktok_link}</p>
 
-
-<p>
-TikTok: {player.tiktok_link}
-</p>
-
-
-<p>
-Youtube: {player.youtube_link}
-</p>
+<p>Youtube : {player.youtube_link}</p>
 
 
 </div>
+
 
 
 
@@ -369,7 +325,9 @@ Youtube: {player.youtube_link}
 
 
 
-<div className="admin-panel">
+
+
+<div className="admin">
 
 
 <h2>
@@ -381,34 +339,22 @@ ADMIN CONTROL
 <div className="buttons">
 
 
-<button
-onClick={()=>updateStatus("approved")}
->
+<button onClick={()=>updateStatus("approved")}>
 APPROVE
 </button>
 
 
-
-<button
-onClick={()=>updateStatus("rejected")}
->
+<button onClick={()=>updateStatus("rejected")}>
 REJECT
 </button>
 
 
-
-
-<button
-onClick={verifyPlayer}
->
+<button onClick={verifyPlayer}>
 VERIFY PLAYER
 </button>
 
 
-
-<button
-onClick={()=>updateStatus("suspended")}
->
+<button onClick={()=>updateStatus("suspended")}>
 SUSPEND
 </button>
 
@@ -417,16 +363,15 @@ SUSPEND
 
 
 
-<p>
+<h3>
 CURRENT STATUS:
 <span>
 {player.status}
 </span>
-</p>
+</h3>
 
 
 </div>
-
 
 
 
@@ -442,11 +387,8 @@ CURRENT STATUS:
 .profile-page{
 
 min-height:100vh;
-
 background:#050505;
-
 color:white;
-
 padding:50px;
 
 }
@@ -456,7 +398,6 @@ padding:50px;
 .container{
 
 max-width:1200px;
-
 margin:auto;
 
 }
@@ -466,21 +407,19 @@ margin:auto;
 .profile-header{
 
 display:flex;
-
-align-items:center;
-
 gap:30px;
+align-items:center;
 
 padding:30px;
 
 background:
 linear-gradient(
 145deg,
-rgba(255,0,70,.2),
-rgba(0,0,0,.9)
+rgba(255,20,60,.2),
+black
 );
 
-border:1px solid rgba(255,0,70,.5);
+border:1px solid #ff1744;
 
 border-radius:25px;
 
@@ -488,17 +427,24 @@ border-radius:25px;
 
 
 
-.profile-image{
+.avatar{
 
-width:150px;
-
-height:150px;
+width:100px;
+height:100px;
 
 border-radius:50%;
 
-object-fit:cover;
+display:flex;
+align-items:center;
+justify-content:center;
 
-border:3px solid #ff1744;
+font-size:45px;
+font-weight:bold;
+
+background:#ff1744;
+
+box-shadow:
+0 0 30px #ff1744;
 
 }
 
@@ -507,7 +453,6 @@ border:3px solid #ff1744;
 h1{
 
 color:#ff1744;
-
 font-size:40px;
 
 }
@@ -526,7 +471,8 @@ font-weight:bold;
 
 
 
-.sections{
+
+.grid{
 
 display:grid;
 
@@ -540,21 +486,23 @@ margin-top:40px;
 
 
 
+
 .card{
-
-padding:25px;
-
-border-radius:20px;
 
 background:
 
 linear-gradient(
 145deg,
 rgba(255,20,60,.15),
-rgba(0,0,0,.9)
+black
 );
 
-border:1px solid rgba(255,20,70,.4);
+
+border:1px solid rgba(255,20,60,.5);
+
+border-radius:20px;
+
+padding:25px;
 
 }
 
@@ -564,21 +512,20 @@ border:1px solid rgba(255,20,70,.4);
 
 color:#ff1744;
 
-font-size:20px;
-
 }
 
 
 
-.admin-panel{
+
+.admin{
 
 margin-top:40px;
 
 padding:30px;
 
-border-radius:20px;
-
 border:1px solid #ff1744;
+
+border-radius:20px;
 
 }
 
@@ -596,13 +543,13 @@ flex-wrap:wrap;
 
 
 
-.buttons button{
+button{
 
 padding:14px 25px;
 
 border:none;
 
-border-radius:12px;
+border-radius:10px;
 
 background:#ff1744;
 
@@ -616,15 +563,26 @@ cursor:pointer;
 
 
 
+.admin span{
+
+color:#00ff88;
+
+margin-left:10px;
+
+}
+
+
+
+
 .loading{
 
 height:100vh;
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
+
+align-items:center;
 
 background:#050505;
 
@@ -634,10 +592,9 @@ color:#ff1744;
 
 
 
-
 @media(max-width:900px){
 
-.sections{
+.grid{
 
 grid-template-columns:1fr;
 
@@ -659,594 +616,9 @@ text-align:center;
 `}</style>
 
 
+
 </main>
 
-);
-
-}setLoading(false);
-
-};
-
-
-
-
-if(loading){
-
-return(
-<div className="loading">
-LOADING PLAYERS...
-</div>
-);
-
-}
-
-
-
-
-return(
-
-<main className="players-page">
-
-
-<div className="container">
-
-
-<h1>
-PLAYER MANAGEMENT
-</h1>
-
-
-
-{
-players.length===0 ? (
-
-<div className="empty">
-NO PLAYERS FOUND
-</div>
-
-)
-
-:
-
-(
-
-
-<div className="players-grid">
-
-
-{
-players.map((player)=>(
-
-
-<div className="player-card" key={player.id}>
-
-
-<div className="player-header">
-
-
-<div className="avatar">
-
-{player.full_name?.charAt(0) || "P"}
-
-</div>
-
-
-
-<div>
-
-<h2>
-{player.full_name || "Unnamed Player"}
-</h2>
-
-
-<span>
-PLAYER ID #{player.id.slice(0,6)}
-</span>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div className="info">
-
-
-<p>
-<span>
-EMAIL
-</span>
-
-{player.email || "No Email"}
-
-</p>
-
-
-
-<p>
-<span>
-TEAM
-</span>
-
-{player.team_name || "No Team"}
-
-</p>
-
-
-
-
-<p>
-<span>
-POSITION
-</span>
-
-{player.primary_role || "Not Assigned"}
-
-</p>
-
-
-
-
-<div className="status-box">
-
-<span>
-STATUS
-</span>
-
-
-<strong className={
-player.status?.toLowerCase()==="approved"
-?
-"approved"
-:
-"pending"
-}>
-
-{player.status || "Pending"}
-
-</strong>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div className="action-buttons">
-
-
-<button
-
-className="view-btn"
-
-onClick={()=>window.location.href=`/admin/players/${player.id}`}
-
->
-
-VIEW PROFILE
-
-</button>
-
-
-
-
-
-{
-player.status?.toLowerCase() !== "approved" && (
-
-<button
-
-className="approve-btn"
-
-onClick={()=>approvePlayer(player.id)}
-
->
-
-APPROVE PLAYER
-
-</button>
-
-)
-
-}
-
-
-
-</div>
-
-
-
-</div>
-
-
-))
-
-}
-
-
-</div>
-
-)
-
-}
-
-
-
-</div>
-
-
-
-
-
-<style jsx>{`
-
-.players-page{
-
-min-height:100vh;
-background:#050505;
-color:white;
-padding:50px;
-
-}
-
-
-
-.container{
-
-max-width:1200px;
-margin:auto;
-
-}
-
-
-
-h1{
-
-text-align:center;
-color:#ff1744;
-letter-spacing:8px;
-font-size:42px;
-margin-bottom:50px;
-
-text-shadow:
-0 0 20px rgba(255,0,70,.8);
-
-}
-
-
-
-
-
-.players-grid{
-
-display:grid;
-
-grid-template-columns:repeat(3,300px);
-
-gap:40px;
-
-justify-content:center;
-
-}
-
-
-
-
-
-.player-card{
-
-background:
-
-linear-gradient(
-145deg,
-rgba(255,20,60,.20),
-rgba(0,0,0,.95)
-);
-
-
-border:1px solid rgba(255,20,70,.6);
-
-border-radius:25px;
-
-padding:30px 25px;
-
-width:300px;
-
-min-height:470px;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:space-between;
-
-
-box-shadow:
-
-0 0 25px rgba(255,0,70,.25);
-
-
-transition:.3s;
-
-
-}
-
-
-
-.player-card:hover{
-
-transform:translateY(-10px);
-
-box-shadow:
-
-0 0 40px rgba(255,0,70,.7);
-
-}
-
-
-
-
-.player-header{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-
-
-.avatar{
-
-height:55px;
-
-width:55px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:#ff1744;
-
-font-size:25px;
-
-font-weight:bold;
-
-box-shadow:0 0 20px #ff1744;
-
-}
-
-
-
-.player-header h2{
-
-margin:0;
-
-font-size:20px;
-
-}
-
-
-
-.player-header span{
-
-font-size:11px;
-
-color:#999;
-
-}
-
-
-
-
-.info p{
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-text-align:center;
-
-margin:22px 0;
-
-}
-
-
-
-.info p span,
-.status-box span{
-
-font-size:11px;
-
-letter-spacing:2px;
-
-color:#888;
-
-}
-
-
-
-
-
-.status-box{
-
-border-top:1px solid rgba(255,255,255,.15);
-
-padding-top:15px;
-
-display:flex;
-
-justify-content:space-between;
-
-}
-
-
-
-.approved{
-
-color:#00ff88;
-
-text-transform:uppercase;
-
-}
-
-
-
-.pending{
-
-color:#ffc400;
-
-text-transform:uppercase;
-
-}
-
-
-
-
-.action-buttons{
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-}
-
-
-
-.view-btn,
-.approve-btn{
-
-width:100%;
-
-padding:14px;
-
-border-radius:12px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-
-
-.view-btn{
-
-background:transparent;
-
-border:1px solid #ff1744;
-
-color:#ff1744;
-
-}
-
-
-
-.view-btn:hover{
-
-background:#ff1744;
-
-color:white;
-
-}
-
-
-
-.approve-btn{
-
-border:none;
-
-background:
-
-linear-gradient(
-135deg,
-#ff1744,
-#ff0055
-);
-
-color:white;
-
-box-shadow:
-
-0 0 20px rgba(255,0,70,.6);
-
-}
-
-
-
-.approve-btn:hover,
-.view-btn:hover{
-
-transform:scale(1.05);
-
-}
-
-
-
-.empty{
-
-text-align:center;
-
-color:#ff1744;
-
-font-size:25px;
-
-}
-
-
-
-.loading{
-
-height:100vh;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:#050505;
-
-color:#ff1744;
-
-}
-
-
-
-@media(max-width:900px){
-
-.players-grid{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-
-</style>
-
-</main>
 
 );
 
