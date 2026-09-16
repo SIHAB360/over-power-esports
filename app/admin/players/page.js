@@ -29,6 +29,7 @@ const {data,error}=await supabase
 
 console.log("PLAYERS DATA:", data);
 console.log("PLAYERS ERROR:", error);
+  console.log("PLAYERS COUNT:", data?.length);
 
 if(!error){
   setPlayers(data || []);
