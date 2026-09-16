@@ -22,7 +22,7 @@ fetchPlayers();
 const fetchPlayers = async()=>{
 
 const {data,error}=await supabase
-.from("profiles")
+.from("players")
 .select("*")
 .order("created_at",{ascending:false});
 
