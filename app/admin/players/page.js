@@ -4,10 +4,10 @@ import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
 
 
-export default function PlayersPage() {
+export default function PlayersPage(){
 
-const [players,setPlayers] = useState([]);
-const [loading,setLoading] = useState(true);
+const [players,setPlayers]=useState([]);
+const [loading,setLoading]=useState(true);
 
 
 
@@ -17,15 +17,12 @@ fetchPlayers();
 
 
 
-const fetchPlayers = async()=>{
+const fetchPlayers=async()=>{
 
 const {data,error}=await supabase
 .from("players")
 .select("*")
 .order("created_at",{ascending:false});
-
-
-console.log(data,error);
 
 
 if(!error){
@@ -38,8 +35,7 @@ setLoading(false);
 
 
 
-
-const approvePlayer = async(id)=>{
+const approvePlayer=async(id)=>{
 
 const {error}=await supabase
 .from("players")
@@ -49,18 +45,11 @@ status:"approved"
 .eq("id",id);
 
 
-
-if(error){
-console.log(error);
-return;
+if(!error){
+fetchPlayers();
 }
 
-
-fetchPlayers();
-
 };
-
-
 
 
 
@@ -70,7 +59,7 @@ return(
 <div className="loading">
 LOADING PLAYERS...
 </div>
-);
+)
 
 }
 
@@ -79,9 +68,7 @@ LOADING PLAYERS...
 
 return(
 
-<main className="players-page">
-
-<div className="container">
+<main className="page">
 
 
 <h1>
@@ -90,31 +77,35 @@ PLAYER MANAGEMENT
 
 
 
-<div className="players-grid">
+<div className="grid">
 
 
 {
-players.map((player)=>(
+players.map(player=>(
 
 
-<div className="player-card" key={player.id}>
+<div className="card" key={player.id}>
 
 
-<div className="top">
+<div className="shine"></div>
+
+
+<div className="profile">
 
 
 <div className="avatar">
-{player.full_name?.charAt(0) || "P"}
+{player.full_name?.charAt(0)||"P"}
 </div>
 
 
 <div>
+
 <h2>
-{player.full_name || "Unnamed Player"}
+{player.full_name || "PLAYER"}
 </h2>
 
 <small>
-PLAYER #{player.id.slice(0,6)}
+ID #{player.id.slice(0,6)}
 </small>
 
 </div>
@@ -134,27 +125,35 @@ PLAYER #{player.id.slice(0,6)}
 </div>
 
 
-
 <div>
 <label>TEAM</label>
-<p>{player.team_name || "No Team"}</p>
+<p>{player.team_name || "NO TEAM"}</p>
 </div>
-
 
 
 <div>
 <label>POSITION</label>
-<p>{player.primary_role || player.position || "Not Assigned"}</p>
+<p>
+{player.primary_role || player.position || "NOT ASSIGNED"}
+</p>
 </div>
 
 
 
-<div className="status-box">
+<div className="status">
 
 <span>STATUS</span>
 
-<strong className={player.status==="approved"?"approved":"pending"}>
+<strong className={
+player.status==="approved"
+?
+"approved"
+:
+"pending"
+}>
+
 {player.status || "pending"}
+
 </strong>
 
 </div>
@@ -163,9 +162,6 @@ PLAYER #{player.id.slice(0,6)}
 </div>
 
 
-
-
-<div>
 
 
 <button
@@ -177,18 +173,18 @@ VIEW PROFILE
 
 
 
+
 {
-player.status !== "approved" &&
+player.status!=="approved" &&
+
 <button
 className="approve"
 onClick={()=>approvePlayer(player.id)}
 >
 APPROVE PLAYER
 </button>
+
 }
-
-
-</div>
 
 
 
@@ -196,6 +192,7 @@ APPROVE PLAYER
 
 
 ))
+
 }
 
 
@@ -203,100 +200,163 @@ APPROVE PLAYER
 </div>
 
 
-</div>
 
 
 
 <style jsx>{`
 
-.players-page{
+.page{
 
 min-height:100vh;
-background:#050505;
+background:
+radial-gradient(circle,#25000c,#030303 60%);
+padding:50px 30px;
 color:white;
-padding:50px 20px;
 
 }
-
-
-
-.container{
-
-max-width:1200px;
-margin:auto;
-
-}
-
 
 
 h1{
 
 text-align:center;
-font-size:40px;
-letter-spacing:6px;
+font-size:45px;
+letter-spacing:8px;
 color:#ff1744;
-text-shadow:0 0 20px #ff1744;
-margin-bottom:50px;
+
+text-shadow:
+0 0 10px #ff1744,
+0 0 40px #ff1744;
+
+margin-bottom:60px;
 
 }
 
 
 
 
-.players-grid{
+.grid{
+
+max-width:1200px;
+margin:auto;
 
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:30px;
+
+grid-template-columns:
+repeat(auto-fit,minmax(300px,1fr));
+
+gap:40px;
 
 }
 
 
 
 
-.player-card{
+.card{
+
+position:relative;
+
+overflow:hidden;
 
 background:
-linear-gradient(145deg,#160008,#050505);
+linear-gradient(
+145deg,
+rgba(255,0,60,.15),
+rgba(0,0,0,.9)
+);
 
-border:1px solid rgba(255,23,68,.5);
 
 border-radius:25px;
 
-padding:25px;
+padding:28px;
+
+border:1px solid rgba(255,23,68,.6);
+
 
 box-shadow:
-0 0 30px rgba(255,0,70,.2);
 
-transition:.3s;
-
-min-height:420px;
-
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-
-}
+0 0 25px rgba(255,0,70,.25);
 
 
+transition:.4s;
 
-.player-card:hover{
+animation:pulse 3s infinite;
 
-transform:translateY(-8px);
-
-box-shadow:
-0 0 40px rgba(255,0,70,.5);
 
 }
 
 
 
 
-.top{
+.card:hover{
+
+transform:translateY(-12px) scale(1.03);
+
+box-shadow:
+
+0 0 60px rgba(255,0,70,.7);
+
+}
+
+
+
+
+.card::before{
+
+content:"";
+
+position:absolute;
+
+inset:-2px;
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+#ff1744,
+transparent
+);
+
+animation:borderMove 3s linear infinite;
+
+z-index:-1;
+
+}
+
+
+
+.shine{
+
+position:absolute;
+
+width:120%;
+
+height:40px;
+
+background:white;
+
+opacity:.08;
+
+transform:rotate(-25deg);
+
+top:-40px;
+
+left:-50px;
+
+animation:shine 4s infinite;
+
+}
+
+
+
+
+.profile{
 
 display:flex;
+
 align-items:center;
-gap:15px;
+
+gap:18px;
 
 }
 
@@ -304,30 +364,35 @@ gap:15px;
 
 .avatar{
 
-width:60px;
-height:60px;
+width:65px;
+height:65px;
+
 border-radius:50%;
 
 background:#ff1744;
 
 display:flex;
+
 align-items:center;
 justify-content:center;
 
-font-size:25px;
+font-size:30px;
+
 font-weight:bold;
 
-box-shadow:0 0 20px #ff1744;
+box-shadow:
+
+0 0 25px #ff1744;
 
 }
 
 
 
-
 h2{
 
-font-size:20px;
 margin:0;
+
+font-size:22px;
 
 }
 
@@ -343,7 +408,9 @@ color:#888;
 
 .info{
 
-margin-top:25px;
+margin-top:30px;
+
+text-align:center;
 
 }
 
@@ -351,7 +418,7 @@ margin-top:25px;
 
 .info div{
 
-margin-bottom:18px;
+margin-bottom:20px;
 
 }
 
@@ -359,17 +426,21 @@ margin-bottom:18px;
 
 label{
 
+display:block;
+
 font-size:11px;
+
+letter-spacing:3px;
+
 color:#888;
-letter-spacing:2px;
 
 }
 
 
 
-.info p{
+p{
 
-margin:5px 0;
+color:#00ff88;
 
 word-break:break-word;
 
@@ -377,21 +448,27 @@ word-break:break-word;
 
 
 
-.status-box{
 
-display:flex;
-justify-content:space-between;
+.status{
 
-padding-top:15px;
 border-top:1px solid #333;
 
+padding-top:15px;
+
+display:flex;
+
+justify-content:space-between;
+
 }
+
 
 
 
 .approved{
 
 color:#00ff88;
+
+text-shadow:0 0 10px #00ff88;
 
 }
 
@@ -401,8 +478,9 @@ color:#00ff88;
 
 color:#ffc400;
 
-}
+text-shadow:0 0 10px #ffc400;
 
+}
 
 
 
@@ -410,12 +488,15 @@ color:#ffc400;
 button{
 
 width:100%;
-padding:13px;
 
-border-radius:12px;
-margin-top:10px;
+padding:14px;
+
+margin-top:12px;
+
+border-radius:15px;
 
 font-weight:bold;
+
 cursor:pointer;
 
 transition:.3s;
@@ -427,8 +508,12 @@ transition:.3s;
 .view{
 
 background:transparent;
-border:1px solid #ff1744;
+
 color:#ff1744;
+
+border:1px solid #ff1744;
+
+box-shadow:0 0 15px rgba(255,0,70,.3);
 
 }
 
@@ -437,30 +522,85 @@ color:#ff1744;
 .approve{
 
 background:#ff1744;
-border:none;
+
 color:white;
 
+border:none;
+
+box-shadow:0 0 25px #ff1744;
+
 }
+
 
 
 
 button:hover{
 
-transform:scale(1.03);
+transform:scale(1.05);
 
 }
+
 
 
 
 .loading{
 
 height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 
-background:#050505;
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+background:#000;
+
 color:#ff1744;
+
+font-size:30px;
+
+}
+
+
+
+
+@keyframes pulse{
+
+50%{
+
+box-shadow:
+0 0 45px rgba(255,0,70,.45);
+
+}
+
+}
+
+
+
+@keyframes borderMove{
+
+0%{
+
+transform:translateX(-100%);
+
+}
+
+100%{
+
+transform:translateX(100%);
+
+}
+
+}
+
+
+
+@keyframes shine{
+
+50%{
+
+top:120%;
+
+}
 
 }
 
@@ -471,6 +611,7 @@ color:#ff1744;
 
 </main>
 
-);
+
+)
 
 }
