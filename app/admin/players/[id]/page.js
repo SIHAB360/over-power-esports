@@ -9,9 +9,7 @@ export default function PlayerProfilePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (id) {
-      getPlayer();
-    }
+    if (id) getPlayer();
   }, [id]);
 
   const getPlayer = async () => {
@@ -21,9 +19,7 @@ export default function PlayerProfilePage() {
       .eq("id", id)
       .single();
 
-    if (!error) {
-      setPlayer(data);
-    }
+    if (!error) setPlayer(data);
     setLoading(false);
   };
 
@@ -46,113 +42,115 @@ export default function PlayerProfilePage() {
 
   return (
     <main className="page">
-      {/* Background Glow */}
       <div className="bg-glow"></div>
       <div className="bg-glow-2"></div>
 
       <div className="container">
-        {/* Hero Section */}
-        <section className="hero-card">
-          <div className="image-box">
+        {/* ===== HERO ===== */}
+        <section className="hero">
+          <div className="avatar-box">
             <img
-              src={
-                player.profile_image ||
-                player.avatar_url ||
-                "/default.png"
-              }
+              src={player.profile_image || player.avatar_url || "/default.png"}
               alt={player.ign || "Player"}
             />
           </div>
 
-          <div className="hero-info">
+          <div className="hero-content">
             <p className="brand">OVER POWER ESPORTS</p>
-            <h1>{player.ign || player.full_name}</h1>
-            <h3>{player.primary_role || player.position || "PLAYER"}</h3>
-            <p className="team">{player.team_name || "NO TEAM"}</p>
-            <span className={`status ${player.status === "approved" ? "approved" : "pending"}`}>
+            <h1 className="ign">{player.ign || player.full_name}</h1>
+
+            <div className="meta-row">
+              <span className="role">{player.primary_role || "Player"}</span>
+              <span className="team">{player.team_name || "No Team"}</span>
+            </div>
+
+            <span className={`status-badge ${player.status === "approved" ? "approved" : "pending"}`}>
               {player.status || "pending"}
             </span>
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="stats-grid">
-          <div className="stat-card">
-            <span className="stat-label">MATCHES</span>
-            <strong className="stat-value">{player.matches_played || 0}</strong>
+        {/* ===== STATS ===== */}
+        <section className="stats">
+          <div className="stat">
+            <span className="label">MATCHES</span>
+            <strong>{player.matches_played || 0}</strong>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">WINS</span>
-            <strong className="stat-value">{player.wins || 0}</strong>
+          <div className="stat">
+            <span className="label">WINS</span>
+            <strong>{player.wins || 0}</strong>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">KILLS</span>
-            <strong className="stat-value">{player.total_kills || 0}</strong>
+          <div className="stat">
+            <span className="label">KILLS</span>
+            <strong>{player.total_kills || 0}</strong>
           </div>
         </section>
 
-        {/* Player Information */}
-        <section className="info-card">
-          <h2 className="section-title">PLAYER INFORMATION</h2>
-          <div className="info-grid">
-            <Row label="FULL NAME" value={player.full_name} />
+        {/* ===== PLAYER INFORMATION ===== */}
+        <section className="card">
+          <h2 className="card-title">PLAYER INFORMATION</h2>
+          <div className="rows">
+            <Row label="Full Name" value={player.full_name} />
             <Row label="IGN" value={player.ign} />
-            <Row label="FREE FIRE UID" value={player.freefire_uid} />
-            <Row label="EMAIL" value={player.email} />
-            <Row label="PHONE" value={player.phone} />
-            <Row label="COUNTRY" value={player.country} />
-            <Row label="AGE" value={player.age} />
+            <Row label="Free Fire UID" value={player.freefire_uid} />
+            <Row label="Email" value={player.email} />
+            <Row label="Phone" value={player.phone} />
+            <Row label="Country" value={player.country} />
+            <Row label="Age" value={player.age} />
           </div>
         </section>
 
-        {/* Game Details */}
-        <section className="info-card">
-          <h2 className="section-title">GAME DETAILS</h2>
-          <div className="info-grid">
-            <Row label="PRIMARY ROLE" value={player.primary_role} />
-            <Row label="SECONDARY ROLE" value={player.secondary_role} />
-            <Row label="DEVICE" value={player.device} />
-            <Row label="INTERNET" value={player.internet_connection} />
-            <Row label="PRACTICE TIME" value={player.practice_time} />
-            <Row label="GAME EXPERIENCE" value={player.game_experience} />
-            <Row label="TOURNAMENT EXPERIENCE" value={player.tournament_experience} />
-            <Row label="BR K/D RATE" value={player.average_br_kd_rate} />
-            <Row label="EXPERT WEAPON" value={player.expert_weapon} />
+        {/* ===== GAME DETAILS ===== */}
+        <section className="card">
+          <h2 className="card-title">GAME DETAILS</h2>
+          <div className="rows">
+            <Row label="Primary Role" value={player.primary_role} />
+            <Row label="Secondary Role" value={player.secondary_role} />
+            <Row label="Device" value={player.device} />
+            <Row label="Internet" value={player.internet_connection} />
+            <Row label="Practice Time" value={player.practice_time} />
+            <Row label="Game Experience" value={player.game_experience} />
+            <Row label="Tournament Experience" value={player.tournament_experience} />
+            <Row label="BR K/D Rate" value={player.average_br_kd_rate} />
+            <Row label="Expert Weapon" value={player.expert_weapon} />
           </div>
         </section>
 
-        {/* Team History */}
-        <section className="info-card">
-          <h2 className="section-title">TEAM HISTORY</h2>
-          <div className="info-grid">
-            <Row label="PREVIOUS TEAM" value={player.previous_team} />
-            <Row label="JOINING DATE" value={player.joining_date} />
+        {/* ===== TEAM HISTORY ===== */}
+        <section className="card">
+          <h2 className="card-title">TEAM HISTORY</h2>
+          <div className="rows">
+            <Row label="Previous Team" value={player.previous_team} />
+            <Row label="Joining Date" value={player.joining_date} />
           </div>
         </section>
 
-        {/* Social Links */}
-        <section className="social-card">
-          <h2 className="section-title">SOCIAL LINKS</h2>
-          <div className="social-links">
+        {/* ===== SOCIAL LINKS ===== */}
+        <section className="card">
+          <h2 className="card-title">SOCIAL LINKS</h2>
+          <div className="socials">
             {player.facebook_link && (
               <a href={player.facebook_link} target="_blank" rel="noopener noreferrer" className="social-btn">
-                FACEBOOK
+                Facebook
               </a>
             )}
             {player.instagram_link && (
               <a href={player.instagram_link} target="_blank" rel="noopener noreferrer" className="social-btn">
-                INSTAGRAM
+                Instagram
               </a>
             )}
             {player.youtube_link && (
               <a href={player.youtube_link} target="_blank" rel="noopener noreferrer" className="social-btn">
-                YOUTUBE
+                YouTube
               </a>
             )}
             {player.tiktok_link && (
               <a href={player.tiktok_link} target="_blank" rel="noopener noreferrer" className="social-btn">
-                TIKTOK
+                TikTok
               </a>
+            )}
+            {!player.facebook_link && !player.instagram_link && !player.youtube_link && !player.tiktok_link && (
+              <p className="no-social">No social links available</p>
             )}
           </div>
         </section>
@@ -164,32 +162,31 @@ export default function PlayerProfilePage() {
           background: #050505;
           color: #fff;
           position: relative;
-          overflow-x: hidden;
           font-family: "Inter", system-ui, -apple-system, sans-serif;
         }
 
         .bg-glow {
           position: fixed;
-          width: 700px;
-          height: 700px;
+          width: 650px;
+          height: 650px;
           background: #ff1744;
           filter: blur(180px);
-          opacity: 0.15;
-          top: -300px;
-          left: -200px;
+          opacity: 0.14;
+          top: -280px;
+          left: -180px;
           pointer-events: none;
           z-index: 0;
         }
 
         .bg-glow-2 {
           position: fixed;
-          width: 500px;
-          height: 500px;
+          width: 450px;
+          height: 450px;
           background: #ff0040;
           filter: blur(160px);
-          opacity: 0.1;
-          bottom: -150px;
-          right: -100px;
+          opacity: 0.09;
+          bottom: -120px;
+          right: -80px;
           pointer-events: none;
           z-index: 0;
         }
@@ -197,241 +194,224 @@ export default function PlayerProfilePage() {
         .container {
           position: relative;
           z-index: 2;
-          max-width: 980px;
+          max-width: 860px;
           margin: 0 auto;
-          padding: 40px 20px 80px;
+          padding: 40px 20px 70px;
         }
 
-        /* Hero Card */
-        .hero-card {
+        /* ===== HERO ===== */
+        .hero {
           display: flex;
           align-items: center;
-          gap: 40px;
-          padding: 36px;
-          border-radius: 28px;
-          background: rgba(15, 4, 8, 0.8);
-          border: 1px solid rgba(255, 23, 68, 0.5);
-          box-shadow: 0 0 50px rgba(255, 23, 68, 0.25),
-            inset 0 0 30px rgba(255, 23, 68, 0.05);
-          backdrop-filter: blur(12px);
-          margin-bottom: 30px;
-          position: relative;
-          overflow: hidden;
+          gap: 32px;
+          padding: 32px;
+          border-radius: 24px;
+          background: rgba(14, 4, 8, 0.85);
+          border: 1px solid rgba(255, 23, 68, 0.45);
+          box-shadow: 0 0 40px rgba(255, 23, 68, 0.18);
+          margin-bottom: 24px;
         }
 
-        .hero-card::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          border-radius: 28px;
-          padding: 1px;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 23, 68, 0.7),
-            rgba(255, 23, 68, 0.1),
-            rgba(255, 23, 68, 0.5)
-          );
-          -webkit-mask: linear-gradient(#fff 0 0) content-box,
-            linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          pointer-events: none;
-        }
-
-        .image-box img {
-          width: 160px;
-          height: 160px;
+        .avatar-box img {
+          width: 140px;
+          height: 140px;
           object-fit: cover;
-          border-radius: 22px;
+          border-radius: 20px;
           border: 2px solid #ff1744;
-          box-shadow: 0 0 35px rgba(255, 23, 68, 0.6);
+          box-shadow: 0 0 30px rgba(255, 23, 68, 0.5);
           display: block;
         }
 
-        .hero-info {
+        .hero-content {
           flex: 1;
         }
 
         .brand {
-          font-size: 12px;
-          letter-spacing: 4px;
+          font-size: 11px;
+          letter-spacing: 3.5px;
           color: #888;
-          margin-bottom: 8px;
+          margin: 0 0 6px;
           font-weight: 500;
         }
 
-        .hero-info h1 {
-          font-size: 42px;
+        .ign {
+          font-size: 36px;
           font-weight: 900;
-          margin: 0 0 6px;
-          background: linear-gradient(180deg, #ffffff 20%, #ff8a9b);
+          margin: 0 0 10px;
+          line-height: 1.15;
+          background: linear-gradient(180deg, #fff 25%, #ff8a9b);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          line-height: 1.1;
         }
 
-        .hero-info h3 {
-          font-size: 18px;
-          letter-spacing: 3px;
+        .meta-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 14px;
+          flex-wrap: wrap;
+        }
+
+        .role {
+          font-size: 14px;
           color: #ff4d6d;
-          margin: 0 0 10px;
           font-weight: 600;
+          letter-spacing: 1px;
         }
 
         .team {
-          font-size: 17px;
+          font-size: 14px;
           color: #00ff9d;
           font-weight: 600;
-          margin: 0 0 16px;
-          text-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
         }
 
-        .status {
+        .status-badge {
           display: inline-block;
-          padding: 7px 18px;
+          padding: 6px 16px;
           border-radius: 20px;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           letter-spacing: 1px;
           text-transform: uppercase;
         }
 
-        .status.pending {
+        .status-badge.pending {
           background: rgba(255, 193, 7, 0.12);
           color: #ffc107;
-          border: 1px solid rgba(255, 193, 7, 0.5);
+          border: 1px solid rgba(255, 193, 7, 0.45);
         }
 
-        .status.approved {
+        .status-badge.approved {
           background: rgba(0, 255, 157, 0.12);
           color: #00ff9d;
-          border: 1px solid rgba(0, 255, 157, 0.5);
+          border: 1px solid rgba(0, 255, 157, 0.45);
         }
 
-        /* Stats Grid */
-        .stats-grid {
+        /* ===== STATS ===== */
+        .stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-          margin-bottom: 30px;
+          gap: 14px;
+          margin-bottom: 24px;
         }
 
-        .stat-card {
-          background: rgba(12, 3, 6, 0.85);
-          border: 1px solid rgba(255, 23, 68, 0.35);
-          border-radius: 20px;
-          padding: 24px 20px;
+        .stat {
+          background: rgba(14, 4, 8, 0.85);
+          border: 1px solid rgba(255, 23, 68, 0.3);
+          border-radius: 18px;
+          padding: 20px 16px;
           text-align: center;
           transition: all 0.3s ease;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .stat-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(255, 23, 68, 0.6);
-          box-shadow: 0 0 30px rgba(255, 23, 68, 0.2);
+        .stat:hover {
+          border-color: rgba(255, 23, 68, 0.55);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 25px rgba(255, 23, 68, 0.15);
         }
 
-        .stat-label {
+        .stat .label {
           display: block;
-          font-size: 12px;
-          letter-spacing: 2px;
+          font-size: 11px;
+          letter-spacing: 1.5px;
           color: #888;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
           font-weight: 600;
         }
 
-        .stat-value {
-          font-size: 32px;
+        .stat strong {
+          font-size: 28px;
           font-weight: 800;
           color: #00ff9d;
-          text-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
         }
 
-        /* Info Cards */
-        .info-card,
-        .social-card {
-          background: rgba(12, 3, 6, 0.85);
-          border: 1px solid rgba(255, 23, 68, 0.35);
-          border-radius: 22px;
-          padding: 28px 26px;
-          margin-bottom: 24px;
-          box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+        /* ===== CARDS ===== */
+        .card {
+          background: rgba(14, 4, 8, 0.85);
+          border: 1px solid rgba(255, 23, 68, 0.3);
+          border-radius: 20px;
+          padding: 26px 24px;
+          margin-bottom: 20px;
         }
 
-        .section-title {
-          font-size: 16px;
+        .card-title {
+          font-size: 14px;
           font-weight: 800;
           letter-spacing: 2px;
           color: #ff1744;
-          margin: 0 0 20px;
-          text-shadow: 0 0 15px rgba(255, 23, 68, 0.5);
+          margin: 0 0 18px;
         }
 
-        .info-grid {
+        .rows {
           display: flex;
           flex-direction: column;
-          gap: 2px;
         }
 
         .row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 13px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          padding: 12px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .row:last-child {
           border-bottom: none;
+          padding-bottom: 0;
         }
 
         .row-label {
           font-size: 13px;
-          color: #888;
-          letter-spacing: 0.5px;
+          color: #999;
         }
 
         .row-value {
           font-size: 14px;
           font-weight: 600;
-          color: #00ff9d;
+          color: #e0e0e0;
           text-align: right;
+          max-width: 60%;
+          word-break: break-word;
         }
 
-        /* Social */
-        .social-links {
+        /* ===== SOCIAL ===== */
+        .socials {
           display: flex;
           flex-wrap: wrap;
-          gap: 12px;
+          gap: 10px;
         }
 
         .social-btn {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 11px 22px;
+          padding: 10px 20px;
           border-radius: 30px;
-          border: 1px solid rgba(255, 23, 68, 0.5);
+          border: 1px solid rgba(255, 23, 68, 0.45);
+          background: rgba(255, 23, 68, 0.08);
           color: #ff4d6d;
           font-size: 13px;
-          font-weight: 700;
-          letter-spacing: 1px;
+          font-weight: 600;
           text-decoration: none;
-          transition: all 0.3s ease;
-          background: rgba(255, 23, 68, 0.08);
+          transition: all 0.25s ease;
         }
 
         .social-btn:hover {
           background: linear-gradient(135deg, #ff1744, #c4002b);
           border-color: #ff1744;
-          color: white;
-          box-shadow: 0 0 25px rgba(255, 23, 68, 0.45);
+          color: #fff;
+          box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
           transform: translateY(-2px);
         }
 
-        /* Loading */
+        .no-social {
+          font-size: 13px;
+          color: #666;
+          margin: 0;
+        }
+
+        /* ===== LOADING ===== */
         .loading-screen {
           min-height: 100vh;
           background: #050505;
@@ -439,12 +419,12 @@ export default function PlayerProfilePage() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 18px;
+          gap: 16px;
         }
 
         .loader {
-          width: 48px;
-          height: 48px;
+          width: 46px;
+          height: 46px;
           border: 3px solid rgba(255, 23, 68, 0.15);
           border-top-color: #ff1744;
           border-radius: 50%;
@@ -453,42 +433,45 @@ export default function PlayerProfilePage() {
 
         .loading-screen p {
           font-size: 13px;
-          letter-spacing: 3px;
+          letter-spacing: 2.5px;
           color: #ff4d6d;
           font-weight: 600;
         }
 
         @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
+          to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 700px) {
-          .hero-card {
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+          .hero {
             flex-direction: column;
             text-align: center;
-            gap: 24px;
-            padding: 28px 20px;
+            gap: 20px;
+            padding: 24px 18px;
           }
 
-          .hero-info h1 {
-            font-size: 32px;
+          .ign {
+            font-size: 28px;
           }
 
-          .stats-grid {
+          .meta-row {
+            justify-content: center;
+          }
+
+          .stats {
             grid-template-columns: 1fr;
           }
 
           .row {
             flex-direction: column;
             align-items: flex-start;
-            gap: 4px;
+            gap: 3px;
           }
 
           .row-value {
             text-align: left;
+            max-width: 100%;
           }
         }
       `}</style>
@@ -500,7 +483,7 @@ function Row({ label, value }) {
   return (
     <div className="row">
       <span className="row-label">{label}</span>
-      <strong className="row-value">{value || "N/A"}</strong>
+      <span className="row-value">{value || "N/A"}</span>
     </div>
   );
 }
