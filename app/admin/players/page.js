@@ -17,7 +17,25 @@ fetchPlayers();
 
 },[]);
 
+const approvePlayer = async (id)=>{
 
+const {error}=await supabase
+.from("players")
+.update({
+  status:"approved"
+})
+.eq("id",id);
+
+
+if(error){
+ console.log(error);
+ return;
+}
+
+
+fetchPlayers();
+
+};
 
 const fetchPlayers = async()=>{
 
