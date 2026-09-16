@@ -13,13 +13,20 @@ export default function AdminDashboard() {
 
   const checkAdmin = async () => {
     const {
-      data: { user },
-    } = await supabase.auth.getUser();
+data:{
+session
+}
+}= await supabase.auth.getSession();
 
-    if (!user) {
-      window.location.href = "/login";
-      return;
-    }
+
+if(!session){
+
+window.location.href="/login";
+return;
+
+}
+
+const user = session.user;
 
     const { data: profile, error } = await supabase
       .from("profiles")
