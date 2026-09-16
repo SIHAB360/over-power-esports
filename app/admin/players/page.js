@@ -88,7 +88,15 @@ Email: {player.email}
 </p>
 
 <p>
-ROLE : {player.role || "PLAYER"}
+TEAM : {player.team_name || "No Team"}
+</p>
+
+<p>
+POSITION : {player.primary_role || "Not Assigned"}
+</p>
+
+<p>
+STATUS : {player.status || "Pending"}
 </p>
 
 </div>
