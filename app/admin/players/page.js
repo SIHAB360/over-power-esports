@@ -17,6 +17,8 @@ fetchPlayers();
 
 },[]);
 
+
+
 const approvePlayer = async (id)=>{
 
 const {error}=await supabase
@@ -28,14 +30,18 @@ const {error}=await supabase
 
 
 if(error){
- console.log(error);
- return;
+
+console.log(error);
+return;
+
 }
 
 
 fetchPlayers();
 
 };
+
+
 
 const fetchPlayers = async()=>{
 
@@ -45,12 +51,14 @@ const {data,error}=await supabase
 .order("created_at",{ascending:false});
 
 
-console.log("PLAYERS DATA:", data);
-console.log("PLAYERS ERROR:", error);
-  console.log("PLAYERS COUNT:", data?.length);
+console.log("PLAYERS DATA:",data);
+console.log("PLAYERS ERROR:",error);
+
 
 if(!error){
-  setPlayers(data || []);
+
+setPlayers(data || []);
+
 }
 
 
@@ -89,43 +97,66 @@ PLAYER MANAGEMENT
 </h1>
 
 
+
 <div className="players-grid">
 
 
 {
 players.map((player)=>(
 
-<div className="player-card" key={player.id}>
+
+<div 
+className="player-card" 
+key={player.id}
+>
 
 
 <h2>
 {player.full_name || "Unnamed Player"}
 </h2>
 
+
 <p>
 Email: {player.email}
 </p>
+
 
 <p>
 TEAM : {player.team_name || "No Team"}
 </p>
 
+
 <p>
 POSITION : {player.primary_role || "Not Assigned"}
 </p>
+
 
 <p>
 STATUS : {player.status || "Pending"}
 </p>
 
-{player.status?.toLowerCase() !== "approved" && (
-  <button
-    className="approve-btn"
-    onClick={() => approvePlayer(player.id)}
-  >
-    APPROVE PLAYER
-  </button>
-)}
+
+
+{
+player.status?.toLowerCase() !== "approved" && (
+
+<button
+className="approve-btn"
+onClick={()=>approvePlayer(player.id)}
+>
+APPROVE PLAYER
+</button>
+
+)
+}
+
+
+
+</div>
+
+
+))
+}
 
 
 </div>
@@ -147,12 +178,14 @@ padding:50px;
 }
 
 
+
 .container{
 
 max-width:1200px;
 margin:auto;
 
 }
+
 
 
 h1{
@@ -164,6 +197,7 @@ font-size:40px;
 }
 
 
+
 .players-grid{
 
 display:grid;
@@ -172,6 +206,7 @@ gap:25px;
 margin-top:40px;
 
 }
+
 
 
 .player-card{
@@ -191,6 +226,7 @@ border:1px solid rgba(255,20,60,.5);
 }
 
 
+
 .player-card h2{
 
 font-size:18px;
@@ -198,9 +234,36 @@ font-size:18px;
 }
 
 
+
 .player-card p{
 
 color:#ff1744;
+
+}
+
+
+
+.approve-btn{
+
+margin-top:20px;
+padding:12px 25px;
+border:none;
+border-radius:10px;
+
+background:#ff1744;
+color:white;
+
+cursor:pointer;
+
+font-weight:bold;
+
+}
+
+
+
+.approve-btn:hover{
+
+transform:scale(1.05);
 
 }
 
@@ -212,6 +275,7 @@ height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
+
 background:#050505;
 color:#ff1744;
 
@@ -228,6 +292,7 @@ grid-template-columns:1fr;
 }
 
 }
+
 
 `}</style>
 
