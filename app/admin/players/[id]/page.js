@@ -61,16 +61,19 @@ export default function PlayerProfilePage() {
 
             <div className="meta-row">
               <span className="role">{player.primary_role || "Player"}</span>
+              <span className="divider">•</span>
               <span className="team">{player.team_name || "No Team"}</span>
             </div>
 
-            <span
-              className={`status-badge ${
-                player.status === "approved" ? "approved" : "pending"
-              }`}
-            >
-              {player.status || "pending"}
-            </span>
+            <div className="status-wrapper">
+              <span
+                className={`status-badge ${
+                  player.status === "approved" ? "approved" : "pending"
+                }`}
+              >
+                {player.status || "pending"}
+              </span>
+            </div>
           </div>
         </section>
 
@@ -296,89 +299,101 @@ export default function PlayerProfilePage() {
         .hero {
           display: flex;
           align-items: center;
-          gap: 32px;
-          padding: 32px;
+          gap: 36px;
+          padding: 36px 40px;
           border-radius: 24px;
           background: rgba(14, 4, 8, 0.85);
           border: 1px solid rgba(255, 23, 68, 0.45);
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.18);
-          margin-bottom: 24px;
+          box-shadow: 0 0 50px rgba(255, 23, 68, 0.2);
+          margin-bottom: 28px;
+          position: relative;
         }
 
         .avatar-box img {
-          width: 140px;
-          height: 140px;
+          width: 150px;
+          height: 150px;
           object-fit: cover;
-          border-radius: 20px;
+          border-radius: 22px;
           border: 2px solid #ff1744;
-          box-shadow: 0 0 30px rgba(255, 23, 68, 0.5);
+          box-shadow: 0 0 35px rgba(255, 23, 68, 0.55);
           display: block;
         }
 
         .hero-content {
           flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
         }
 
         .brand {
           font-size: 11px;
-          letter-spacing: 3.5px;
-          color: #888;
-          margin: 0 0 6px;
+          letter-spacing: 4px;
+          color: #777;
+          margin: 0 0 8px;
           font-weight: 500;
         }
 
         .ign {
-          font-size: 36px;
+          font-size: 42px;
           font-weight: 900;
-          margin: 0 0 10px;
-          line-height: 1.15;
-          background: linear-gradient(180deg, #fff 25%, #ff8a9b);
+          margin: 0 0 12px;
+          line-height: 1.1;
+          background: linear-gradient(180deg, #ffffff 20%, #ff8a9b);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+          letter-spacing: 1px;
         }
 
         .meta-row {
           display: flex;
           align-items: center;
-          gap: 14px;
-          margin-bottom: 14px;
-          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 18px;
         }
 
         .role {
-          font-size: 14px;
+          font-size: 15px;
           color: #ff4d6d;
           font-weight: 600;
-          letter-spacing: 1px;
+        }
+
+        .divider {
+          color: #555;
+          font-size: 14px;
         }
 
         .team {
-          font-size: 14px;
+          font-size: 15px;
           color: #00ff9d;
           font-weight: 600;
+        }
+
+        .status-wrapper {
+          margin-top: 4px;
         }
 
         .status-badge {
           display: inline-block;
-          padding: 6px 16px;
-          border-radius: 20px;
-          font-size: 11px;
+          padding: 7px 20px;
+          border-radius: 30px;
+          font-size: 12px;
           font-weight: 700;
-          letter-spacing: 1px;
+          letter-spacing: 1.5px;
           text-transform: uppercase;
         }
 
         .status-badge.pending {
-          background: rgba(255, 193, 7, 0.12);
+          background: rgba(255, 193, 7, 0.1);
           color: #ffc107;
-          border: 1px solid rgba(255, 193, 7, 0.45);
+          border: 1px solid rgba(255, 193, 7, 0.5);
         }
 
         .status-badge.approved {
-          background: rgba(0, 255, 157, 0.12);
+          background: rgba(0, 255, 157, 0.1);
           color: #00ff9d;
-          border: 1px solid rgba(0, 255, 157, 0.45);
+          border: 1px solid rgba(0, 255, 157, 0.5);
         }
 
         /* ===== STATS ===== */
@@ -495,7 +510,7 @@ export default function PlayerProfilePage() {
           color: #ff9f1c;
         }
 
-        /* ===== ROWS (Fixed) ===== */
+        /* ===== ROWS ===== */
         .rows {
           padding: 8px 24px 16px;
         }
@@ -606,6 +621,10 @@ export default function PlayerProfilePage() {
             text-align: center;
             gap: 20px;
             padding: 24px 18px;
+          }
+
+          .hero-content {
+            align-items: center;
           }
 
           .ign {
