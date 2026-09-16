@@ -64,7 +64,11 @@ export default function PlayerProfilePage() {
               <span className="team">{player.team_name || "No Team"}</span>
             </div>
 
-            <span className={`status-badge ${player.status === "approved" ? "approved" : "pending"}`}>
+            <span
+              className={`status-badge ${
+                player.status === "approved" ? "approved" : "pending"
+              }`}
+            >
               {player.status || "pending"}
             </span>
           </div>
@@ -87,8 +91,11 @@ export default function PlayerProfilePage() {
         </section>
 
         {/* ===== PLAYER INFORMATION ===== */}
-        <section className="card">
-          <h2 className="card-title">PLAYER INFORMATION</h2>
+        <section className="card card-info">
+          <div className="card-header">
+            <span className="card-icon">👤</span>
+            <h2>PLAYER INFORMATION</h2>
+          </div>
           <div className="rows">
             <Row label="Full Name" value={player.full_name} />
             <Row label="IGN" value={player.ign} />
@@ -101,8 +108,11 @@ export default function PlayerProfilePage() {
         </section>
 
         {/* ===== GAME DETAILS ===== */}
-        <section className="card">
-          <h2 className="card-title">GAME DETAILS</h2>
+        <section className="card card-game">
+          <div className="card-header">
+            <span className="card-icon">🎮</span>
+            <h2>GAME DETAILS</h2>
+          </div>
           <div className="rows">
             <Row label="Primary Role" value={player.primary_role} />
             <Row label="Secondary Role" value={player.secondary_role} />
@@ -117,8 +127,11 @@ export default function PlayerProfilePage() {
         </section>
 
         {/* ===== TEAM HISTORY ===== */}
-        <section className="card">
-          <h2 className="card-title">TEAM HISTORY</h2>
+        <section className="card card-team">
+          <div className="card-header">
+            <span className="card-icon">🏆</span>
+            <h2>TEAM HISTORY</h2>
+          </div>
           <div className="rows">
             <Row label="Previous Team" value={player.previous_team} />
             <Row label="Joining Date" value={player.joining_date} />
@@ -126,32 +139,58 @@ export default function PlayerProfilePage() {
         </section>
 
         {/* ===== SOCIAL LINKS ===== */}
-        <section className="card">
-          <h2 className="card-title">SOCIAL LINKS</h2>
+        <section className="card card-social">
+          <div className="card-header">
+            <span className="card-icon">🔗</span>
+            <h2>SOCIAL LINKS</h2>
+          </div>
           <div className="socials">
             {player.facebook_link && (
-              <a href={player.facebook_link} target="_blank" rel="noopener noreferrer" className="social-btn">
+              <a
+                href={player.facebook_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+              >
                 Facebook
               </a>
             )}
             {player.instagram_link && (
-              <a href={player.instagram_link} target="_blank" rel="noopener noreferrer" className="social-btn">
+              <a
+                href={player.instagram_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+              >
                 Instagram
               </a>
             )}
             {player.youtube_link && (
-              <a href={player.youtube_link} target="_blank" rel="noopener noreferrer" className="social-btn">
+              <a
+                href={player.youtube_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+              >
                 YouTube
               </a>
             )}
             {player.tiktok_link && (
-              <a href={player.tiktok_link} target="_blank" rel="noopener noreferrer" className="social-btn">
+              <a
+                href={player.tiktok_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-btn"
+              >
                 TikTok
               </a>
             )}
-            {!player.facebook_link && !player.instagram_link && !player.youtube_link && !player.tiktok_link && (
-              <p className="no-social">No social links available</p>
-            )}
+            {!player.facebook_link &&
+              !player.instagram_link &&
+              !player.youtube_link &&
+              !player.tiktok_link && (
+                <p className="no-social">No social links available</p>
+              )}
           </div>
         </section>
       </div>
@@ -328,50 +367,110 @@ export default function PlayerProfilePage() {
 
         /* ===== CARDS ===== */
         .card {
-          background: rgba(14, 4, 8, 0.85);
-          border: 1px solid rgba(255, 23, 68, 0.3);
           border-radius: 20px;
-          padding: 26px 24px;
-          margin-bottom: 20px;
+          padding: 0;
+          margin-bottom: 22px;
+          overflow: hidden;
+          background: rgba(12, 3, 6, 0.9);
         }
 
-        .card-title {
+        .card-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 18px 24px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-header h2 {
           font-size: 14px;
           font-weight: 800;
           letter-spacing: 2px;
-          color: #ff1744;
-          margin: 0 0 18px;
+          margin: 0;
         }
 
+        .card-icon {
+          font-size: 18px;
+        }
+
+        /* Player Information - Red */
+        .card-info {
+          border: 1px solid rgba(255, 23, 68, 0.4);
+          box-shadow: 0 0 25px rgba(255, 23, 68, 0.12);
+        }
+        .card-info .card-header {
+          background: linear-gradient(90deg, rgba(255, 23, 68, 0.15), transparent);
+        }
+        .card-info .card-header h2 {
+          color: #ff1744;
+        }
+
+        /* Game Details - Purple */
+        .card-game {
+          border: 1px solid rgba(168, 85, 247, 0.4);
+          box-shadow: 0 0 25px rgba(168, 85, 247, 0.12);
+        }
+        .card-game .card-header {
+          background: linear-gradient(90deg, rgba(168, 85, 247, 0.15), transparent);
+        }
+        .card-game .card-header h2 {
+          color: #c084fc;
+        }
+
+        /* Team History - Green */
+        .card-team {
+          border: 1px solid rgba(0, 255, 157, 0.35);
+          box-shadow: 0 0 25px rgba(0, 255, 157, 0.1);
+        }
+        .card-team .card-header {
+          background: linear-gradient(90deg, rgba(0, 255, 157, 0.12), transparent);
+        }
+        .card-team .card-header h2 {
+          color: #00ff9d;
+        }
+
+        /* Social - Orange */
+        .card-social {
+          border: 1px solid rgba(255, 140, 0, 0.35);
+          box-shadow: 0 0 25px rgba(255, 140, 0, 0.1);
+        }
+        .card-social .card-header {
+          background: linear-gradient(90deg, rgba(255, 140, 0, 0.12), transparent);
+        }
+        .card-social .card-header h2 {
+          color: #ff9f1c;
+        }
+
+        /* ===== ROWS ===== */
         .rows {
-          display: flex;
-          flex-direction: column;
+          padding: 8px 24px 16px;
         }
 
         .row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 12px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 13px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .row:last-child {
           border-bottom: none;
-          padding-bottom: 0;
         }
 
         .row-label {
           font-size: 13px;
-          color: #999;
+          color: #888;
+          font-weight: 500;
+          min-width: 170px;
         }
 
         .row-value {
           font-size: 14px;
           font-weight: 600;
-          color: #e0e0e0;
+          color: #e8e8e8;
           text-align: right;
-          max-width: 60%;
+          flex: 1;
           word-break: break-word;
         }
 
@@ -380,6 +479,7 @@ export default function PlayerProfilePage() {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
+          padding: 16px 24px 20px;
         }
 
         .social-btn {
@@ -388,9 +488,9 @@ export default function PlayerProfilePage() {
           justify-content: center;
           padding: 10px 20px;
           border-radius: 30px;
-          border: 1px solid rgba(255, 23, 68, 0.45);
-          background: rgba(255, 23, 68, 0.08);
-          color: #ff4d6d;
+          border: 1px solid rgba(255, 140, 0, 0.45);
+          background: rgba(255, 140, 0, 0.08);
+          color: #ff9f1c;
           font-size: 13px;
           font-weight: 600;
           text-decoration: none;
@@ -398,10 +498,10 @@ export default function PlayerProfilePage() {
         }
 
         .social-btn:hover {
-          background: linear-gradient(135deg, #ff1744, #c4002b);
-          border-color: #ff1744;
+          background: linear-gradient(135deg, #ff9f1c, #e67e00);
+          border-color: #ff9f1c;
           color: #fff;
-          box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
+          box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
           transform: translateY(-2px);
         }
 
@@ -439,7 +539,9 @@ export default function PlayerProfilePage() {
         }
 
         @keyframes spin {
-          to { transform: rotate(360deg); }
+          to {
+            transform: rotate(360deg);
+          }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -466,12 +568,27 @@ export default function PlayerProfilePage() {
           .row {
             flex-direction: column;
             align-items: flex-start;
-            gap: 3px;
+            gap: 4px;
+          }
+
+          .row-label {
+            min-width: auto;
           }
 
           .row-value {
             text-align: left;
-            max-width: 100%;
+          }
+
+          .card-header {
+            padding: 16px 18px;
+          }
+
+          .rows {
+            padding: 6px 18px 14px;
+          }
+
+          .socials {
+            padding: 14px 18px 18px;
           }
         }
       `}</style>
