@@ -99,7 +99,13 @@ POSITION : {player.primary_role || "Not Assigned"}
 <p>
 STATUS : {player.status || "Pending"}
 </p>
-
+  
+<button
+className="approve-btn"
+>
+APPROVE PLAYER
+</button>
+  
 </div>
 
 ))
