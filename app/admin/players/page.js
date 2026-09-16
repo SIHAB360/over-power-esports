@@ -242,10 +242,11 @@ margin:auto;
 
 display:grid;
 
-grid-template-columns:
-repeat(3,1fr);
+grid-template-columns:repeat(3,1fr);
 
 gap:35px;
+
+align-items:start;
 
 }
 
@@ -253,6 +254,7 @@ gap:35px;
 
 
 .card{
+
 position:relative;
 overflow:hidden;
 
@@ -267,21 +269,21 @@ border-radius:25px;
 
 padding:28px;
 
-height:470px;
+height:500px;
 
 border:1px solid rgba(255,23,68,.7);
 
 box-shadow:
 0 0 25px rgba(255,0,70,.25),
-inset 0 0 25px rgba(255,0,70,.08);
+inset 0 0 30px rgba(255,0,70,.08);
 
 transition:.4s;
 
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-}
 
+}
 
 
 .card:hover{
