@@ -97,13 +97,34 @@ export default function PlayerProfilePage() {
             <h2>PLAYER INFORMATION</h2>
           </div>
           <div className="rows">
-            <Row label="Full Name" value={player.full_name} />
-            <Row label="IGN" value={player.ign} />
-            <Row label="Free Fire UID" value={player.freefire_uid} />
-            <Row label="Email" value={player.email} />
-            <Row label="Phone" value={player.phone} />
-            <Row label="Country" value={player.country} />
-            <Row label="Age" value={player.age} />
+            <div className="row">
+              <span className="row-label">Full Name</span>
+              <span className="row-value">{player.full_name || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">IGN</span>
+              <span className="row-value">{player.ign || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Free Fire UID</span>
+              <span className="row-value">{player.freefire_uid || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Email</span>
+              <span className="row-value">{player.email || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Phone</span>
+              <span className="row-value">{player.phone || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Country</span>
+              <span className="row-value">{player.country || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Age</span>
+              <span className="row-value">{player.age || "N/A"}</span>
+            </div>
           </div>
         </section>
 
@@ -114,15 +135,42 @@ export default function PlayerProfilePage() {
             <h2>GAME DETAILS</h2>
           </div>
           <div className="rows">
-            <Row label="Primary Role" value={player.primary_role} />
-            <Row label="Secondary Role" value={player.secondary_role} />
-            <Row label="Device" value={player.device} />
-            <Row label="Internet" value={player.internet_connection} />
-            <Row label="Practice Time" value={player.practice_time} />
-            <Row label="Game Experience" value={player.game_experience} />
-            <Row label="Tournament Experience" value={player.tournament_experience} />
-            <Row label="BR K/D Rate" value={player.average_br_kd_rate} />
-            <Row label="Expert Weapon" value={player.expert_weapon} />
+            <div className="row">
+              <span className="row-label">Primary Role</span>
+              <span className="row-value">{player.primary_role || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Secondary Role</span>
+              <span className="row-value">{player.secondary_role || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Device</span>
+              <span className="row-value">{player.device || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Internet</span>
+              <span className="row-value">{player.internet_connection || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Practice Time</span>
+              <span className="row-value">{player.practice_time || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Game Experience</span>
+              <span className="row-value">{player.game_experience || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Tournament Experience</span>
+              <span className="row-value">{player.tournament_experience || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">BR K/D Rate</span>
+              <span className="row-value">{player.average_br_kd_rate || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Expert Weapon</span>
+              <span className="row-value">{player.expert_weapon || "N/A"}</span>
+            </div>
           </div>
         </section>
 
@@ -133,8 +181,14 @@ export default function PlayerProfilePage() {
             <h2>TEAM HISTORY</h2>
           </div>
           <div className="rows">
-            <Row label="Previous Team" value={player.previous_team} />
-            <Row label="Joining Date" value={player.joining_date} />
+            <div className="row">
+              <span className="row-label">Previous Team</span>
+              <span className="row-value">{player.previous_team || "N/A"}</span>
+            </div>
+            <div className="row">
+              <span className="row-label">Joining Date</span>
+              <span className="row-value">{player.joining_date || "N/A"}</span>
+            </div>
           </div>
         </section>
 
@@ -441,7 +495,7 @@ export default function PlayerProfilePage() {
           color: #ff9f1c;
         }
 
-        /* ===== ROWS ===== */
+        /* ===== ROWS (Fixed) ===== */
         .rows {
           padding: 8px 24px 16px;
         }
@@ -451,7 +505,7 @@ export default function PlayerProfilePage() {
           justify-content: space-between;
           align-items: center;
           padding: 13px 0;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .row:last-child {
@@ -460,9 +514,10 @@ export default function PlayerProfilePage() {
 
         .row-label {
           font-size: 13px;
-          color: #888;
+          color: #999;
           font-weight: 500;
-          min-width: 170px;
+          min-width: 180px;
+          flex-shrink: 0;
         }
 
         .row-value {
@@ -593,14 +648,5 @@ export default function PlayerProfilePage() {
         }
       `}</style>
     </main>
-  );
-}
-
-function Row({ label, value }) {
-  return (
-    <div className="row">
-      <span className="row-label">{label}</span>
-      <span className="row-value">{value || "N/A"}</span>
-    </div>
   );
 }
