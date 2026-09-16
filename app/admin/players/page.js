@@ -319,12 +319,15 @@ text-shadow:
 
 .players-grid{
 
-
 display:grid;
 
 grid-template-columns:repeat(3,300px);
 
-gap:35px;
+justify-content:center;
+
+gap:40px;
+
+margin-top:40px;
 
 }
 
@@ -332,6 +335,12 @@ gap:35px;
 
 
 .player-card{
+
+min-height:380px;
+
+display:flex;
+
+flex-direction:column;
 
 
 background:
@@ -345,9 +354,7 @@ rgba(5,5,5,.95)
 
 border:1px solid rgba(255,20,70,.5);
 
-
 border-radius:25px;
-
 
 padding:25px;
 
@@ -464,20 +471,27 @@ color:#999;
 
 .info p{
 
-
 display:flex;
 
 flex-direction:column;
 
+align-items:center;
 
-margin:15px 0;
+text-align:center;
 
 
-color:#fff;
+margin:18px 0;
+
+
+color:white;
+
+
+word-break:break-word;
+
+overflow-wrap:anywhere;
 
 
 }
-
 
 
 
@@ -502,15 +516,18 @@ color:#888;
 
 .status-box{
 
-
 display:flex;
 
-justify-content:space-between;
+justify-content:center;
+
+gap:15px;
 
 align-items:center;
 
 
-margin-top:20px;
+margin-top:auto;
+
+padding-top:25px;
 
 
 }
@@ -632,9 +649,9 @@ color:#ff1744;
 
 .players-grid{
 
-
 grid-template-columns:1fr;
 
+justify-content:center;
 
 }
 
