@@ -4,26 +4,20 @@ import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
 
 
-export default function PlayersPage(){
+export default function PlayersPage() {
 
-
-const [players,setPlayers]=useState([]);
-const [loading,setLoading]=useState(true);
+const [players,setPlayers] = useState([]);
+const [loading,setLoading] = useState(true);
 
 
 
 useEffect(()=>{
-
 fetchPlayers();
-
 },[]);
 
 
 
-
-
 const fetchPlayers = async()=>{
-
 
 const {data,error}=await supabase
 .from("players")
@@ -31,59 +25,40 @@ const {data,error}=await supabase
 .order("created_at",{ascending:false});
 
 
-
-console.log("PLAYERS:",data);
-console.log("ERROR:",error);
-
+console.log(data,error);
 
 
 if(!error){
-
 setPlayers(data || []);
-
 }
-
 
 setLoading(false);
 
-
 };
-
-
-
 
 
 
 
 const approvePlayer = async(id)=>{
 
-
 const {error}=await supabase
 .from("players")
 .update({
-
 status:"approved"
-
 })
 .eq("id",id);
 
 
 
 if(error){
-
 console.log(error);
 return;
-
 }
-
 
 
 fetchPlayers();
 
-
 };
-
-
 
 
 
@@ -92,13 +67,9 @@ fetchPlayers();
 if(loading){
 
 return(
-
 <div className="loading">
-
 LOADING PLAYERS...
-
 </div>
-
 );
 
 }
@@ -106,16 +77,11 @@ LOADING PLAYERS...
 
 
 
-
-
 return(
-
 
 <main className="players-page">
 
-
 <div className="container">
-
 
 
 <h1>
@@ -124,54 +90,37 @@ PLAYER MANAGEMENT
 
 
 
-
-
 <div className="players-grid">
 
 
-
 {
-
 players.map((player)=>(
-
 
 
 <div className="player-card" key={player.id}>
 
 
-<div className="header">
+<div className="top">
 
 
 <div className="avatar">
-
 {player.full_name?.charAt(0) || "P"}
-
 </div>
-
 
 
 <div>
-
 <h2>
-
 {player.full_name || "Unnamed Player"}
-
 </h2>
 
-
 <small>
-
-PLAYER ID #{player.id.slice(0,6)}
-
+PLAYER #{player.id.slice(0,6)}
 </small>
 
-
 </div>
 
 
 </div>
-
-
 
 
 
@@ -179,108 +128,74 @@ PLAYER ID #{player.id.slice(0,6)}
 <div className="info">
 
 
-<p>
-
-<span>EMAIL</span>
-
-{player.email || "N/A"}
-
-</p>
+<div>
+<label>EMAIL</label>
+<p>{player.email || "N/A"}</p>
+</div>
 
 
 
-<p>
-
-<span>TEAM</span>
-
-{player.team_name || "No Team"}
-
-</p>
+<div>
+<label>TEAM</label>
+<p>{player.team_name || "No Team"}</p>
+</div>
 
 
 
-<p>
-
-<span>POSITION</span>
-
-{player.primary_role || player.position || "Not Assigned"}
-
-</p>
+<div>
+<label>POSITION</label>
+<p>{player.primary_role || player.position || "Not Assigned"}</p>
+</div>
 
 
 
-<div className="status">
+<div className="status-box">
 
-STATUS
+<span>STATUS</span>
 
-<strong className={
-player.status==="approved"
-?
-"approved"
-:
-"pending"
-}>
-
+<strong className={player.status==="approved"?"approved":"pending"}>
 {player.status || "pending"}
-
 </strong>
 
+</div>
+
 
 </div>
 
 
 
-</div>
 
-
-
-
+<div>
 
 
 <button
-
 className="view"
-
 onClick={()=>window.location.href=`/admin/players/${player.id}`}
-
 >
-
 VIEW PROFILE
-
 </button>
-
-
 
 
 
 {
-
 player.status !== "approved" &&
-
 <button
-
 className="approve"
-
 onClick={()=>approvePlayer(player.id)}
-
 >
-
 APPROVE PLAYER
-
 </button>
-
 }
-
-
 
 
 </div>
 
+
+
+</div>
 
 
 ))
-
-
 }
 
 
@@ -289,10 +204,6 @@ APPROVE PLAYER
 
 
 </div>
-
-
-
-
 
 
 
@@ -301,12 +212,9 @@ APPROVE PLAYER
 .players-page{
 
 min-height:100vh;
-
 background:#050505;
-
 color:white;
-
-padding:50px;
+padding:50px 20px;
 
 }
 
@@ -315,7 +223,6 @@ padding:50px;
 .container{
 
 max-width:1200px;
-
 margin:auto;
 
 }
@@ -325,19 +232,13 @@ margin:auto;
 h1{
 
 text-align:center;
-
+font-size:40px;
+letter-spacing:6px;
 color:#ff1744;
-
-font-size:42px;
-
-letter-spacing:8px;
-
+text-shadow:0 0 20px #ff1744;
 margin-bottom:50px;
 
-text-shadow:0 0 20px #ff1744;
-
 }
-
 
 
 
@@ -345,12 +246,8 @@ text-shadow:0 0 20px #ff1744;
 .players-grid{
 
 display:grid;
-
-grid-template-columns:repeat(3,300px);
-
-gap:35px;
-
-justify-content:center;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
 
 }
 
@@ -359,47 +256,46 @@ justify-content:center;
 
 .player-card{
 
-
 background:
+linear-gradient(145deg,#160008,#050505);
 
-linear-gradient(
-145deg,
-rgba(255,20,60,.2),
-black
-);
-
-
-border:1px solid #ff1744;
+border:1px solid rgba(255,23,68,.5);
 
 border-radius:25px;
 
 padding:25px;
 
-min-height:430px;
+box-shadow:
+0 0 30px rgba(255,0,70,.2);
+
+transition:.3s;
+
+min-height:420px;
 
 display:flex;
-
 flex-direction:column;
-
 justify-content:space-between;
 
+}
+
+
+
+.player-card:hover{
+
+transform:translateY(-8px);
+
 box-shadow:
-
-0 0 25px rgba(255,0,70,.3);
-
+0 0 40px rgba(255,0,70,.5);
 
 }
 
 
 
 
-
-.header{
+.top{
 
 display:flex;
-
 align-items:center;
-
 gap:15px;
 
 }
@@ -408,22 +304,17 @@ gap:15px;
 
 .avatar{
 
-height:55px;
-
-width:55px;
-
+width:60px;
+height:60px;
 border-radius:50%;
 
 background:#ff1744;
 
 display:flex;
-
 align-items:center;
-
 justify-content:center;
 
 font-size:25px;
-
 font-weight:bold;
 
 box-shadow:0 0 20px #ff1744;
@@ -432,11 +323,11 @@ box-shadow:0 0 20px #ff1744;
 
 
 
-.header h2{
 
-margin:0;
+h2{
 
 font-size:20px;
+margin:0;
 
 }
 
@@ -444,16 +335,33 @@ font-size:20px;
 
 small{
 
-color:#999;
+color:#888;
 
 }
 
 
 
-
 .info{
 
-text-align:center;
+margin-top:25px;
+
+}
+
+
+
+.info div{
+
+margin-bottom:18px;
+
+}
+
+
+
+label{
+
+font-size:11px;
+color:#888;
+letter-spacing:2px;
 
 }
 
@@ -461,37 +369,21 @@ text-align:center;
 
 .info p{
 
-margin:20px 0;
+margin:5px 0;
+
+word-break:break-word;
+
+}
+
+
+
+.status-box{
 
 display:flex;
-
-flex-direction:column;
-
-}
-
-
-
-.info span{
-
-font-size:11px;
-
-color:#888;
-
-letter-spacing:2px;
-
-}
-
-
-
-.status{
-
-border-top:1px solid #333;
+justify-content:space-between;
 
 padding-top:15px;
-
-display:flex;
-
-justify-content:space-between;
+border-top:1px solid #333;
 
 }
 
@@ -518,16 +410,15 @@ color:#ffc400;
 button{
 
 width:100%;
-
 padding:13px;
 
 border-radius:12px;
-
-cursor:pointer;
+margin-top:10px;
 
 font-weight:bold;
+cursor:pointer;
 
-margin-top:10px;
+transition:.3s;
 
 }
 
@@ -536,9 +427,7 @@ margin-top:10px;
 .view{
 
 background:transparent;
-
 border:1px solid #ff1744;
-
 color:#ff1744;
 
 }
@@ -548,9 +437,7 @@ color:#ff1744;
 .approve{
 
 background:#ff1744;
-
 border:none;
-
 color:white;
 
 }
@@ -559,41 +446,21 @@ color:white;
 
 button:hover{
 
-transform:scale(1.05);
+transform:scale(1.03);
 
 }
-
-
 
 
 
 .loading{
 
 height:100vh;
-
 display:flex;
-
 justify-content:center;
-
 align-items:center;
 
 background:#050505;
-
 color:#ff1744;
-
-}
-
-
-
-
-
-@media(max-width:900px){
-
-.players-grid{
-
-grid-template-columns:1fr;
-
-}
 
 }
 
@@ -604,8 +471,6 @@ grid-template-columns:1fr;
 
 </main>
 
-
 );
-
 
 }
