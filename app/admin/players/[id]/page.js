@@ -8,9 +8,7 @@ import { useParams } from "next/navigation";
 export default function PlayerProfilePage(){
 
 const params = useParams();
-
 const id = params.id;
-
 
 const [player,setPlayer]=useState(null);
 const [loading,setLoading]=useState(true);
@@ -20,35 +18,20 @@ const [loading,setLoading]=useState(true);
 useEffect(()=>{
 
 if(id){
-
 fetchPlayer();
-
 }
 
 },[id]);
 
 
 
-
-
 const fetchPlayer=async()=>{
 
-
 const {data,error}=await supabase
-
 .from("players")
-
 .select("*")
-
 .eq("id",id)
-
 .single();
-
-
-
-console.log("PLAYER:",data);
-console.log("ERROR:",error);
-
 
 
 if(!error){
@@ -57,108 +40,73 @@ setPlayer(data);
 
 }
 
-
 setLoading(false);
-
 
 };
 
 
 
 
-
-
 if(loading){
 
-return(
-
-<div className="loading">
-
-LOADING PLAYER...
-
-</div>
-
-)
+return <div className="loading">LOADING PLAYER...</div>;
 
 }
-
-
 
 
 
 if(!player){
 
-return(
-
-<div className="loading">
-
-PLAYER NOT FOUND
-
-</div>
-
-)
+return <div className="loading">PLAYER NOT FOUND</div>;
 
 }
 
 
 
 
-
 return(
 
-<main className="profile-page">
+<main className="page">
 
 
 <div className="profile-card">
 
 
 
-<div className="header">
+<header className="profile-header">
 
-
-<div className="image-box">
 
 <img
 
 src={player.profile_image || player.avatar_url || "/default.png"}
 
-alt="player"
+className="player-image"
 
 />
-
-</div>
-
 
 
 
 <div>
 
 <h1>
-
 {player.ign || player.full_name}
-
 </h1>
 
 
 <h3>
-
 {player.primary_role || player.position || "PLAYER"}
-
 </h3>
 
 
 <p>
-
 TEAM : {player.team_name || "NO TEAM"}
-
 </p>
 
 
 </div>
 
 
-</div>
-
+</header>
 
 
 
@@ -168,46 +116,27 @@ TEAM : {player.team_name || "NO TEAM"}
 
 
 <div>
-
 <span>MATCHES</span>
-
-<strong>
-
-{player.matches_played || 0}
-
-</strong>
-
+<strong>{player.matches_played || 0}</strong>
 </div>
 
 
-
 <div>
-
 <span>WINS</span>
-
-<strong>
-
-{player.wins || 0}
-
-</strong>
-
+<strong>{player.wins || 0}</strong>
 </div>
 
 
 <div>
-
 <span>STATUS</span>
 
 <strong className={player.status}>
-
 {player.status}
-
 </strong>
 
 </div>
 
 
-
 </div>
 
 
@@ -215,54 +144,17 @@ TEAM : {player.team_name || "NO TEAM"}
 
 
 
+<Section title="PLAYER INFORMATION">
 
-<div className="section">
+<Row label="NAME" value={player.full_name}/>
+<Row label="FREE FIRE UID" value={player.freefire_uid}/>
+<Row label="EMAIL" value={player.email}/>
+<Row label="PHONE" value={player.phone}/>
+<Row label="COUNTRY" value={player.country}/>
+<Row label="AGE" value={player.age}/>
+<Row label="EXPERIENCE" value={player.experience}/>
 
-
-<h2>
-
-PLAYER INFORMATION
-
-</h2>
-
-
-<p>
-NAME : {player.full_name}
-</p>
-
-
-<p>
-FREE FIRE UID : {player.freefire_uid}
-</p>
-
-
-<p>
-EMAIL : {player.email}
-</p>
-
-
-<p>
-PHONE : {player.phone}
-</p>
-
-
-<p>
-COUNTRY : {player.country}
-</p>
-
-
-<p>
-AGE : {player.age}
-</p>
-
-
-<p>
-EXPERIENCE : {player.experience}
-</p>
-
-
-
-</div>
+</Section>
 
 
 
@@ -270,141 +162,76 @@ EXPERIENCE : {player.experience}
 
 
 
-<div className="section">
+<Section title="GAME DETAILS">
+
+<Row label="PRIMARY ROLE" value={player.primary_role}/>
+<Row label="SECONDARY ROLE" value={player.secondary_role}/>
+<Row label="DEVICE" value={player.device}/>
+<Row label="INTERNET" value={player.internet_connection}/>
+<Row label="PRACTICE TIME" value={player.practice_time}/>
+<Row label="GAME EXPERIENCE" value={player.game_experience}/>
+<Row label="TOURNAMENT EXPERIENCE" value={player.tournament_experience}/>
+<Row label="BR KD" value={player.average_br_kd_rate}/>
+<Row label="EXPERT WEAPON" value={player.expert_weapon}/>
+
+</Section>
 
 
-<h2>
-
-GAME DETAILS
-
-</h2>
 
 
-<p>
-PRIMARY ROLE : {player.primary_role}
-</p>
 
 
-<p>
-SECONDARY ROLE : {player.secondary_role}
-</p>
+
+<Section title="TEAM HISTORY">
+
+<Row label="PREVIOUS TEAM" value={player.previous_team}/>
+<Row label="JOINING DATE" value={player.joining_date}/>
+
+</Section>
 
 
-<p>
-DEVICE : {player.device}
-</p>
 
 
-<p>
-INTERNET : {player.internet_connection}
-</p>
 
 
-<p>
-PRACTICE TIME : {player.practice_time}
-</p>
+
+<section className="section">
+
+<h2>SOCIAL LINKS</h2>
 
 
-<p>
-GAME EXPERIENCE : {player.game_experience}
-</p>
+<div className="links">
+
+{player.facebook_link &&
+<a href={player.facebook_link}>Facebook</a>
+}
 
 
-<p>
-TOURNAMENT EXPERIENCE : {player.tournament_experience}
-</p>
+{player.instagram_link &&
+<a href={player.instagram_link}>Instagram</a>
+}
 
 
-<p>
-BR KD : {player.average_br_kd_rate}
-</p>
+{player.youtube_link &&
+<a href={player.youtube_link}>Youtube</a>
+}
 
 
-<p>
-EXPERT WEAPON : {player.expert_weapon}
-</p>
-
+{player.tiktok_link &&
+<a href={player.tiktok_link}>TikTok</a>
+}
 
 
 </div>
 
 
-
-
-
-
-
-<div className="section">
-
-
-<h2>
-
-TEAM HISTORY
-
-</h2>
-
-
-<p>
-
-PREVIOUS TEAM : {player.previous_team}
-
-</p>
-
-
-<p>
-
-JOINING DATE : {player.joining_date}
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div className="social">
-
-
-<h2>
-
-SOCIAL LINKS
-
-</h2>
-
-
-<a href={player.facebook_link}>
-Facebook
-</a>
-
-
-<a href={player.instagram_link}>
-Instagram
-</a>
-
-
-<a href={player.youtube_link}>
-Youtube
-</a>
-
-
-<a href={player.tiktok_link}>
-TikTok
-</a>
-
-
-
-</div>
+</section>
 
 
 
 
 
 </div>
-
 
 
 
@@ -412,15 +239,15 @@ TikTok
 
 <style jsx>{`
 
-.profile-page{
+.page{
 
 min-height:100vh;
 
 background:#050505;
 
-color:white;
+padding:50px 20px;
 
-padding:50px;
+color:white;
 
 }
 
@@ -436,9 +263,8 @@ background:
 linear-gradient(
 145deg,
 rgba(255,0,60,.15),
-black
+#050505
 );
-
 
 border:1px solid #ff1744;
 
@@ -447,35 +273,37 @@ border-radius:30px;
 padding:40px;
 
 box-shadow:
-0 0 40px rgba(255,0,70,.4);
+0 0 50px rgba(255,0,70,.35);
 
 }
 
 
 
-.header{
+.profile-header{
 
 display:flex;
 
-gap:30px;
-
 align-items:center;
+
+gap:30px;
 
 }
 
 
 
-.image-box img{
+.player-image{
 
-width:150px;
+width:140px;
 
-height:150px;
-
-border-radius:20px;
+height:140px;
 
 object-fit:cover;
 
+border-radius:20px;
+
 border:2px solid #ff1744;
+
+box-shadow:0 0 25px #ff1744;
 
 }
 
@@ -483,21 +311,30 @@ border:2px solid #ff1744;
 
 h1{
 
-color:#ff1744;
-
 font-size:40px;
 
-}
-
-
-
-h2{
-
 color:#ff1744;
 
-letter-spacing:2px;
+margin:0;
 
 }
+
+
+
+h3{
+
+color:white;
+
+}
+
+
+
+.profile-header p{
+
+color:#00ff88;
+
+}
+
 
 
 
@@ -517,13 +354,13 @@ margin:40px 0;
 
 .stats div{
 
-padding:20px;
-
-text-align:center;
-
 border:1px solid #333;
 
+padding:20px;
+
 border-radius:15px;
+
+text-align:center;
 
 }
 
@@ -534,6 +371,8 @@ border-radius:15px;
 display:block;
 
 color:#888;
+
+font-size:12px;
 
 }
 
@@ -563,6 +402,8 @@ color:#ffc400;
 
 
 
+
+
 .section{
 
 margin-top:30px;
@@ -577,29 +418,53 @@ border-radius:20px;
 
 
 
-.section p{
+.section h2{
+
+color:#ff1744;
+
+font-size:22px;
+
+}
+
+
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:10px 0;
+
+border-bottom:1px solid #222;
+
+}
+
+
+
+.label{
+
+color:#888;
+
+}
+
+
+
+.value{
 
 color:#00ff88;
 
-}
-
-
-
-.social{
-
-margin-top:30px;
+text-align:right;
 
 }
 
 
 
-.social a{
-
-display:inline-block;
-
-margin-right:15px;
+.links a{
 
 color:#ff1744;
+
+margin-right:20px;
 
 }
 
@@ -611,9 +476,9 @@ height:100vh;
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
+
+align-items:center;
 
 background:#050505;
 
@@ -627,9 +492,11 @@ font-size:30px;
 
 @media(max-width:700px){
 
-.header{
+.profile-header{
 
 flex-direction:column;
+
+text-align:center;
 
 }
 
@@ -640,14 +507,65 @@ grid-template-columns:1fr;
 
 }
 
+
+.row{
+
+flex-direction:column;
+
+gap:5px;
+
 }
 
+}
 
 `}</style>
 
 
 </main>
 
+)
+
+}
+
+
+
+
+function Section({title,children}){
+
+return(
+
+<section className="section">
+
+<h2>{title}</h2>
+
+{children}
+
+</section>
+
+)
+
+}
+
+
+
+
+function Row({label,value}){
+
+return(
+
+<div className="row">
+
+<span className="label">
+{label}
+</span>
+
+
+<span className="value">
+{value || "N/A"}
+</span>
+
+
+</div>
 
 )
 
