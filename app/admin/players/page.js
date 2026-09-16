@@ -223,27 +223,25 @@ player.status?.toLowerCase()==="approved"
 
 
 
-
-{
-
-player.status?.toLowerCase() !== "approved" && (
-
-
 <button
-
-className="approve-btn"
-
-onClick={()=>approvePlayer(player.id)}
-
+className="view-btn"
+onClick={()=>window.location.href=`/admin/players/${player.id}`}
 >
-
-APPROVE PLAYER
-
+VIEW PROFILE
 </button>
 
 
-)
+{
+player.status?.toLowerCase() !== "approved" && (
 
+<button
+className="approve-btn"
+onClick={()=>approvePlayer(player.id)}
+>
+APPROVE PLAYER
+</button>
+
+)
 }
 
 
