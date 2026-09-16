@@ -12,15 +12,12 @@ const [loading,setLoading]=useState(true);
 
 
 useEffect(()=>{
-
 fetchPlayers();
-
 },[]);
 
 
 
 const approvePlayer = async(id)=>{
-
 
 const {error}=await supabase
 .from("players")
@@ -30,17 +27,13 @@ status:"approved"
 .eq("id",id);
 
 
-
 if(error){
-
 console.log(error);
 return;
-
 }
 
 
 fetchPlayers();
-
 
 };
 
@@ -63,17 +56,13 @@ console.log("PLAYERS ERROR:",error);
 
 
 if(!error){
-
 setPlayers(data || []);
-
 }
 
 
 setLoading(false);
 
-
 };
-
 
 
 
@@ -81,11 +70,9 @@ setLoading(false);
 if(loading){
 
 return(
-
 <div className="loading">
 LOADING PLAYERS...
 </div>
-
 );
 
 }
@@ -94,7 +81,6 @@ LOADING PLAYERS...
 
 
 return(
-
 
 <main className="players-page">
 
@@ -108,11 +94,24 @@ PLAYER MANAGEMENT
 
 
 
+{
+players.length===0 ? (
+
+<div className="empty">
+NO PLAYERS FOUND
+</div>
+
+)
+
+:
+
+(
+
+
 <div className="players-grid">
 
 
 {
-
 players.map((player)=>(
 
 
@@ -133,9 +132,7 @@ players.map((player)=>(
 <div>
 
 <h2>
-
 {player.full_name || "Unnamed Player"}
-
 </h2>
 
 
@@ -152,23 +149,22 @@ PLAYER ID #{player.id.slice(0,6)}
 
 
 
+
 <div className="info">
 
 
 <p>
-
 <span>
 EMAIL
 </span>
 
-{player.email}
+{player.email || "No Email"}
 
 </p>
 
 
 
 <p>
-
 <span>
 TEAM
 </span>
@@ -181,7 +177,6 @@ TEAM
 
 
 <p>
-
 <span>
 POSITION
 </span>
@@ -192,8 +187,8 @@ POSITION
 
 
 
-<div className="status-box">
 
+<div className="status-box">
 
 <span>
 STATUS
@@ -208,9 +203,7 @@ player.status?.toLowerCase()==="approved"
 "pending"
 }>
 
-
 {player.status || "Pending"}
-
 
 </strong>
 
@@ -222,26 +215,49 @@ player.status?.toLowerCase()==="approved"
 
 
 
+
+
+<div className="action-buttons">
+
+
 <button
+
 className="view-btn"
+
 onClick={()=>window.location.href=`/admin/players/${player.id}`}
+
 >
+
 VIEW PROFILE
+
 </button>
+
+
+
 
 
 {
 player.status?.toLowerCase() !== "approved" && (
 
 <button
+
 className="approve-btn"
+
 onClick={()=>approvePlayer(player.id)}
+
 >
+
 APPROVE PLAYER
+
 </button>
 
 )
+
 }
+
+
+
+</div>
 
 
 
@@ -250,6 +266,12 @@ APPROVE PLAYER
 
 ))
 
+}
+
+
+</div>
+
+)
 
 }
 
@@ -257,52 +279,38 @@ APPROVE PLAYER
 
 </div>
 
-
-</div>
 
 
 
 
 <style jsx>{`
 
-
-
 .players-page{
 
 min-height:100vh;
-
 background:#050505;
-
 color:white;
-
 padding:50px;
 
 }
 
 
 
-
 .container{
 
 max-width:1200px;
-
 margin:auto;
 
 }
 
 
 
-
 h1{
 
 text-align:center;
-
 color:#ff1744;
-
 letter-spacing:8px;
-
 font-size:42px;
-
 margin-bottom:50px;
 
 text-shadow:
@@ -324,9 +332,8 @@ gap:40px;
 
 justify-content:center;
 
-margin-top:50px;
-
 }
+
 
 
 
@@ -334,11 +341,13 @@ margin-top:50px;
 .player-card{
 
 background:
+
 linear-gradient(
 145deg,
 rgba(255,20,60,.20),
 rgba(0,0,0,.95)
 );
+
 
 border:1px solid rgba(255,20,70,.6);
 
@@ -347,16 +356,26 @@ border-radius:25px;
 padding:30px 25px;
 
 width:300px;
-min-height:420px;
+
+min-height:470px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
 
 box-shadow:
+
 0 0 25px rgba(255,0,70,.25);
+
 
 transition:.3s;
 
-overflow:hidden;
 
 }
+
 
 
 .player-card:hover{
@@ -364,12 +383,15 @@ overflow:hidden;
 transform:translateY(-10px);
 
 box-shadow:
+
 0 0 40px rgba(255,0,70,.7);
 
 }
 
-.player-header{
 
+
+
+.player-header{
 
 display:flex;
 
@@ -377,24 +399,17 @@ align-items:center;
 
 gap:15px;
 
-margin-bottom:25px;
-
-
 }
-
 
 
 
 .avatar{
 
-
 height:55px;
 
 width:55px;
 
-
 border-radius:50%;
-
 
 display:flex;
 
@@ -402,48 +417,35 @@ align-items:center;
 
 justify-content:center;
 
-
 background:#ff1744;
-
 
 font-size:25px;
 
 font-weight:bold;
 
-
-box-shadow:
-
-0 0 20px #ff1744;
-
+box-shadow:0 0 20px #ff1744;
 
 }
-
 
 
 
 .player-header h2{
 
-
 margin:0;
 
 font-size:20px;
 
-
 }
-
 
 
 
 .player-header span{
 
-
 font-size:11px;
 
 color:#999;
 
-
 }
-
 
 
 
@@ -460,26 +462,18 @@ text-align:center;
 
 margin:22px 0;
 
-color:white;
-
-word-break:break-word;
-
 }
 
 
 
 .info p span,
-
-
 .status-box span{
-
 
 font-size:11px;
 
 letter-spacing:2px;
 
 color:#888;
-
 
 }
 
@@ -489,19 +483,15 @@ color:#888;
 
 .status-box{
 
-margin-top:25px;
+border-top:1px solid rgba(255,255,255,.15);
 
 padding-top:15px;
-
-border-top:1px solid rgba(255,255,255,.15);
 
 display:flex;
 
 justify-content:space-between;
 
 }
-
-
 
 
 
@@ -524,21 +514,28 @@ text-transform:uppercase;
 }
 
 
-.view-btn{
 
-margin-top:25px;
+
+.action-buttons{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+
+
+.view-btn,
+.approve-btn{
 
 width:100%;
 
 padding:14px;
 
 border-radius:12px;
-
-border:1px solid #ff1744;
-
-background:transparent;
-
-color:#ff1744;
 
 font-weight:bold;
 
@@ -549,35 +546,32 @@ transition:.3s;
 }
 
 
+
+.view-btn{
+
+background:transparent;
+
+border:1px solid #ff1744;
+
+color:#ff1744;
+
+}
+
+
+
 .view-btn:hover{
 
 background:#ff1744;
 
 color:white;
 
-box-shadow:0 0 20px rgba(255,0,70,.6);
-
-transform:scale(1.05);
-
 }
+
+
 
 .approve-btn{
 
-
-margin-top:25px;
-
-
-width:100%;
-
-
-padding:14px;
-
-
 border:none;
-
-
-border-radius:12px;
-
 
 background:
 
@@ -587,48 +581,40 @@ linear-gradient(
 #ff0055
 );
 
-
-
 color:white;
-
-
-font-weight:bold;
-
-
-cursor:pointer;
-
-
 
 box-shadow:
 
 0 0 20px rgba(255,0,70,.6);
 
-
-
-transition:.3s;
-
-
 }
 
 
 
-
-.approve-btn:hover{
-
+.approve-btn:hover,
+.view-btn:hover{
 
 transform:scale(1.05);
 
-
 }
 
+
+
+.empty{
+
+text-align:center;
+
+color:#ff1744;
+
+font-size:25px;
+
+}
 
 
 
 .loading{
 
-
 height:100vh;
-
 
 display:flex;
 
@@ -636,32 +622,23 @@ align-items:center;
 
 justify-content:center;
 
-
 background:#050505;
-
 
 color:#ff1744;
 
-
 }
-
 
 
 
 @media(max-width:900px){
 
-
 .players-grid{
 
 grid-template-columns:1fr;
 
-justify-content:center;
-
 }
 
-
 }
-
 
 
 `}</style>
