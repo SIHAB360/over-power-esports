@@ -6,120 +6,162 @@ import { supabase } from "../../lib/supabase";
 
 export default function TeamsPage() {
 
-  const [teams, setTeams] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
-  const [form, setForm] = useState({
-    team_name: "",
-    logo: "",
-    description: "",
-    coach_name: "",
-    manager_name: "",
-    country: "Bangladesh",
-    founded_year: "",
-    status: "active",
-  });
-
-
-  useEffect(() => {
-    loadTeams();
-  }, []);
+const [teams,setTeams]=useState([]);
+const [loading,setLoading]=useState(true);
+const [saving,setSaving]=useState(false);
 
 
 
-  async function loadTeams() {
+const [form,setForm]=useState({
 
-    const { data, error } = await supabase
-      .from("teams")
-      .select("*")
-      .order("created_at", {
-        ascending: false
-      });
+team_name:"",
+logo:"",
+description:"",
+coach_name:"",
+manager_name:"",
+country:"Bangladesh",
+founded_year:"",
+status:"active",
 
-
-    if(error){
-      console.log(error);
-      return;
-    }
-
-
-    setTeams(data || []);
-    setLoading(false);
-
-  }
+});
 
 
 
-  function handleChange(e){
+useEffect(()=>{
 
-    const {name,value} = e.target;
+loadTeams();
 
-
-    setForm((prev)=>({
-      ...prev,
-      [name]:value
-    }));
-
-  }
+},[]);
 
 
 
 
-  async function createTeam(e){
-
-    e.preventDefault();
-
-    if(!form.team_name){
-      alert("Team name required");
-      return;
-    }
+async function loadTeams(){
 
 
-    setSaving(true);
+const {data,error}=await supabase
+.from("teams")
+.select("*")
+.order("created_at",{ascending:false});
 
 
-    const {
-      error
-    } = await supabase
-      .from("teams")
-      .insert([
-        {
-          ...form,
-          total_winnings:0
-        }
-      ]);
+
+if(error){
+
+console.log(error);
+return;
+
+}
 
 
-    if(error){
+setTeams(data || []);
 
-      alert(error.message);
-      setSaving(false);
-      return;
-
-    }
+setLoading(false);
 
 
-    alert("Team Created Successfully");
+}
 
 
-    setForm({
-      team_name:"",
-      logo:"",
-      description:"",
-      coach_name:"",
-      manager_name:"",
-      country:"Bangladesh",
-      founded_year:"",
-      status:"active",
-    });
 
 
-    loadTeams();
 
-    setSaving(false);
+function handleChange(e){
 
-  }
+
+const {name,value}=e.target;
+
+
+setForm(prev=>({
+
+...prev,
+
+[name]:value
+
+}));
+
+
+}
+
+
+
+
+
+async function createTeam(e){
+
+
+e.preventDefault();
+
+
+
+if(!form.team_name){
+
+alert("Team name required");
+return;
+
+}
+
+
+
+setSaving(true);
+
+
+
+const {error}=await supabase
+.from("teams")
+.insert([
+
+{
+
+...form,
+
+total_winnings:0
+
+}
+
+]);
+
+
+
+if(error){
+
+alert(error.message);
+setSaving(false);
+return;
+
+}
+
+
+
+alert("Team Created Successfully");
+
+
+
+setForm({
+
+team_name:"",
+logo:"",
+description:"",
+coach_name:"",
+manager_name:"",
+country:"Bangladesh",
+founded_year:"",
+status:"active",
+
+});
+
+
+
+loadTeams();
+
+
+setSaving(false);
+
+
+
+}
+
+
 
 
 
@@ -128,34 +170,42 @@ return (
 <main className="page">
 
 
-<div className="glow one"></div>
-<div className="glow two"></div>
+<div className="glow glow-one"></div>
+
+<div className="glow glow-two"></div>
+
+<div className="glow glow-three"></div>
 
 
 
 <div className="container">
 
 
-<header>
+
+<header className="page-header">
 
 <span>
 OVER POWER ESPORTS
 </span>
 
+
 <h1>
 TEAM MANAGEMENT
 </h1>
 
+
 <p>
 Create and manage your esports teams
 </p>
+
 
 </header>
 
 
 
 
-<section className="card">
+
+<section className="panel">
 
 
 <h2>
@@ -231,22 +281,28 @@ value={form.status}
 onChange={handleChange}
 >
 
+
 <option value="active">
 Active
 </option>
+
 
 <option value="pending">
 Pending
 </option>
 
+
 <option value="inactive">
 Inactive
 </option>
+
 
 </select>
 
 
 </div>
+
+
 
 
 
@@ -264,17 +320,26 @@ onChange={handleChange}
 
 
 
-<button>
+
+
+<button className="create-btn">
+
 
 {
-saving
-?
+
+saving ?
+
 "CREATING..."
+
 :
+
 "CREATE TEAM →"
+
 }
 
+
 </button>
+
 
 
 
@@ -282,26 +347,17 @@ saving
 
 
 </section>
-
-
-
-
-
-
-<section className="card">
-
+<section className="panel">
 
 <h2>
 YOUR TEAMS
 </h2>
 
 
-
 {
-
 loading ?
 
-<p>
+<p className="loading">
 Loading...
 </p>
 
@@ -310,12 +366,13 @@ Loading...
 
 teams.length===0 ?
 
-<p>
+<p className="empty">
 No team created yet.
 </p>
 
 
 :
+
 
 <div className="team-list">
 
@@ -325,64 +382,99 @@ No team created yet.
 teams.map((team)=>(
 
 
-<div
-className="team"
-key={team.id}
->
+<div className="team-card" key={team.id}>
 
 
-<div className="logo">
+<div className="team-left">
+
+
+<div className="team-logo">
+
 
 {
 
 team.logo ?
 
-<img src={team.logo}/>
+<img src={team.logo} alt={team.team_name}/>
 
 :
 
-"OP"
+<span>
+OP
+</span>
 
 }
+
 
 </div>
 
 
 
-<div>
+
+<div className="team-info">
+
 
 <h3>
 {team.team_name}
 </h3>
 
 
-<p>
+
+<div>
 Coach:
+<span>
 {team.coach_name || "N/A"}
-</p>
+</span>
+</div>
 
 
-<p>
+
+<div>
 Manager:
+<span>
 {team.manager_name || "N/A"}
-</p>
+</span>
+</div>
+
 
 
 </div>
 
 
 
-<span>
-{team.status}
-</span>
-  
+</div>
+
+
+
+
+
+<div className="team-status">
+
+● {team.status}
+
+</div>
+
+
+
+
+
 <button
+className="manage-btn"
+
 onClick={()=>{
-  window.location.href = `/admin/teams/${team.id}`;
+
+window.location.href=
+`/admin/teams/${team.id}`;
+
 }}
+
 >
+
 MANAGE PLAYERS →
+
 </button>
+
+
 
 </div>
 
@@ -405,296 +497,4 @@ MANAGE PLAYERS →
 </div>
 
 
-
-
-<style jsx>{`
-
-
-.page{
-
-min-height:100vh;
-background:#050505;
-color:white;
-padding:40px 20px;
-position:relative;
-
-}
-
-
-
-.container{
-
-max-width:1100px;
-margin:auto;
-position:relative;
-z-index:2;
-
-}
-
-
-
-header span{
-
-color:#ff174d;
-font-size:10px;
-letter-spacing:3px;
-font-weight:900;
-
-}
-
-
-
-header h1{
-
-font-size:42px;
-margin:10px 0;
-
-}
-
-
-
-header p{
-
-color:#888;
-
-}
-
-
-
-
-.card{
-
-margin-top:25px;
-padding:30px;
-border-radius:25px;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,23,77,.25);
-
-box-shadow:
-0 20px 60px rgba(0,0,0,.5);
-
-}
-
-
-
-h2{
-
-font-size:18px;
-margin-bottom:25px;
-
-}
-
-
-
-.grid{
-
-display:grid;
-grid-template-columns:
-repeat(3,1fr);
-
-gap:15px;
-
-}
-
-
-
-input,
-select,
-textarea{
-
-width:100%;
-background:#0b0b0f;
-border:1px solid #333;
-border-radius:12px;
-padding:15px;
-color:white;
-outline:none;
-
-}
-
-
-
-textarea{
-
-margin-top:15px;
-min-height:100px;
-
-}
-
-
-
-button{
-
-margin-top:20px;
-width:100%;
-padding:16px;
-border:none;
-border-radius:30px;
-
-background:
-linear-gradient(
-135deg,
-#ff174d,
-#7000ff
-);
-
-color:white;
-font-weight:900;
-cursor:pointer;
-
-}
-
-
-
-.team-list{
-
-display:flex;
-flex-direction:column;
-gap:15px;
-
-}
-
-
-
-.team{
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:18px;
-
-border-radius:18px;
-
-background:#0b0b0f;
-
-border:
-1px solid #222;
-
-}
-
-
-
-.logo{
-
-width:60px;
-height:60px;
-border-radius:15px;
-
-background:
-linear-gradient(
-135deg,
-#ff174d,
-#7000ff
-);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-weight:900;
-
-overflow:hidden;
-
-}
-
-
-
-.logo img{
-
-width:100%;
-height:100%;
-object-fit:cover;
-
-}
-
-
-
-.team span{
-
-color:#22ff99;
-font-size:12px;
-
-}
-
-
-
-.glow{
-
-position:fixed;
-width:300px;
-height:300px;
-filter:blur(120px);
-opacity:.3;
-
-}
-
-
-
-.one{
-
-background:red;
-top:0;
-left:0;
-
-}
-
-
-
-.two{
-
-background:blue;
-right:0;
-bottom:0;
-
-}
-
-.team button{
-
-background:linear-gradient(
-135deg,
-#ff174d,
-#7000ff
-);
-
-border:none;
-color:white;
-padding:10px 18px;
-border-radius:20px;
-font-weight:800;
-cursor:pointer;
-
-}
-
-
-@media(max-width:700px){
-
-.grid{
-
-grid-template-columns:1fr;
-
-}
-
-
-header h1{
-
-font-size:30px;
-
-}
-
-
-}
-
-
-`}</style>
-
-
 </main>
-
-);
-
-}
