@@ -27,186 +27,62 @@ export default function TournamentDetails(){
 
 
 
-
   async function loadTournament(){
 
-
     const {data,error}=await supabase
-
     .from("tournaments")
-
     .select("*")
-
     .eq("id",id)
-
     .single();
-
 
 
     if(error){
 
       console.log(error);
-
       return;
 
     }
 
 
     setTournament(data);
-
     setLoading(false);
 
-
   }
-
 
 
 
   if(loading){
 
     return(
-
-      <main className="page">
-
-        <h1>
-          Loading Tournament...
-        </h1>
-
+      <main>
+        Loading Tournament...
       </main>
-
-    );
+    )
 
   }
 
 
 
+  return(
 
-  if(!tournament){
+    <main>
 
-    return(
+      <h1>
+        {tournament?.name}
+      </h1>
 
-      <main className="page">
+      <h3>
+        Prize Pool: ৳{tournament?.prize_pool}
+      </h3>
 
-        <h1>
-          Tournament Not Found
-        </h1>
-
-      </main>
-
-    );
-
-  }
-
+      <h3>
+        Status: {tournament?.status}
+      </h3>
 
 
-return (
+    </main>
 
-<main className="page">
+  );
 
-
-<div className="container">
-
-
-<header>
-
-<span>
-OVER POWER ESPORTS
-</span>
-
-
-<h1>
-{tournament.name}
-</h1>
-
-
-<p>
-Tournament Management Center
-</p>
-
-
-</header>
-
-
-
-<section className="card">
-
-
-<h2>
-TOURNAMENT INFORMATION
-</h2>
-
-
-<div className="info-grid">
-
-
-<div>
-<label>
-PRIZE POOL
-</label>
-
-<strong>
-৳{tournament.prize_pool}
-</strong>
-
-</div>
-
-
-
-<div>
-
-<label>
-ENTRY FEE
-</label>
-
-<strong>
-৳{tournament.entry_fee}
-</strong>
-
-</div>
-
-
-
-
-<div>
-
-<label>
-STATUS
-</label>
-
-<strong>
-{tournament.status}
-</strong>
-
-</div>
-
-
-
-
-<div>
-
-<label>
-START DATE
-</label>
-
-<strong>
-{tournament.start_date}
-</strong>
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-</div>
-
-
-</main>
-
-);
 
 }
