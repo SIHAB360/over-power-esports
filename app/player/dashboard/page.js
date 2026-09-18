@@ -143,7 +143,7 @@ export default function PlayerDashboard() {
 
   return (
     <main className="page">
-      {/* Background Lighting */}
+      {/* Animated Background Lights */}
       <div className="light light-1"></div>
       <div className="light light-2"></div>
       <div className="light light-3"></div>
@@ -212,7 +212,7 @@ export default function PlayerDashboard() {
         </div>
 
         {/* Player Info */}
-        <section className="card">
+        <section className="card card-red">
           <h3>PLAYER INFORMATION</h3>
           <div className="grid">
             <div>
@@ -243,7 +243,7 @@ export default function PlayerDashboard() {
         </section>
 
         {/* Gaming Profile */}
-        <section className="card">
+        <section className="card card-purple">
           <h3>GAMING PROFILE</h3>
           <div className="grid">
             <div>
@@ -274,7 +274,7 @@ export default function PlayerDashboard() {
         </section>
 
         {/* Experience */}
-        <section className="card">
+        <section className="card card-green">
           <h3>EXPERIENCE</h3>
           <div className="exp">
             <div>
@@ -289,7 +289,7 @@ export default function PlayerDashboard() {
         </section>
 
         {/* Expert Weapons */}
-        <section className="card">
+        <section className="card card-red">
           <h3>EXPERT WEAPONS</h3>
           <div className="weapons">
             {weapons.length > 0 ? (
@@ -305,7 +305,7 @@ export default function PlayerDashboard() {
         </section>
 
         {/* Social Links */}
-        <section className="card">
+        <section className="card card-orange">
           <h3>SOCIAL LINKS</h3>
           <div className="socials">
             {player?.facebook_link && (
@@ -369,36 +369,53 @@ export default function PlayerDashboard() {
           padding: 20px 16px 50px;
         }
 
+        /* ===== Animated Lights ===== */
         .light {
           position: fixed;
           border-radius: 50%;
           filter: blur(140px);
           pointer-events: none;
           z-index: 0;
+          animation: blink 6s ease-in-out infinite;
         }
         .light-1 {
-          width: 450px;
-          height: 450px;
+          width: 480px;
+          height: 480px;
           background: #ff1744;
-          top: -180px;
-          left: -120px;
-          opacity: 0.2;
+          top: -200px;
+          left: -140px;
+          opacity: 0.18;
+          animation-delay: 0s;
         }
         .light-2 {
-          width: 350px;
-          height: 350px;
+          width: 380px;
+          height: 380px;
           background: #7c3aed;
-          top: 40%;
-          right: -100px;
+          top: 35%;
+          right: -120px;
           opacity: 0.12;
+          animation-delay: 2s;
         }
         .light-3 {
-          width: 300px;
-          height: 300px;
+          width: 320px;
+          height: 320px;
           background: #00ff9d;
-          bottom: -80px;
-          left: 30%;
-          opacity: 0.06;
+          bottom: -100px;
+          left: 25%;
+          opacity: 0.07;
+          animation-delay: 4s;
+        }
+
+        @keyframes blink {
+          0%,
+          100% {
+            opacity: 0.1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.22;
+            transform: scale(1.08);
+          }
         }
 
         .wrap {
@@ -415,9 +432,10 @@ export default function PlayerDashboard() {
           align-items: center;
           margin-bottom: 24px;
           padding: 12px 14px;
-          background: rgba(20, 8, 12, 0.8);
-          border: 1px solid rgba(255, 23, 68, 0.3);
+          background: rgba(20, 8, 12, 0.85);
+          border: 1px solid rgba(255, 23, 68, 0.35);
           border-radius: 14px;
+          box-shadow: 0 0 25px rgba(255, 23, 68, 0.1);
         }
         .logo-area {
           display: flex;
@@ -434,6 +452,7 @@ export default function PlayerDashboard() {
           justify-content: center;
           font-weight: 900;
           font-size: 13px;
+          box-shadow: 0 0 15px rgba(255, 23, 68, 0.4);
         }
         .logo-area b {
           display: block;
@@ -455,20 +474,33 @@ export default function PlayerDashboard() {
           font-size: 11px;
           font-weight: 700;
           cursor: pointer;
+          transition: 0.25s;
         }
         .logout:hover {
           background: #ff1744;
+          box-shadow: 0 0 18px rgba(255, 23, 68, 0.5);
         }
 
         /* Hero */
         .hero {
-          background: rgba(18, 6, 10, 0.9);
-          border: 1px solid rgba(255, 23, 68, 0.35);
+          background: rgba(18, 6, 10, 0.92);
+          border: 1px solid rgba(255, 23, 68, 0.4);
           border-radius: 22px;
           padding: 36px 20px 28px;
           text-align: center;
           margin-bottom: 16px;
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.12);
+          box-shadow: 0 0 45px rgba(255, 23, 68, 0.15);
+          position: relative;
+          overflow: hidden;
+        }
+        .hero::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #ff1744, #7c3aed, transparent);
         }
         .avatar {
           width: 100px;
@@ -477,7 +509,7 @@ export default function PlayerDashboard() {
           border-radius: 50%;
           padding: 3px;
           background: linear-gradient(135deg, #ff1744, #7c3aed, #00ff9d);
-          box-shadow: 0 0 28px rgba(255, 23, 68, 0.45);
+          box-shadow: 0 0 30px rgba(255, 23, 68, 0.5);
         }
         .avatar img {
           width: 100%;
@@ -510,6 +542,7 @@ export default function PlayerDashboard() {
           font-weight: 700;
           letter-spacing: 1.5px;
           margin: 0 0 16px;
+          text-shadow: 0 0 12px rgba(0, 255, 157, 0.4);
         }
         .tags {
           display: flex;
@@ -526,6 +559,7 @@ export default function PlayerDashboard() {
         .tag.red {
           background: #ff1744;
           color: #fff;
+          box-shadow: 0 0 15px rgba(255, 23, 68, 0.4);
         }
         .tag.purple {
           background: rgba(124, 58, 237, 0.25);
@@ -541,13 +575,14 @@ export default function PlayerDashboard() {
           margin-bottom: 16px;
         }
         .stat {
-          background: rgba(18, 6, 10, 0.9);
-          border: 1px solid rgba(255, 23, 68, 0.25);
+          background: rgba(18, 6, 10, 0.92);
+          border: 1px solid rgba(255, 23, 68, 0.3);
           border-radius: 14px;
           padding: 14px;
           display: flex;
           align-items: center;
           gap: 10px;
+          box-shadow: 0 0 20px rgba(255, 23, 68, 0.08);
         }
         .stat span {
           font-size: 20px;
@@ -561,21 +596,22 @@ export default function PlayerDashboard() {
         .stat b {
           font-size: 20px;
           color: #00ff9d;
+          text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
         }
 
         /* Cards */
         .card {
-          background: rgba(18, 6, 10, 0.9);
-          border: 1px solid rgba(255, 23, 68, 0.25);
+          background: rgba(18, 6, 10, 0.92);
           border-radius: 16px;
           padding: 20px 18px;
           margin-bottom: 14px;
+          position: relative;
+          overflow: hidden;
         }
         .card h3 {
           font-size: 12px;
           font-weight: 800;
           letter-spacing: 1.5px;
-          color: #ff1744;
           margin: 0 0 16px;
         }
         .grid {
@@ -595,6 +631,79 @@ export default function PlayerDashboard() {
           font-weight: 600;
           color: #eee;
           word-break: break-word;
+        }
+
+        /* Card Color Variants */
+        .card-red {
+          border: 1px solid rgba(255, 23, 68, 0.35);
+          box-shadow: 0 0 25px rgba(255, 23, 68, 0.1);
+        }
+        .card-red h3 {
+          color: #ff1744;
+        }
+        .card-red::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #ff1744;
+          box-shadow: 0 0 12px #ff1744;
+        }
+
+        .card-purple {
+          border: 1px solid rgba(124, 58, 237, 0.35);
+          box-shadow: 0 0 25px rgba(124, 58, 237, 0.1);
+        }
+        .card-purple h3 {
+          color: #c084fc;
+        }
+        .card-purple::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #7c3aed;
+          box-shadow: 0 0 12px #7c3aed;
+        }
+
+        .card-green {
+          border: 1px solid rgba(0, 255, 157, 0.3);
+          box-shadow: 0 0 25px rgba(0, 255, 157, 0.08);
+        }
+        .card-green h3 {
+          color: #00ff9d;
+        }
+        .card-green::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #00ff9d;
+          box-shadow: 0 0 12px #00ff9d;
+        }
+
+        .card-orange {
+          border: 1px solid rgba(255, 140, 0, 0.35);
+          box-shadow: 0 0 25px rgba(255, 140, 0, 0.1);
+        }
+        .card-orange h3 {
+          color: #ff9f1c;
+        }
+        .card-orange::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: #ff9f1c;
+          box-shadow: 0 0 12px #ff9f1c;
         }
 
         /* Experience */
@@ -628,6 +737,7 @@ export default function PlayerDashboard() {
           color: #fff;
           font-size: 12px;
           font-weight: 700;
+          box-shadow: 0 0 15px rgba(255, 23, 68, 0.4);
         }
 
         /* Social */
@@ -639,23 +749,25 @@ export default function PlayerDashboard() {
         .social {
           padding: 10px 18px;
           border-radius: 30px;
-          border: 1px solid rgba(255, 23, 68, 0.45);
-          background: rgba(255, 23, 68, 0.1);
-          color: #ff4d6d;
+          border: 1px solid rgba(255, 140, 0, 0.45);
+          background: rgba(255, 140, 0, 0.1);
+          color: #ff9f1c;
           font-size: 12px;
           font-weight: 600;
           text-decoration: none;
-          transition: 0.2s;
+          transition: 0.25s;
         }
         .social:hover {
-          background: #ff1744;
-          color: #fff;
+          background: #ff9f1c;
+          color: #000;
+          box-shadow: 0 0 18px rgba(255, 140, 0, 0.5);
         }
         .empty {
           font-size: 13px;
           color: #666;
         }
 
+        /* Responsive */
         @media (max-width: 560px) {
           .stats {
             grid-template-columns: 1fr;
@@ -668,6 +780,9 @@ export default function PlayerDashboard() {
           }
           .hero h1 {
             font-size: 24px;
+          }
+          .card {
+            padding: 18px 16px;
           }
         }
       `}</style>
