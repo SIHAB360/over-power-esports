@@ -15,6 +15,8 @@ export default function PlayerRegister() {
     ign: "",
     freefire_uid: "",
     email: "",
+    password: "",
+    confirm_password: "",
     phone: "",
     age: "",
     birth_date: "",
@@ -71,6 +73,11 @@ export default function PlayerRegister() {
     setMessage("");
 
     try {
+      if (form.password !== form.confirm_password) {
+      setMessage("Password and Confirm Password do not match");
+      setLoading(false);
+  return;
+      }
       const formData = new FormData();
 
       Object.keys(form).forEach((key) => {
@@ -270,8 +277,27 @@ export default function PlayerRegister() {
               onChange={handleChange}
               placeholder="আপনার ব্যবহৃত ইমেইল আইডি লিখুন"
             />
-
-            <Field
+          {/* 🔴 PASSWORD — নতুন যোগ */}
+              <Field
+              label="Password"
+              required
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="আপনার লগইন পাসওয়ার্ড লিখুন"
+              />
+      
+              <Field
+                label="Confirm Password"
+                required
+                name="confirm_password"
+                type="password"
+                value={form.confirm_password}
+                onChange={handleChange}
+                placeholder="পাসওয়ার্ডটি আবার লিখুন"
+              />
+                    <Field
               label="Your Full Address"
               name="full_address"
               value={form.full_address}
