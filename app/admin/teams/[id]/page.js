@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
@@ -16,9 +15,7 @@ export default function TeamPlayersPage() {
   const [actionLoading, setActionLoading] = useState("");
 
   useEffect(() => {
-    if (teamId) {
-      loadData();
-    }
+    if (teamId) loadData();
   }, [teamId]);
 
   async function loadData() {
@@ -35,30 +32,21 @@ export default function TeamPlayersPage() {
       setLoading(false);
       return;
     }
-
     setTeam(teamData);
 
-    const { data: teamPlayers, error: playersError } = await supabase
+    const { data: teamPlayers } = await supabase
       .from("players")
       .select("*")
       .eq("team_id", teamId)
       .order("created_at", { ascending: false });
 
-    if (playersError) {
-      console.log(playersError);
-    }
-
     setPlayers(teamPlayers || []);
 
-    const { data: freePlayers, error: freePlayersError } = await supabase
+    const { data: freePlayers } = await supabase
       .from("players")
       .select("*")
       .is("team_id", null)
       .order("created_at", { ascending: false });
-
-    if (freePlayersError) {
-      console.log(freePlayersError);
-    }
 
     setAvailablePlayers(freePlayers || []);
     setLoading(false);
@@ -66,7 +54,6 @@ export default function TeamPlayersPage() {
 
   async function addPlayer(playerId) {
     setActionLoading(playerId);
-
     const { error } = await supabase
       .from("players")
       .update({ team_id: teamId })
@@ -77,14 +64,12 @@ export default function TeamPlayersPage() {
       setActionLoading("");
       return;
     }
-
     await loadData();
     setActionLoading("");
   }
 
   async function removePlayer(playerId) {
     setActionLoading(playerId);
-
     const { error } = await supabase
       .from("players")
       .update({ team_id: null })
@@ -95,117 +80,42 @@ export default function TeamPlayersPage() {
       setActionLoading("");
       return;
     }
-
     await loadData();
     setActionLoading("");
   }
 
   if (loading) {
     return (
-      <main className="page loading-page">
-        <div className="bg-orb orb-one"></div>
-        <div className="bg-orb orb-two"></div>
-        <div className="bg-orb orb-three"></div>
-
-        <div className="loading-box">
-          <div className="loader"></div>
-          <h2>Loading Team...</h2>
-          <p>Please wait while team data is being prepared.</p>
-        </div>
-
+      <main className="loading-page">
+        <div className="loader"></div>
+        <p>Loading Team...</p>
         <style jsx>{`
-          .page {
+          .loading-page {
             min-height: 100vh;
-            background: #040404;
+            background: #050505;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-            color: white;
+            gap: 18px;
+            color: #fff;
           }
-
-          .bg-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(130px);
-            opacity: 0.45;
-            animation: floatGlow 10s ease-in-out infinite;
-          }
-
-          .orb-one {
-            width: 280px;
-            height: 280px;
-            background: #ff174d;
-            top: -60px;
-            left: -40px;
-          }
-
-          .orb-two {
-            width: 320px;
-            height: 320px;
-            background: #6f00ff;
-            right: -100px;
-            top: 120px;
-            animation-delay: 1.5s;
-          }
-
-          .orb-three {
-            width: 280px;
-            height: 280px;
-            background: #008cff;
-            left: 35%;
-            bottom: -120px;
-            animation-delay: 3s;
-          }
-
-          .loading-box {
-            position: relative;
-            z-index: 2;
-            width: min(92%, 450px);
-            border-radius: 28px;
-            padding: 40px 28px;
-            text-align: center;
-            background: rgba(10, 10, 18, 0.78);
-            border: 1px solid rgba(255, 23, 77, 0.28);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(18px);
-          }
-
           .loader {
-            width: 64px;
-            height: 64px;
+            width: 52px;
+            height: 52px;
+            border: 3px solid #222;
+            border-top-color: #ff1744;
             border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 4px solid rgba(255, 255, 255, 0.15);
-            border-top: 4px solid #ff174d;
-            border-right: 4px solid #8b2cff;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
           }
-
-          h2 {
-            margin: 0 0 10px;
-            font-size: 28px;
-          }
-
           p {
-            margin: 0;
-            color: #b6b6c7;
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: #ff4d6d;
           }
-
           @keyframes spin {
             to {
               transform: rotate(360deg);
-            }
-          }
-
-          @keyframes floatGlow {
-            0%,
-            100% {
-              transform: translate(0, 0) scale(1);
-            }
-            50% {
-              transform: translate(30px, -25px) scale(1.08);
             }
           }
         `}</style>
@@ -215,117 +125,113 @@ export default function TeamPlayersPage() {
 
   return (
     <main className="page">
-      <div className="bg-orb orb-one"></div>
-      <div className="bg-orb orb-two"></div>
-      <div className="bg-orb orb-three"></div>
-      <div className="grid-overlay"></div>
+      {/* Background Lights */}
+      <div className="light light-1"></div>
+      <div className="light light-2"></div>
+      <div className="light light-3"></div>
 
       <div className="container">
+        {/* Top Bar */}
         <div className="topbar">
           <button className="back-btn" onClick={() => router.push("/admin/teams")}>
             ← BACK TO TEAMS
           </button>
-
-          <div className="small-brand">OVER POWER ESPORTS</div>
+          <span className="brand">OVER POWER ESPORTS</span>
         </div>
 
+        {/* Hero */}
         <section className="hero">
           <div className="hero-left">
-            <div className="logo-wrap">
+            <div className="team-logo">
               {team?.logo ? (
                 <img src={team.logo} alt={team.team_name} />
               ) : (
                 <span>{team?.team_name?.slice(0, 2)?.toUpperCase() || "OP"}</span>
               )}
             </div>
-
-            <div className="hero-text">
+            <div className="hero-info">
               <p className="eyebrow">TEAM PLAYER MANAGEMENT</p>
               <h1>{team?.team_name}</h1>
-              <div className="hero-meta">
-                <span className="pill coach">Coach: {team?.coach_name || "N/A"}</span>
-                <span className="pill manager">Manager: {team?.manager_name || "N/A"}</span>
+              <div className="pills">
+                <span className="pill">Coach: {team?.coach_name || "N/A"}</span>
+                <span className="pill">Manager: {team?.manager_name || "N/A"}</span>
                 <span className="pill status">{team?.status || "N/A"}</span>
               </div>
             </div>
           </div>
 
           <div className="hero-stats">
-            <div className="stat-card">
+            <div className="stat">
               <small>Current Roster</small>
               <strong>{players.length}</strong>
             </div>
-            <div className="stat-card">
-              <small>Available Players</small>
+            <div className="stat">
+              <small>Available</small>
               <strong>{availablePlayers.length}</strong>
             </div>
-            <div className="stat-card">
+            <div className="stat">
               <small>Country</small>
               <strong>{team?.country || "N/A"}</strong>
             </div>
           </div>
         </section>
 
-        <section className="glass-card info-card">
-          <div className="section-head">
-            <span className="section-number">01</span>
+        {/* Team Information */}
+        <section className="card">
+          <div className="card-head">
+            <span className="num">01</span>
             <div>
-              <p className="section-label">TEAM OVERVIEW</p>
+              <p>TEAM OVERVIEW</p>
               <h2>TEAM INFORMATION</h2>
             </div>
           </div>
-
           <div className="info-grid">
-            <div className="info-box red">
+            <div className="info-box">
               <span>Coach</span>
               <b>{team?.coach_name || "N/A"}</b>
             </div>
-
-            <div className="info-box purple">
+            <div className="info-box">
               <span>Manager</span>
               <b>{team?.manager_name || "N/A"}</b>
             </div>
-
-            <div className="info-box blue">
+            <div className="info-box">
               <span>Country</span>
               <b>{team?.country || "N/A"}</b>
             </div>
-
-            <div className="info-box gold">
+            <div className="info-box">
               <span>Founded Year</span>
               <b>{team?.founded_year || "N/A"}</b>
             </div>
-
-            <div className="info-box green">
+            <div className="info-box">
               <span>Status</span>
-              <b>{team?.status || "N/A"}</b>
+              <b className="green">{team?.status || "N/A"}</b>
             </div>
-
-            <div className="info-box pink">
+            <div className="info-box">
               <span>Total Winnings</span>
               <b>৳{team?.total_winnings || 0}</b>
             </div>
           </div>
         </section>
 
-        <section className="glass-card">
-          <div className="section-head">
-            <span className="section-number">02</span>
+        {/* Current Roster */}
+        <section className="card">
+          <div className="card-head">
+            <span className="num">02</span>
             <div>
-              <p className="section-label">ACTIVE TEAM</p>
+              <p>ACTIVE TEAM</p>
               <h2>CURRENT ROSTER ({players.length})</h2>
             </div>
           </div>
 
           {players.length === 0 ? (
-            <div className="empty-box">
+            <div className="empty">
               <h3>No player added yet</h3>
               <p>Add registered players to build your active team roster.</p>
             </div>
           ) : (
             <div className="player-grid">
               {players.map((player) => (
-                <div className="player-card roster-card" key={player.id}>
+                <div className="player-card" key={player.id}>
                   <div className="player-top">
                     <div className="avatar">
                       {player?.profile_image || player?.avatar_url ? (
@@ -339,23 +245,18 @@ export default function TeamPlayersPage() {
                         </span>
                       )}
                     </div>
-
-                    <div className="player-main">
-                      <h3>{player.full_name || "Unnamed Player"}</h3>
-                      <p className="ign">
-                        IGN: {player.ign || player.freefire_uid || "N/A"}
-                      </p>
+                    <div className="player-info">
+                      <h3>{player.full_name || "Unnamed"}</h3>
+                      <p>IGN: {player.ign || player.freefire_uid || "N/A"}</p>
                     </div>
                   </div>
-
-                  <div className="player-details">
+                  <div className="tags">
                     <span>Role: {player.primary_role || "N/A"}</span>
                     <span>Phone: {player.phone || "N/A"}</span>
                     <span>Status: {player.status || "N/A"}</span>
                   </div>
-
                   <button
-                    className="action-btn remove-btn"
+                    className="btn remove"
                     onClick={() => removePlayer(player.id)}
                     disabled={actionLoading === player.id}
                   >
@@ -367,24 +268,25 @@ export default function TeamPlayersPage() {
           )}
         </section>
 
-        <section className="glass-card">
-          <div className="section-head">
-            <span className="section-number">03</span>
+        {/* Available Players */}
+        <section className="card">
+          <div className="card-head">
+            <span className="num">03</span>
             <div>
-              <p className="section-label">FREE AGENTS</p>
+              <p>FREE AGENTS</p>
               <h2>AVAILABLE PLAYERS ({availablePlayers.length})</h2>
             </div>
           </div>
 
           {availablePlayers.length === 0 ? (
-            <div className="empty-box">
+            <div className="empty">
               <h3>No available players</h3>
-              <p>All players are already assigned to teams right now.</p>
+              <p>All players are already assigned to teams.</p>
             </div>
           ) : (
             <div className="player-grid">
               {availablePlayers.map((player) => (
-                <div className="player-card available-card" key={player.id}>
+                <div className="player-card available" key={player.id}>
                   <div className="player-top">
                     <div className="avatar">
                       {player?.profile_image || player?.avatar_url ? (
@@ -398,23 +300,18 @@ export default function TeamPlayersPage() {
                         </span>
                       )}
                     </div>
-
-                    <div className="player-main">
-                      <h3>{player.full_name || "Unnamed Player"}</h3>
-                      <p className="ign">
-                        IGN: {player.ign || player.freefire_uid || "N/A"}
-                      </p>
+                    <div className="player-info">
+                      <h3>{player.full_name || "Unnamed"}</h3>
+                      <p>IGN: {player.ign || player.freefire_uid || "N/A"}</p>
                     </div>
                   </div>
-
-                  <div className="player-details">
+                  <div className="tags">
                     <span>Role: {player.primary_role || "N/A"}</span>
                     <span>Phone: {player.phone || "N/A"}</span>
                     <span>Country: {player.country || "N/A"}</span>
                   </div>
-
                   <button
-                    className="action-btn add-btn"
+                    className="btn add"
                     onClick={() => addPlayer(player.id)}
                     disabled={actionLoading === player.id}
                   >
@@ -430,578 +327,417 @@ export default function TeamPlayersPage() {
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background:
-            radial-gradient(circle at top left, rgba(255, 20, 90, 0.12), transparent 30%),
-            radial-gradient(circle at top right, rgba(90, 0, 255, 0.12), transparent 32%),
-            linear-gradient(135deg, #030303 0%, #070711 50%, #020205 100%);
-          color: white;
-          padding: 28px 18px 50px;
+          background: #050505;
+          color: #fff;
           position: relative;
-          overflow: hidden;
+          overflow-x: hidden;
+          font-family: "Inter", system-ui, sans-serif;
+          padding: 24px 16px 50px;
         }
 
-        .grid-overlay {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-          background-size: 48px 48px;
-          mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), transparent);
-          pointer-events: none;
-        }
-
-        .bg-orb {
-          position: absolute;
+        .light {
+          position: fixed;
           border-radius: 50%;
-          filter: blur(140px);
-          opacity: 0.45;
-          animation: floatGlow 11s ease-in-out infinite;
+          filter: blur(150px);
+          pointer-events: none;
+          z-index: 0;
+          animation: pulse 7s ease-in-out infinite;
         }
-
-        .orb-one {
-          width: 320px;
-          height: 320px;
-          background: #ff174d;
-          top: -60px;
-          left: -40px;
+        .light-1 {
+          width: 500px;
+          height: 500px;
+          background: #ff1744;
+          top: -200px;
+          left: -150px;
+          opacity: 0.16;
         }
-
-        .orb-two {
-          width: 360px;
-          height: 360px;
-          background: #6f00ff;
-          right: -100px;
-          top: 120px;
-          animation-delay: 2s;
+        .light-2 {
+          width: 400px;
+          height: 400px;
+          background: #7c3aed;
+          top: 30%;
+          right: -120px;
+          opacity: 0.12;
+          animation-delay: 2.5s;
         }
-
-        .orb-three {
-          width: 320px;
-          height: 320px;
-          background: #009dff;
-          left: 35%;
-          bottom: -120px;
-          animation-delay: 4s;
+        .light-3 {
+          width: 350px;
+          height: 350px;
+          background: #00ff9d;
+          bottom: -100px;
+          left: 30%;
+          opacity: 0.07;
+          animation-delay: 5s;
+        }
+        @keyframes pulse {
+          0%,
+          100% {
+            opacity: 0.08;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.18;
+            transform: scale(1.06);
+          }
         }
 
         .container {
-          max-width: 1240px;
-          margin: auto;
+          max-width: 1100px;
+          margin: 0 auto;
           position: relative;
           z-index: 2;
         }
 
+        /* Topbar */
         .topbar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 15px;
           margin-bottom: 22px;
           flex-wrap: wrap;
+          gap: 12px;
         }
-
         .back-btn {
           border: 1px solid rgba(255, 255, 255, 0.15);
           background: rgba(255, 255, 255, 0.06);
-          color: white;
-          padding: 12px 18px;
-          border-radius: 18px;
-          font-weight: 800;
-          letter-spacing: 0.5px;
+          color: #fff;
+          padding: 11px 18px;
+          border-radius: 12px;
+          font-weight: 700;
+          font-size: 13px;
           cursor: pointer;
-          backdrop-filter: blur(12px);
-          transition: 0.3s;
+          transition: 0.25s;
         }
-
         .back-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 0 25px rgba(255, 23, 77, 0.25);
-          border-color: rgba(255, 23, 77, 0.4);
+          border-color: rgba(255, 23, 68, 0.5);
+          box-shadow: 0 0 20px rgba(255, 23, 68, 0.2);
         }
-
-        .small-brand {
+        .brand {
           font-size: 12px;
-          letter-spacing: 4px;
-          color: #ff4d74;
-          font-weight: 900;
+          letter-spacing: 3px;
+          color: #ff4d6d;
+          font-weight: 800;
         }
 
+        /* Hero */
         .hero {
           display: flex;
           justify-content: space-between;
           gap: 24px;
-          padding: 30px;
-          border-radius: 30px;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.05),
-            rgba(255, 255, 255, 0.02)
-          );
-          border: 1px solid rgba(255, 23, 77, 0.22);
-          backdrop-filter: blur(18px);
-          box-shadow:
-            0 35px 80px rgba(0, 0, 0, 0.45),
-            inset 0 0 35px rgba(255, 23, 77, 0.05);
-          margin-bottom: 24px;
-          position: relative;
-          overflow: hidden;
+          padding: 28px;
+          border-radius: 24px;
+          background: rgba(18, 6, 12, 0.9);
+          border: 1px solid rgba(255, 23, 68, 0.35);
+          box-shadow: 0 0 40px rgba(255, 23, 68, 0.12);
+          margin-bottom: 22px;
+          flex-wrap: wrap;
         }
-
-        .hero:before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            120deg,
-            rgba(255, 23, 77, 0.08),
-            transparent 35%,
-            rgba(111, 0, 255, 0.08)
-          );
-          pointer-events: none;
-        }
-
         .hero-left {
           display: flex;
           align-items: center;
-          gap: 22px;
+          gap: 20px;
           flex: 1;
           min-width: 0;
         }
-
-        .logo-wrap {
-          width: 120px;
-          height: 120px;
-          min-width: 120px;
-          border-radius: 30px;
-          background: linear-gradient(135deg, #ff174d, #7a00ff);
+        .team-logo {
+          width: 100px;
+          height: 100px;
+          min-width: 100px;
+          border-radius: 22px;
+          background: linear-gradient(135deg, #ff1744, #7c3aed);
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow:
-            0 0 35px rgba(255, 23, 77, 0.35),
-            0 0 55px rgba(122, 0, 255, 0.2);
           overflow: hidden;
-          border: 2px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 0 30px rgba(255, 23, 68, 0.4);
         }
-
-        .logo-wrap img {
+        .team-logo img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
-
-        .logo-wrap span {
-          font-size: 42px;
+        .team-logo span {
+          font-size: 32px;
           font-weight: 900;
-          color: white;
         }
-
-        .hero-text {
-          min-width: 0;
-        }
-
         .eyebrow {
-          margin: 0 0 8px;
-          color: #ff4d74;
-          letter-spacing: 4px;
+          margin: 0 0 6px;
           font-size: 11px;
-          font-weight: 800;
+          letter-spacing: 2px;
+          color: #ff4d6d;
+          font-weight: 700;
         }
-
-        .hero-text h1 {
+        .hero-info h1 {
           margin: 0;
-          font-size: 46px;
-          line-height: 1.05;
+          font-size: 32px;
+          font-weight: 900;
+          line-height: 1.15;
           word-break: break-word;
         }
-
-        .hero-meta {
+        .pills {
           display: flex;
-          gap: 10px;
           flex-wrap: wrap;
-          margin-top: 16px;
+          gap: 8px;
+          margin-top: 14px;
         }
-
         .pill {
-          display: inline-flex;
-          align-items: center;
-          padding: 10px 14px;
-          border-radius: 999px;
+          padding: 7px 14px;
+          border-radius: 30px;
           font-size: 12px;
-          font-weight: 800;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
+          font-weight: 600;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .pill.coach {
-          color: #ff96aa;
-        }
-
-        .pill.manager {
-          color: #b897ff;
-        }
-
         .pill.status {
-          color: #53ffb4;
-          text-transform: uppercase;
+          color: #00ff9d;
+          border-color: rgba(0, 255, 157, 0.3);
         }
-
         .hero-stats {
           display: grid;
-          grid-template-columns: repeat(3, minmax(120px, 1fr));
-          gap: 14px;
-          width: 420px;
-          max-width: 100%;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+          min-width: 280px;
         }
-
-        .stat-card {
-          border-radius: 22px;
-          padding: 18px;
-          background: rgba(255, 255, 255, 0.05);
+        .stat {
+          background: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 16px;
+          padding: 16px;
           text-align: center;
-          backdrop-filter: blur(14px);
-          box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.02);
         }
-
-        .stat-card small {
+        .stat small {
           display: block;
-          color: #9f9fb2;
-          font-size: 12px;
-          margin-bottom: 8px;
+          font-size: 11px;
+          color: #888;
+          margin-bottom: 6px;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 0.5px;
+        }
+        .stat strong {
+          font-size: 22px;
+          font-weight: 800;
         }
 
-        .stat-card strong {
-          font-size: 24px;
-          color: white;
+        /* Card */
+        .card {
+          background: rgba(18, 6, 12, 0.9);
+          border: 1px solid rgba(255, 23, 68, 0.25);
+          border-radius: 22px;
+          padding: 24px;
+          margin-bottom: 20px;
+          box-shadow: 0 0 30px rgba(255, 23, 68, 0.08);
         }
-
-        .glass-card {
-          border-radius: 30px;
-          padding: 28px;
-          margin-bottom: 24px;
-          background: rgba(12, 12, 18, 0.78);
-          border: 1px solid rgba(255, 23, 77, 0.22);
-          backdrop-filter: blur(18px);
-          box-shadow:
-            0 25px 60px rgba(0, 0, 0, 0.38),
-            inset 0 0 25px rgba(122, 0, 255, 0.05);
-        }
-
-        .section-head {
+        .card-head {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 24px;
+          gap: 14px;
+          margin-bottom: 20px;
         }
-
-        .section-number {
-          width: 48px;
-          height: 48px;
-          border-radius: 16px;
+        .num {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          background: rgba(255, 23, 68, 0.12);
+          border: 1px solid rgba(255, 23, 68, 0.3);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 13px;
-          font-weight: 900;
-          background: linear-gradient(135deg, rgba(255, 23, 77, 0.16), rgba(122, 0, 255, 0.16));
-          border: 1px solid rgba(255, 23, 77, 0.22);
-          color: #ff88a0;
-          box-shadow: 0 0 18px rgba(255, 23, 77, 0.15);
+          font-weight: 800;
+          color: #ff4d6d;
         }
-
-        .section-label {
-          margin: 0 0 5px;
+        .card-head p {
+          margin: 0 0 3px;
           font-size: 11px;
-          letter-spacing: 3px;
-          color: #8f8fa3;
+          letter-spacing: 2px;
+          color: #888;
+          font-weight: 700;
+        }
+        .card-head h2 {
+          margin: 0;
+          font-size: 20px;
           font-weight: 800;
         }
 
-        .section-head h2 {
-          margin: 0;
-          font-size: 28px;
-        }
-
+        /* Info Grid */
         .info-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
+          gap: 12px;
         }
-
         .info-box {
-          padding: 18px;
-          border-radius: 22px;
           background: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.06);
-          box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.015);
+          border-radius: 14px;
+          padding: 16px;
         }
-
         .info-box span {
           display: block;
-          font-size: 12px;
-          color: #aaaaaf;
-          margin-bottom: 10px;
+          font-size: 11px;
+          color: #888;
+          margin-bottom: 6px;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 0.5px;
         }
-
         .info-box b {
-          display: block;
-          font-size: 20px;
-          color: white;
+          font-size: 16px;
+          font-weight: 700;
+        }
+        .info-box b.green {
+          color: #00ff9d;
         }
 
-        .info-box.red {
-          box-shadow: inset 0 0 30px rgba(255, 23, 77, 0.06);
-        }
-
-        .info-box.purple {
-          box-shadow: inset 0 0 30px rgba(111, 0, 255, 0.06);
-        }
-
-        .info-box.blue {
-          box-shadow: inset 0 0 30px rgba(0, 157, 255, 0.06);
-        }
-
-        .info-box.gold {
-          box-shadow: inset 0 0 30px rgba(255, 174, 0, 0.06);
-        }
-
-        .info-box.green {
-          box-shadow: inset 0 0 30px rgba(0, 255, 166, 0.06);
-        }
-
-        .info-box.pink {
-          box-shadow: inset 0 0 30px rgba(255, 0, 153, 0.06);
-        }
-
+        /* Player Grid */
         .player-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 18px;
+          gap: 16px;
         }
-
         .player-card {
-          border-radius: 24px;
-          padding: 20px;
-          background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          transition: 0.3s;
-          position: relative;
-          overflow: hidden;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          border-radius: 18px;
+          padding: 18px;
+          transition: 0.25s;
         }
-
         .player-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+          transform: translateY(-3px);
+          border-color: rgba(255, 23, 68, 0.35);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-
-        .roster-card {
-          box-shadow: inset 0 0 22px rgba(255, 23, 77, 0.04);
+        .player-card.available {
+          border-color: rgba(124, 58, 237, 0.2);
         }
-
-        .available-card {
-          box-shadow: inset 0 0 22px rgba(111, 0, 255, 0.04);
-        }
-
         .player-top {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 14px;
         }
-
         .avatar {
-          width: 64px;
-          height: 64px;
-          min-width: 64px;
-          border-radius: 18px;
-          background: linear-gradient(135deg, #ff174d, #7a00ff);
+          width: 52px;
+          height: 52px;
+          min-width: 52px;
+          border-radius: 14px;
+          background: linear-gradient(135deg, #ff1744, #7c3aed);
           display: flex;
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          box-shadow: 0 0 22px rgba(255, 23, 77, 0.25);
+          box-shadow: 0 0 18px rgba(255, 23, 68, 0.3);
         }
-
         .avatar img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
-
         .avatar span {
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 900;
-          color: white;
         }
-
-        .player-main {
-          min-width: 0;
-        }
-
-        .player-main h3 {
+        .player-info h3 {
           margin: 0;
-          font-size: 24px;
-          line-height: 1.1;
+          font-size: 16px;
+          font-weight: 700;
           word-break: break-word;
         }
-
-        .ign {
-          margin: 7px 0 0;
-          color: #b2b2c0;
-          font-size: 14px;
+        .player-info p {
+          margin: 4px 0 0;
+          font-size: 12px;
+          color: #aaa;
         }
-
-        .player-details {
+        .tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 10px;
-          margin-bottom: 18px;
+          gap: 6px;
+          margin-bottom: 14px;
         }
-
-        .player-details span {
-          padding: 9px 12px;
-          border-radius: 999px;
+        .tags span {
+          padding: 5px 10px;
+          border-radius: 20px;
           background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          color: #d4d4de;
-          font-size: 12px;
-          font-weight: 700;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          font-size: 11px;
+          color: #ccc;
         }
-
-        .action-btn {
+        .btn {
           width: 100%;
           border: none;
-          border-radius: 18px;
-          padding: 14px 18px;
-          font-weight: 900;
-          font-size: 14px;
+          border-radius: 12px;
+          padding: 12px;
+          font-weight: 800;
+          font-size: 13px;
           cursor: pointer;
-          color: white;
-          transition: 0.3s;
+          color: #fff;
+          transition: 0.25s;
         }
-
-        .action-btn:hover:not(:disabled) {
+        .btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        .btn.remove {
+          background: linear-gradient(135deg, #ff1744, #c4002b);
+          box-shadow: 0 0 18px rgba(255, 23, 68, 0.3);
+        }
+        .btn.add {
+          background: linear-gradient(135deg, #7c3aed, #5b21b6);
+          box-shadow: 0 0 18px rgba(124, 58, 237, 0.3);
+        }
+        .btn:hover:not(:disabled) {
           transform: translateY(-2px);
         }
 
-        .action-btn:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        .add-btn {
-          background: linear-gradient(135deg, #ff174d, #7a00ff);
-          box-shadow: 0 0 25px rgba(122, 0, 255, 0.22);
-        }
-
-        .remove-btn {
-          background: linear-gradient(135deg, #ff174d, #ff005d);
-          box-shadow: 0 0 25px rgba(255, 23, 77, 0.22);
-        }
-
-        .empty-box {
-          padding: 36px 24px;
-          border-radius: 22px;
+        .empty {
           text-align: center;
+          padding: 36px 20px;
           border: 1px dashed rgba(255, 255, 255, 0.12);
-          background: rgba(255, 255, 255, 0.03);
+          border-radius: 16px;
         }
-
-        .empty-box h3 {
-          margin: 0 0 10px;
-          font-size: 24px;
+        .empty h3 {
+          margin: 0 0 8px;
+          font-size: 18px;
         }
-
-        .empty-box p {
+        .empty p {
           margin: 0;
-          color: #a9a9b7;
+          color: #888;
+          font-size: 14px;
         }
 
-        @keyframes floatGlow {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          50% {
-            transform: translate(35px, -30px) scale(1.1);
-          }
-        }
-
-        @media (max-width: 1100px) {
+        /* Responsive */
+        @media (max-width: 900px) {
           .hero {
             flex-direction: column;
           }
-
           .hero-stats {
             width: 100%;
+            grid-template-columns: repeat(3, 1fr);
           }
-
           .info-grid {
             grid-template-columns: repeat(2, 1fr);
           }
-
           .player-grid {
             grid-template-columns: 1fr;
           }
         }
-
-        @media (max-width: 700px) {
-          .page {
-            padding: 18px 12px 40px;
-          }
-
-          .hero {
-            padding: 22px 18px;
-          }
-
+        @media (max-width: 560px) {
           .hero-left {
             flex-direction: column;
             align-items: flex-start;
           }
-
-          .logo-wrap {
-            width: 96px;
-            height: 96px;
-            min-width: 96px;
+          .hero-info h1 {
+            font-size: 24px;
           }
-
-          .hero-text h1 {
-            font-size: 34px;
-          }
-
           .hero-stats {
             grid-template-columns: 1fr;
           }
-
-          .glass-card {
-            padding: 20px 16px;
-          }
-
-          .section-head {
-            align-items: flex-start;
-          }
-
-          .section-head h2 {
-            font-size: 22px;
-          }
-
           .info-grid {
             grid-template-columns: 1fr;
           }
-
-          .player-main h3 {
-            font-size: 21px;
+          .card {
+            padding: 18px 16px;
           }
-
-          .player-details {
-            flex-direction: column;
+          .card-head h2 {
+            font-size: 17px;
           }
         }
       `}</style>
