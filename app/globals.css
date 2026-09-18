@@ -3292,11 +3292,11 @@ p{
   object-fit:contain;
   display:block;
 }
-/* Global Website Font */
+/* Global Website Font Reset */
 
 html,
 body {
-  font-family: var(--font-orbitron), sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 button,
@@ -3305,5 +3305,5 @@ select,
 textarea,
 option,
 a {
-  font-family: inherit;
+  font-family: Arial, Helvetica, sans-serif;
 }
