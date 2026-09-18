@@ -52,7 +52,6 @@ export default function PlayerDashboard() {
       .single();
 
     if (error) {
-      console.error("PLAYER LOAD ERROR:", error);
       setErrorMessage("Player profile could not be found.");
       setLoading(false);
       return;
@@ -67,10 +66,7 @@ export default function PlayerDashboard() {
     router.push("/login");
   };
 
-  const displayValue = (value) => {
-    if (value === null || value === undefined || value === "") return "N/A";
-    return value;
-  };
+  const val = (v) => (v === null || v === undefined || v === "" ? "N/A" : v);
 
   const formatDate = (date) => {
     if (!date) return "N/A";
@@ -90,30 +86,30 @@ export default function PlayerDashboard() {
     if (Array.isArray(value)) return value.filter(Boolean);
     return String(value)
       .split(",")
-      .map((item) => item.trim())
+      .map((i) => i.trim())
       .filter(Boolean);
   };
 
   if (loading) {
     return (
-      <main className="loading-screen">
-        <div className="loader"></div>
-        <p>LOADING PLAYER PROFILE</p>
+      <div className="loading">
+        <div className="spinner"></div>
+        <p>LOADING PROFILE...</p>
         <style jsx>{`
-          .loading-screen {
+          .loading {
             min-height: 100vh;
-            background: #050505;
+            background: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             color: #fff;
           }
-          .loader {
-            width: 52px;
-            height: 52px;
-            border: 3px solid rgba(255, 23, 68, 0.15);
+          .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid #222;
             border-top-color: #ff1744;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -122,7 +118,6 @@ export default function PlayerDashboard() {
             font-size: 12px;
             letter-spacing: 3px;
             color: #ff4d6d;
-            font-weight: 600;
           }
           @keyframes spin {
             to {
@@ -130,233 +125,195 @@ export default function PlayerDashboard() {
             }
           }
         `}</style>
-      </main>
+      </div>
     );
   }
 
   if (errorMessage) {
     return (
-      <main className="error-screen">
-        <h1>PLAYER DASHBOARD</h1>
+      <div className="loading">
         <p>{errorMessage}</p>
-        <button onClick={() => router.push("/login")}>RETURN TO LOGIN</button>
-        <style jsx>{`
-          .error-screen {
-            min-height: 100vh;
-            background: #050505;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            text-align: center;
-            padding: 30px;
-          }
-          h1 {
-            font-size: 28px;
-            margin: 0;
-          }
-          p {
-            color: #aaa;
-            margin: 0;
-          }
-          button {
-            margin-top: 12px;
-            border: 1px solid #ff1744;
-            background: rgba(255, 23, 68, 0.1);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-          }
-        `}</style>
-      </main>
+        <button onClick={() => router.push("/login")}>Go to Login</button>
+      </div>
     );
   }
 
-  const expertWeapons = listFromValue(player?.expert_weapon);
-  const internetConnections = listFromValue(player?.internet_connection);
+  const weapons = listFromValue(player?.expert_weapon);
+  const internet = listFromValue(player?.internet_connection);
 
   return (
-    <main className="dashboard">
-      {/* Background Glows */}
-      <div className="bg-glow glow-1"></div>
-      <div className="bg-glow glow-2"></div>
+    <main className="page">
+      {/* Background Lighting */}
+      <div className="light light-1"></div>
+      <div className="light light-2"></div>
+      <div className="light light-3"></div>
 
-      <div className="container">
+      <div className="wrap">
         {/* Top Bar */}
-        <header className="topbar">
-          <div className="brand">
-            <div className="brand-logo">OP</div>
+        <div className="topbar">
+          <div className="logo-area">
+            <div className="logo">OP</div>
             <div>
-              <strong>OVER POWER</strong>
-              <span>PLAYER DASHBOARD</span>
+              <b>OVER POWER</b>
+              <small>PLAYER DASHBOARD</small>
             </div>
           </div>
-          <button className="logout-btn" onClick={handleLogout}>
+          <button className="logout" onClick={handleLogout}>
             LOGOUT
           </button>
-        </header>
+        </div>
 
-        {/* Hero Card */}
-        <section className="hero-card">
-          <div className="avatar-wrap">
+        {/* Hero */}
+        <section className="hero">
+          <div className="avatar">
             {player?.profile_image ? (
-              <img src={player.profile_image} alt="Player" />
+              <img src={player.profile_image} alt="avatar" />
             ) : (
-              <div className="avatar-fallback">
-                {player?.full_name?.charAt(0) || "P"}
-              </div>
+              <div className="fallback">{player?.full_name?.[0] || "P"}</div>
             )}
           </div>
 
-          <h1 className="player-name">{displayValue(player?.full_name)}</h1>
-          <p className="player-ign">{displayValue(player?.ign)}</p>
+          <h1>{val(player?.full_name)}</h1>
+          <p className="ign">{val(player?.ign)}</p>
 
-          <div className="badges">
+          <div className="tags">
             {player?.primary_role && (
-              <span className="badge badge-primary">{player.primary_role}</span>
+              <span className="tag red">{player.primary_role}</span>
             )}
             {player?.team_name && (
-              <span className="badge badge-team">{player.team_name}</span>
+              <span className="tag purple">{player.team_name}</span>
             )}
           </div>
         </section>
 
         {/* Stats */}
-        <section className="stats-row">
-          <div className="stat-box">
-            <span className="stat-icon">⚔</span>
+        <div className="stats">
+          <div className="stat">
+            <span>⚔</span>
             <div>
-              <span className="stat-label">MATCHES</span>
-              <strong>{player?.matches_played || 0}</strong>
+              <small>MATCHES</small>
+              <b>{player?.matches_played || 0}</b>
             </div>
           </div>
-          <div className="stat-box">
-            <span className="stat-icon">🏆</span>
+          <div className="stat">
+            <span>🏆</span>
             <div>
-              <span className="stat-label">WINS</span>
-              <strong>{player?.wins || 0}</strong>
+              <small>WINS</small>
+              <b>{player?.wins || 0}</b>
             </div>
           </div>
-          <div className="stat-box">
-            <span className="stat-icon">💀</span>
+          <div className="stat">
+            <span>💀</span>
             <div>
-              <span className="stat-label">KILLS</span>
-              <strong>{player?.total_kills || 0}</strong>
+              <small>KILLS</small>
+              <b>{player?.total_kills || 0}</b>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Player Information */}
-        <section className="section-card">
-          <h2 className="section-title">PLAYER INFORMATION</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <span>FREE FIRE UID</span>
-              <strong>{displayValue(player?.freefire_uid)}</strong>
+        {/* Player Info */}
+        <section className="card">
+          <h3>PLAYER INFORMATION</h3>
+          <div className="grid">
+            <div>
+              <label>FREE FIRE UID</label>
+              <p>{val(player?.freefire_uid)}</p>
             </div>
-            <div className="info-item">
-              <span>COUNTRY</span>
-              <strong>{displayValue(player?.country)}</strong>
+            <div>
+              <label>COUNTRY</label>
+              <p>{val(player?.country)}</p>
             </div>
-            <div className="info-item">
-              <span>AGE</span>
-              <strong>{displayValue(player?.age)}</strong>
+            <div>
+              <label>AGE</label>
+              <p>{val(player?.age)}</p>
             </div>
-            <div className="info-item">
-              <span>PHONE</span>
-              <strong>{displayValue(player?.phone)}</strong>
+            <div>
+              <label>PHONE</label>
+              <p>{val(player?.phone)}</p>
             </div>
-            <div className="info-item">
-              <span>JOINING DATE</span>
-              <strong>{formatDate(player?.joining_date)}</strong>
+            <div>
+              <label>JOINING DATE</label>
+              <p>{formatDate(player?.joining_date)}</p>
             </div>
-            <div className="info-item">
-              <span>PREVIOUS TEAM</span>
-              <strong>{displayValue(player?.previous_team)}</strong>
+            <div>
+              <label>PREVIOUS TEAM</label>
+              <p>{val(player?.previous_team)}</p>
             </div>
           </div>
         </section>
 
         {/* Gaming Profile */}
-        <section className="section-card">
-          <h2 className="section-title">GAMING PROFILE</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <span>PRIMARY ROLE</span>
-              <strong>{displayValue(player?.primary_role)}</strong>
+        <section className="card">
+          <h3>GAMING PROFILE</h3>
+          <div className="grid">
+            <div>
+              <label>PRIMARY ROLE</label>
+              <p>{val(player?.primary_role)}</p>
             </div>
-            <div className="info-item">
-              <span>SECONDARY ROLE</span>
-              <strong>{displayValue(player?.secondary_role)}</strong>
+            <div>
+              <label>SECONDARY ROLE</label>
+              <p>{val(player?.secondary_role)}</p>
             </div>
-            <div className="info-item">
-              <span>DEVICE</span>
-              <strong>{displayValue(player?.device)}</strong>
+            <div>
+              <label>DEVICE</label>
+              <p>{val(player?.device)}</p>
             </div>
-            <div className="info-item">
-              <span>INTERNET</span>
-              <strong>
-                {internetConnections.length > 0
-                  ? internetConnections.join(", ")
-                  : "N/A"}
-              </strong>
+            <div>
+              <label>INTERNET</label>
+              <p>{internet.length ? internet.join(", ") : "N/A"}</p>
             </div>
-            <div className="info-item">
-              <span>PRACTICE TIME</span>
-              <strong>{displayValue(player?.practice_time)}</strong>
+            <div>
+              <label>PRACTICE TIME</label>
+              <p>{val(player?.practice_time)}</p>
             </div>
-            <div className="info-item">
-              <span>BR K/D RATE</span>
-              <strong>{displayValue(player?.average_br_kd_rate)}</strong>
+            <div>
+              <label>BR K/D RATE</label>
+              <p>{val(player?.average_br_kd_rate)}</p>
             </div>
           </div>
         </section>
 
         {/* Experience */}
-        <section className="section-card">
-          <h2 className="section-title">EXPERIENCE</h2>
-          <div className="experience-row">
-            <div className="exp-item">
-              <span>Game Experience</span>
-              <strong>{displayValue(player?.game_experience)}</strong>
+        <section className="card">
+          <h3>EXPERIENCE</h3>
+          <div className="exp">
+            <div>
+              <label>Game Experience</label>
+              <p>{val(player?.game_experience)}</p>
             </div>
-            <div className="exp-item">
-              <span>Tournament Experience</span>
-              <strong>{displayValue(player?.tournament_experience)}</strong>
+            <div>
+              <label>Tournament Experience</label>
+              <p>{val(player?.tournament_experience)}</p>
             </div>
           </div>
         </section>
 
         {/* Expert Weapons */}
-        <section className="section-card">
-          <h2 className="section-title">EXPERT WEAPONS</h2>
-          <div className="weapons-list">
-            {expertWeapons.length > 0 ? (
-              expertWeapons.map((weapon, i) => (
-                <span key={i} className="weapon-badge">
-                  {weapon}
+        <section className="card">
+          <h3>EXPERT WEAPONS</h3>
+          <div className="weapons">
+            {weapons.length > 0 ? (
+              weapons.map((w, i) => (
+                <span key={i} className="weapon">
+                  {w}
                 </span>
               ))
             ) : (
-              <span className="empty-text">No weapons added</span>
+              <span className="empty">No weapons added</span>
             )}
           </div>
         </section>
 
         {/* Social Links */}
-        <section className="section-card">
-          <h2 className="section-title">SOCIAL LINKS</h2>
-          <div className="social-links">
+        <section className="card">
+          <h3>SOCIAL LINKS</h3>
+          <div className="socials">
             {player?.facebook_link && (
               <a
                 href={player.facebook_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-btn"
+                className="social"
               >
                 Facebook
               </a>
@@ -366,7 +323,7 @@ export default function PlayerDashboard() {
                 href={player.instagram_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-btn"
+                className="social"
               >
                 Instagram
               </a>
@@ -376,7 +333,7 @@ export default function PlayerDashboard() {
                 href={player.tiktok_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-btn"
+                className="social"
               >
                 TikTok
               </a>
@@ -386,7 +343,7 @@ export default function PlayerDashboard() {
                 href={player.youtube_link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-btn"
+                className="social"
               >
                 YouTube
               </a>
@@ -395,52 +352,60 @@ export default function PlayerDashboard() {
               !player?.instagram_link &&
               !player?.tiktok_link &&
               !player?.youtube_link && (
-                <span className="empty-text">No social links</span>
+                <span className="empty">No social links</span>
               )}
           </div>
         </section>
       </div>
 
       <style jsx>{`
-        .dashboard {
+        .page {
           min-height: 100vh;
-          background: #050505;
+          background: #000;
           color: #fff;
           position: relative;
           overflow-x: hidden;
-          font-family: "Inter", system-ui, -apple-system, sans-serif;
-          padding: 24px 16px 60px;
+          font-family: "Inter", system-ui, sans-serif;
+          padding: 20px 16px 50px;
         }
 
-        .bg-glow {
+        .light {
           position: fixed;
           border-radius: 50%;
-          filter: blur(160px);
+          filter: blur(140px);
           pointer-events: none;
           z-index: 0;
         }
-        .glow-1 {
-          width: 500px;
-          height: 500px;
+        .light-1 {
+          width: 450px;
+          height: 450px;
           background: #ff1744;
-          top: -200px;
-          left: -150px;
-          opacity: 0.18;
+          top: -180px;
+          left: -120px;
+          opacity: 0.2;
         }
-        .glow-2 {
-          width: 400px;
-          height: 400px;
+        .light-2 {
+          width: 350px;
+          height: 350px;
           background: #7c3aed;
-          bottom: -100px;
+          top: 40%;
           right: -100px;
           opacity: 0.12;
         }
+        .light-3 {
+          width: 300px;
+          height: 300px;
+          background: #00ff9d;
+          bottom: -80px;
+          left: 30%;
+          opacity: 0.06;
+        }
 
-        .container {
+        .wrap {
+          max-width: 680px;
+          margin: 0 auto;
           position: relative;
           z-index: 2;
-          max-width: 720px;
-          margin: 0 auto;
         }
 
         /* Topbar */
@@ -448,89 +413,73 @@ export default function PlayerDashboard() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 28px;
-          padding: 12px 16px;
-          background: rgba(15, 5, 10, 0.7);
-          border: 1px solid rgba(255, 23, 68, 0.25);
-          border-radius: 16px;
-          backdrop-filter: blur(12px);
+          margin-bottom: 24px;
+          padding: 12px 14px;
+          background: rgba(20, 8, 12, 0.8);
+          border: 1px solid rgba(255, 23, 68, 0.3);
+          border-radius: 14px;
         }
-        .brand {
+        .logo-area {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
         }
-        .brand-logo {
-          width: 40px;
-          height: 40px;
-          border-radius: 12px;
+        .logo {
+          width: 38px;
+          height: 38px;
           background: linear-gradient(135deg, #ff1744, #7c3aed);
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-weight: 900;
-          font-size: 14px;
+          font-size: 13px;
         }
-        .brand strong {
+        .logo-area b {
           display: block;
-          font-size: 14px;
-          letter-spacing: 1px;
+          font-size: 13px;
         }
-        .brand span {
+        .logo-area small {
           display: block;
-          font-size: 10px;
+          font-size: 9px;
           color: #888;
           letter-spacing: 1px;
         }
-        .logout-btn {
-          height: 38px;
-          padding: 0 18px;
+        .logout {
+          height: 36px;
+          padding: 0 16px;
           border-radius: 10px;
-          border: 1px solid rgba(255, 23, 68, 0.4);
-          background: rgba(255, 23, 68, 0.1);
+          border: 1px solid rgba(255, 23, 68, 0.5);
+          background: rgba(255, 23, 68, 0.12);
           color: #fff;
           font-size: 11px;
           font-weight: 700;
-          letter-spacing: 1px;
           cursor: pointer;
-          transition: 0.25s;
         }
-        .logout-btn:hover {
+        .logout:hover {
           background: #ff1744;
-          box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
         }
 
-        /* Hero Card */
-        .hero-card {
-          background: rgba(14, 4, 8, 0.85);
-          border: 1px solid rgba(255, 23, 68, 0.4);
-          border-radius: 24px;
-          padding: 40px 24px 32px;
+        /* Hero */
+        .hero {
+          background: rgba(18, 6, 10, 0.9);
+          border: 1px solid rgba(255, 23, 68, 0.35);
+          border-radius: 22px;
+          padding: 36px 20px 28px;
           text-align: center;
-          margin-bottom: 20px;
-          box-shadow: 0 0 40px rgba(255, 23, 68, 0.15);
-          position: relative;
-          overflow: hidden;
+          margin-bottom: 16px;
+          box-shadow: 0 0 40px rgba(255, 23, 68, 0.12);
         }
-        .hero-card::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, #ff1744, transparent);
-        }
-        .avatar-wrap {
-          width: 110px;
-          height: 110px;
-          margin: 0 auto 20px;
+        .avatar {
+          width: 100px;
+          height: 100px;
+          margin: 0 auto 16px;
           border-radius: 50%;
           padding: 3px;
-          background: linear-gradient(135deg, #ff1744, #7c3aed);
-          box-shadow: 0 0 30px rgba(255, 23, 68, 0.5);
+          background: linear-gradient(135deg, #ff1744, #7c3aed, #00ff9d);
+          box-shadow: 0 0 28px rgba(255, 23, 68, 0.45);
         }
-        .avatar-wrap img {
+        .avatar img {
           width: 100%;
           height: 100%;
           border-radius: 50%;
@@ -538,7 +487,7 @@ export default function PlayerDashboard() {
           border: 3px solid #0a0a0a;
           display: block;
         }
-        .avatar-fallback {
+        .fallback {
           width: 100%;
           height: 100%;
           border-radius: 50%;
@@ -547,181 +496,178 @@ export default function PlayerDashboard() {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 36px;
-          font-weight: 900;
-        }
-        .player-name {
           font-size: 32px;
           font-weight: 900;
-          margin: 0 0 6px;
-          letter-spacing: 1px;
         }
-        .player-ign {
-          font-size: 16px;
+        .hero h1 {
+          font-size: 28px;
+          font-weight: 900;
+          margin: 0 0 4px;
+        }
+        .ign {
           color: #00ff9d;
+          font-size: 15px;
           font-weight: 700;
-          margin: 0 0 18px;
-          letter-spacing: 2px;
+          letter-spacing: 1.5px;
+          margin: 0 0 16px;
         }
-        .badges {
+        .tags {
           display: flex;
           justify-content: center;
-          gap: 10px;
+          gap: 8px;
           flex-wrap: wrap;
         }
-        .badge {
-          padding: 8px 16px;
+        .tag {
+          padding: 7px 14px;
           border-radius: 30px;
           font-size: 12px;
           font-weight: 700;
         }
-        .badge-primary {
-          background: linear-gradient(135deg, #ff1744, #c4002b);
+        .tag.red {
+          background: #ff1744;
           color: #fff;
         }
-        .badge-team {
-          background: rgba(124, 58, 237, 0.2);
+        .tag.purple {
+          background: rgba(124, 58, 237, 0.25);
           border: 1px solid rgba(124, 58, 237, 0.5);
           color: #c4b5fd;
         }
 
         /* Stats */
-        .stats-row {
+        .stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          margin-bottom: 20px;
+          gap: 10px;
+          margin-bottom: 16px;
         }
-        .stat-box {
-          background: rgba(14, 4, 8, 0.85);
+        .stat {
+          background: rgba(18, 6, 10, 0.9);
           border: 1px solid rgba(255, 23, 68, 0.25);
-          border-radius: 16px;
-          padding: 16px;
+          border-radius: 14px;
+          padding: 14px;
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
         }
-        .stat-icon {
-          font-size: 22px;
+        .stat span {
+          font-size: 20px;
         }
-        .stat-label {
+        .stat small {
           display: block;
           font-size: 10px;
           color: #888;
-          letter-spacing: 1px;
           margin-bottom: 2px;
         }
-        .stat-box strong {
-          font-size: 22px;
+        .stat b {
+          font-size: 20px;
           color: #00ff9d;
         }
 
-        /* Section Cards */
-        .section-card {
-          background: rgba(14, 4, 8, 0.85);
+        /* Cards */
+        .card {
+          background: rgba(18, 6, 10, 0.9);
           border: 1px solid rgba(255, 23, 68, 0.25);
-          border-radius: 18px;
-          padding: 22px 20px;
-          margin-bottom: 16px;
+          border-radius: 16px;
+          padding: 20px 18px;
+          margin-bottom: 14px;
         }
-        .section-title {
-          font-size: 13px;
+        .card h3 {
+          font-size: 12px;
           font-weight: 800;
-          letter-spacing: 2px;
+          letter-spacing: 1.5px;
           color: #ff1744;
-          margin: 0 0 18px;
+          margin: 0 0 16px;
         }
-        .info-grid {
+        .grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 14px;
+          gap: 16px 12px;
         }
-        .info-item span {
+        .grid label {
           display: block;
           font-size: 10px;
           color: #777;
-          letter-spacing: 0.5px;
-          margin-bottom: 4px;
+          margin-bottom: 3px;
         }
-        .info-item strong {
+        .grid p {
+          margin: 0;
           font-size: 13px;
           font-weight: 600;
-          color: #e5e5e5;
+          color: #eee;
           word-break: break-word;
         }
 
         /* Experience */
-        .experience-row {
+        .exp {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 16px;
         }
-        .exp-item span {
+        .exp label {
           display: block;
           font-size: 11px;
           color: #00ff9d;
           margin-bottom: 4px;
         }
-        .exp-item strong {
+        .exp p {
+          margin: 0;
           font-size: 14px;
-          color: #fff;
+          font-weight: 600;
         }
 
         /* Weapons */
-        .weapons-list {
+        .weapons {
           display: flex;
           flex-wrap: wrap;
-          gap: 10px;
+          gap: 8px;
         }
-        .weapon-badge {
+        .weapon {
           padding: 8px 16px;
           border-radius: 30px;
-          background: linear-gradient(135deg, #ff1744, #c4002b);
+          background: #ff1744;
           color: #fff;
           font-size: 12px;
           font-weight: 700;
         }
 
         /* Social */
-        .social-links {
+        .socials {
           display: flex;
           flex-wrap: wrap;
-          gap: 10px;
+          gap: 8px;
         }
-        .social-btn {
+        .social {
           padding: 10px 18px;
           border-radius: 30px;
-          border: 1px solid rgba(255, 23, 68, 0.4);
-          background: rgba(255, 23, 68, 0.08);
+          border: 1px solid rgba(255, 23, 68, 0.45);
+          background: rgba(255, 23, 68, 0.1);
           color: #ff4d6d;
           font-size: 12px;
           font-weight: 600;
           text-decoration: none;
-          transition: 0.25s;
+          transition: 0.2s;
         }
-        .social-btn:hover {
+        .social:hover {
           background: #ff1744;
           color: #fff;
-          box-shadow: 0 0 18px rgba(255, 23, 68, 0.4);
         }
-        .empty-text {
+        .empty {
           font-size: 13px;
           color: #666;
         }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-          .stats-row {
+        @media (max-width: 560px) {
+          .stats {
             grid-template-columns: 1fr;
           }
-          .info-grid {
+          .grid {
             grid-template-columns: 1fr 1fr;
           }
-          .experience-row {
+          .exp {
             grid-template-columns: 1fr;
           }
-          .player-name {
-            font-size: 26px;
+          .hero h1 {
+            font-size: 24px;
           }
         }
       `}</style>
