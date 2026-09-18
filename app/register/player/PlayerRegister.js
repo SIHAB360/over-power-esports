@@ -120,8 +120,8 @@ if (authError) {
         setMessage(data.message || "Registration failed");
       }
     } catch (error) {
-      setMessage("Something went wrong. Please try again.");
-    }
+      setMessage(error.message);
+}
 
     setLoading(false);
   }
