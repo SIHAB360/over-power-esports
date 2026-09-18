@@ -134,6 +134,7 @@ export async function POST(request) {
       .getPublicUrl(screenshotFileName);
 
     const playerData = {
+      user_id: formData.get("user_id"),
       full_name: formData.get("full_name"),
       ign: formData.get("ign"),
       freefire_uid: formData.get("freefire_uid"),
