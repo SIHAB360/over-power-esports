@@ -602,56 +602,34 @@ export default function TournamentsPage() {
                       </p>
 
 
-                      <strong>
-                        {tournament.start_date || "N/A"}
-                      </strong>
-
-
-
-                    </div>
-
-
-
-
+                                         <strong>
+                      {tournament.start_date || "N/A"}
+                    </strong>
 
 
                   </div>
 
 
+                </div>
 
 
-                ))
+              ))
+
+            }
 
 
-
-              }
-
+          </div>
 
 
+        }
+
+      </section>
 
 
-            </div>
-
-
-)}
-
-
-
-
-
-
-        </section>
-
-
-
-      </div>
-
-
-
+    </div>
 
 
 <style jsx>{`
-
 
 .page{
 
