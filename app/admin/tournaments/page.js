@@ -110,101 +110,110 @@ export default function TournamentsPage() {
 
 
 
-  async function createTournament(e){
+ async function createTournament(e){
+
+  e.preventDefault();
 
 
-    e.preventDefault();
+  if(!form.name){
+
+    alert("Tournament name required");
+
+    return;
+
+  }
 
 
-
-
-    if(!form.name){
-
-      alert("Tournament name required");
-
-      return;
-
-    }
-
-
-
-
-    setSaving(true);
+  setSaving(true);
 
 
 
-
-
-    const {error}=await supabase
-
-      .from("tournaments")
-
-      .insert([
-
-        {
-
-          ...form,
-
-          prize_pool:Number(form.prize_pool),
-
-          entry_fee:Number(form.entry_fee),
-
-          max_teams:Number(form.max_teams)
-
-        }
-
-      ]);
+  const {
+    data:{user},
+    error:userError
+  } = await supabase.auth.getUser();
 
 
 
+  if(userError || !user){
 
-
-    if(error){
-
-      alert(error.message);
-
-      setSaving(false);
-
-      return;
-
-    }
-
-
-
-
-
-    alert("Tournament Created Successfully");
-
-
-
-
-
-    setForm({
-
-      name:"",
-      banner:"",
-      description:"",
-      prize_pool:"",
-      entry_fee:"",
-      start_date:"",
-      end_date:"",
-      registration_deadline:"",
-      max_teams:30,
-      status:"upcoming",
-
-    });
-
-
-
-
-    loadTournaments();
-
+    alert("Admin session not found. Please login again");
 
     setSaving(false);
 
-
+    return;
 
   }
+
+
+
+  const {error}=await supabase
+
+    .from("tournaments")
+
+    .insert([
+
+      {
+
+        ...form,
+
+        prize_pool:Number(form.prize_pool),
+
+        entry_fee:Number(form.entry_fee),
+
+        max_teams:Number(form.max_teams),
+
+        organizer_id:user.id
+
+      }
+
+    ]);
+
+
+
+
+  if(error){
+
+    alert(error.message);
+
+    setSaving(false);
+
+    return;
+
+  }
+
+
+
+
+  alert("Tournament Created Successfully");
+
+
+
+
+  setForm({
+
+    name:"",
+    banner:"",
+    description:"",
+    prize_pool:"",
+    entry_fee:"",
+    start_date:"",
+    end_date:"",
+    registration_deadline:"",
+    max_teams:30,
+    status:"upcoming",
+
+  });
+
+
+
+  loadTournaments();
+
+
+  setSaving(false);
+
+
+}
 
 
 
