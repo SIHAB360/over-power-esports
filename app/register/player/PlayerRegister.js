@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { supabase } from "@/app/lib/supabase";
 import logo from "../../assets/logo.png";
 import { Hind_Siliguri } from "next/font/google";
 
@@ -78,7 +79,20 @@ export default function PlayerRegister() {
       setLoading(false);
   return;
       }
+      const { data: authData, error: authError } =
+  await supabase.auth.signUp({
+    email: form.email,
+    password: form.password,
+  });
+
+if (authError) {
+  throw authError;
+}
+      if (!authData?.user?.id) {
+  throw new Error("Player account could not be created");
+}
       const formData = new FormData();
+      formData.append("user_id", authData.user.id);
 
       Object.keys(form).forEach((key) => {
         const value = form[key];
