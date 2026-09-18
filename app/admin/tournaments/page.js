@@ -633,15 +633,13 @@ export default function TournamentsPage() {
             </div>
 
 
-
-          }
-
+)}
 
 
 
 
 
-        </section>
+
         </section>
 
 
