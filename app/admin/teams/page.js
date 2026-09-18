@@ -375,7 +375,14 @@ Manager:
 <span>
 {team.status}
 </span>
-
+  
+<button
+onClick={()=>{
+  window.location.href = `/admin/teams/${team.id}`;
+}}
+>
+MANAGE PLAYERS →
+</button>
 
 </div>
 
@@ -401,6 +408,7 @@ Manager:
 
 
 <style jsx>{`
+
 
 .page{
 
@@ -645,6 +653,22 @@ bottom:0;
 
 }
 
+.team button{
+
+background:linear-gradient(
+135deg,
+#ff174d,
+#7000ff
+);
+
+border:none;
+color:white;
+padding:10px 18px;
+border-radius:20px;
+font-weight:800;
+cursor:pointer;
+
+}
 
 
 @media(max-width:700px){
