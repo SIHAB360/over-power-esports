@@ -72,10 +72,17 @@ const user = session.user;
   desc: "Create and control matches",
   href: "/admin/matches"
 },
-    { num: "03", icon: "🏆", title: "TOURNAMENTS", desc: "Tournament management" },
-    { num: "04", icon: "💰", title: "PROFIT", desc: "Income calculation" },
-    { num: "05", icon: "💳", title: "SALARY", desc: "Player salary control" },
-    { num: "06", icon: "🔐", title: "VERIFICATION", desc: "Generate access codes" },
+    {
+ num: "03",
+ icon: "🛡️",
+ title: "TEAMS",
+ desc: "Manage your esports teams",
+ href: "/admin/teams"
+},
+    { num: "04", icon: "🏆", title: "TOURNAMENTS", desc: "Tournament management" },
+    { num: "05", icon: "💰", title: "PROFIT", desc: "Income calculation" },
+    { num: "06", icon: "💳", title: "SALARY", desc: "Player salary control" },
+    { num: "07", icon: "🔐", title: "VERIFICATION", desc: "Generate access codes" },
   ];
 
   return (
