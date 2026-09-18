@@ -1061,7 +1061,7 @@ export default function AdminMatchesPage() {
 
 
               <FieldWrap
-                label="Tournament / Event"
+                label="Tournament Creator"
               >
 
                 <select
@@ -1075,8 +1075,8 @@ export default function AdminMatchesPage() {
                 >
 
                   <option value="">
-                    Independent /
-                    Daily Scrim
+                   Manager/
+                    Modrator
                   </option>
 
                   {tournaments.map(
@@ -1113,23 +1113,20 @@ export default function AdminMatchesPage() {
                 >
 
                   <option value="Scrim">
-                    Scrim
+                    Scrim / 
                   </option>
 
                   <option value="CR">
-                    CR
+                    Champion Rush
                   </option>
 
-                  <option value="Tournament">
-                    Tournament
-                  </option>
 
-                  <option value="League">
-                    League
+                  <option value="Offical">
+                    Offical Tournament
                   </option>
 
                   <option value="Custom">
-                    Custom
+                    Custom Tournamnet
                   </option>
 
                 </select>
