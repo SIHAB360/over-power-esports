@@ -65,7 +65,13 @@ const user = session.user;
   desc: "Manage player accounts",
   href: "/admin/players"
 },
-    { num: "02", icon: "⚔", title: "MATCHES", desc: "Create and control matches" },
+    {
+  num: "02",
+  icon: "⚔️",
+  title: "MATCHES",
+  desc: "Create and control matches",
+  href: "/admin/matches"
+},
     { num: "03", icon: "🏆", title: "TOURNAMENTS", desc: "Tournament management" },
     { num: "04", icon: "💰", title: "PROFIT", desc: "Income calculation" },
     { num: "05", icon: "💳", title: "SALARY", desc: "Player salary control" },
@@ -174,16 +180,14 @@ REVENUE
       <p>{card.desc}</p>
 
       <button
-        className="action-btn"
-        onClick={() => {
-          if (card.href) {
-            window.location.href = card.href;
-          }
-        }}
-      >
-        OPEN PANEL
-        <span>→</span>
-      </button>
+  className="action-btn"
+  onClick={() => {
+    window.location.href = card.href;
+  }}
+>
+  OPEN PANEL
+  <span>→</span>
+</button>
     </div>
     ))}
 </div>
