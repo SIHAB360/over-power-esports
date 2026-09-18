@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "../../lib/supabase";
 import logo from "../../assets/logo.png";
 import { Hind_Siliguri } from "next/font/google";
 
