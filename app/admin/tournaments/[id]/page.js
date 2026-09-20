@@ -268,11 +268,55 @@ async function addTeam(teamId){
 
 
 
-          <div className="empty">
+          {
+registeredTeams.length === 0 ?
 
-            No team added yet.
+<div className="empty">
+No team added yet.
+</div>
 
-          </div>
+:
+
+<div className="registered-list">
+
+{
+registeredTeams.map((item)=>(
+
+<div
+key={item.id}
+className="registered-team"
+>
+
+
+<div>
+
+<h3>
+{item.teams?.team_name}
+</h3>
+
+
+<p>
+Status: {item.status}
+</p>
+
+</div>
+
+
+
+<button>
+REMOVE
+</button>
+
+
+</div>
+
+))
+
+}
+
+</div>
+
+}
 
 
 
