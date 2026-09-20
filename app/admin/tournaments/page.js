@@ -533,10 +533,15 @@ export default function TournamentsPage() {
                         }
 
 
-
                       </div>
 
-
+                        <button
+                        onClick={()=>{
+                          window.location.href = `/admin/tournaments/${tournament.id}`;
+                        }}
+                        >
+                        MANAGE TOURNAMENT →
+                        </button>
 
 
 
