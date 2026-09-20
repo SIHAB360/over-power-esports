@@ -25,6 +25,7 @@ const [registeredTeams,setRegisteredTeams] = useState([]);
 
     loadTournament();
     loadTeams();
+    loadRegisteredTeams();
 
   }
 
@@ -73,6 +74,41 @@ async function loadTeams(){
   setTeams(data || []);
 
 }
+
+
+  async function loadRegisteredTeams(){
+
+  const {data,error}=await supabase
+
+  .from("tournament_teams")
+
+  .select(`
+    id,
+    status,
+    teams (
+      id,
+      team_name,
+      logo
+    )
+  `)
+
+  .eq("tournament_id",id);
+
+
+
+  if(error){
+
+    console.log(error);
+
+    return;
+
+  }
+
+
+  setRegisteredTeams(data || []);
+
+}
+  
 async function addTeam(teamId){
 
   const {error}=await supabase
