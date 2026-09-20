@@ -14,6 +14,8 @@ export default function TournamentDetails(){
 
   const [tournament,setTournament] = useState(null);
   const [loading,setLoading] = useState(true);
+    const [teams,setTeams] = useState([]);
+    const [showTeams,setShowTeams] = useState(false);
 
 
 
