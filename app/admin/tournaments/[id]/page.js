@@ -215,9 +215,51 @@ async function loadTeams(){
 
 
 
-          <button>
-            + ADD TEAM
-          </button>
+          <button
+onClick={()=>{
+
+  setShowTeams(!showTeams);
+
+}}
+>
++ ADD TEAM
+</button>
+  {
+showTeams && (
+
+<div className="team-selector">
+
+
+{
+teams.map((team)=>(
+
+<div
+key={team.id}
+className="team-option"
+>
+
+
+<h3>
+{team.team_name}
+</h3>
+
+
+<button>
+ADD
+</button>
+
+
+</div>
+
+))
+
+}
+
+
+</div>
+
+)
+}
 
 
         </section>
