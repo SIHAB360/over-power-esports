@@ -269,7 +269,9 @@ className="team-option"
 </h3>
 
 
-<button>
+<button
+onClick={()=>addTeam(team.id)}
+>
 ADD
 </button>
 
