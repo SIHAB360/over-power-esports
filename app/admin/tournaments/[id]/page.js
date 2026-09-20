@@ -19,14 +19,16 @@ export default function TournamentDetails(){
 
 
 
-  useEffect(()=>{
+ useEffect(()=>{
 
-    if(id){
-      loadTournament();
-    }
+  if(id){
 
-  },[id]);
+    loadTournament();
+    loadTeams();
 
+  }
+
+},[id]);
 
 
   async function loadTournament(){
@@ -50,7 +52,27 @@ export default function TournamentDetails(){
     setLoading(false);
 
   }
+async function loadTeams(){
 
+  const {data,error}=await supabase
+
+  .from("teams")
+
+  .select("*");
+
+
+  if(error){
+
+    console.log(error);
+
+    return;
+
+  }
+
+
+  setTeams(data || []);
+
+}
 
 
 
