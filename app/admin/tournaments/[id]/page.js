@@ -58,7 +58,7 @@ async function loadTeams(){
 
   .from("teams")
 
-  .select("*");
+  .select("*"); 
 
 
   if(error){
@@ -73,7 +73,35 @@ async function loadTeams(){
   setTeams(data || []);
 
 }
+async function addTeam(teamId){
 
+  const {error}=await supabase
+
+  .from("tournament_teams")
+
+  .insert([
+
+    {
+      tournament_id:id,
+      team_id:teamId,
+      status:"registered"
+    }
+
+  ]);
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+  alert("Team Added Successfully");
+
+}
 
 
   if(loading){
@@ -118,10 +146,7 @@ async function loadTeams(){
 
         </header>
 
-
-
-
-
+    
         <section className="card">
 
 
