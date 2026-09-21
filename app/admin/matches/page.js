@@ -647,42 +647,68 @@ export default function AdminMatchesPage() {
 
       if (form.status === "completed") {
 
-        if (
-          form.position ||
-          form.points
-        ) {
-
-          const { error: resultError } =
-            await supabase
-              .from("match_results")
-              .insert([
-                {
-                  match_id:
-                    match.id,
-
-                  team_id:
-                    form.team1_id,
-
-                  position:
-                    form.position
-                      ? Number(
-                          form.position
-                        )
-                      : null,
-
-                  points:
-                    Number(
-                      form.points
-                    ) || 0,
-                },
-              ]);
+  if (
+    form.position ||
+    form.points ||
+    form.kills ||
+    form.prize_money
+  ) {
 
 
-          if (resultError) {
-            throw resultError;
-          }
+    const { error: resultError } =
+      await supabase
+      .from("match_results")
+      .insert([
+        {
 
-        }
+          match_id:
+            match.id,
+
+
+          team_id:
+            form.team1_id,
+
+
+          position:
+            form.position
+            ? Number(form.position)
+            : null,
+
+
+          kills:
+            form.kills
+            ? Number(form.kills)
+            : 0,
+
+
+          points:
+            form.points
+            ? Number(form.points)
+            : 0,
+
+
+          prize_money:
+            form.prize_money
+            ? Number(form.prize_money)
+            : 0,
+
+
+          status:
+            form.result_status || "completed"
+
+        },
+      ]);
+
+
+    if(resultError){
+
+      throw resultError;
+
+    }
+
+  }
+
+}
 
 
         /*
