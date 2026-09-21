@@ -570,9 +570,7 @@ export default function AdminMatchesPage() {
         STEP 2
         SAVE EXACT 4 ACTIVE PLAYERS
       */
-console.log("SELECTED PLAYERS:", selectedPlayers);
-console.log("MATCH PLAYER ROWS:", matchPlayerRows);
-      
+      console.log("SELECTED PLAYERS:", selectedPlayers);
       const matchPlayerRows =
         selectedPlayers.map(
           (playerId, index) => ({
