@@ -511,57 +511,41 @@ export default function AdminMatchesPage() {
         CREATE MATCH
       */
 
-      const matchPayload = {
+     const matchPayload = {
 
-        tournament_id:
-          form.tournament_id || null,
+ tournament_id: form.tournament_id || null,
 
-        team1_id:
-          form.team1_id,
+ team1_id: form.team1_id,
 
-        team2_id:
-          form.team2_id || null,
+ team2_id: form.team2_id || null,
 
-        team1_score:
-          Number(form.team1_score) || 0,
+ team1_score: Number(form.team1_score) || 0,
 
-        team2_score:
-          Number(form.team2_score) || 0,
+ team2_score: Number(form.team2_score) || 0,
 
-        winner_id:
-          form.winner_id || null,
+ winner_id: form.winner_id || null,
 
-        match_date:
-          form.match_date,
+ match_date: form.match_date,
 
-        status:
-          form.status,
+ status: form.status,
 
-        match_type:
-          form.match_type || null,
+ match_type: form.match_type,
 
-        entry_fee:
-          entryFee,
+ entry_fee: entryFee,
 
-        prize_money:
-          prizeMoney,
+ prize_money: prizeMoney,
 
-        profit:
-          netProfit,
+ profit: netProfit,
 
-        platform:
-          form.platform || null,
+ platform: form.platform,
 
-        map:
-          form.map || null,
+ map: form.map || null,
 
-        sponsor:
-          form.sponsor || null,
+ sponsor: form.sponsor || null,
 
-        notice:
-          form.notice || null,
+ notice: form.notice || null
 
-      };
+};
 
 
       const {
