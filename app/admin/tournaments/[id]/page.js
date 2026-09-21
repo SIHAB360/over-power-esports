@@ -130,7 +130,7 @@ async function addTeam(teamId){
 
     alert(error.message);
 
-     return;
+    return;
 
   }
 
@@ -140,6 +140,9 @@ async function addTeam(teamId){
   loadRegisteredTeams();
 
 }
+
+
+
 async function removeTeam(teamId){
 
   const {error}=await supabase
@@ -165,19 +168,6 @@ async function removeTeam(teamId){
   loadRegisteredTeams();
 
 }
-
-
-  alert("Team Removed Successfully");
-
-
-  loadRegisteredTeams();
-
-}
-
-  alert("Team Added Successfully");
-
-}
-
 
   if(loading){
 
