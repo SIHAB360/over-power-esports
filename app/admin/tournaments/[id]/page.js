@@ -137,6 +137,45 @@ async function addTeam(teamId){
 
   alert("Team Added Successfully");
 
+  loadRegisteredTeams();
+
+}
+async function removeTeam(teamId){
+
+  const {error}=await supabase
+
+  .from("tournament_teams")
+
+  .delete()
+
+  .eq("id",teamId);
+
+
+  if(error){
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+  alert("Team Removed Successfully");
+
+  loadRegisteredTeams();
+
+}
+
+
+  alert("Team Removed Successfully");
+
+
+  loadRegisteredTeams();
+
+}
+
+  alert("Team Added Successfully");
+
 }
 
 
@@ -303,7 +342,9 @@ Status: {item.status}
 
 
 
-<button>
+<button
+onClick={()=>removeTeam(item.id)}
+>
 REMOVE
 </button>
 
