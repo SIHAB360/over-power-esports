@@ -130,7 +130,7 @@ async function addTeam(teamId){
 
     alert(error.message);
 
-    return;
+     return;
 
   }
 
