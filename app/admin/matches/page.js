@@ -785,15 +785,13 @@ export default function AdminMatchesPage() {
 
       }
 
-
+    );
       setMessage(
   form.status === "completed"
-    ? `Match saved. Each active player receives ${money(
-        perPlayerAmount
-      )}`
+    ? `Match saved. Each active player receives ${money(perPlayerAmount)}`
     : "Match created successfully."
 );
-
+    
       setMessageType("success");
 
 
