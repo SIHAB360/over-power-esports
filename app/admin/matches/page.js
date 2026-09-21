@@ -522,9 +522,6 @@ export default function AdminMatchesPage() {
         team2_id:
           form.team2_id || null,
 
-        team_id:
-          form.team1_id,
-
         team1_score:
           Number(form.team1_score) || 0,
 
