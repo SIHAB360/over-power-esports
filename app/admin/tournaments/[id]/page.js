@@ -405,11 +405,26 @@ className="team-option"
 </h3>
 
 
+{
+registeredTeams.some(
+(item)=>item.teams?.id === team.id
+)
+
+?
+
+<button disabled>
+ADDED
+</button>
+
+:
+
 <button
 onClick={()=>addTeam(team.id)}
 >
 ADD
 </button>
+
+}
 
 
 </div>
