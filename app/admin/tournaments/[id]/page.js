@@ -111,6 +111,29 @@ async function loadTeams(){
   
 async function addTeam(teamId){
 
+
+  const {data:existing}=await supabase
+
+  .from("tournament_teams")
+
+  .select("id")
+
+  .eq("tournament_id",id)
+
+  .eq("team_id",teamId);
+
+
+
+  if(existing && existing.length > 0){
+
+    alert("Team already added");
+
+    return;
+
+  }
+
+
+
   const {error}=await supabase
 
   .from("tournament_teams")
@@ -126,6 +149,7 @@ async function addTeam(teamId){
   ]);
 
 
+
   if(error){
 
     alert(error.message);
@@ -133,6 +157,7 @@ async function addTeam(teamId){
     return;
 
   }
+
 
 
   alert("Team Added Successfully");
