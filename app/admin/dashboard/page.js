@@ -91,11 +91,12 @@ const user = session.user;
   },
 
   {
-    num: "05",
-    icon: "💰",
-    title: "PROFIT",
-    desc: "Income calculation"
-  },
+  num: "05",
+  icon: "💰",
+  title: "PROFIT",
+  desc: "Income calculation",
+  href: "/admin/profit"
+},
 
   {
     num: "06",
