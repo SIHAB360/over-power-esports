@@ -18,18 +18,7 @@ export default function ProfitPage() {
 
     const { data, error } = await supabase
       .from("match_finance")
-      .select(`
-        *,
-        matches (
-          id,
-          tournament,
-          match_type,
-          created_at
-        ),
-        teams (
-          name
-        )
-      `)
+      .select("*")
       .order("created_at", { ascending: false });
 
 
