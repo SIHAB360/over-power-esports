@@ -16,22 +16,22 @@ export default function ProfitPage() {
 
   const fetchFinance = async () => {
 
-   const { data, error } = await supabase
-  .from("match_finance")
-  .select(`
-    *,
-    matches!match_finance_match_id_fkey (
-      id,
-      tournament_id,
-      match_type,
-      created_at
-    ),
-  teams!match_finance_team_id_fkey (
-  id,
-  team_name
-)
-  `)
-  .order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("match_finance")
+      .select(`
+        *,
+        matches!match_finance_match_id_fkey (
+          id,
+          tournament_id,
+          match_type,
+          created_at
+        ),
+        teams!match_finance_team_id_fkey (
+          id,
+          team_name
+        )
+      `)
+      .order("created_at", { ascending: false });
 
 
     if(error){
@@ -43,20 +43,17 @@ export default function ProfitPage() {
 
       setLoading(false);
       return;
-
     }
 
 
     console.log("PROFIT FETCH DATA:", data);
-  console.log(
-  "FIRST ITEM JSON:",
-  JSON.stringify(data[0], null, 2)
-);
-    console.log("FINANCE COUNT:", data?.length);
+    console.log(
+      "FIRST ITEM:",
+      JSON.stringify(data?.[0], null, 2)
+    );
 
 
     setFinanceData(data || []);
-
     setLoading(false);
 
   };
@@ -105,15 +102,15 @@ export default function ProfitPage() {
 
 
               <p>
-                Tournament: {
-                  item.matches?.tournament || "N/A"
+                Match Type: {
+                  item.matches?.match_type || "N/A"
                 }
               </p>
 
 
               <p>
                 Team: {
-                  item.teams?.name || "N/A"
+                  item.teams?.team_name || "N/A"
                 }
               </p>
 
@@ -134,16 +131,20 @@ export default function ProfitPage() {
 
 
               <p>
-                Player 70%: ৳{item.player_amount}
+                Player 70%: ৳{
+                  Number(item.player_amount).toFixed(2)
+                }
               </p>
 
 
               <p>
-                Management 30%: ৳{item.management_amount}
+                Management 30%: ৳{
+                  Number(item.management_amount).toFixed(2)
+                }
               </p>
 
 
-              <hr />
+              <hr/>
 
 
             </div>
