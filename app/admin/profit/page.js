@@ -8,6 +8,7 @@ export default function ProfitPage() {
   const [financeData, setFinanceData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  
 
   useEffect(() => {
     fetchFinance();
