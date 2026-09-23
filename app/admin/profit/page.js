@@ -33,11 +33,14 @@ export default function ProfitPage() {
       .order("created_at", { ascending: false });
 
 
-  if(error){
-  console.log("PROFIT FETCH ERROR:", error);
-  setLoading(false);
-  return;
-}
+    if(error){
+      console.log("PROFIT FETCH ERROR:", error);
+      setLoading(false);
+      return;
+    }
+
+
+    console.log("PROFIT FETCH DATA:", data);
 
 
     setFinanceData(data || []);
