@@ -18,21 +18,11 @@ export default function ProfitPage() {
   const fetchFinance = async () => {
 
     const { data, error } = await supabase
-      .from("match_finance")
-      .select(`
-        *,
-        matches (
-          id,
-          tournament,
-          match_type,
-          created_at
-        ),
-        teams (
-          name
-        )
-      `)
-      .order("created_at", { ascending: false });
+  .from("match_finance")
+  .select("*")
+  .order("created_at", { ascending: false });
 
+    
 
     if(error){
       console.log("PROFIT FETCH ERROR:", error);
