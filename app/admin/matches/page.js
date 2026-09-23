@@ -638,7 +638,7 @@ export default function AdminMatchesPage() {
       if (financeError) {
         throw financeError;
       }
-
+console.log("MATCH FINANCE SAVED:", match.id);
 
       /*
         STEP 4
