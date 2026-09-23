@@ -65,38 +65,41 @@ export default function ProfitPage() {
         </h2>
 
 
-        {
-          financeData.map((item)=>(
+       {
+  financeData.map((item)=>(
 
-            <div key={item.id}>
+    <div key={item.id}>
 
-              <p>
-                Entry Fee: ৳{item.entry_fee}
-              </p>
+      <p>
+        Match ID: {item.match_id}
+      </p>
 
-              <p>
-                Prize Money: ৳{item.prize_money}
-              </p>
+      <p>
+        Entry Fee: ৳{item.entry_fee}
+      </p>
 
-              <p>
-                Net Profit: ৳{item.profit}
-              </p>
+      <p>
+        Prize Money: ৳{item.prize_money}
+      </p>
 
-              <p>
-                Player 70%: ৳{item.player_amount}
-              </p>
+      <p>
+        Net Profit: ৳{item.profit}
+      </p>
 
-              <p>
-                Management 30%: ৳{item.management_amount}
-              </p>
+      <p>
+        Player 70%: ৳{item.player_amount}
+      </p>
 
+      <p>
+        Management 30%: ৳{item.management_amount}
+      </p>
 
-              <hr/>
+      <hr/>
 
-            </div>
+    </div>
 
-          ))
-        }
+  ))
+}
 
 
       </section>
