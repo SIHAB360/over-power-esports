@@ -24,7 +24,7 @@ export default function ProfitPage() {
 
     if(error){
 
-      console.log("PROFIT FETCH ERROR:", error);
+  console.log("PROFIT FETCH ERROR:", JSON.stringify(error, null, 2));
 
       setLoading(false);
 
