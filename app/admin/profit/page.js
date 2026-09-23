@@ -26,9 +26,9 @@ export default function ProfitPage() {
       match_type,
       created_at
     ),
-    teams!match_finance_team_id_fkey (
+   teams!match_finance_team_id_fkey (
   id,
-  *
+  name
 )
   `)
   .order("created_at", { ascending: false });
