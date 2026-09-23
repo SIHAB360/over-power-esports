@@ -48,7 +48,10 @@ export default function ProfitPage() {
 
 
     console.log("PROFIT FETCH DATA:", data);
-    console.log("FIRST ITEM:", data[0]);
+  console.log(
+  "FIRST ITEM JSON:",
+  JSON.stringify(data[0], null, 2)
+);
     console.log("FINANCE COUNT:", data?.length);
 
 
