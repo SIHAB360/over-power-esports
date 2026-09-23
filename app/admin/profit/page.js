@@ -24,7 +24,10 @@ export default function ProfitPage() {
 
     if(error){
 
-  console.log("PROFIT FETCH ERROR:", JSON.stringify(error, null, 2));
+      console.log(
+        "PROFIT FETCH ERROR:",
+        JSON.stringify(error, null, 2)
+      );
 
       setLoading(false);
 
@@ -35,9 +38,43 @@ export default function ProfitPage() {
     console.log("PROFIT FETCH DATA:", data);
     console.log("FINANCE COUNT:", data?.length);
 
-console.log("MATCH IDS:", data.map(item => item.match_id));
-console.log("TEAM IDS:", data.map(item => item.team_id));
-    setFinanceData(data || []);
+
+    const matchIds = data.map(item => item.match_id);
+    const teamIds = data.map(item => item.team_id);
+
+
+    const { data: matchesData } = await supabase
+      .from("matches")
+      .select("id, tournament, match_type, created_at")
+      .in("id", matchIds);
+
+
+    const { data: teamsData } = await supabase
+      .from("teams")
+      .select("id, name")
+      .in("id", teamIds);
+
+
+
+    const finalData = data.map(item => ({
+
+      ...item,
+
+      matches: matchesData?.find(
+        match => match.id === item.match_id
+      ),
+
+      teams: teamsData?.find(
+        team => team.id === item.team_id
+      )
+
+    }));
+
+
+    console.log("FINAL FINANCE DATA:", finalData);
+
+
+    setFinanceData(finalData);
 
     setLoading(false);
 
@@ -47,11 +84,9 @@ console.log("TEAM IDS:", data.map(item => item.team_id));
   if(loading){
 
     return (
-
       <div>
         Loading Profit Data...
       </div>
-
     );
 
   }
@@ -61,25 +96,20 @@ console.log("TEAM IDS:", data.map(item => item.team_id));
 
     <main>
 
-
       <h1>
         PROFIT MANAGEMENT
       </h1>
 
 
-
       <section>
-
 
         <h2>
           Financial History
         </h2>
 
 
-
         {
           financeData.map((item)=>(
-
 
             <div key={item.id}>
 
@@ -87,8 +117,8 @@ console.log("TEAM IDS:", data.map(item => item.team_id));
               <p>
                 Date: {
                   item.created_at
-                    ? new Date(item.created_at).toLocaleDateString()
-                    : "N/A"
+                  ? new Date(item.created_at).toLocaleDateString()
+                  : "N/A"
                 }
               </p>
 
@@ -136,7 +166,6 @@ console.log("TEAM IDS:", data.map(item => item.team_id));
 
 
             </div>
-
 
           ))
         }
