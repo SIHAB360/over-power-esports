@@ -32,7 +32,7 @@ export default function ProfitPage() {
 
 
     console.log("PROFIT FETCH DATA:", data);
-
+    console.log("FINANCE COUNT:", data?.length);
 
     setFinanceData(data || []);
     setLoading(false);
