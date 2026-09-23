@@ -16,22 +16,22 @@ export default function ProfitPage() {
 
   const fetchFinance = async () => {
 
-    const { data, error } = await supabase
-      .from("match_finance")
-      .select(`
-        *,
-        matches!match_finance_match_id_fkey (
-          id,
-          tournament,
-          match_type,
-          created_at
-        ),
-        teams!match_finance_team_id_fkey (
-          id,
-          name
-        )
-      `)
-      .order("created_at", { ascending: false });
+   const { data, error } = await supabase
+  .from("match_finance")
+  .select(`
+    *,
+    matches!match_finance_match_id_fkey (
+      id,
+      tournament_id,
+      match_type,
+      created_at
+    ),
+    teams!match_finance_team_id_fkey (
+      id,
+      name
+    )
+  `)
+  .order("created_at", { ascending: false });
 
 
     if(error){
