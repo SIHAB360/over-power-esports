@@ -35,7 +35,8 @@ export default function ProfitPage() {
     console.log("PROFIT FETCH DATA:", data);
     console.log("FINANCE COUNT:", data?.length);
 
-
+console.log("MATCH IDS:", data.map(item => item.match_id));
+console.log("TEAM IDS:", data.map(item => item.team_id));
     setFinanceData(data || []);
 
     setLoading(false);
