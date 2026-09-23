@@ -19,25 +19,34 @@ export default function ProfitPage() {
 
     const { data, error } = await supabase
   .from("match_finance")
-  .select("*")
+  .select(`
+    *,
+    matches (
+      id,
+      tournament,
+      match_type,
+      created_at
+    ),
+    teams (
+      name
+    )
+  `)
   .order("created_at", { ascending: false });
 
-    
 
-    if(error){
-      console.log("PROFIT FETCH ERROR:", error);
-      setLoading(false);
-      return;
-    }
+if(error){
+  console.log("PROFIT FETCH ERROR:", error);
+  setLoading(false);
+  return;
+}
 
 
-    console.log("PROFIT FETCH DATA:", data);
-    console.log("FINANCE COUNT:", data?.length);
+console.log("PROFIT FETCH DATA:", data);
+console.log("FINANCE COUNT:", data?.length);
 
-    setFinanceData(data || []);
-    setLoading(false);
 
-  };
+setFinanceData(data || []);
+setLoading(false);
 
 
   if(loading){
