@@ -18,7 +18,19 @@ export default function ProfitPage() {
 
     const { data, error } = await supabase
       .from("match_finance")
-      .select("*")
+      .select(`
+        *,
+        matches!match_finance_match_id_fkey (
+          id,
+          tournament,
+          match_type,
+          created_at
+        ),
+        teams!match_finance_team_id_fkey (
+          id,
+          name
+        )
+      `)
       .order("created_at", { ascending: false });
 
 
@@ -30,8 +42,8 @@ export default function ProfitPage() {
       );
 
       setLoading(false);
-
       return;
+
     }
 
 
@@ -39,41 +51,7 @@ export default function ProfitPage() {
     console.log("FINANCE COUNT:", data?.length);
 
 
-    const matchIds = data.map(item => item.match_id);
-    const teamIds = data.map(item => item.team_id);
-
-
-    const { data: matchesData } = await supabase
-  .from("matches")
-  .select("*")
-  .in("id", matchIds);
-
-
-const { data: teamsData } = await supabase
-  .from("teams")
-  .select("*")
-  .in("id", teamIds);
-
-
-    const finalData = data.map(item => ({
-
-      ...item,
-
-      matches: matchesData?.find(
-        match => match.id === item.match_id
-      ),
-
-      teams: teamsData?.find(
-        team => team.id === item.team_id
-      )
-
-    }));
-
-
-    console.log("FINAL FINANCE DATA:", finalData);
-
-
-    setFinanceData(finalData);
+    setFinanceData(data || []);
 
     setLoading(false);
 
