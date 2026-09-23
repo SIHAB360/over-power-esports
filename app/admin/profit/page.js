@@ -44,16 +44,15 @@ export default function ProfitPage() {
 
 
     const { data: matchesData } = await supabase
-      .from("matches")
-      .select("id, tournament, match_type, created_at")
-      .in("id", matchIds);
+  .from("matches")
+  .select("*")
+  .in("id", matchIds);
 
 
-    const { data: teamsData } = await supabase
-      .from("teams")
-      .select("id, name")
-      .in("id", teamIds);
-
+const { data: teamsData } = await supabase
+  .from("teams")
+  .select("*")
+  .in("id", teamIds);
 
 
     const finalData = data.map(item => ({
