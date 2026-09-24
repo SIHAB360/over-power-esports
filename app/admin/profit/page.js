@@ -19,7 +19,9 @@ export default function ProfitPage() {
           id,
           tournament_id,
           match_type,
-          created_at
+          created_at,
+          tournaments (
+          name
         ),
         teams!match_finance_team_id_fkey (
           id,
@@ -316,7 +318,7 @@ export default function ProfitPage() {
               </div>
               <div>
                 <span style={{ opacity: 0.6 }}>🏆 Tournament:</span>{" "}
-                <strong>{item.matches?.tournament_id || "N/A"}</strong>
+                {item.matches?.tournaments?.name || "N/A"}
               </div>
               <div>
                 <span style={{ opacity: 0.6 }}>🎮 Match Type:</span>{" "}
