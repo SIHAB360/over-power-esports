@@ -14,6 +14,7 @@ export default function ProfitPage() {
     fetchFinance();
   }, []);
 
+  
   const fetchFinance = async () => {
     const { data, error } = await supabase
       .from("match_finance")
