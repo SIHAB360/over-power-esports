@@ -5,6 +5,10 @@ import { supabase } from "../../lib/supabase";
 export default function ProfitPage() {
   const [financeData, setFinanceData] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  const [selectedTeam, setSelectedTeam] = useState("");
+const [selectedTournament, setSelectedTournament] = useState("");
+const [selectedMonth, setSelectedMonth] = useState("");
 
   useEffect(() => {
     fetchFinance();
