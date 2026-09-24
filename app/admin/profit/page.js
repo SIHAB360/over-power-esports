@@ -19,28 +19,31 @@ export default function ProfitPage() {
 
   const fetchFinance = async () => {
 
+    const { data, error } = await supabase
+      .from("match_finance")
+      .select(`
+        *,
+        matches!match_finance_match_id_fkey (
+          id,
+          tournament_id,
+          match_type,
+          created_at,
+          tournaments (
+            name
+          )
+        ),
+        teams!match_finance_team_id_fkey (
+          id,
+          team_name
+        )
+      `)
+      .order("created_at", {
+        ascending: false
+      });
 
-const { data, error } = await supabase
-.from("match_finance")
-.select(`
-  *,
-  matches!match_finance_match_id_fkey (
-    id,
-    tournament_id,
-    match_type,
-    created_at,
-    tournaments (
-      name
-    )
-  ),
-  teams!match_finance_team_id_fkey (
-    id,
-    team_name
-  )
-`)
-.order("created_at", {
-  ascending:false
-});
+    if (error) {
+
+      console.error("PROFIT ERROR:", error);
 
       setLoading(false);
 
@@ -48,22 +51,13 @@ const { data, error } = await supabase
 
     }
 
-
-
-    console.log(
-      "PROFIT DATA:",
-      data
-    );
-
+    console.log("PROFIT DATA:", data);
 
     setFinanceData(data || []);
 
     setLoading(false);
 
-
   };
-
-
 
 
 
@@ -78,8 +72,6 @@ const { data, error } = await supabase
     );
 
   }
-
-
 
 
 
@@ -100,7 +92,6 @@ const { data, error } = await supabase
         <h2>
           Financial History
         </h2>
-
 
 
 
@@ -132,8 +123,6 @@ const { data, error } = await supabase
 
 
 
-
-
               <p>
                 Tournament:
 
@@ -146,8 +135,6 @@ const { data, error } = await supabase
                 }
 
               </p>
-
-
 
 
 
@@ -166,8 +153,6 @@ const { data, error } = await supabase
 
 
 
-
-
               <p>
                 Team:
 
@@ -183,13 +168,10 @@ const { data, error } = await supabase
 
 
 
-
-
               <p>
                 Entry Fee: ৳
                 {item.entry_fee}
               </p>
-
 
 
 
@@ -200,12 +182,10 @@ const { data, error } = await supabase
 
 
 
-
               <p>
                 Net Profit: ৳
                 {item.profit}
               </p>
-
 
 
 
@@ -217,7 +197,6 @@ const { data, error } = await supabase
                   ).toFixed(2)
                 }
               </p>
-
 
 
 
