@@ -248,6 +248,50 @@ teams!match_finance_team_id_fkey (
           color: "#e5e7eb",
           letterSpacing: "0.5px",
         }}
+<div
+style={{
+  display:"flex",
+  gap:"15px",
+  flexWrap:"wrap",
+  marginBottom:"30px"
+}}
+>
+
+<input
+type="month"
+value={selectedMonth}
+onChange={(e)=>setSelectedMonth(e.target.value)}
+style={{
+  padding:"10px",
+  borderRadius:"8px"
+}}
+/>
+
+
+<input
+placeholder="Filter Team"
+value={selectedTeam}
+onChange={(e)=>setSelectedTeam(e.target.value)}
+style={{
+  padding:"10px",
+  borderRadius:"8px"
+}}
+/>
+
+
+<input
+placeholder="Filter Tournament"
+value={selectedTournament}
+onChange={(e)=>setSelectedTournament(e.target.value)}
+style={{
+  padding:"10px",
+  borderRadius:"8px"
+}}
+/>
+
+
+</div>
+
       >
         Financial History
       </h2>
