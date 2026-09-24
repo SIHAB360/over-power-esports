@@ -10,11 +10,8 @@ export default function ProfitPage() {
 
 
   useEffect(() => {
-
     fetchFinance();
-
   }, []);
-
 
 
   const fetchFinance = async () => {
@@ -27,10 +24,7 @@ export default function ProfitPage() {
           id,
           tournament_id,
           match_type,
-          created_at,
-          tournaments (
-            name
-          )
+          created_at
         ),
         teams!match_finance_team_id_fkey (
           id,
@@ -41,17 +35,22 @@ export default function ProfitPage() {
         ascending: false
       });
 
-    if (error) {
 
-      console.error("PROFIT ERROR:", error);
+    if(error){
+
+      console.log(
+        "PROFIT FETCH ERROR:",
+        JSON.stringify(error, null, 2)
+      );
 
       setLoading(false);
-
       return;
 
     }
 
-    console.log("PROFIT DATA:", data);
+
+    console.log("FINAL FINANCE DATA:", data);
+
 
     setFinanceData(data || []);
 
@@ -64,11 +63,9 @@ export default function ProfitPage() {
   if(loading){
 
     return (
-
       <div>
         Loading Profit Data...
       </div>
-
     );
 
   }
@@ -103,88 +100,67 @@ export default function ProfitPage() {
 
 
               <p>
-                Date:
-
+                Date:{" "}
                 {
                   item.created_at
-
                   ?
-
                   new Date(
                     item.created_at
                   ).toLocaleDateString()
-
                   :
-
                   "N/A"
                 }
-
               </p>
 
 
 
               <p>
-                Tournament:
-
+                Tournament ID:{" "}
                 {
-                  item.matches?.tournaments?.name
-
+                  item.matches?.tournament_id
                   ||
-
                   "N/A"
                 }
-
               </p>
 
 
 
               <p>
-                Match Type:
-
+                Match Type:{" "}
                 {
                   item.matches?.match_type
-
                   ||
-
                   "N/A"
                 }
-
               </p>
 
 
 
               <p>
-                Team:
-
+                Team:{" "}
                 {
                   item.teams?.team_name
-
                   ||
-
                   "N/A"
                 }
-
               </p>
 
 
 
               <p>
-                Entry Fee: ৳
-                {item.entry_fee}
+                Entry Fee: ৳{item.entry_fee}
               </p>
 
 
 
               <p>
-                Prize Money: ৳
-                {item.prize_money}
+                Prize Money: ৳{item.prize_money}
               </p>
 
 
 
               <p>
-                Net Profit: ৳
-                {item.profit}
+                Net Profit: ৳{item.profit}
               </p>
 
 
