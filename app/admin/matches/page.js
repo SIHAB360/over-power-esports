@@ -294,41 +294,50 @@ export default function AdminMatchesPage() {
   }
 
 
-  function togglePlayer(playerId) {
+function togglePlayer(player) {
 
-    setMessage("");
-    setMessageType("");
-
-
-    setSelectedPlayers((current) => {
-
-      if (current.includes(playerId)) {
-
-        return current.filter(
-          (id) => id !== playerId
-        );
-
-      }
+  setMessage("");
+  setMessageType("");
 
 
-      if (current.length >= REQUIRED_PLAYERS) {
-
-        setMessage(
-          "Exactly 4 players can play this match."
-        );
-
-        setMessageType("error");
-
-        return current;
-
-      }
+  setSelectedPlayers((current) => {
 
 
-      return [...current, playerId];
+    const exists = current.find(
+      (p) => p.id === player.id
+    );
 
-    });
 
-  }
+    if (exists) {
+
+      return current.filter(
+        (p) => p.id !== player.id
+      );
+
+    }
+
+
+    if (current.length >= REQUIRED_PLAYERS) {
+
+      setMessage(
+        "Exactly 4 players can play this match."
+      );
+
+      setMessageType("error");
+
+      return current;
+
+    }
+
+
+    return [
+      ...current,
+      player
+    ];
+
+  });
+
+}
 
 
   const entryFee =
