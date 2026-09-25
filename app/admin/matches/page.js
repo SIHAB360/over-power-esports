@@ -1613,8 +1613,7 @@ marginBottom:"12px"
     color:"#ffffff"
   }}
 >
-  {player.username ||
-   player.name ||
+  {player.ign ||
    player.full_name ||
    "Player"}
 </div>
