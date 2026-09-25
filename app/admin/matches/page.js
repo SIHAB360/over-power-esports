@@ -1607,8 +1607,16 @@ marginBottom:"12px"
 }}
 >
 
-<div>
-{player.username}
+<div
+  style={{
+    fontWeight:"600",
+    color:"#ffffff"
+  }}
+>
+  {player.username ||
+   player.name ||
+   player.full_name ||
+   "Player"}
 </div>
 
 
