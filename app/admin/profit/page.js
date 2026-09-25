@@ -294,80 +294,6 @@ if (selectedProfitStatus) {
   }}
 >
 
-<button
-  onClick={() => {
-    const now = new Date();
-
-    setSelectedMonth(
-      `${now.getFullYear()}-${String(
-        now.getMonth() + 1
-      ).padStart(2, "0")}`
-    );
-  }}
-  style={quickButtonStyle}
->
-  This Month
-</button>
-
-
-<button
-  onClick={() => {
-    const date = new Date();
-
-    date.setMonth(date.getMonth() - 1);
-
-    setSelectedMonth(
-      `${date.getFullYear()}-${String(
-        date.getMonth() + 1
-      ).padStart(2, "0")}`
-    );
-  }}
-  style={quickButtonStyle}
->
-  Last Month
-</button>
-
-
-<button
-  onClick={() => {
-    setSelectedMonth("");
-  }}
-  style={quickButtonStyle}
->
-  All Time
-</button>
-
-</div>
-
-          <select
-            value={selectedTeam}
-            onChange={(e) => setSelectedTeam(e.target.value)}
-            style={selectStyle}
-          >
-            <option value="">All Teams</option>
-
-            {teamOptions.map((team) => (
-              <option key={team} value={team}>
-                {team}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedTournament}
-            onChange={(e) => setSelectedTournament(e.target.value)}
-            style={selectStyle}
-          >
-            <option value="">All Tournaments</option>
-
-            {tournamentOptions.map((tournament) => (
-              <option key={tournament} value={tournament}>
-                {tournament}
-              </option>
-            ))}
-          </select>
-
-</select>
 <select
   value={selectedMatchType}
   onChange={(e) => setSelectedMatchType(e.target.value)}
@@ -382,12 +308,14 @@ if (selectedProfitStatus) {
   ))}
 
 </select>
-            <select
+
+
+<select
   value={selectedProfitStatus}
   onChange={(e) => setSelectedProfitStatus(e.target.value)}
   style={selectStyle}
 >
-<option value="">
+  <option value="">
     All Profit Status
   </option>
 
@@ -403,31 +331,30 @@ if (selectedProfitStatus) {
     ⚪ Break Even
   </option>
 
+</select>
 
-      {(selectedTeam ||
+
+{(selectedTeam ||
  selectedTournament ||
  selectedMonth ||
  selectedMatchType ||
  selectedProfitStatus) && (
-            <button
-              onClick={clearFilters}
-              style={{
-                padding: "12px 20px",
-                borderRadius: "12px",
-                border: "1px solid rgba(251,191,36,0.4)",
-                background: "rgba(251,191,36,0.1)",
-                color: "#fbbf24",
-                fontSize: "14px",
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
-            >
-              Clear Filters
-            </button>
-          )}
-        </div>
-      </div>
-
+  <button
+    onClick={clearFilters}
+    style={{
+      padding: "12px 20px",
+      borderRadius: "12px",
+      border: "1px solid rgba(251,191,36,0.4)",
+      background: "rgba(251,191,36,0.1)",
+      color: "#fbbf24",
+      fontSize: "14px",
+      fontWeight: 600,
+      cursor: "pointer",
+    }}
+  >
+    Clear Filters
+  </button>
+)}
       <h2
         style={{
           fontSize: "26px",
