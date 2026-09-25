@@ -232,6 +232,61 @@ export default function ProfitPage() {
             style={inputStyle}
           />
 
+              <div
+  style={{
+    display: "flex",
+    gap: "8px",
+    flexWrap: "wrap",
+    width: "100%",
+    marginTop: "10px",
+  }}
+>
+
+<button
+  onClick={() => {
+    const now = new Date();
+
+    setSelectedMonth(
+      `${now.getFullYear()}-${String(
+        now.getMonth() + 1
+      ).padStart(2, "0")}`
+    );
+  }}
+  style={quickButtonStyle}
+>
+  This Month
+</button>
+
+
+<button
+  onClick={() => {
+    const date = new Date();
+
+    date.setMonth(date.getMonth() - 1);
+
+    setSelectedMonth(
+      `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`
+    );
+  }}
+  style={quickButtonStyle}
+>
+  Last Month
+</button>
+
+
+<button
+  onClick={() => {
+    setSelectedMonth("");
+  }}
+  style={quickButtonStyle}
+>
+  All Time
+</button>
+
+</div>
+
           <select
             value={selectedTeam}
             onChange={(e) => setSelectedTeam(e.target.value)}
@@ -549,4 +604,15 @@ const selectStyle = {
   minWidth: "200px",
   flex: 1,
   cursor: "pointer",
+};
+const quickButtonStyle = {
+  padding: "8px 14px",
+  borderRadius: "10px",
+  border: "1px solid rgba(251,191,36,0.35)",
+  background: "rgba(251,191,36,0.08)",
+  color: "#fbbf24",
+  fontSize: "12px",
+  fontWeight: 600,
+  cursor: "pointer",
+  transition: "0.3s",
 };
