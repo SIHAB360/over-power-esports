@@ -1610,7 +1610,7 @@ if(selectedPlayers.length > 0){
 key={player.id}
 style={{
 display:"grid",
-gridTemplateColumns:"1.5fr repeat(4,1fr)",
+gridTemplateColumns:"180px repeat(4,1fr)",
 gap:"10px",
 marginBottom:"12px"
 }}
@@ -1620,11 +1620,14 @@ marginBottom:"12px"
   style={{
     fontWeight:"600",
     color:"#ffffff"
+    whiteSpace:"nowrap",
+overflow:"hidden",
+textOverflow:"ellipsis",
   }}
 >
   {player.ign ||
-   player.full_name ||
-   "Player"}
+ player.full_name ||
+ "Player"}
 </div>
 
 
