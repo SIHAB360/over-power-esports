@@ -21,8 +21,8 @@ export default function AdminMatchesPage() {
   const [tournaments, setTournaments] = useState([]);
   const [teamPlayers, setTeamPlayers] = useState([]);
   const [recentMatches, setRecentMatches] = useState([]);
-
   const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [playerStats, setPlayerStats] = useState({});
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -710,7 +710,47 @@ console.log("MATCH FINANCE SAVED:", match.id);
 
 }
 
+// SAVE PLAYER PERFORMANCE STATS
 
+if(selectedPlayers.length > 0){
+
+  const statsPayload = selectedPlayers.map((player)=>({
+
+    match_id: match.id,
+
+    player_id: player.id,
+
+    kills:
+      playerStats[player.id]?.kills || 0,
+
+    assists:
+      playerStats[player.id]?.assists || 0,
+
+    damage:
+      playerStats[player.id]?.damage || 0,
+
+    mvp:
+      playerStats[player.id]?.mvp || false
+
+  }));
+
+
+  const { error: statsError } =
+    await supabase
+    .from("match_player_stats")
+    .insert(statsPayload);
+
+
+  if(statsError){
+
+    console.log(
+      "PLAYER STATS ERROR:",
+      statsError
+    );
+
+  }
+
+}
         /*
           STEP 5
           PLAYER EARNINGS
@@ -1232,6 +1272,7 @@ console.log("MATCH FINANCE SAVED:", match.id);
                   value={
                     form.sponsor
                   }
+
                   onChange={
                     handleChange
                   }
@@ -1530,14 +1571,155 @@ console.log("MATCH FINANCE SAVED:", match.id);
           <section className="panel">
 
 
-            <SectionTitle
-              number="04"
-              small="RESULT"
-              title="MATCH RESULT"
-            />
+           <SectionTitle
+  number="04"
+  small="RESULT"
+  title="MATCH RESULT"
+/>
 
 
-            <div className="form-grid">
+{/* PLAYER PERFORMANCE */}
+
+<div
+  style={{
+    marginTop:"25px",
+    padding:"20px",
+    borderRadius:"16px",
+    background:"rgba(255,255,255,0.04)",
+    border:"1px solid rgba(255,255,255,0.1)"
+  }}
+>
+
+<h3>
+🎮 Player Performance
+</h3>
+
+
+{selectedPlayers.map((player)=>(
+
+<div
+key={player.id}
+style={{
+display:"grid",
+gridTemplateColumns:"1.5fr repeat(4,1fr)",
+gap:"10px",
+marginBottom:"12px"
+}}
+>
+
+<div>
+{player.username}
+</div>
+
+
+<input
+type="number"
+placeholder="Kills"
+onChange={(e)=>{
+
+setPlayerStats(prev=>({
+
+...prev,
+
+[player.id]:{
+
+...prev[player.id],
+
+kills:Number(e.target.value)
+
+}
+
+}))
+
+}}
+/>
+
+
+<input
+type="number"
+placeholder="Assist"
+onChange={(e)=>{
+
+setPlayerStats(prev=>({
+
+...prev,
+
+[player.id]:{
+
+...prev[player.id],
+
+assists:Number(e.target.value)
+
+}
+
+}))
+
+}}
+/>
+
+
+<input
+type="number"
+placeholder="Damage"
+onChange={(e)=>{
+
+setPlayerStats(prev=>({
+
+...prev,
+
+[player.id]:{
+
+...prev[player.id],
+
+damage:Number(e.target.value)
+
+}
+
+}))
+
+}}
+/>
+
+
+<label>
+
+<input
+type="checkbox"
+
+onChange={(e)=>{
+
+setPlayerStats(prev=>({
+
+...prev,
+
+[player.id]:{
+
+...prev[player.id],
+
+mvp:e.target.checked
+
+}
+
+}))
+
+}}
+
+/>
+
+ MVP
+
+</label>
+
+
+</div>
+
+))}
+
+
+</div>
+
+
+<div className="form-grid">
 
 
               <FieldWrap
