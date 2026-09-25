@@ -10,6 +10,7 @@ export default function ProfitPage() {
   const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedTournament, setSelectedTournament] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [selectedMatchType, setSelectedMatchType] = useState("");
 
   useEffect(() => {
     fetchFinance();
@@ -63,6 +64,14 @@ export default function ProfitPage() {
     ),
   ];
 
+  const matchTypeOptions = [
+  ...new Set(
+    financeData
+      .map((item) => item.matches?.match_type)
+      .filter(Boolean)
+  ),
+];
+
   const filteredData = financeData.filter((item) => {
     if (
       selectedTeam &&
@@ -77,6 +86,13 @@ export default function ProfitPage() {
     ) {
       return false;
     }
+
+    if (
+  selectedMatchType &&
+  item.matches?.match_type !== selectedMatchType
+) {
+  return false;
+}
 
     if (selectedMonth) {
       const date = item.created_at
@@ -110,11 +126,12 @@ export default function ProfitPage() {
     0
   );
 
-  const clearFilters = () => {
-    setSelectedTeam("");
-    setSelectedTournament("");
-    setSelectedMonth("");
-  };
+ const clearFilters = () => {
+  setSelectedTeam("");
+  setSelectedTournament("");
+  setSelectedMonth("");
+  setSelectedMatchType("");
+};
 
   if (loading) {
     return (
@@ -314,10 +331,25 @@ export default function ProfitPage() {
               </option>
             ))}
           </select>
+<select
+  value={selectedMatchType}
+  onChange={(e) => setSelectedMatchType(e.target.value)}
+  style={selectStyle}
+>
+  <option value="">All Match Types</option>
 
-          {(selectedTeam ||
-            selectedTournament ||
-            selectedMonth) && (
+  {matchTypeOptions.map((type) => (
+    <option key={type} value={type}>
+      {type}
+    </option>
+  ))}
+
+</select>
+
+         {(selectedTeam ||
+  selectedTournament ||
+  selectedMonth ||
+  selectedMatchType) && (
             <button
               onClick={clearFilters}
               style={{
