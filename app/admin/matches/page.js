@@ -1617,13 +1617,13 @@ marginBottom:"12px"
 >
 
 <div
-  style={{
-    fontWeight:"600",
-    color:"#ffffff"
-    whiteSpace:"nowrap",
-overflow:"hidden",
-textOverflow:"ellipsis",
-  }}
+ style={{
+  fontWeight:"600",
+  color:"#ffffff",
+  whiteSpace:"nowrap",
+  overflow:"hidden",
+  textOverflow:"ellipsis",
+}}
 >
   {player.ign ||
  player.full_name ||
