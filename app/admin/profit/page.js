@@ -425,140 +425,182 @@ export default function ProfitPage() {
         }}
       >
 
-        {filteredData.map((item)=>(
-          <div
-            key={item.id}
-            style={{
-              background:
-              "linear-gradient(145deg, rgba(20,20,30,.7), rgba(10,10,15,.85))",
-              borderRadius:"22px",
-              padding:"28px",
-            }}
-          >
+       {filteredData.map((item) => (
+  <div
+    key={item.id}
+    style={{
+      background:
+        "linear-gradient(145deg, rgba(20,20,30,0.7), rgba(10,10,15,0.85))",
+      backdropFilter: "blur(16px)",
+      border: "1px solid rgba(255,255,255,0.08)",
+      borderRadius: "22px",
+      padding: "28px 32px",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
+    }}
+  >
 
-            <div>
-              📅 Date:
-              <strong>
-                {" "}
-                {new Date(item.created_at).toLocaleDateString()}
-              </strong>
-            </div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "12px 20px",
+        marginBottom: "20px",
+        fontSize: "14.5px",
+        color: "#d1d5db",
+      }}
+    >
 
-            <div>
-              🏆 Tournament:
-              <strong>
-                {" "}
-                {item.matches?.tournaments?.name || "N/A"}
-              </strong>
-            </div>
-
-            <div>
-              🎮 Match Type:
-              <strong>
-                {" "}
-                {item.matches?.match_type || "N/A"}
-              </strong>
-            </div>
-
-            <div>
-              👥 Team:
-              <strong>
-                {" "}
-                {item.teams?.team_name || "N/A"}
-              </strong>
-            </div>
+      <div>
+        📅 Date:
+        <strong>
+          {" "}
+          {item.created_at
+            ? new Date(item.created_at).toLocaleDateString()
+            : "N/A"}
+        </strong>
+      </div>
 
 
-            <hr />
+      <div>
+        🏆 Tournament:
+        <strong>
+          {" "}
+          {item.matches?.tournaments?.name || "N/A"}
+        </strong>
+      </div>
 
 
-            <div>
-              💰 Entry Fee:
-              ৳{Number(item.entry_fee || 0).toFixed(2)}
-            </div>
+      <div>
+        🎮 Match Type:
+        <strong>
+          {" "}
+          {item.matches?.match_type || "N/A"}
+        </strong>
+      </div>
 
-            <div>
-              🏆 Prize Money:
-              ৳{Number(item.prize_money || 0).toFixed(2)}
-            </div>
 
-            <div>
-              📈 Net Profit:
-              ৳{Number(item.profit || 0).toFixed(2)}
-            </div>
+      <div>
+        👥 Team:
+        <strong>
+          {" "}
+          {item.teams?.team_name || "N/A"}
+        </strong>
+      </div>
 
-            <div>
-              👤 Player 70%:
-              ৳{Number(item.player_amount || 0).toFixed(2)}
-            </div>
+    </div>
 
-            <div>
-              🏢 Management 30%:
-              ৳{Number(item.management_amount || 0).toFixed(2)}
-            </div>
 
-          </div>
-        ))}
+    <hr
+      style={{
+        border: "none",
+        height: "1px",
+        background:
+          "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)",
+        margin: "18px 0",
+      }}
+    />
+
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "14px 24px",
+        fontSize: "15.5px",
+      }}
+    >
+
+      <div>
+        💰 Entry Fee
+        <div
+          style={{
+            fontWeight:600,
+            marginTop:"4px",
+          }}
+        >
+          ৳{Number(item.entry_fee || 0).toFixed(2)}
+        </div>
+      </div>
+
+
+      <div>
+        🏆 Prize Money
+        <div
+          style={{
+            fontWeight:600,
+            marginTop:"4px",
+          }}
+        >
+          ৳{Number(item.prize_money || 0).toFixed(2)}
+        </div>
+      </div>
+
+
+      <div
+        style={{
+          gridColumn:"1 / -1",
+          background:"rgba(251,191,36,0.08)",
+          border:"1px solid rgba(251,191,36,0.2)",
+          borderRadius:"12px",
+          padding:"14px 18px",
+        }}
+      >
+
+        📈 Net Profit
+
+        <div
+          style={{
+            fontSize:"26px",
+            fontWeight:700,
+            color:"#fbbf24",
+            marginTop:"4px",
+          }}
+        >
+          ৳{Number(item.profit || 0).toFixed(2)}
+        </div>
 
       </div>
 
 
-      <style jsx global>{`
-        select option {
-          background:#171118;
-          color:white;
-        }
-      `}</style>
+      <div>
+        <span style={{color:"#34d399"}}>
+          👤 Player 70%
+        </span>
+
+        <div
+          style={{
+            fontWeight:600,
+            marginTop:"4px",
+            color:"#34d399",
+            fontSize:"18px",
+          }}
+        >
+          ৳{Number(item.player_amount || 0).toFixed(2)}
+        </div>
+
+      </div>
 
 
-    </main>
-  );
-}
+      <div>
+        <span style={{color:"#60a5fa"}}>
+          🏢 Management 30%
+        </span>
 
+        <div
+          style={{
+            fontWeight:600,
+            marginTop:"4px",
+            color:"#60a5fa",
+            fontSize:"18px",
+          }}
+        >
+          ৳{Number(item.management_amount || 0).toFixed(2)}
+        </div>
 
-function SummaryCard({
-  title,
-  value,
-  color,
-  background
-}) {
+      </div>
 
-  return (
-    <div
-      style={{
-        background:
-        `linear-gradient(145deg, ${background}, rgba(10,10,15,.6))`,
-        borderRadius:"20px",
-        padding:"28px",
-        border:`1px solid ${color}55`
-      }}
-    >
-
-      <h3>{title}</h3>
-
-      <h2 style={{color}}>
-        ৳{Number(value || 0).toFixed(2)}
-      </h2>
 
     </div>
-  );
-}
 
-
-const inputStyle = {
-  padding:"12px 16px",
-  borderRadius:"12px",
-  background:"rgba(255,255,255,0.06)",
-  color:"white",
-  border:"1px solid rgba(255,255,255,0.15)"
-};
-
-
-const selectStyle = {
-  padding:"12px 16px",
-  borderRadius:"12px",
-  background:"#171118",
-  color:"white",
-  border:"1px solid rgba(255,255,255,0.15)",
-  minWidth:"200px"
-};
+  </div>
+))}
