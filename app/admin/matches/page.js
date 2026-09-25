@@ -580,15 +580,15 @@ function togglePlayer(player) {
         SAVE EXACT 4 ACTIVE PLAYERS
       */
       console.log("SELECTED PLAYERS:", selectedPlayers);
-      const matchPlayerRows =
-        selectedPlayers.map(
-          (playerId, index) => ({
-            match_id: match.id,
-            player_id: playerId,
-            team_id: form.team1_id,
-            slot_number: index + 1,
-          })
-        );
+     const matchPlayerRows =
+  selectedPlayers.map(
+    (player, index) => ({
+      match_id: match.id,
+      player_id: player.id,
+      team_id: form.team1_id,
+      slot_number: index + 1,
+    })
+  );
 
 
       const { error: playersError } =
@@ -1463,9 +1463,9 @@ if(selectedPlayers.length > 0){
                   (player) => {
 
                     const selected =
-                      selectedPlayers.includes(
-                        player.id
-                      );
+                    selectedPlayers.some(
+                    (p) => p.id === player.id
+                  );
 
 
                     return (
@@ -1481,9 +1481,9 @@ if(selectedPlayers.length > 0){
                             : "player-card"
                         }
                         onClick={() =>
-                          togglePlayer(
-                            player.id
-                          )
+                         togglePlayer(
+                        player
+                        )
                         }
                       >
 
