@@ -11,6 +11,7 @@ export default function ProfitPage() {
   const [selectedTournament, setSelectedTournament] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedMatchType, setSelectedMatchType] = useState("");
+  const [selectedProfitStatus, setSelectedProfitStatus] = useState("");
 
   useEffect(() => {
     fetchFinance();
@@ -93,6 +94,39 @@ export default function ProfitPage() {
 ) {
   return false;
 }
+ if (
+  selectedMatchType &&
+  item.matches?.match_type !== selectedMatchType
+) {
+  return false;
+}
+
+
+// Profit Status Filter
+if (selectedProfitStatus) {
+  const profit = Number(item.profit || 0);
+
+  if (
+    selectedProfitStatus === "profit" &&
+    profit <= 0
+  ) {
+    return false;
+  }
+
+  if (
+    selectedProfitStatus === "loss" &&
+    profit >= 0
+  ) {
+    return false;
+  }
+
+  if (
+    selectedProfitStatus === "break_even" &&
+    profit !== 0
+  ) {
+    return false;
+  }
+}   
 
     if (selectedMonth) {
       const date = item.created_at
@@ -131,6 +165,7 @@ export default function ProfitPage() {
   setSelectedTournament("");
   setSelectedMonth("");
   setSelectedMatchType("");
+  setSelectedProfitStatus("");
 };
 
   if (loading) {
@@ -331,6 +366,8 @@ export default function ProfitPage() {
               </option>
             ))}
           </select>
+
+</select>
 <select
   value={selectedMatchType}
   onChange={(e) => setSelectedMatchType(e.target.value)}
@@ -345,11 +382,33 @@ export default function ProfitPage() {
   ))}
 
 </select>
+            <select
+  value={selectedProfitStatus}
+  onChange={(e) => setSelectedProfitStatus(e.target.value)}
+  style={selectStyle}
+>
+<option value="">
+    All Profit Status
+  </option>
 
-         {(selectedTeam ||
-  selectedTournament ||
-  selectedMonth ||
-  selectedMatchType) && (
+  <option value="profit">
+    🟢 Profit
+  </option>
+
+  <option value="loss">
+    🔴 Loss
+  </option>
+
+  <option value="break_even">
+    ⚪ Break Even
+  </option>
+
+
+      {(selectedTeam ||
+ selectedTournament ||
+ selectedMonth ||
+ selectedMatchType ||
+ selectedProfitStatus) && (
             <button
               onClick={clearFilters}
               style={{
