@@ -329,7 +329,9 @@ if (selectedProfitStatus) {
   onChange={(e) => setSelectedMatchType(e.target.value)}
   style={selectStyle}
 >
-  <option value="">All Match Types</option>
+  <option value="">
+    All Match Types
+  </option>
 
   {matchTypeOptions.map((type) => (
     <option key={type} value={type}>
@@ -370,21 +372,21 @@ if (selectedProfitStatus) {
  selectedMatchType ||
  selectedProfitStatus) && (
 
-<button
-  onClick={clearFilters}
-  style={{
-    padding: "12px 20px",
-    borderRadius: "12px",
-    border: "1px solid rgba(251,191,36,0.4)",
-    background: "rgba(251,191,36,0.1)",
-    color: "#fbbf24",
-    fontSize: "14px",
-    fontWeight: 600,
-    cursor: "pointer",
-  }}
->
-  Clear Filters
-</button>
+  <button
+    onClick={clearFilters}
+    style={{
+      padding: "12px 20px",
+      borderRadius: "12px",
+      border: "1px solid rgba(251,191,36,0.4)",
+      background: "rgba(251,191,36,0.1)",
+      color: "#fbbf24",
+      fontSize: "14px",
+      fontWeight: 600,
+      cursor: "pointer",
+    }}
+  >
+    Clear Filters
+  </button>
 
 )}
       <h2
