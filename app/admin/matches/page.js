@@ -1593,9 +1593,13 @@ if(selectedPlayers.length > 0){
   style={{
     marginTop:"25px",
     padding:"20px",
-    borderRadius:"16px",
-    background:"rgba(255,255,255,0.04)",
-    border:"1px solid rgba(255,255,255,0.1)"
+    borderRadius:"20px",
+    background:
+      "linear-gradient(145deg, rgba(255,20,80,0.12), rgba(15,15,25,0.85))",
+    border:"1px solid rgba(255,20,80,0.35)",
+    boxShadow:
+      "0 0 35px rgba(255,20,80,0.15)",
+    backdropFilter:"blur(15px)"
   }}
 >
 
