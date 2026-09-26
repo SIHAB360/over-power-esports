@@ -51,20 +51,22 @@ export default function PlayerDashboard() {
       .from("players")
       .select("*")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle();
 
-    if(!data){
+    if(error || !data){
+
   setErrorMessage("Player profile not found.");
   setLoading(false);
   return;
+
 }
 
-    const { data: stats } = await supabase
+    const { data: stats, error: statsError } = await supabase
 .from("match_player_stats")
 .select("*")
 .eq("player_id", data.id);
 
-   if (error) {
+if(statsError){
   setErrorMessage("Player profile could not be found.");
   setLoading(false);
   return;
@@ -86,14 +88,18 @@ const wins =
 stats?.filter(
 (item)=> item.placement === 1
 ).length || 0;
-    
+
+
 setPlayer({
- ...data,
- matches_played: matches,
- wins: wins,
- total_kills: kills
+  ...data,
+  matches_played: matches,
+  wins: wins,
+  total_kills: kills
 });
-    
+
+
+setLoading(false);
+
 };
 
   const handleLogout = async () => {
