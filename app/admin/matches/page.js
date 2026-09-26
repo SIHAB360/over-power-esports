@@ -770,22 +770,22 @@ if(selectedPlayers.length > 0){
 
         if (playerPool > 0) {
 
-          const playerEarningRows =
-            selectedPlayers.map(
-              (playerId) => ({
-                player_id:
-                  playerId,
+         const playerEarningRows =
+  selectedPlayers.map(
+    (player) => ({
+      player_id:
+        player.id,
 
-                match_id:
-                  match.id,
+      match_id:
+        match.id,
 
-                team_id:
-                  form.team1_id,
+      team_id:
+        form.team1_id,
 
-                amount:
-                  perPlayerAmount,
-              })
-            );
+      amount:
+        perPlayerAmount,
+    })
+  );
 
 
           const {
