@@ -742,11 +742,10 @@ if(selectedPlayers.length > 0){
     playerStats[player.id]?.mvp || false
 
    placement:
-Number(form.position) || 0,
-  console.log("STATS PAYLOAD:", statsPayload);
+Number(form.position) || 0
 
 }));
-
+console.log("STATS PAYLOAD:", statsPayload);
 
   const { error: statsError } =
     await supabase
