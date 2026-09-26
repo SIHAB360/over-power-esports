@@ -910,16 +910,15 @@ console.log("STATS PAYLOAD:", statsPayload);
       setMessageType("error");
 
 
-    } finally {
+   } finally {
 
   setSaving(false);
 
 }
 
-};
-  
-  if (pageLoading) {
+}
 
+if (pageLoading) {
     return (
 
       <main className="op-loading">
