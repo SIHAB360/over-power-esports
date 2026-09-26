@@ -916,6 +916,8 @@ console.log("STATS PAYLOAD:", statsPayload);
 
     }
     
+ }
+  
   if (pageLoading) {
 
     return (
