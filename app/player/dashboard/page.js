@@ -85,7 +85,8 @@ setPlayer({
  wins: wins,
  total_kills: kills
 });
-
+    
+};
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
