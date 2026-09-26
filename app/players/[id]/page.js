@@ -1,4 +1,5 @@
 import CopyUID from "../../components/CopyUID";
+import { supabase } from "../../lib/supabase";
 
 // এখানে বসাবেন
 function getExperience(joinDate){ 
@@ -419,19 +420,69 @@ youtubeVideos:[
 
 
 };
-  const { id } = await params;
+const { id } = await params;
 
 
-const player = players[id];
+const { data: player, error } = await supabase
+  .from("players")
+  .select("*")
+  .eq("id", id)
+  .single();
 
 
-if (!player) {
+if(error || !player){
 
-return <h1>Player Not Found</h1>;
+  return <h1>Player Not Found</h1>;
 
 }
+ 
+const { data: stats } = await supabase
+  .from("match_player_stats")
+  .select("*")
+  .eq("player_id", player.id);
 
 
+const totalMatches = stats?.length || 0;
+
+
+const totalKills =
+  stats?.reduce(
+    (sum, item) => sum + (item.kills || 0),
+    0
+  ) || 0;
+
+
+const totalAssists =
+  stats?.reduce(
+    (sum, item) => sum + (item.assists || 0),
+    0
+  ) || 0;
+
+
+const totalDamage =
+  stats?.reduce(
+    (sum, item) => sum + (item.damage || 0),
+    0
+  ) || 0;
+
+
+const totalMVP =
+  stats?.filter(
+    (item) => item.mvp === true
+  ).length || 0;
+
+const { data: earnings } = await supabase
+  .from("player_earnings")
+  .select("amount")
+  .eq("player_id", player.id);
+
+
+const totalEarning =
+  earnings?.reduce(
+    (sum, item) => sum + (item.amount || 0),
+    0
+  ) || 0;
+ 
 return (
 
 <section className="esports-profile">
@@ -443,17 +494,17 @@ return (
 <div className="player-heading">
 
 <h1>
-{player.name}
+{player.ign}
 </h1>
 
 
 <h3>
-{player.role}
+{player.primary_role}
 </h3>
 
 
 <h4>
-{player.team}
+{player.team_name}
 </h4>
 
 
@@ -474,7 +525,7 @@ Professional Free Fire esports player of Over Power Esports.
 
 
 <h2>
-{player.winnings}
+{totalEarning}
 </h2>
 
 </div>
