@@ -51,15 +51,41 @@ export default function PlayerDashboard() {
       .eq("user_id", userId)
       .single();
 
-    if (error) {
-      setErrorMessage("Player profile could not be found.");
-      setLoading(false);
-      return;
-    }
+    const { data: stats } = await supabase
+.from("match_player_stats")
+.select("*")
+.eq("player_id", data.id);
 
-    setPlayer(data);
-    setLoading(false);
-  };
+   if (error) {
+  setErrorMessage("Player profile could not be found.");
+  setLoading(false);
+  return;
+}
+
+
+const matches =
+stats?.length || 0;
+
+
+const kills =
+stats?.reduce(
+(sum,item)=> sum + (item.kills || 0),
+0
+) || 0;
+
+
+const wins =
+stats?.filter(
+(item)=> item.placement === 1
+).length || 0;
+    
+setPlayer({
+ ...data,
+ matches_played: matches,
+ wins: wins,
+ total_kills: kills
+});
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
