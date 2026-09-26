@@ -43,13 +43,21 @@ export default function PlayerDashboard() {
       setLoading(false);
     }
   };
-
   const loadPlayer = async (userId) => {
+
+    console.log("LOAD PLAYER START", userId);
+    
     const { data, error } = await supabase
       .from("players")
       .select("*")
       .eq("user_id", userId)
       .single();
+
+    if(!data){
+  setErrorMessage("Player profile not found.");
+  setLoading(false);
+  return;
+}
 
     const { data: stats } = await supabase
 .from("match_player_stats")
