@@ -912,11 +912,11 @@ console.log("STATS PAYLOAD:", statsPayload);
 
     } finally {
 
-      setSaving(false);
+  setSaving(false);
 
-    }
-    
- }
+}
+
+};
   
   if (pageLoading) {
 
