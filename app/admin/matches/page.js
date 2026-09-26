@@ -725,23 +725,23 @@ if(selectedPlayers.length > 0){
 
   const statsPayload = selectedPlayers.map((player)=>({
 
-    match_id: match.id,
+  match_id: match.id,
 
-    player_id: player.id,
+  player_id: player.id,
 
-    kills:
-      playerStats[player.id]?.kills || 0,
+  kills:
+    playerStats[player.id]?.kills || 0,
 
-    assists:
-      playerStats[player.id]?.assists || 0,
+  assists:
+    playerStats[player.id]?.assists || 0,
 
-    damage:
-      playerStats[player.id]?.damage || 0,
+  damage:
+    playerStats[player.id]?.damage || 0,
 
-    mvp:
-      playerStats[player.id]?.mvp || false
+  mvp:
+    playerStats[player.id]?.mvp || false
 
-  }));
+}));
 
 
   const { error: statsError } =
