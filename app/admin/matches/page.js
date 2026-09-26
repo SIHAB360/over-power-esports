@@ -915,10 +915,7 @@ console.log("STATS PAYLOAD:", statsPayload);
       setSaving(false);
 
     }
-
-  }
-
-
+    
   if (pageLoading) {
 
     return (
