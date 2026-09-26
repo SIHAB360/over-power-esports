@@ -739,7 +739,7 @@ if(selectedPlayers.length > 0){
     playerStats[player.id]?.damage || 0,
 
   mvp:
-    playerStats[player.id]?.mvp || false
+    playerStats[player.id]?.mvp || false,
 
    placement:
 Number(form.position) || 0
