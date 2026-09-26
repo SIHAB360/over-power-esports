@@ -741,6 +741,9 @@ if(selectedPlayers.length > 0){
   mvp:
     playerStats[player.id]?.mvp || false
 
+   placement:
+Number(form.position) || 0,
+
 }));
 
 
@@ -1638,6 +1641,7 @@ marginBottom:"12px"
 <input
 type="number"
 placeholder="Kills"
+
 onChange={(e)=>{
 
 setPlayerStats(prev=>({
