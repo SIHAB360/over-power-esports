@@ -743,6 +743,7 @@ if(selectedPlayers.length > 0){
 
    placement:
 Number(form.position) || 0,
+  console.log("STATS PAYLOAD:", statsPayload);
 
 }));
 
