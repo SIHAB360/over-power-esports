@@ -722,7 +722,7 @@ console.log("MATCH FINANCE SAVED:", match.id);
 // SAVE PLAYER PERFORMANCE STATS
 
 if(selectedPlayers.length > 0){
-
+console.log("SELECTED PLAYERS:", selectedPlayers);
   const statsPayload = selectedPlayers.map((player)=>({
 
   match_id: match.id,
@@ -755,12 +755,12 @@ console.log("STATS PAYLOAD:", statsPayload);
 
   if(statsError){
 
-    console.log(
-      "PLAYER STATS ERROR:",
-      statsError
-    );
+  console.log(
+    "PLAYER STATS ERROR:",
+    statsError.message
+  );
 
-  }
+  throw statsError;
 
 }
         /*
