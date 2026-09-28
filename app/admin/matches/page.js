@@ -762,7 +762,8 @@ console.log("STATS PAYLOAD:", statsPayload);
 
   throw statsError;
 
-}
+  }
+  } 
         /*
           STEP 5
           PLAYER EARNINGS
