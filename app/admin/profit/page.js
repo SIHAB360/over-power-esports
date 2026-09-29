@@ -39,17 +39,17 @@ export default function ProfitPage() {
           )
         ),
 match_player_stats (
- id,
- player_id,
- kills,
- assists,
- damage,
- mvp,
- placement,
- players (
-   ign,
-   full_name
- )
+  id,
+  player_id,
+  kills,
+  assists,
+  damage,
+  mvp,
+  placement,
+  players!match_player_stats_player_id_fkey (
+    ign,
+    full_name
+  )
 ),
         
         teams!match_finance_team_id_fkey (
