@@ -13,9 +13,7 @@ export default function ProfitPage() {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedMatchType, setSelectedMatchType] = useState("");
   const [selectedProfitStatus, setSelectedProfitStatus] = useState("");
-  const [openPerformance, setOpenPerformance] = useState(null);
-  const [playerStats, setPlayerStats] = useState({});
-
+ const [playerStatsMap, setPlayerStatsMap] = useState({});
 
   useEffect(() => {
     fetchFinance();
@@ -58,7 +56,34 @@ export default function ProfitPage() {
       setLoading(false);
       return;
     }
+const matchIds = data.map(item => item.match_id);
 
+const { data: stats } = await supabase
+.from("match_player_stats")
+.select(`
+  *,
+  players (
+    ign,
+    full_name
+  )
+`)
+.in("match_id", matchIds);
+
+
+const statsMap = {};
+
+(stats || []).forEach(stat => {
+
+  if(!statsMap[stat.match_id]){
+    statsMap[stat.match_id] = [];
+  }
+
+  statsMap[stat.match_id].push(stat);
+
+});
+
+
+setPlayerStatsMap(statsMap);
 
     setFinanceData(data || []);
     setLoading(false);
@@ -792,7 +817,7 @@ style={{
 </h3>
 
 
-{item.match_player_stats?.map((player)=>(
+playerStatsMap[item.match_id]?.map
 <div
 key={player.id}
 style={{
