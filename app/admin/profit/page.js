@@ -13,6 +13,8 @@ export default function ProfitPage() {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedMatchType, setSelectedMatchType] = useState("");
   const [selectedProfitStatus, setSelectedProfitStatus] = useState("");
+  const [openPerformance, setOpenPerformance] = useState(null);
+  const [playerStats, setPlayerStats] = useState({});
 
 
   useEffect(() => {
@@ -36,6 +38,20 @@ export default function ProfitPage() {
             name
           )
         ),
+match_player_stats (
+ id,
+ player_id,
+ kills,
+ assists,
+ damage,
+ mvp,
+ placement,
+ players (
+   ign,
+   full_name
+ )
+),
+        
         teams!match_finance_team_id_fkey (
           id,
           team_name
@@ -746,7 +762,97 @@ export default function ProfitPage() {
                 >
                   🏢 Management 30%
                 </span>
+              <button
+onClick={() =>
+ setOpenPerformance(
+   openPerformance === item.id ? null : item.id
+ )
+}
+style={{
+ marginTop:"22px",
+ width:"100%",
+ padding:"12px",
+ borderRadius:"12px",
+ border:"1px solid rgba(244,114,182,0.4)",
+ background:"rgba(244,114,182,0.1)",
+ color:"#f472b6",
+ fontWeight:700,
+ cursor:"pointer"
+}}
+>
+🎮 Player Performance Details
+</button>
 
+
+{openPerformance === item.id && (
+
+<div
+style={{
+ marginTop:"15px",
+ padding:"18px",
+ borderRadius:"16px",
+ background:"rgba(255,255,255,0.05)",
+ border:"1px solid rgba(255,255,255,0.1)"
+}}
+>
+
+<h3
+style={{
+ color:"#f472b6",
+ marginBottom:"15px"
+}}
+>
+🎮 Player Performance
+</h3>
+
+
+{item.match_player_stats?.map((player)=>(
+<div
+key={player.id}
+style={{
+ padding:"12px 0",
+ borderBottom:"1px solid rgba(255,255,255,0.1)"
+}}
+>
+
+<strong>
+{player.players?.ign ||
+player.players?.full_name ||
+"Unknown Player"}
+</strong>
+
+
+<div>
+Kills: {player.kills}
+</div>
+
+<div>
+Assist: {player.assists}
+</div>
+
+<div>
+Damage: {player.damage}
+</div>
+
+
+<div>
+{
+player.mvp
+?
+"👑MVP👑"
+:
+""
+}
+</div>
+
+
+</div>
+))}
+
+
+</div>
+
+)}
 
                 <div
                   style={{
