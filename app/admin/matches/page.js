@@ -683,24 +683,10 @@ console.log("MATCH FINANCE SAVED:", match.id);
             ? Number(form.position)
             : null,
 
-
-          kills:
-            form.kills
-            ? Number(form.kills)
-            : 0,
-
-
           points:
             form.points
             ? Number(form.points)
             : 0,
-
-
-          prize_money:
-            form.prize_money
-            ? Number(form.prize_money)
-            : 0,
-
 
           status:
             form.result_status || "completed"
