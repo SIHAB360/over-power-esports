@@ -847,48 +847,22 @@ Damage: {player.damage}
 
 
 <div>
-{
-player.mvp
-?
-"👑MVP👑"
-:
-""
-}
+  {player.mvp ? "👑MVP👑" : ""}
 </div>
 
-
 </div>
-))}
-
-
-</div>
-
-)}
-
-                <div
-                  style={{
-                    fontWeight:600,
-                    marginTop:"4px",
-                    color:"#60a5fa",
-                    fontSize:"18px"
-                  }}
-                >
-                  ৳{Number(item.management_amount || 0).toFixed(2)}
-                </div>
-
-              </div>
-
-
-            </div>
-
+<div
+  style={{
+    fontWeight:600,
+    marginTop:"4px",
+    color:"#60a5fa",
+    fontSize:"18px"
+  }}
+>
+  ৳{Number(item.management_amount || 0).toFixed(2)}
 
           </div>
         ))}
-
-
-      </div>
-
-
 
       <style jsx global>{`
 
