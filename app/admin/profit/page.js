@@ -851,6 +851,52 @@ style={{
 
   </div>
 ))}
+  {playerStatsMap[item.match_id]?.map((player)=>(
+  <div
+    key={player.id}
+    style={{
+      padding:"12px 0",
+      borderBottom:"1px solid rgba(255,255,255,0.1)"
+    }}
+  >
+
+    <strong>
+      {player.players?.ign ||
+      player.players?.full_name ||
+      "Unknown Player"}
+    </strong>
+
+    <div>
+      Kills: {player.kills}
+    </div>
+
+    <div>
+      Assist: {player.assists}
+    </div>
+
+    <div>
+      Damage: {player.damage}
+    </div>
+
+    <div>
+      {player.mvp ? "👑MVP👑" : ""}
+    </div>
+
+  </div>
+))}
+
+
+{/* Management Amount এখানে বসবে */}
+<div
+  style={{
+    fontWeight:600,
+    marginTop:"4px",
+    color:"#60a5fa",
+    fontSize:"18px"
+  }}
+>
+  ৳{Number(item.management_amount || 0).toFixed(2)}
+</div>
 
       <style jsx global>{`
 
