@@ -46,6 +46,7 @@ export default function ProfitPage() {
       });
 
 
+    
     if(error){
 
       console.log(
