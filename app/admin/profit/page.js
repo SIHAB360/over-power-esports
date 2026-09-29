@@ -862,7 +862,7 @@ Damage: {player.damage}
   ৳{Number(item.management_amount || 0).toFixed(2)}
 
           </div>
-        ))}
+</div>
 
       <style jsx global>{`
 
