@@ -37,21 +37,7 @@ export default function ProfitPage() {
             id,
             name
           )
-        ),
-match_player_stats (
-  id,
-  player_id,
-  kills,
-  assists,
-  damage,
-  mvp,
-  placement,
-  players!match_player_stats_player_id_fkey (
-    ign,
-    full_name
-  )
-),
-        
+        ), 
         teams!match_finance_team_id_fkey (
           id,
           team_name
