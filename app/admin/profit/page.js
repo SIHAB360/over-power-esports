@@ -13,6 +13,7 @@ export default function ProfitPage() {
   const [selectedProfitStatus, setSelectedProfitStatus] = useState("");
   const [playerStatsMap, setPlayerStatsMap] = useState({});
   const [openPerformance, setOpenPerformance] = useState(null);
+  const [loadingStats, setLoadingStats] = useState(null);
 
   useEffect(() => {
     fetchFinance();
@@ -48,9 +49,17 @@ export default function ProfitPage() {
       return;
     }
 
-    const matchIds = data.map((item) => item.match_id);
+    setFinanceData(data || []);
+    setLoading(false);
+  };
 
-    const { data: stats } = await supabase
+  // Player stats lazy load - button click করলে fetch হবে
+  const fetchPlayerStats = async (matchId) => {
+    if (playerStatsMap[matchId]) return; // already loaded
+
+    setLoadingStats(matchId);
+
+    const { data: stats, error } = await supabase
       .from("match_player_stats")
       .select(
         `
@@ -61,19 +70,34 @@ export default function ProfitPage() {
         )
       `
       )
-      .in("match_id", matchIds);
+      .eq("match_id", matchId);
 
-    const statsMap = {};
-    (stats || []).forEach((stat) => {
-      if (!statsMap[stat.match_id]) {
-        statsMap[stat.match_id] = [];
-      }
-      statsMap[stat.match_id].push(stat);
-    });
+    if (error) {
+      console.log("PLAYER STATS ERROR:", JSON.stringify(error, null, 2));
+      setPlayerStatsMap((prev) => ({
+        ...prev,
+        [matchId]: [],
+      }));
+    } else {
+      console.log(`Stats for match ${matchId}:`, stats);
+      setPlayerStatsMap((prev) => ({
+        ...prev,
+        [matchId]: stats || [],
+      }));
+    }
 
-    setPlayerStatsMap(statsMap);
-    setFinanceData(data || []);
-    setLoading(false);
+    setLoadingStats(null);
+  };
+
+  const handleTogglePerformance = (item) => {
+    const matchId = item.match_id;
+
+    if (openPerformance === item.id) {
+      setOpenPerformance(null);
+    } else {
+      setOpenPerformance(item.id);
+      fetchPlayerStats(matchId);
+    }
   };
 
   const teamOptions = [
@@ -97,42 +121,31 @@ export default function ProfitPage() {
   ];
 
   const filteredData = financeData.filter((item) => {
-    if (selectedTeam && item.teams?.team_name !== selectedTeam) {
-      return false;
-    }
+    if (selectedTeam && item.teams?.team_name !== selectedTeam) return false;
     if (
       selectedTournament &&
       item.matches?.tournaments?.name !== selectedTournament
-    ) {
+    )
       return false;
-    }
-    if (selectedMatchType && item.matches?.match_type !== selectedMatchType) {
+    if (selectedMatchType && item.matches?.match_type !== selectedMatchType)
       return false;
-    }
+
     if (selectedProfitStatus) {
       const profit = Number(item.profit || 0);
-      if (selectedProfitStatus === "profit" && profit <= 0) {
-        return false;
-      }
-      if (selectedProfitStatus === "loss" && profit >= 0) {
-        return false;
-      }
-      if (selectedProfitStatus === "break_even" && profit !== 0) {
-        return false;
-      }
+      if (selectedProfitStatus === "profit" && profit <= 0) return false;
+      if (selectedProfitStatus === "loss" && profit >= 0) return false;
+      if (selectedProfitStatus === "break_even" && profit !== 0) return false;
     }
+
     if (selectedMonth) {
       const date = item.created_at ? new Date(item.created_at) : null;
-      if (!date) {
-        return false;
-      }
+      if (!date) return false;
       const itemMonth = `${date.getFullYear()}-${String(
         date.getMonth() + 1
       ).padStart(2, "0")}`;
-      if (itemMonth !== selectedMonth) {
-        return false;
-      }
+      if (itemMonth !== selectedMonth) return false;
     }
+
     return true;
   });
 
@@ -203,6 +216,7 @@ export default function ProfitPage() {
         PROFIT MANAGEMENT
       </h1>
 
+      {/* Summary Cards */}
       <div
         style={{
           display: "grid",
@@ -234,6 +248,7 @@ export default function ProfitPage() {
         />
       </div>
 
+      {/* Filters */}
       <div
         style={{
           maxWidth: "900px",
@@ -256,13 +271,7 @@ export default function ProfitPage() {
           Filter Financial Records
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "14px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
           <input
             type="month"
             value={selectedMonth}
@@ -385,6 +394,7 @@ export default function ProfitPage() {
               boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
             }}
           >
+            {/* Header Info */}
             <div
               style={{
                 display: "grid",
@@ -405,17 +415,14 @@ export default function ProfitPage() {
               </div>
               <div>
                 🏆 Tournament:{" "}
-                <strong>
-                  {item.matches?.tournaments?.name || "N/A"}
-                </strong>
+                <strong>{item.matches?.tournaments?.name || "N/A"}</strong>
               </div>
               <div>
                 🎮 Match Type:{" "}
                 <strong>{item.matches?.match_type || "N/A"}</strong>
               </div>
               <div>
-                👥 Team:{" "}
-                <strong>{item.teams?.team_name || "N/A"}</strong>
+                👥 Team: <strong>{item.teams?.team_name || "N/A"}</strong>
               </div>
             </div>
 
@@ -429,6 +436,7 @@ export default function ProfitPage() {
               }}
             />
 
+            {/* Money Grid */}
             <div
               style={{
                 display: "grid",
@@ -502,150 +510,7 @@ export default function ProfitPage() {
               </div>
             </div>
 
+            {/* Performance Button */}
             <button
-              onClick={() =>
-                setOpenPerformance(
-                  openPerformance === item.id ? null : item.id
-                )
-              }
+              onClick={() => handleTogglePerformance(item)}
               style={{
-                marginTop: "22px",
-                width: "100%",
-                padding: "12px",
-                borderRadius: "12px",
-                border: "1px solid rgba(244,114,182,0.4)",
-                background: "rgba(244,114,182,0.1)",
-                color: "#f472b6",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              🎮 Player Performance Details
-            </button>
-
-            {openPerformance === item.id && (
-              <div
-                style={{
-                  marginTop: "15px",
-                  padding: "18px",
-                  borderRadius: "16px",
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              >
-                <h3
-                  style={{
-                    color: "#f472b6",
-                    marginBottom: "15px",
-                  }}
-                >
-                  🎮 Player Performance
-                </h3>
-
-                {playerStatsMap[item.match_id]?.length > 0 ? (
-                  playerStatsMap[item.match_id].map((player) => (
-                    <div
-                      key={player.id}
-                      style={{
-                        padding: "12px 0",
-                        borderBottom: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                    >
-                      <strong>
-                        {player.players?.ign ||
-                          player.players?.full_name ||
-                          "Unknown Player"}
-                      </strong>
-                      <div>Kills: {player.kills ?? 0}</div>
-                      <div>Assist: {player.assists ?? 0}</div>
-                      <div>Damage: {player.damage ?? 0}</div>
-                      <div>{player.mvp ? "👑 MVP 👑" : ""}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div style={{ opacity: 0.6 }}>
-                    No player stats available for this match.
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <style jsx global>{`
-        input::placeholder {
-          color: rgba(255, 255, 255, 0.4);
-        }
-        input[type="month"]::-webkit-calendar-picker-indicator {
-          filter: invert(1);
-          cursor: pointer;
-        }
-        select option {
-          background: #171118;
-          color: white;
-        }
-      `}</style>
-    </main>
-  );
-}
-
-function SummaryCard({ title, value, color, background }) {
-  return (
-    <div
-      style={{
-        background: `linear-gradient(145deg, ${background}, rgba(10,10,15,0.6))`,
-        backdropFilter: "blur(12px)",
-        border: `1px solid ${color}55`,
-        borderRadius: "20px",
-        padding: "28px",
-        boxShadow: `0 8px 32px ${color}22`,
-      }}
-    >
-      <h3
-        style={{
-          margin: 0,
-          fontSize: "15px",
-          opacity: 0.85,
-        }}
-      >
-        {title}
-      </h3>
-      <h2
-        style={{
-          margin: "12px 0 0",
-          fontSize: "32px",
-          fontWeight: 700,
-          color,
-        }}
-      >
-        ৳{Number(value || 0).toFixed(2)}
-      </h2>
-    </div>
-  );
-}
-
-const inputStyle = {
-  padding: "12px 16px",
-  borderRadius: "12px",
-  border: "1px solid rgba(255,255,255,0.15)",
-  background: "rgba(255,255,255,0.06)",
-  color: "white",
-  fontSize: "14px",
-  outline: "none",
-  minWidth: "180px",
-  flex: 1,
-};
-
-const selectStyle = {
-  padding: "12px 16px",
-  borderRadius: "12px",
-  border: "1px solid rgba(255,255,255,0.15)",
-  background: "#171118",
-  color: "white",
-  fontSize: "14px",
-  outline: "none",
-  minWidth: "200px",
-  flex: 1,
-  cursor: "pointer",
-};
