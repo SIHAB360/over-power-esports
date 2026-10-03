@@ -163,20 +163,42 @@ export async function POST(request) {
       game_id_screenshot: screenshotURL.publicUrl,
     };
 
-    const { data, error } = await supabase
-      .from("players")
-      .insert([playerData])
-      .select();
+  const { data: player, error } = await supabase
+  .from("players")
+  .insert([playerData])
+  .select(`
+    id,
+    full_name,
+    ign,
+    freefire_uid
+  `)
+  .single();
 
-    if (error) {
-      throw error;
-    }
+if (error) {
+  throw error;
+}
 
-    return NextResponse.json({
-      success: true,
-      message: "Registration Successful",
-      data,
-    });
+/*
+  AUTOMATIC PUBLIC PLAYER PROFILE
+
+  Every registered player automatically gets:
+  /players/PLAYER_UUID
+
+  Example:
+  /players/550e8400-e29b-41d4-a716-446655440000
+*/
+
+const publicProfileUrl = `/players/${player.id}`;
+
+return NextResponse.json({
+  success: true,
+  message: "Registration Successful",
+
+  player: {
+    ...player,
+    public_profile_url: publicProfileUrl,
+  },
+});
   } catch (error) {
     return NextResponse.json({
       success: false,
