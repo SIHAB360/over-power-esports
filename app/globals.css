@@ -3307,3 +3307,476 @@ option,
 a {
   font-family: Arial, Helvetica, sans-serif;
 }
+/* =========================================================
+   OVER POWER ESPORTS
+   PREMIUM PUBLIC PLAYER HEADER
+========================================================= */
+
+.profile-header {
+  position: relative;
+  overflow: hidden;
+
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 40px;
+
+  padding: 36px 42px !important;
+
+  background:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 0, 60, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 82% 50%,
+      rgba(0, 255, 157, 0.07),
+      transparent 35%
+    ),
+    #140203;
+
+  border: 1px solid rgba(255, 20, 55, 0.75);
+  border-radius: 22px;
+
+  box-shadow:
+    0 0 25px rgba(255, 0, 50, 0.1),
+    inset 0 0 25px rgba(255, 0, 50, 0.035);
+}
+
+
+/* =========================================================
+   MOVING LIGHT EFFECT
+========================================================= */
+
+.profile-header::before {
+  content: "";
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  top: 50%;
+  left: -300px;
+
+  transform: translateY(-50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 70, 0.22),
+    rgba(255, 0, 70, 0.06) 42%,
+    transparent 70%
+  );
+
+  filter: blur(18px);
+
+  animation: opHeaderLightMove 7s linear infinite;
+
+  pointer-events: none;
+}
+
+
+.profile-header::after {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255, 255, 255, 0.025),
+    rgba(255, 0, 70, 0.09),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  animation: opHeaderSweep 5s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PLAYER HEADING ALIGNMENT
+========================================================= */
+
+.profile-header .player-heading {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start !important;
+  justify-content: center;
+
+  text-align: left !important;
+}
+
+
+.profile-header .player-heading h1,
+.profile-header .player-heading h3,
+.profile-header .player-heading h4,
+.profile-header .player-heading p {
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+
+/* =========================================================
+   IGN — PREMIUM COLOR WAVE
+========================================================= */
+
+.profile-header .player-heading h1 {
+  margin-top: 0;
+  margin-bottom: 14px !important;
+
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.05;
+
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ff1744 20%,
+    #ff8a00 40%,
+    #ffe600 55%,
+    #ffffff 70%,
+    #ff1744 100%
+  );
+
+  background-size: 300% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  animation:
+    opNameColorWave 4s linear infinite,
+    opNameGlow 2.2s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255, 23, 68, 0.45))
+    drop-shadow(0 0 12px rgba(255, 23, 68, 0.2));
+}
+
+
+/* =========================================================
+   ROLE — SNIPER / RUSHER / ETC
+========================================================= */
+
+.profile-header .player-heading h3 {
+  margin: 0 0 7px !important;
+
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 900;
+
+  color: #ff1744;
+
+  text-shadow:
+    0 0 5px rgba(255, 23, 68, 0.85),
+    0 0 14px rgba(255, 23, 68, 0.45);
+
+  animation: opRolePulse 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   TEAM NAME — GOLD/GREEN COLOR WAVE
+========================================================= */
+
+.profile-header .player-heading h4 {
+  margin: 0 0 14px !important;
+
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+
+  background: linear-gradient(
+    90deg,
+    #ffe600,
+    #ff9f00,
+    #00ff9d,
+    #ffe600
+  );
+
+  background-size: 250% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  animation:
+    opTeamWave 3s linear infinite,
+    opTeamGlow 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.profile-header .player-heading p {
+  margin-top: 6px !important;
+  margin-bottom: 0 !important;
+
+  max-width: 620px;
+
+  color: #d7d7d7;
+  font-size: 15px;
+  line-height: 1.7;
+
+  opacity: 0.92;
+}
+
+
+/* =========================================================
+   TOTAL WINNINGS CARD
+========================================================= */
+
+.profile-header .winning-card {
+  position: relative;
+  z-index: 3;
+
+  justify-self: end;
+  align-self: center;
+
+  width: 210px;
+  min-height: 140px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #00ff88 !important;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0, 255, 136, 0.09),
+      rgba(0, 12, 8, 0.92) 70%
+    ) !important;
+
+  box-shadow:
+    0 0 12px rgba(0, 255, 136, 0.55),
+    0 0 30px rgba(0, 255, 136, 0.20),
+    inset 0 0 18px rgba(0, 255, 136, 0.08);
+
+  animation: opWinningGlow 2s ease-in-out infinite;
+}
+
+
+.profile-header .winning-card span {
+  color: #00ff88 !important;
+  font-weight: 900;
+  text-align: center;
+
+  text-shadow:
+    0 0 6px rgba(0, 255, 136, 0.7);
+}
+
+
+.profile-header .winning-card h2 {
+  margin-top: 10px !important;
+
+  color: #ffffff !important;
+
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 14px rgba(0, 255, 136, 0.8),
+    0 0 26px rgba(0, 255, 136, 0.45);
+
+  animation: opMoneyBlink 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes opNameColorWave {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+
+@keyframes opNameGlow {
+  0%,
+  100% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 4px rgba(255, 23, 68, 0.35))
+      drop-shadow(0 0 9px rgba(255, 23, 68, 0.15));
+  }
+
+  50% {
+    opacity: 0.9;
+    filter:
+      drop-shadow(0 0 7px rgba(255, 23, 68, 0.8))
+      drop-shadow(0 0 20px rgba(255, 120, 0, 0.55));
+  }
+}
+
+
+@keyframes opRolePulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    text-shadow:
+      0 0 4px rgba(255, 23, 68, 0.5);
+  }
+
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 8px rgba(255, 23, 68, 1),
+      0 0 18px rgba(255, 23, 68, 0.8),
+      0 0 30px rgba(255, 23, 68, 0.45);
+  }
+}
+
+
+@keyframes opTeamWave {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 250% 50%;
+  }
+}
+
+
+@keyframes opTeamGlow {
+  0%,
+  100% {
+    filter: drop-shadow(
+      0 0 3px rgba(255, 230, 0, 0.35)
+    );
+  }
+
+  50% {
+    filter: drop-shadow(
+      0 0 9px rgba(0, 255, 157, 0.85)
+    );
+  }
+}
+
+
+@keyframes opWinningGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(0, 255, 136, 0.4),
+      0 0 25px rgba(0, 255, 136, 0.15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 18px rgba(0, 255, 136, 0.9),
+      0 0 45px rgba(0, 255, 136, 0.35),
+      inset 0 0 20px rgba(0, 255, 136, 0.1);
+  }
+}
+
+
+@keyframes opMoneyBlink {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+
+  50% {
+    transform: scale(1.055);
+    opacity: 1;
+  }
+}
+
+
+@keyframes opHeaderLightMove {
+  0% {
+    left: -300px;
+  }
+
+  100% {
+    left: calc(100% + 100px);
+  }
+}
+
+
+@keyframes opHeaderSweep {
+  0%,
+  20% {
+    left: -120%;
+  }
+
+  70%,
+  100% {
+    left: 150%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .profile-header {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+
+    padding: 28px 22px !important;
+  }
+
+  .profile-header .player-heading {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .profile-header .player-heading h1,
+  .profile-header .player-heading h3,
+  .profile-header .player-heading h4,
+  .profile-header .player-heading p {
+    text-align: center !important;
+  }
+
+  .profile-header .winning-card {
+    justify-self: center;
+
+    width: min(100%, 230px);
+  }
+}
+
+
+/* Reduce animation for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .profile-header::before,
+  .profile-header::after,
+  .profile-header .player-heading h1,
+  .profile-header .player-heading h3,
+  .profile-header .player-heading h4,
+  .profile-header .winning-card,
+  .profile-header .winning-card h2 {
+    animation: none !important;
+  }
+}
