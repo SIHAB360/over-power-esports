@@ -71,15 +71,24 @@ export default function PlayerDashboard() {
   */
 
   const { data: stats, error: statsError } = await supabase
-    .from("match_player_stats")
-    .select(`
-      kills,
-      assists,
-      damage,
-      mvp,
-      placement
-    `)
-    .eq("player_id", data.id);
+  .from("match_player_stats")
+  .select(`
+    id,
+    match_id,
+    kills,
+    assists,
+    damage,
+    mvp,
+    placement,
+    matches (
+      id,
+      match_date,
+      created_at,
+      match_type,
+      status
+    )
+  `)
+  .eq("player_id", data.id);
 
   if (statsError) {
     console.error("PLAYER STATS ERROR:", statsError);
