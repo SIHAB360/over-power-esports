@@ -43,63 +43,143 @@ export default function PlayerDashboard() {
       setLoading(false);
     }
   };
-  const loadPlayer = async (userId) => {
+ const loadPlayer = async (userId) => {
+  console.log("LOAD PLAYER START", userId);
 
-    console.log("LOAD PLAYER START", userId);
-    
-    const { data, error } = await supabase
-      .from("players")
-      .select("*")
-      .eq("user_id", userId)
-      .maybeSingle();
+  /*
+    STEP 1
+    LOAD CURRENT LOGGED-IN PLAYER
+  */
 
-    if(error || !data){
+  const { data, error } = await supabase
+    .from("players")
+    .select("*")
+    .eq("user_id", userId)
+    .maybeSingle();
 
-  setErrorMessage("Player profile not found.");
+  if (error || !data) {
+    console.error("PLAYER LOAD ERROR:", error);
+
+    setErrorMessage("Player profile not found.");
+    setLoading(false);
+    return;
+  }
+
+  /*
+    STEP 2
+    LOAD ALL-TIME MATCH STATISTICS
+  */
+
+  const { data: stats, error: statsError } = await supabase
+    .from("match_player_stats")
+    .select(`
+      kills,
+      assists,
+      damage,
+      mvp,
+      placement
+    `)
+    .eq("player_id", data.id);
+
+  if (statsError) {
+    console.error("PLAYER STATS ERROR:", statsError);
+
+    setErrorMessage("Player statistics could not be loaded.");
+    setLoading(false);
+    return;
+  }
+
+  /*
+    STEP 3
+    LOAD ALL-TIME PLAYER EARNINGS
+
+    IMPORTANT:
+    এখানে কোনো date/month filter নেই।
+
+    তাই player যতদিন যত match earning পাবে,
+    সব player_earnings.amount যোগ হয়ে
+    lifetime total earnings হবে।
+  */
+
+  const { data: earnings, error: earningsError } = await supabase
+    .from("player_earnings")
+    .select("amount")
+    .eq("player_id", data.id);
+
+  if (earningsError) {
+    console.error("PLAYER EARNINGS ERROR:", earningsError);
+
+    setErrorMessage("Player earnings could not be loaded.");
+    setLoading(false);
+    return;
+  }
+
+  /*
+    ALL-TIME STATS CALCULATION
+  */
+
+  const matches = stats?.length || 0;
+
+  const kills =
+    stats?.reduce(
+      (sum, item) => sum + Number(item.kills || 0),
+      0
+    ) || 0;
+
+  const assists =
+    stats?.reduce(
+      (sum, item) => sum + Number(item.assists || 0),
+      0
+    ) || 0;
+
+  const damage =
+    stats?.reduce(
+      (sum, item) => sum + Number(item.damage || 0),
+      0
+    ) || 0;
+
+  const mvp =
+    stats?.filter(
+      (item) => item.mvp === true
+    ).length || 0;
+
+  const wins =
+    stats?.filter(
+      (item) => Number(item.placement) === 1
+    ).length || 0;
+
+  /*
+    ALL-TIME EARNINGS CALCULATION
+  */
+
+  const totalEarnings =
+    earnings?.reduce(
+      (sum, item) => sum + Number(item.amount || 0),
+      0
+    ) || 0;
+
+  /*
+    FINAL PLAYER DASHBOARD DATA
+  */
+
+  setPlayer({
+    ...data,
+
+    matches_played: matches,
+    wins,
+    total_kills: kills,
+    total_assists: assists,
+    total_damage: damage,
+    total_mvp: mvp,
+
+    /*
+      Lifetime / All-Time
+      কোনো monthly reset নেই।
+    */
+    total_earnings: totalEarnings,
+  });
+
   setLoading(false);
-  return;
-
-}
-
-    const { data: stats, error: statsError } = await supabase
-.from("match_player_stats")
-.select("*")
-.eq("player_id", data.id);
-
-if(statsError){
-  setErrorMessage("Player profile could not be found.");
-  setLoading(false);
-  return;
-}
-
-
-const matches =
-stats?.length || 0;
-
-
-const kills =
-stats?.reduce(
-(sum,item)=> sum + (item.kills || 0),
-0
-) || 0;
-
-
-const wins =
-stats?.filter(
-(item)=> item.placement === 1
-).length || 0;
-
-
-setPlayer({
-  ...data,
-  matches_played: matches,
-  wins: wins,
-  total_kills: kills
-});
-
-
-setLoading(false);
-
 };
 
   const handleLogout = async () => {
