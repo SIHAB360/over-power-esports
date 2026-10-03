@@ -656,12 +656,9 @@ export default async function PlayerProfile({ params }) {
      PLAYER EARNINGS
   ======================================================= */
 
-  let earnings = [];
-
-  /* =========================================================
+/* =======================================================
    PUBLIC ALL-TIME TOTAL WINNINGS
-   Always reads fresh lifetime earnings from Supabase.
-========================================================= */
+======================================================= */
 
 let totalEarning = 0;
 
@@ -682,9 +679,33 @@ if (player?.id) {
       earningsError
     );
   } else {
-    totalEarning = Number(earningsTotal ?? 0);
+    totalEarning = Number(
+      earningsTotal ?? 0
+    );
   }
 }
+
+/* =======================================================
+   PLAYER STATUS
+======================================================= */
+
+const statusValue = String(
+  player?.status || ""
+)
+  .trim()
+  .toLowerCase();
+
+const isActive =
+  statusValue === "active" ||
+  statusValue === "approved" ||
+  statusValue === "verified";
+
+/* =======================================================
+   PAGE OUTPUT
+======================================================= */
+
+return (
+  <section className="esports-profile">
       {/* ===================================================
           PROFILE HEADER
       =================================================== */}
