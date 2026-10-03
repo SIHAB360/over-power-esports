@@ -1,5 +1,7 @@
 import CopyUID from "../../components/CopyUID";
 import { supabase } from "../../lib/supabase";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /* =========================================================
    STATIC PUBLIC PLAYER DATA
@@ -656,15 +658,16 @@ export default async function PlayerProfile({ params }) {
 
   let earnings = [];
 
-  /* =======================================================
-   PUBLIC ALL-TIME PLAYER EARNINGS
-======================================================= */
+  /* =========================================================
+   PUBLIC ALL-TIME TOTAL WINNINGS
+   Always reads fresh lifetime earnings from Supabase.
+========================================================= */
 
 let totalEarning = 0;
 
-if (player.id) {
+if (player?.id) {
   const {
-    data: publicTotalEarnings,
+    data: earningsTotal,
     error: earningsError,
   } = await supabase.rpc(
     "get_public_player_total_earnings",
@@ -675,25 +678,13 @@ if (player.id) {
 
   if (earningsError) {
     console.error(
-      "PUBLIC PLAYER EARNINGS ERROR:",
+      "PUBLIC TOTAL WINNINGS ERROR:",
       earningsError
     );
   } else {
-    totalEarning = Number(
-      publicTotalEarnings || 0
-    );
+    totalEarning = Number(earningsTotal ?? 0);
   }
 }
-
-  const statusValue = String(player.status || "").toLowerCase();
-
-  const isActive =
-    statusValue === "active" ||
-    statusValue === "approved" ||
-    statusValue === "verified";
-
-  return (
-    <section className="esports-profile">
       {/* ===================================================
           PROFILE HEADER
       =================================================== */}
