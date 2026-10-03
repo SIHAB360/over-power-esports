@@ -3780,3 +3780,170 @@ a {
     animation: none !important;
   }
 }
+/* =========================================================
+   PUBLIC PLAYER HEADER
+   TEXT CLARITY + PREMIUM HIGHLIGHT FIX
+========================================================= */
+
+/* IGN */
+.profile-header .player-heading h1 {
+  color: #ffffff !important;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ff335f 28%,
+    #ff9d00 55%,
+    #ffe600 72%,
+    #ffffff 100%
+  ) !important;
+
+  background-size: 250% 100% !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+
+  font-weight: 950 !important;
+  letter-spacing: 1.2px !important;
+
+  /* IMPORTANT:
+     Strong glow বাদ দিয়ে sharp highlight */
+  filter: none !important;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.18),
+    0 0 3px rgba(255, 23, 68, 0.32) !important;
+
+  opacity: 1 !important;
+
+  animation:
+    opNameColorWave 4s linear infinite !important;
+}
+
+
+/* PRIMARY ROLE */
+.profile-header .player-heading h3 {
+  color: #ff3156 !important;
+
+  font-weight: 900 !important;
+
+  text-shadow:
+    0 0 2px rgba(255, 23, 68, 0.8),
+    0 0 6px rgba(255, 23, 68, 0.25) !important;
+
+  filter: none !important;
+  opacity: 1 !important;
+
+  animation:
+    opRoleSharpPulse 2s ease-in-out infinite !important;
+}
+
+
+/* TEAM */
+.profile-header .player-heading h4 {
+  background: linear-gradient(
+    90deg,
+    #ffe600,
+    #ffb000,
+    #57ff9c,
+    #ffe600
+  ) !important;
+
+  background-size: 220% 100% !important;
+
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+
+  font-weight: 900 !important;
+
+  filter: none !important;
+
+  text-shadow:
+    0 0 2px rgba(255, 230, 0, 0.2) !important;
+
+  opacity: 1 !important;
+
+  animation:
+    opTeamWave 3s linear infinite !important;
+}
+
+
+/* DESCRIPTION */
+.profile-header .player-heading p {
+  color: #f1f1f1 !important;
+
+  font-weight: 500 !important;
+
+  opacity: 1 !important;
+
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+
+
+/* TOTAL WINNINGS LABEL */
+.profile-header .winning-card span {
+  color: #34ff9d !important;
+
+  font-weight: 950 !important;
+
+  text-shadow:
+    0 0 3px rgba(0, 255, 136, 0.4) !important;
+}
+
+
+/* TOTAL WINNINGS MONEY */
+.profile-header .winning-card h2 {
+  color: #ffffff !important;
+
+  font-weight: 950 !important;
+
+  letter-spacing: 0.4px !important;
+
+  text-shadow:
+    0 0 2px #ffffff,
+    0 0 6px rgba(0, 255, 136, 0.45) !important;
+
+  filter: none !important;
+
+  animation:
+    opMoneySharpPulse 2s ease-in-out infinite !important;
+}
+
+
+/* =========================================================
+   SHARP ANIMATIONS
+========================================================= */
+
+@keyframes opRoleSharpPulse {
+  0%,
+  100% {
+    color: #ff3156;
+    text-shadow:
+      0 0 2px rgba(255, 23, 68, 0.7),
+      0 0 5px rgba(255, 23, 68, 0.2);
+  }
+
+  50% {
+    color: #ff6480;
+    text-shadow:
+      0 0 3px rgba(255, 23, 68, 0.9),
+      0 0 8px rgba(255, 23, 68, 0.35);
+  }
+}
+
+
+@keyframes opMoneySharpPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.025);
+    opacity: 1;
+  }
+}
