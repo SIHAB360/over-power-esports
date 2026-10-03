@@ -656,19 +656,34 @@ export default async function PlayerProfile({ params }) {
 
   let earnings = [];
 
-  if (player.id) {
-    const { data } = await supabase
-      .from("player_earnings")
-      .select("amount")
-      .eq("player_id", player.id);
+  /* =======================================================
+   PUBLIC ALL-TIME PLAYER EARNINGS
+======================================================= */
 
-    earnings = data || [];
-  }
+let totalEarning = 0;
 
-  const totalEarning = earnings.reduce(
-    (sum, item) => sum + Number(item.amount || 0),
-    0
+if (player.id) {
+  const {
+    data: publicTotalEarnings,
+    error: earningsError,
+  } = await supabase.rpc(
+    "get_public_player_total_earnings",
+    {
+      target_player_id: player.id,
+    }
   );
+
+  if (earningsError) {
+    console.error(
+      "PUBLIC PLAYER EARNINGS ERROR:",
+      earningsError
+    );
+  } else {
+    totalEarning = Number(
+      publicTotalEarnings || 0
+    );
+  }
+}
 
   const statusValue = String(player.status || "").toLowerCase();
 
