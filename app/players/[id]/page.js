@@ -426,9 +426,8 @@ const { id } = await params;
 const { data: player, error } = await supabase
   .from("players")
   .select("*")
-  .eq("id", id)
+  .ilike("ign", `%${id}%`)
   .single();
-
 
 if(error || !player){
 
