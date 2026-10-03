@@ -17,7 +17,7 @@ const [customTo, setCustomTo] = useState("");
   useEffect(() => {
     checkUser();
   }, []);
- useEffect(() => {
+useEffect(() => {
   if (!player?.id || !player?.user_id) {
     return;
   }
@@ -30,14 +30,17 @@ const [customTo, setCustomTo] = useState("");
   const channel = supabase
     .channel(`player-dashboard-${player.id}`)
 
-    /* PLAYER MATCH STATS */
+    /*
+      MATCH STATS REALTIME
+      No database-side filter.
+      We verify player_id inside callback.
+    */
     .on(
       "postgres_changes",
       {
         event: "*",
         schema: "public",
         table: "match_player_stats",
-        filter: `player_id=eq.${player.id}`,
       },
       async (payload) => {
         console.log(
@@ -45,20 +48,80 @@ const [customTo, setCustomTo] = useState("");
           payload
         );
 
-        await loadPlayer(
-          player.user_id
-        );
+        const changedPlayerId =
+          payload?.new?.player_id ||
+          payload?.old?.player_id;
+
+        if (
+          changedPlayerId === player.id
+        ) {
+          console.log(
+            "THIS PLAYER STATS CHANGED"
+          );
+
+          await loadPlayer(
+            player.user_id
+          );
+        }
       }
     )
 
-    /* PLAYER EARNINGS */
+    /*
+      PLAYER EARNINGS REALTIME
+    */
     .on(
       "postgres_changes",
       {
         event: "*",
         schema: "public",
         table: "player_earnings",
-        filter: `player_id=eq.${player.id}`,
+      },
+      async (payload) => {
+        console.log(
+          "REALTIME EARNINGS EVENT:",
+          payload
+        );
+
+        const changedPlayerId =
+          payload?.new?.player_id ||
+          payload?.old?.player_id;
+
+        if (
+          changedPlayerId === player.id
+        ) {
+          console.log(
+            "THIS PLAYER EARNINGS CHANGED"
+          );
+
+          await loadPlayer(
+            player.user_id
+          );
+        }
+      }
+    )
+
+    .subscribe((status, error) => {
+      console.log(
+        "REALTIME STATUS:",
+        status
+      );
+
+      if (error) {
+        console.error(
+          "REALTIME ERROR:",
+          error
+        );
+      }
+    });
+
+  return () => {
+    console.log(
+      "REMOVING REALTIME CHANNEL"
+    );
+
+    supabase.removeChannel(channel);
+  };
+}, [player?.id, player?.user_id]);
       },
       async (payload) => {
         console.log(
