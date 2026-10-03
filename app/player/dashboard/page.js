@@ -14,9 +14,10 @@ const [filterType, setFilterType] = useState("all");
 const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+useEffect(() => {
+  checkUser();
+}, []);
+
 useEffect(() => {
   if (!player?.id || !player?.user_id) {
     return;
@@ -29,12 +30,6 @@ useEffect(() => {
 
   const channel = supabase
     .channel(`player-dashboard-${player.id}`)
-
-    /*
-      MATCH STATS REALTIME
-      No database-side filter.
-      We verify player_id inside callback.
-    */
     .on(
       "postgres_changes",
       {
@@ -52,23 +47,11 @@ useEffect(() => {
           payload?.new?.player_id ||
           payload?.old?.player_id;
 
-        if (
-          changedPlayerId === player.id
-        ) {
-          console.log(
-            "THIS PLAYER STATS CHANGED"
-          );
-
-          await loadPlayer(
-            player.user_id
-          );
+        if (changedPlayerId === player.id) {
+          await loadPlayer(player.user_id);
         }
       }
     )
-
-    /*
-      PLAYER EARNINGS REALTIME
-    */
     .on(
       "postgres_changes",
       {
@@ -86,20 +69,11 @@ useEffect(() => {
           payload?.new?.player_id ||
           payload?.old?.player_id;
 
-        if (
-          changedPlayerId === player.id
-        ) {
-          console.log(
-            "THIS PLAYER EARNINGS CHANGED"
-          );
-
-          await loadPlayer(
-            player.user_id
-          );
+        if (changedPlayerId === player.id) {
+          await loadPlayer(player.user_id);
         }
       }
     )
-
     .subscribe((status, error) => {
       console.log(
         "REALTIME STATUS:",
@@ -115,38 +89,6 @@ useEffect(() => {
     });
 
   return () => {
-    console.log(
-      "REMOVING REALTIME CHANNEL"
-    );
-
-    supabase.removeChannel(channel);
-  };
-}, [player?.id, player?.user_id]);
-  
-      async (payload) => {
-        console.log(
-          "REALTIME EARNINGS EVENT:",
-          payload
-        );
-
-        await loadPlayer(
-          player.user_id
-        );
-      }
-    )
-
-    .subscribe((status) => {
-      console.log(
-        "REALTIME STATUS:",
-        status
-      );
-    });
-
-  return () => {
-    console.log(
-      "REMOVING REALTIME CHANNEL"
-    );
-
     supabase.removeChannel(channel);
   };
 }, [player?.id, player?.user_id]);
