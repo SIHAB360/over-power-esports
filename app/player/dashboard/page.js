@@ -17,6 +17,48 @@ const [customTo, setCustomTo] = useState("");
   useEffect(() => {
     checkUser();
   }, []);
+  useEffect(() => {
+  if (!player?.id || !player?.user_id) {
+    return;
+  }
+
+  const channel = supabase
+    .channel(`player-dashboard-${player.id}`)
+
+    /* PLAYER MATCH STATS */
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "match_player_stats",
+        filter: `player_id=eq.${player.id}`,
+      },
+      async () => {
+        await loadPlayer(player.user_id);
+      }
+    )
+
+    /* PLAYER EARNINGS */
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "player_earnings",
+        filter: `player_id=eq.${player.id}`,
+      },
+      async () => {
+        await loadPlayer(player.user_id);
+      }
+    )
+
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, [player?.id, player?.user_id]);
 
   const checkUser = async () => {
     try {
