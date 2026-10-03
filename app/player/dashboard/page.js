@@ -307,30 +307,49 @@ export default function PlayerDashboard() {
           </div>
         </section>
 
-        {/* Stats */}
-        <div className="stats">
-          <div className="stat">
-            <span>⚔</span>
-            <div>
-              <small>MATCHES</small>
-              <b>{player?.matches_played || 0}</b>
-            </div>
-          </div>
-          <div className="stat">
-            <span>🏆</span>
-            <div>
-              <small>WINS</small>
-              <b>{player?.wins || 0}</b>
-            </div>
-          </div>
-          <div className="stat">
-            <span>💀</span>
-            <div>
-              <small>KILLS</small>
-              <b>{player?.total_kills || 0}</b>
-            </div>
-          </div>
-        </div>
+       {/* Stats */}
+<div className="stats">
+  <div className="stat">
+    <span>⚔</span>
+    <div>
+      <small>MATCHES</small>
+      <b>{player?.matches_played || 0}</b>
+    </div>
+  </div>
+
+  <div className="stat">
+    <span>🏆</span>
+    <div>
+      <small>WINS</small>
+      <b>{player?.wins || 0}</b>
+    </div>
+  </div>
+
+  <div className="stat">
+    <span>💀</span>
+    <div>
+      <small>KILLS</small>
+      <b>{player?.total_kills || 0}</b>
+    </div>
+  </div>
+
+  <div className="stat earning-stat">
+    <span>💰</span>
+    <div>
+      <small>ALL-TIME EARNINGS</small>
+
+      <b>
+        ৳
+        {Number(
+          player?.total_earnings || 0
+        ).toLocaleString("en-BD", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        })}
+      </b>
+    </div>
+  </div>
+</div>
 
         {/* Player Info */}
         <section className="card card-red">
@@ -691,7 +710,7 @@ export default function PlayerDashboard() {
         /* Stats */
         .stats {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 10px;
           margin-bottom: 16px;
         }
