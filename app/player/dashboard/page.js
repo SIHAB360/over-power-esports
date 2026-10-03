@@ -122,7 +122,7 @@ useEffect(() => {
     supabase.removeChannel(channel);
   };
 }, [player?.id, player?.user_id]);
-      },
+  
       async (payload) => {
         console.log(
           "REALTIME EARNINGS EVENT:",
