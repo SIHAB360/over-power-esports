@@ -750,76 +750,88 @@ console.log("STATS PAYLOAD:", statsPayload);
 
   }
   } 
-        /*
-          STEP 5
-          PLAYER EARNINGS
+       /*
+  STEP 5
+  PLAYER EARNINGS
 
-          ONLY THE 4 PLAYERS
-          IN match_players GET PAID.
-        */
+  IMPORTANT:
+  Only COMPLETED matches can add money
+  to player lifetime earnings.
 
-        if (playerPool > 0) {
+  Exactly 4 selected players receive
+  the 70% player profit share.
+*/
 
-         const playerEarningRows =
-  selectedPlayers.map(
+if (
+  form.status === "completed" &&
+  playerPool > 0 &&
+  selectedPlayers.length === REQUIRED_PLAYERS
+) {
+  const finalPerPlayerAmount = Number(
+    perPlayerAmount.toFixed(2)
+  );
+
+  const finalManagementAmount = Number(
+    managementAmount.toFixed(2)
+  );
+
+  const playerEarningRows = selectedPlayers.map(
     (player) => ({
-      player_id:
-        player.id,
-
-      match_id:
-        match.id,
-
-      team_id:
-        form.team1_id,
-
-      amount:
-        perPlayerAmount,
+      player_id: player.id,
+      match_id: match.id,
+      team_id: form.team1_id,
+      amount: finalPerPlayerAmount,
     })
   );
 
+  const { error: playerEarningsError } =
+    await supabase
+      .from("player_earnings")
+      .insert(playerEarningRows);
 
-          const {
-            error:
-              playerEarningsError,
-          } = await supabase
-            .from("player_earnings")
-            .insert(
-              playerEarningRows
-            );
+  if (playerEarningsError) {
+    console.error(
+      "PLAYER EARNINGS ERROR:",
+      playerEarningsError
+    );
 
+    throw playerEarningsError;
+  }
 
-          if (playerEarningsError) {
-            throw playerEarningsError;
-          }
+  console.log(
+    "PLAYER EARNINGS SAVED:",
+    playerEarningRows
+  );
 
+  /*
+    MANAGEMENT / TEAM EARNING
+  */
 
-          /*
-            MANAGEMENT / TEAM SHARE
-          */
+  const { error: teamEarningsError } =
+    await supabase
+      .from("team_earnings")
+      .insert([
+        {
+          team_id: form.team1_id,
+          match_id: match.id,
+          amount: finalManagementAmount,
+        },
+      ]);
 
-          const {
-            error:
-              teamEarningsError,
-          } = await supabase
-            .from("team_earnings")
-            .insert([
-              {
-                team_id:
-                  form.team1_id,
+  if (teamEarningsError) {
+    console.error(
+      "TEAM EARNINGS ERROR:",
+      teamEarningsError
+    );
 
-                match_id:
-                  match.id,
+    throw teamEarningsError;
+  }
 
-                amount:
-                  managementAmount,
-              },
-            ]);
-
-
-          if (teamEarningsError) {
-            throw teamEarningsError;
-          }
-        }
+  console.log(
+    "TEAM EARNING SAVED:",
+    finalManagementAmount
+  );
+}
 
       setMessage(
         form.status === "completed"
