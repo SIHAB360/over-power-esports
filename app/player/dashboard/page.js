@@ -566,6 +566,245 @@ const bestPlacement =
 
         {/* Player Info */}
         <section className="card card-red">
+{/* Career Statistics Filter */}
+<section className="career-section">
+
+  <div className="career-header">
+
+    <div>
+      <h3>📊 CAREER STATISTICS</h3>
+      <p>
+        Filter your match performance by time period
+      </p>
+    </div>
+
+  </div>
+
+
+  {/* FILTER BUTTONS */}
+
+  <div className="filter-buttons">
+
+    <button
+      type="button"
+      className={
+        filterType === "all"
+          ? "filter-btn active"
+          : "filter-btn"
+      }
+      onClick={() =>
+        setFilterType("all")
+      }
+    >
+      ALL TIME
+    </button>
+
+
+    <button
+      type="button"
+      className={
+        filterType === "week"
+          ? "filter-btn active"
+          : "filter-btn"
+      }
+      onClick={() =>
+        setFilterType("week")
+      }
+    >
+      THIS WEEK
+    </button>
+
+
+    <button
+      type="button"
+      className={
+        filterType === "month"
+          ? "filter-btn active"
+          : "filter-btn"
+      }
+      onClick={() =>
+        setFilterType("month")
+      }
+    >
+      THIS MONTH
+    </button>
+
+
+    <button
+      type="button"
+      className={
+        filterType === "custom"
+          ? "filter-btn active"
+          : "filter-btn"
+      }
+      onClick={() =>
+        setFilterType("custom")
+      }
+    >
+      CUSTOM DATE
+    </button>
+
+  </div>
+
+
+  {/* CUSTOM DATE RANGE */}
+
+  {filterType === "custom" && (
+
+    <div className="custom-date-filter">
+
+      <div>
+        <label>
+          FROM DATE
+        </label>
+
+        <input
+          type="date"
+          value={customFrom}
+          onChange={(e) =>
+            setCustomFrom(
+              e.target.value
+            )
+          }
+        />
+      </div>
+
+
+      <div>
+        <label>
+          TO DATE
+        </label>
+
+        <input
+          type="date"
+          value={customTo}
+          min={customFrom || undefined}
+          onChange={(e) =>
+            setCustomTo(
+              e.target.value
+            )
+          }
+        />
+      </div>
+
+
+      <button
+        type="button"
+        className="clear-date-btn"
+        onClick={() => {
+          setCustomFrom("");
+          setCustomTo("");
+        }}
+      >
+        CLEAR
+      </button>
+
+    </div>
+
+  )}
+
+
+  {/* FILTERED STATS */}
+
+  <div className="career-grid">
+
+
+    <div className="career-stat">
+      <span>⚔️</span>
+      <small>MATCHES</small>
+      <strong>
+        {filteredMatches}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>🏆</span>
+      <small>WINS</small>
+      <strong>
+        {filteredWins}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>💀</span>
+      <small>KILLS</small>
+      <strong>
+        {filteredKills}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>🤝</span>
+      <small>ASSISTS</small>
+      <strong>
+        {filteredAssists}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>💥</span>
+      <small>DAMAGE</small>
+      <strong>
+        {filteredDamage}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>⭐</span>
+      <small>MVP</small>
+      <strong>
+        {filteredMVP}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>📈</span>
+      <small>WIN RATE</small>
+      <strong>
+        {filteredWinRate}%
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>🎯</span>
+      <small>AVG KILLS</small>
+      <strong>
+        {averageKills}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>🔥</span>
+      <small>AVG DAMAGE</small>
+      <strong>
+        {averageDamage}
+      </strong>
+    </div>
+
+
+    <div className="career-stat">
+      <span>🥇</span>
+      <small>BEST PLACEMENT</small>
+      <strong>
+        {bestPlacement > 0
+          ? `#${bestPlacement}`
+          : "N/A"}
+      </strong>
+    </div>
+
+
+  </div>
+
+</section>
+          
           <h3>PLAYER INFORMATION</h3>
           <div className="grid">
             <div>
@@ -953,6 +1192,156 @@ const bestPlacement =
         }
 
         /* Cards */
+        /* ===== Career Statistics ===== */
+
+.career-section {
+  background: rgba(18, 6, 10, 0.92);
+  border: 1px solid rgba(255, 23, 68, 0.35);
+  border-radius: 18px;
+  padding: 22px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 30px rgba(255, 23, 68, 0.1);
+}
+
+.career-header h3 {
+  margin: 0;
+  color: #ff1744;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.career-header p {
+  margin: 6px 0 0;
+  color: #777;
+  font-size: 11px;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 16px;
+}
+
+.filter-btn {
+  border: 1px solid rgba(255, 23, 68, 0.28);
+  background: rgba(255, 23, 68, 0.06);
+  color: #aaa;
+  padding: 9px 13px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.filter-btn:hover {
+  color: #fff;
+  border-color: #ff1744;
+}
+
+.filter-btn.active {
+  color: #fff;
+  background: #ff1744;
+  border-color: #ff1744;
+  box-shadow: 0 0 18px rgba(255, 23, 68, 0.35);
+}
+
+.custom-date-filter {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.custom-date-filter label {
+  display: block;
+  margin-bottom: 6px;
+  color: #777;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.custom-date-filter input {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  color: white;
+  color-scheme: dark;
+  background: #09090c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  outline: none;
+}
+
+.clear-date-btn {
+  height: 40px;
+  padding: 0 15px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 23, 68, 0.4);
+  background: rgba(255, 23, 68, 0.1);
+  color: #ff4d6d;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.career-stat {
+  min-height: 105px;
+  padding: 14px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 23, 68, 0.16);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.career-stat span {
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+.career-stat small {
+  color: #777;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+.career-stat strong {
+  margin-top: 5px;
+  color: #00ff9d;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+@media (max-width: 650px) {
+  .career-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .custom-date-filter {
+    grid-template-columns: 1fr;
+  }
+
+  .clear-date-btn {
+    width: 100%;
+  }
+}
         .card {
           background: rgba(18, 6, 10, 0.92);
           border-radius: 16px;
