@@ -5,9 +5,14 @@ import { useRouter } from "next/navigation";
 
 export default function PlayerDashboard() {
   const router = useRouter();
-  const [player, setPlayer] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+ const [player, setPlayer] = useState(null);
+const [loading, setLoading] = useState(true);
+const [errorMessage, setErrorMessage] = useState("");
+
+const [allStats, setAllStats] = useState([]);
+const [filterType, setFilterType] = useState("all");
+const [customFrom, setCustomFrom] = useState("");
+const [customTo, setCustomTo] = useState("");
 
   useEffect(() => {
     checkUser();
@@ -97,6 +102,7 @@ export default function PlayerDashboard() {
     setLoading(false);
     return;
   }
+   setAllStats(stats || []);
 
   /*
     STEP 3
@@ -270,6 +276,204 @@ export default function PlayerDashboard() {
 
   const weapons = listFromValue(player?.expert_weapon);
   const internet = listFromValue(player?.internet_connection);
+/* =========================================================
+   CAREER STATS FILTER ENGINE
+========================================================= */
+
+const filteredStats = allStats.filter((stat) => {
+  if (filterType === "all") {
+    return true;
+  }
+
+  const matchData = Array.isArray(stat.matches)
+    ? stat.matches[0]
+    : stat.matches;
+
+  const rawDate =
+    matchData?.match_date ||
+    matchData?.created_at;
+
+  if (!rawDate) {
+    return false;
+  }
+
+  const matchDate = new Date(rawDate);
+
+  if (Number.isNaN(matchDate.getTime())) {
+    return false;
+  }
+
+  const now = new Date();
+
+  /* THIS WEEK */
+  if (filterType === "week") {
+    const startOfWeek = new Date(now);
+
+    const day = startOfWeek.getDay();
+    const diff =
+      day === 0
+        ? 6
+        : day - 1;
+
+    startOfWeek.setDate(
+      startOfWeek.getDate() - diff
+    );
+
+    startOfWeek.setHours(
+      0,
+      0,
+      0,
+      0
+    );
+
+    return matchDate >= startOfWeek &&
+      matchDate <= now;
+  }
+
+  /* THIS MONTH */
+  if (filterType === "month") {
+    return (
+      matchDate.getFullYear() ===
+        now.getFullYear() &&
+      matchDate.getMonth() ===
+        now.getMonth()
+    );
+  }
+
+  /* CUSTOM DATE RANGE */
+  if (filterType === "custom") {
+    if (!customFrom && !customTo) {
+      return true;
+    }
+
+    let fromDate = null;
+    let toDate = null;
+
+    if (customFrom) {
+      fromDate = new Date(
+        `${customFrom}T00:00:00`
+      );
+    }
+
+    if (customTo) {
+      toDate = new Date(
+        `${customTo}T23:59:59`
+      );
+    }
+
+    if (
+      fromDate &&
+      matchDate < fromDate
+    ) {
+      return false;
+    }
+
+    if (
+      toDate &&
+      matchDate > toDate
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  return true;
+});
+
+
+/* =========================================================
+   FILTERED CAREER CALCULATIONS
+========================================================= */
+
+const filteredMatches =
+  filteredStats.length;
+
+
+const filteredWins =
+  filteredStats.filter(
+    (item) =>
+      Number(item.placement) === 1
+  ).length;
+
+
+const filteredKills =
+  filteredStats.reduce(
+    (sum, item) =>
+      sum + Number(item.kills || 0),
+    0
+  );
+
+
+const filteredAssists =
+  filteredStats.reduce(
+    (sum, item) =>
+      sum + Number(item.assists || 0),
+    0
+  );
+
+
+const filteredDamage =
+  filteredStats.reduce(
+    (sum, item) =>
+      sum + Number(item.damage || 0),
+    0
+  );
+
+
+const filteredMVP =
+  filteredStats.filter(
+    (item) =>
+      item.mvp === true
+  ).length;
+
+
+const filteredWinRate =
+  filteredMatches > 0
+    ? (
+        (filteredWins /
+          filteredMatches) *
+        100
+      ).toFixed(1)
+    : "0.0";
+
+
+const averageKills =
+  filteredMatches > 0
+    ? (
+        filteredKills /
+        filteredMatches
+      ).toFixed(2)
+    : "0.00";
+
+
+const averageDamage =
+  filteredMatches > 0
+    ? (
+        filteredDamage /
+        filteredMatches
+      ).toFixed(0)
+    : "0";
+
+
+const validPlacements =
+  filteredStats
+    .map((item) =>
+      Number(item.placement)
+    )
+    .filter(
+      (value) =>
+        Number.isFinite(value) &&
+        value > 0
+    );
+
+
+const bestPlacement =
+  validPlacements.length > 0
+    ? Math.min(
+        ...validPlacements
+      )
+    : 0;
 
   return (
     <main className="page">
