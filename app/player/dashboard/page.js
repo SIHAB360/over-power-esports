@@ -17,10 +17,15 @@ const [customTo, setCustomTo] = useState("");
   useEffect(() => {
     checkUser();
   }, []);
-  useEffect(() => {
+ useEffect(() => {
   if (!player?.id || !player?.user_id) {
     return;
   }
+
+  console.log(
+    "STARTING REALTIME FOR PLAYER:",
+    player.id
+  );
 
   const channel = supabase
     .channel(`player-dashboard-${player.id}`)
@@ -34,8 +39,15 @@ const [customTo, setCustomTo] = useState("");
         table: "match_player_stats",
         filter: `player_id=eq.${player.id}`,
       },
-      async () => {
-        await loadPlayer(player.user_id);
+      async (payload) => {
+        console.log(
+          "REALTIME STATS EVENT:",
+          payload
+        );
+
+        await loadPlayer(
+          player.user_id
+        );
       }
     )
 
@@ -48,18 +60,33 @@ const [customTo, setCustomTo] = useState("");
         table: "player_earnings",
         filter: `player_id=eq.${player.id}`,
       },
-      async () => {
-        await loadPlayer(player.user_id);
+      async (payload) => {
+        console.log(
+          "REALTIME EARNINGS EVENT:",
+          payload
+        );
+
+        await loadPlayer(
+          player.user_id
+        );
       }
     )
 
-    .subscribe();
+    .subscribe((status) => {
+      console.log(
+        "REALTIME STATUS:",
+        status
+      );
+    });
 
   return () => {
+    console.log(
+      "REMOVING REALTIME CHANNEL"
+    );
+
     supabase.removeChannel(channel);
   };
 }, [player?.id, player?.user_id]);
-
   const checkUser = async () => {
     try {
       const {
