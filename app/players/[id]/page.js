@@ -149,8 +149,6 @@ const PLAYER_PROFILES = {
       "V2hA8Sl049Q",
     ],
   },
-
-};
   fixfire: {
     name: "JISAN BISWAS",
     ign: "FixFIRE",
