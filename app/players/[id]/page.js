@@ -618,29 +618,37 @@ export default async function PlayerProfile({ params }) {
   /* =======================================================
      PLAYER MATCH STATISTICS
   ======================================================= */
+let stats = [];
 
-  let stats = [];
+const targetPlayerId = dbPlayer?.id;
 
-  const targetPlayerId = dbPlayer?.id;
-  console.log("PUBLIC PLAYER ID:", targetPlayerId);
+console.log("DB PLAYER:", dbPlayer);
+console.log("TARGET PLAYER ID:", targetPlayerId);
 
 if (targetPlayerId) {
 
   const { data, error } = await supabase
     .from("match_player_stats")
-    .select("*")
-    .eq("player_id", targetPlayerId);
+    .select(
+      "kills, assists, damage, mvp, placement"
+    )
+    .eq(
+      "player_id",
+      targetPlayerId
+    );
 
-  console.log("PUBLIC PLAYER ID:", targetPlayerId);
-  console.log("MATCH DATA:", data);
-  console.log("MATCH ERROR:", error);
+
+  if (error) {
+    console.error(
+      "PLAYER STATS ERROR:",
+      error
+    );
+  }
 
 
-    if (error) {
-      console.error("PLAYER STATS ERROR:", error);
-    }
+  stats = data || [];
 
-    stats = data || [];
+}
 
     console.log(
       "PUBLIC PROFILE STATS:",
