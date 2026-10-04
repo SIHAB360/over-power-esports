@@ -240,23 +240,56 @@ function resolveTeamName(teamName) {
 
 
 function playerAlreadyExists(players, dbPlayer) {
+
   const dbIgn = normalize(dbPlayer.ign);
   const dbName = normalize(dbPlayer.full_name);
 
+
   return players.some((player) => {
-    const currentName = normalize(player.name);
+
+    const currentName =
+      normalize(player.name);
+
 
     if (!currentName) {
       return false;
     }
 
-    return (
+
+    // exact match
+    if (
       currentName === dbIgn ||
-      currentName === dbName ||
-      dbIgn.includes(currentName) ||
-      currentName.includes(dbIgn)
+      currentName === dbName
+    ) {
+      return true;
+    }
+
+
+    // remove common esports prefixes
+    const cleanCurrent =
+      currentName
+      .replace(
+        /^(op|exe|nxe|be1ng)/,
+        ""
+      );
+
+
+    const cleanDb =
+      dbIgn
+      .replace(
+        /^(op|exe|nxe|be1ng)/,
+        ""
+      );
+
+
+    return (
+      cleanCurrent === cleanDb ||
+      cleanCurrent.includes(cleanDb) ||
+      cleanDb.includes(cleanCurrent)
     );
+
   });
+
 }
 
 
