@@ -3912,38 +3912,3 @@ a {
     opMoneySharpPulse 2s ease-in-out infinite !important;
 }
 
-
-/* =========================================================
-   SHARP ANIMATIONS
-========================================================= */
-
-@keyframes opRoleSharpPulse {
-  0%,
-  100% {
-    color: #ff3156;
-    text-shadow:
-      0 0 2px rgba(255, 23, 68, 0.7),
-      0 0 5px rgba(255, 23, 68, 0.2);
-  }
-
-  50% {
-    color: #ff6480;
-    text-shadow:
-      0 0 3px rgba(255, 23, 68, 0.9),
-      0 0 8px rgba(255, 23, 68, 0.35);
-  }
-}
-
-
-@keyframes opMoneySharpPulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.025);
-    opacity: 1;
-  }
-}
