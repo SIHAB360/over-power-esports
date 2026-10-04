@@ -1919,30 +1919,16 @@ No player highlights available yet.
 
 )
 
-
 }
 
 
-
 </div>
-
-
-
-
 
 
 </div>
 
 
-
-
-
-
 </div>
-
-
-
-
 
 
 </section>
