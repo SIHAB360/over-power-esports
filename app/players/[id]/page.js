@@ -812,6 +812,7 @@ if (targetPlayerId) {
 
 }
 
+   
 
 // fallback check
 if (stats.length === 0 && player?.uid) {
