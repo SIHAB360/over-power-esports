@@ -19,20 +19,12 @@ import { supabase } from "../lib/supabase";
 ========================================================= */
 
 
-function normalize(value) {
-
-  return String(value || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
-
-}
-
-
-
 function resolveTeamName(teamName) {
 
   const value =
-    normalize(teamName);
+    String(teamName || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
 
 
   if (!value) {
@@ -41,9 +33,7 @@ function resolveTeamName(teamName) {
 
 
   if (value.includes("elite")) {
-
     return "OVER POWER ELITE";
-
   }
 
 
@@ -51,9 +41,7 @@ function resolveTeamName(teamName) {
     value.includes("main") ||
     value === "overpower"
   ) {
-
     return "OVER POWER MAIN TEAM";
-
   }
 
 
@@ -92,7 +80,6 @@ function canShowPublicly(player) {
 
 
 
-
 /* =========================================================
    COMPONENT
 ========================================================= */
@@ -104,16 +91,20 @@ export default function Teams() {
   const [teams, setTeams] =
     useState([]);
 
+
   const [management, setManagement] =
-  useState([]);
+    useState([]);
+
 
 
   useEffect(() => {
 
-  loadRegisteredPlayers();
-  loadManagement();
+    loadRegisteredPlayers();
 
-}, []);
+    loadManagement();
+
+  }, []);
+
 
 
 
@@ -138,8 +129,7 @@ export default function Teams() {
         instagram_link,
         youtube_link,
         tiktok_link,
-        status,
-        verified
+        status
       `)
       .order(
         "created_at",
@@ -161,49 +151,6 @@ export default function Teams() {
 
     }
 
-async function loadManagement() {
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from("team_management")
-    .select("*")
-    .order(
-      "created_at",
-      {
-        ascending:true,
-      }
-    );
-
-
-  if(error){
-
-    console.error(
-      "MANAGEMENT LOAD ERROR:",
-      error
-    );
-
-    return;
-
-  }
-
-
-  setManagement(
-    data || []
-  );
-
-}
-
-
-
-    const publicPlayers =
-      (data || [])
-      .filter(
-        canShowPublicly
-      );
-
-
 
 
 
@@ -211,10 +158,9 @@ async function loadManagement() {
 
 
 
-
-
-    publicPlayers.forEach(
-      (player)=>{
+    (data || [])
+      .filter(canShowPublicly)
+      .forEach((player)=>{
 
 
         const teamName =
@@ -224,22 +170,16 @@ async function loadManagement() {
 
 
 
-        if(
-          !groupedTeams[teamName]
-        ){
+        if(!groupedTeams[teamName]){
 
           groupedTeams[teamName] = {
 
-            name:
-              teamName,
-
+            name: teamName,
 
             slogan:
               "POWER • UNITY • DOMINATION",
 
-
-            players:[],
-
+            players: [],
 
           };
 
@@ -248,101 +188,119 @@ async function loadManagement() {
 
 
 
-
         groupedTeams[teamName]
-        .players
-        .push({
+          .players
+          .push({
 
-          id:
-            player.id,
-
-
-          name:
-            player.ign ||
-            player.full_name ||
-            "PLAYER",
+            id:
+              player.id,
 
 
-          role:
-            player.primary_role ||
-            "PLAYER",
+            name:
+              player.ign ||
+              player.full_name ||
+              "PLAYER",
 
 
-
-          image:
-            player.profile_image ||
-            player.avatar_url ||
-            "/players/default.png",
+            role:
+              player.primary_role ||
+              "PLAYER",
 
 
-
-          position:
-            "center",
-
-
-
-          social:{
-
-            facebook:
-              player.facebook_link ||
-              "",
+            image:
+              player.profile_image ||
+              player.avatar_url ||
+              "/players/default.png",
 
 
-            instagram:
-              player.instagram_link ||
-              "",
+            social: {
+
+              facebook:
+                player.facebook_link || "",
+
+              instagram:
+                player.instagram_link || "",
+
+              youtube:
+                player.youtube_link || "",
+
+              tiktok:
+                player.tiktok_link || "",
+
+            },
+
+          });
 
 
-            youtube:
-              player.youtube_link ||
-              "",
-
-
-            tiktok:
-              player.tiktok_link ||
-              "",
-
-          },
-
-
-        });
-
-
-      }
-    );
-
-
+      });
 
 
 
     setTeams(
-      Object.values(
-        groupedTeams
-      )
+      Object.values(groupedTeams)
     );
 
 
   }
-  return (
+
+
+
+
+
+
+  async function loadManagement() {
+
+
+    const {
+      data,
+      error
+    } = await supabase
+      .from("team_management")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:true,
+        }
+      );
+
+
+
+    if(error){
+
+      console.error(
+        "MANAGEMENT LOAD ERROR:",
+        error
+      );
+
+      return;
+
+    }
+
+
+
+    setManagement(
+      data || []
+    );
+
+
+  }
+    return (
 
     <section className="teams">
 
 
       <div className="teams-title">
 
-
         <h2>
           OUR TEAMS
         </h2>
 
-
         <div className="title-line"></div>
-
 
         <p>
           POWER • UNITY • DOMINATION
         </p>
-
 
       </div>
 
@@ -353,7 +311,6 @@ async function loadManagement() {
       {
         teams.map(
           (team,index)=>(
-            
 
           <div
             className="team-block"
@@ -366,11 +323,9 @@ async function loadManagement() {
             </h3>
 
 
-
             <p>
               {team.slogan}
             </p>
-
 
 
 
@@ -380,270 +335,159 @@ async function loadManagement() {
 
               {
                 team.players.map(
-                  (player,i)=>{
+                  (player,i)=>(
 
 
-                    const profileUrl =
-                      `/players/${player.id}`;
+                  <div
+                    className="player-card"
+                    key={
+                      player.id ||
+                      `${player.name}-${i}`
+                    }
+                  >
+
+
+
+                    <div className="player-image">
+
+                      <img
+                        src={
+                          player.image
+                        }
+                        alt={
+                          player.name
+                        }
+                      />
+
+                    </div>
 
 
 
 
+                    <h4>
+                      {player.name}
+                    </h4>
 
-                    return (
 
 
-                    <div
+                    <span>
+                      {player.role}
+                    </span>
 
-                      className="player-card"
 
-                      key={
-                        player.id ||
-                        `${player.name}-${i}`
+
+
+                    <div className="social-links">
+
+
+                      {
+                        player.social.facebook && (
+
+                        <a
+                          href={
+                            player.social.facebook
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="facebook"
+                        >
+
+                          <FaFacebookF />
+
+                        </a>
+
+                        )
                       }
 
-                    >
 
 
+                      {
+                        player.social.instagram && (
 
-                      <div className="player-image">
-
-
-                        <img
-
-                          src={
-                            player.image
+                        <a
+                          href={
+                            player.social.instagram
                           }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="instagram"
+                        >
 
-                          alt={
-                            player.name
+                          <FaInstagram />
+
+                        </a>
+
+                        )
+                      }
+
+
+
+
+                      {
+                        player.social.youtube && (
+
+                        <a
+                          href={
+                            player.social.youtube
                           }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="youtube"
+                        >
 
+                          <FaYoutube />
 
-                          style={{
+                        </a>
 
-                            objectPosition:
-                              player.position ||
-                              "center",
+                        )
+                      }
 
-                          }}
 
-                        />
 
 
-                      </div>
 
+                      {
+                        player.social.tiktok && (
 
+                        <a
+                          href={
+                            player.social.tiktok
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="tiktok"
+                        >
 
+                          <FaTiktok />
 
+                        </a>
 
-
-
-                      <h4>
-
-                        {player.name}
-
-                      </h4>
-
-
-
-
-
-                      <span>
-
-                        {player.role}
-
-                      </span>
-
-
-
-
-
-
-
-
-
-                      <div className="social-links">
-
-
-
-
-
-                        {
-                          player.social.facebook && (
-
-                          <a
-
-                            href={
-                              player.social.facebook
-                            }
-
-                            target="_blank"
-
-                            rel="noopener noreferrer"
-
-                            className="facebook"
-
-                            aria-label={
-                              `${player.name} Facebook`
-                            }
-
-                          >
-
-                            <FaFacebookF />
-
-                          </a>
-
-                          )
-                        }
-
-
-
-
-
-
-
-
-                        {
-                          player.social.instagram && (
-
-                          <a
-
-                            href={
-                              player.social.instagram
-                            }
-
-                            target="_blank"
-
-                            rel="noopener noreferrer"
-
-                            className="instagram"
-
-                            aria-label={
-                              `${player.name} Instagram`
-                            }
-
-                          >
-
-                            <FaInstagram />
-
-                          </a>
-
-                          )
-                        }
-
-
-
-
-
-
-
-
-                        {
-                          player.social.youtube && (
-
-                          <a
-
-                            href={
-                              player.social.youtube
-                            }
-
-                            target="_blank"
-
-                            rel="noopener noreferrer"
-
-                            className="youtube"
-
-                            aria-label={
-                              `${player.name} YouTube`
-                            }
-
-                          >
-
-                            <FaYoutube />
-
-                          </a>
-
-                          )
-                        }
-
-
-
-
-
-
-
-
-                        {
-                          player.social.tiktok && (
-
-                          <a
-
-                            href={
-                              player.social.tiktok
-                            }
-
-                            target="_blank"
-
-                            rel="noopener noreferrer"
-
-                            className="tiktok"
-
-                            aria-label={
-                              `${player.name} TikTok`
-                            }
-
-                          >
-
-                            <FaTiktok />
-
-                          </a>
-
-                          )
-                        }
-
-
-
-
-
-                      </div>
-
-
-
-
-
-
-
-
-
-                      <Link
-
-                        href={
-                          profileUrl
-                        }
-
-                        className="profile-btn"
-
-                      >
-
-                        VIEW PROFILE
-
-
-                      </Link>
-
-
-
-
+                        )
+                      }
 
 
 
                     </div>
 
 
-                    );
 
 
-                  }
+
+                    <Link
+                      href={`/players/${player.id}`}
+                      className="profile-btn"
+                    >
+
+                      VIEW PROFILE
+
+                    </Link>
+
+
+
+                  </div>
+
+
+                  )
 
                 )
 
@@ -651,7 +495,6 @@ async function loadManagement() {
 
 
             </div>
-
 
 
           </div>
@@ -664,153 +507,192 @@ async function loadManagement() {
       }
 
 
-{
-management.length > 0 && (
-
-<div className="team-block management-section">
-
-
-<h3>
-TEAM MANAGEMENT
-</h3>
-
-
-<p>
-POWER • UNITY • LEADERSHIP
-</p>
 
 
 
-<div className="team-players">
+      {
+        management.length > 0 && (
+
+        <div className="team-block management-section">
 
 
-{
-management.map(
-(person)=>(
-<div
-className="player-card"
-key={person.id}
->
+          <h3>
+            TEAM MANAGEMENT
+          </h3>
 
 
-<div className="player-image">
-
-<img
-src={
-person.image ||
-"/players/default.png"
-}
-alt={person.name}
-/>
-
-</div>
+          <p>
+            POWER • UNITY • LEADERSHIP
+          </p>
 
 
 
-<h4>
-{person.name}
-</h4>
+
+          <div className="team-players">
 
 
-<span>
-{person.role}
-</span>
+          {
+            management.map(
+              (person)=>(
 
 
-
-<div className="social-links">
-
-
-{
-person.facebook_link && (
-
-<a
-href={person.facebook_link}
-target="_blank"
-rel="noopener noreferrer"
-className="facebook"
->
-<FaFacebookF />
-</a>
-
-)
-}
+              <div
+                className="player-card"
+                key={person.id}
+              >
 
 
+                <div className="player-image">
 
-{
-person.instagram_link && (
 
-<a
-href={person.instagram_link}
-target="_blank"
-rel="noopener noreferrer"
-className="instagram"
->
-<FaInstagram />
-</a>
+                  <img
+                    src={
+                      person.image ||
+                      "/players/default.png"
+                    }
+                    alt={
+                      person.name
+                    }
+                  />
 
-)
-}
+
+                </div>
 
 
 
-{
-person.youtube_link && (
 
-<a
-href={person.youtube_link}
-target="_blank"
-rel="noopener noreferrer"
-className="youtube"
->
-<FaYoutube />
-</a>
-
-)
-}
+                <h4>
+                  {person.name}
+                </h4>
 
 
 
-{
-person.tiktok_link && (
 
-<a
-href={person.tiktok_link}
-target="_blank"
-rel="noopener noreferrer"
-className="tiktok"
->
-<FaTiktok />
-</a>
-
-)
-}
+                <span>
+                  {person.role}
+                </span>
 
 
 
-</div>
 
 
-</div>
-)
-
-)
-
-}
+                <div className="social-links">
 
 
-</div>
+                  {
+                    person.facebook_link && (
+
+                    <a
+                      href={
+                        person.facebook_link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="facebook"
+                    >
+
+                      <FaFacebookF />
+
+                    </a>
+
+                    )
+                  }
 
 
-</div>
 
-)
-}
+
+
+                  {
+                    person.instagram_link && (
+
+                    <a
+                      href={
+                        person.instagram_link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="instagram"
+                    >
+
+                      <FaInstagram />
+
+                    </a>
+
+                    )
+                  }
+
+
+
+
+                  {
+                    person.youtube_link && (
+
+                    <a
+                      href={
+                        person.youtube_link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="youtube"
+                    >
+
+                      <FaYoutube />
+
+                    </a>
+
+                    )
+                  }
+
+
+
+
+                  {
+                    person.tiktok_link && (
+
+                    <a
+                      href={
+                        person.tiktok_link
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tiktok"
+                    >
+
+                      <FaTiktok />
+
+                    </a>
+
+                    )
+                  }
+
+
+
+                </div>
+
+
+
+              </div>
+
+
+              )
+
+            )
+
+          }
+
+
+          </div>
+
+
+        </div>
+
+        )
+      }
+
+
 
 
     </section>
-
 
   );
 
