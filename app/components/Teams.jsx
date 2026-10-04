@@ -104,14 +104,16 @@ export default function Teams() {
   const [teams, setTeams] =
     useState([]);
 
+  const [management, setManagement] =
+  useState([]);
 
 
   useEffect(() => {
 
-    loadRegisteredPlayers();
+  loadRegisteredPlayers();
+  loadManagement();
 
-  }, []);
-
+}, []);
 
 
 
@@ -159,7 +161,39 @@ export default function Teams() {
 
     }
 
+async function loadManagement() {
 
+  const {
+    data,
+    error
+  } = await supabase
+    .from("team_management")
+    .select("*")
+    .order(
+      "created_at",
+      {
+        ascending:true,
+      }
+    );
+
+
+  if(error){
+
+    console.error(
+      "MANAGEMENT LOAD ERROR:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  setManagement(
+    data || []
+  );
+
+}
 
 
 
@@ -630,7 +664,149 @@ export default function Teams() {
       }
 
 
+{
+management.length > 0 && (
 
+<div className="team-block management-section">
+
+
+<h3>
+TEAM MANAGEMENT
+</h3>
+
+
+<p>
+POWER • UNITY • LEADERSHIP
+</p>
+
+
+
+<div className="team-players">
+
+
+{
+management.map(
+(person)=>(
+<div
+className="player-card"
+key={person.id}
+>
+
+
+<div className="player-image">
+
+<img
+src={
+person.image ||
+"/players/default.png"
+}
+alt={person.name}
+/>
+
+</div>
+
+
+
+<h4>
+{person.name}
+</h4>
+
+
+<span>
+{person.role}
+</span>
+
+
+
+<div className="social-links">
+
+
+{
+person.facebook_link && (
+
+<a
+href={person.facebook_link}
+target="_blank"
+rel="noopener noreferrer"
+className="facebook"
+>
+<FaFacebookF />
+</a>
+
+)
+}
+
+
+
+{
+person.instagram_link && (
+
+<a
+href={person.instagram_link}
+target="_blank"
+rel="noopener noreferrer"
+className="instagram"
+>
+<FaInstagram />
+</a>
+
+)
+}
+
+
+
+{
+person.youtube_link && (
+
+<a
+href={person.youtube_link}
+target="_blank"
+rel="noopener noreferrer"
+className="youtube"
+>
+<FaYoutube />
+</a>
+
+)
+}
+
+
+
+{
+person.tiktok_link && (
+
+<a
+href={person.tiktok_link}
+target="_blank"
+rel="noopener noreferrer"
+className="tiktok"
+>
+<FaTiktok />
+</a>
+
+)
+}
+
+
+
+</div>
+
+
+</div>
+)
+
+)
+
+}
+
+
+</div>
+
+
+</div>
+
+)
+}
 
 
     </section>
