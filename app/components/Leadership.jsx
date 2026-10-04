@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 const leadershipMembers = [
   {
     id: 1,
-    name: "Rahat Ahmed Rifat",
+    name: "REJWAN AHMED",
     role: "Founder",
     image: "/leadership/founder.png",
     facebook: "https://facebook.com/",
@@ -10,11 +12,55 @@ const leadershipMembers = [
   },
   {
     id: 2,
-    name: "Shahriar Arefin Shishier",
+    name: "SHABIDDIN",
     role: "Team Manager",
     image: "/leadership/manager.png",
     facebook: "https://facebook.com/",
     badge: "MANAGER",
-    subtitle: "Managing operations and team structure",
+    subtitle: "Managing operations developer and team leader",
   },
 ];
+
+export default function Leadership() {
+  return (
+    <section className="leadership-section">
+      <div className="leadership-header">
+        <span className="leadership-kicker">♛ PREMIUM LEADERSHIP</span>
+        <h2>TEAM LEADERSHIP</h2>
+        <p>
+          The core authority behind Over Power Esports — strategy, leadership,
+          discipline and direction.
+        </p>
+      </div>
+
+      <div className="leadership-grid">
+        {leadershipMembers.map((member) => (
+          <div className="leadership-card" key={member.id}>
+            <div className="leadership-frame">
+              <div className="leadership-image-wrap">
+                <img src={member.image} alt={member.name} className="leadership-image" />
+              </div>
+
+              <div className="leadership-content">
+                <span className="leadership-badge">{member.badge}</span>
+                <h3>{member.name}</h3>
+                <h4>{member.role}</h4>
+                <p>{member.subtitle}</p>
+
+                {member.facebook && (
+                  <Link
+                    href={member.facebook}
+                    target="_blank"
+                    className="leadership-social"
+                  >
+                    Facebook
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
