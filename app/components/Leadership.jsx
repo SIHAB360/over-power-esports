@@ -12,7 +12,7 @@ const leadershipMembers = [
   },
   {
     id: 2,
-    name: "SHABIDDIN",
+    name: "SHABUDDIN",
     role: "Team Manager",
     image: "/leadership/manager.png",
     facebook: "https://www.facebook.com/share/1HSgUVNcro/",
