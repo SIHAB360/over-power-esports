@@ -783,51 +783,68 @@ dbPlayer?.expert_weapon || "N/A",
 
 let stats = [];
 
+const targetPlayerId = dbPlayer?.id;
 
-const targetPlayerId =
-dbPlayer?.id;
-   
 console.log("PLAYER DATABASE:", dbPlayer);
 console.log("PLAYER ID FOR STATS:", targetPlayerId);
 
 
-if(targetPlayerId){
+if (targetPlayerId) {
+
+  const { data, error } = await supabase
+    .from("match_player_stats")
+    .select("*")
+    .eq("player_id", targetPlayerId);
 
 
-const {
-data,
-error
+  if (error) {
+
+    console.error(
+      "PLAYER STATS ERROR:",
+      error
+    );
+
+  }
+
+
+  stats = data || [];
+
+
 }
-=
-await supabase
-.from("match_player_stats")
-.select(
-"kills, assists, damage, mvp, placement"
-)
-.eq(
-"player_id",
-targetPlayerId
+
+
+// fallback check
+if (stats.length === 0 && player?.uid) {
+
+  const { data, error } = await supabase
+    .from("match_player_stats")
+    .select("*")
+    .eq("player_uid", player.uid);
+
+
+  if (error) {
+
+    console.error(
+      "PLAYER UID STATS ERROR:",
+      error
+    );
+
+  }
+
+
+  if (data && data.length > 0) {
+
+    stats = data;
+
+  }
+
+}
+
+
+console.log(
+  "FINAL PLAYER STATS:",
+  stats
 );
-   
-console.log("MATCH STATS RESULT:", data);
-console.log("MATCH STATS ERROR:", error);
-
-
-if(error){
-
-console.error(
-"PLAYER STATS ERROR:",
-error
-);
-
-}
-
-
-stats =
-data || [];
-
-
-}
 
 
 
