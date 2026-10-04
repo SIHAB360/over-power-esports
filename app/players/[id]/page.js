@@ -1144,6 +1144,4 @@ if (targetPlayerId) {
           </div>
         </div>
       </div>
-    </section>
-  );
-}
+    </section>}
