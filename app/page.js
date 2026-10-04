@@ -65,7 +65,9 @@ export default function Home() {
 
       </section>
 
-
+      <Teams />
+    
+      <Leadership />
 
       <section className="reveal-card reveal-delay-1">
 
