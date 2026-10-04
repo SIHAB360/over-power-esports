@@ -786,7 +786,9 @@ let stats = [];
 
 const targetPlayerId =
 dbPlayer?.id;
-
+   
+console.log("PLAYER DATABASE:", dbPlayer);
+console.log("PLAYER ID FOR STATS:", targetPlayerId);
 
 
 if(targetPlayerId){
@@ -806,7 +808,9 @@ await supabase
 "player_id",
 targetPlayerId
 );
-
+   
+console.log("MATCH STATS RESULT:", data);
+console.log("MATCH STATS ERROR:", error);
 
 
 if(error){
