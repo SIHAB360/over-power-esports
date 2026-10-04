@@ -289,7 +289,6 @@ export default function Teams() {
 
 
   }
-   id="m5y8g2"
   return (
 
     <section className="teams">
