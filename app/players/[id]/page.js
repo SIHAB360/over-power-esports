@@ -340,9 +340,8 @@ function getExperience(joinDate) {
   }
 
   if (years > 0 && months > 0) {
-    return `${years} Year${years > 1 ? "s" : ""} ${months} Month${
-      months > 1 ? "s" : ""
-    }`;
+    return `${years} Year${years > 1 ? "s" : ""} ${months} Month${months > 1 ? "s" : ""
+      }`;
   }
 
   if (years > 0) {
@@ -622,90 +621,121 @@ export default async function PlayerProfile({ params }) {
 
   let stats = [];
 
-  if (player.id) {
-    const { data } = await supabase
-      .from("match_player_stats")
-      .select("kills, assists, damage, mvp, placement")
-      .eq("player_id", player.id);
+  const targetPlayerId = dbPlayer?.id;
+  console.log("PUBLIC PLAYER ID:", targetPlayerId);
+
+if (targetPlayerId) {
+
+  const { data, error } = await supabase
+    .from("match_player_stats")
+    .select("*")
+    .eq("player_id", targetPlayerId);
+
+  console.log("PUBLIC PLAYER ID:", targetPlayerId);
+  console.log("MATCH DATA:", data);
+  console.log("MATCH ERROR:", error);
+
+
+    if (error) {
+      console.error("PLAYER STATS ERROR:", error);
+    }
 
     stats = data || [];
-  }
 
+    console.log(
+      "PUBLIC PROFILE STATS:",
+      stats
+    );
+  }
   const totalMatches = stats.length;
 
   const totalKills = stats.reduce(
-    (sum, item) => sum + Number(item.kills || 0),
+    (sum, item) =>
+      sum + Number(item.kills ?? 0),
     0
   );
 
   const totalAssists = stats.reduce(
-    (sum, item) => sum + Number(item.assists || 0),
+    (sum, item) =>
+      sum + Number(item.assists ?? 0),
     0
   );
 
   const totalDamage = stats.reduce(
-    (sum, item) => sum + Number(item.damage || 0),
+    (sum, item) =>
+      sum + Number(item.damage ?? 0),
     0
   );
 
-  const totalMVP = stats.filter(
-    (item) => item.mvp === true
-  ).length;
+  const totalMVP = stats.reduce(
+    (sum, item) => {
+      if (
+        item.mvp === true ||
+        item.mvp === "true" ||
+        item.mvp === 1
+      ) {
+        return sum + 1;
+      }
+
+      return sum;
+    },
+    0
+  );
 
   /* =======================================================
      PLAYER EARNINGS
   ======================================================= */
 
-/* =======================================================
-   PUBLIC ALL-TIME TOTAL WINNINGS
-======================================================= */
+  /* =======================================================
+     PUBLIC ALL-TIME TOTAL WINNINGS
+  ======================================================= */
 
-let totalEarning = 0;
+  let totalEarning = 0;
 
-if (player?.id) {
-  const {
-    data: earningsTotal,
-    error: earningsError,
-  } = await supabase.rpc(
-    "get_public_player_total_earnings",
-    {
-      target_player_id: player.id,
+  if (player?.id) {
+    const {
+      data: earningsTotal,
+      error: earningsError,
+    } = await supabase.rpc(
+      "get_public_player_total_earnings",
+      {
+        target_player_id: player.id,
+      }
+    );
+
+    if (earningsError) {
+      console.error(
+        "PUBLIC TOTAL WINNINGS ERROR:",
+        earningsError
+      );
+    } else {
+      totalEarning = Number(
+        earningsTotal ?? 0
+      );
     }
-  );
-
-  if (earningsError) {
-    console.error(
-      "PUBLIC TOTAL WINNINGS ERROR:",
-      earningsError
-    );
-  } else {
-    totalEarning = Number(
-      earningsTotal ?? 0
-    );
   }
-}
 
-/* =======================================================
-   PLAYER STATUS
-======================================================= */
+  /* =======================================================
+     PLAYER STATUS
+  ======================================================= */
 
-const statusValue = String(
-  player?.status || ""
-)
-  .trim()
-  .toLowerCase();
+  const statusValue = String(
+    player?.status || ""
+  )
+    .trim()
+    .toLowerCase();
 
-const isActive =
-  statusValue === "active" ||
-  statusValue === "approved" ||
-  statusValue === "verified";
+  const isActive =
+    statusValue === "active" ||
+    statusValue === "approved" ||
+    statusValue === "verified";
 
-/* =======================================================
-   PAGE OUTPUT
-======================================================= */
+  /* =======================================================
+     PAGE OUTPUT
+  ======================================================= */
 
-return (
-  <section className="esports-profile">
+  return (
+    <section className="esports-profile">
       {/* ===================================================
           PROFILE HEADER
       =================================================== */}
@@ -826,9 +856,8 @@ return (
               <label>🟢 Status</label>
 
               <strong
-                className={`player-status ${
-                  isActive ? "active" : ""
-                }`}
+                className={`player-status ${isActive ? "active" : ""
+                  }`}
               >
                 {player.status}
               </strong>
@@ -1090,9 +1119,8 @@ return (
                     >
                       <iframe
                         src={`https://www.youtube.com/embed/${video}`}
-                        title={`${player.ign} Highlight ${
-                          index + 1
-                        }`}
+                        title={`${player.ign} Highlight ${index + 1
+                          }`}
                         loading="lazy"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerPolicy="strict-origin-when-cross-origin"
