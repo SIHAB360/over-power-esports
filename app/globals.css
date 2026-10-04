@@ -480,17 +480,19 @@ z-index:1;
 
 
 
-.hero-logo img{
+.hero-logo img,
+.logo-image {
 
+  width: 140px;
+  height: 140px;
 
-width:100%;
+  object-fit: contain;
 
+  filter:
+    drop-shadow(0 0 15px rgba(255,0,0,.8))
+    drop-shadow(0 0 35px rgba(255,0,0,.5));
 
-height:100%;
-
-
-object-fit:contain;
-
+  animation: logoGlow 3s ease-in-out infinite;
 
 }
 
