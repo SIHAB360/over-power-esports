@@ -26,7 +26,7 @@ export default function Leadership() {
     <section className="leadership-section">
       <div className="leadership-header">
         <span className="leadership-kicker">♛ PREMIUM LEADERSHIP</span>
-        <h2>TEAM LEADERSHIP</h2>
+        <h2>♛ TEAM LEADERSHIP ♛</h2>
         <p>
           The core authority behind Over Power Esports — strategy, leadership,
           discipline and direction.
