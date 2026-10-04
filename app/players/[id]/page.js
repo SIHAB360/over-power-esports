@@ -810,6 +810,7 @@ let stats = [];
 
 const targetPlayerId = dbPlayer?.id;
 
+   console.log("TARGET PLAYER UUID:", targetPlayerId);
 console.log("PLAYER DATABASE:", dbPlayer);
 console.log("PLAYER ID FOR STATS:", targetPlayerId);
 
@@ -820,6 +821,9 @@ if (targetPlayerId) {
     .from("match_player_stats")
     .select("*")
     .eq("player_id", targetPlayerId);
+
+     console.log("STATS FROM DATABASE:", data);
+  console.log("STATS ERROR:", error);
 
 
   if (error) {
