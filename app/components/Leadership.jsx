@@ -6,18 +6,18 @@ const leadershipMembers = [
     name: "REJWAN AHMED",
     role: "Founder",
     image: "/leadership/founder.png",
-    facebook: "https://facebook.com/",
+    facebook: "https://www.facebook.com/rejwan.ahammed11?mibextid=wwXIfr&mibextid=wwXIfr",
     badge: "OWNER",
-    subtitle: "The visionary behind Over Power Esports",
+    subtitle: "The visionary Sponsor behind Over Power Esports",
   },
   {
     id: 2,
     name: "SHABIDDIN",
     role: "Team Manager",
     image: "/leadership/manager.png",
-    facebook: "https://facebook.com/",
-    badge: "MANAGER",
-    subtitle: "Managing operations developer and team leader",
+    facebook: "https://www.facebook.com/share/1HSgUVNcro/",
+    badge: "LEADER",
+    subtitle: "Managing operations Web developer and Team Leader",
   },
 ];
 
