@@ -841,15 +841,6 @@ if (targetPlayerId) {
 
 // fallback check
 
-  if (data && data.length > 0) {
-
-    stats = data;
-
-  }
-
-}
-
-
 console.log(
   "FINAL PLAYER STATS:",
   stats
