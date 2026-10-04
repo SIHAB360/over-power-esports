@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Tournaments from "./components/Tournaments";
 import Games from "./components/Games";
 import Teams from "./components/Teams";
+import Leadership from "./components/Leadership";
 
 
 export default function Home() {
@@ -65,7 +66,8 @@ export default function Home() {
       </section>
 
 
-
+      <Teams />
+      <Leadership />
 
 
       <section className="reveal-card reveal-delay-1">
