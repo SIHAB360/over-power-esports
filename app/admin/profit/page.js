@@ -608,6 +608,33 @@ linear-gradient(
                         {money(item.management_amount)}
                       </h3>
                     </div>
+                        <button
+
+onClick={()=>deleteFinance(item.id)}
+
+style={{
+
+padding:"12px 20px",
+
+borderRadius:"14px",
+
+background:"#dc2626",
+
+border:"none",
+
+color:"#fff",
+
+fontWeight:800,
+
+cursor:"pointer"
+
+}}
+
+>
+
+🗑 DELETE
+
+</button>
 
                     <button
                       onClick={() => togglePerformance(item)}
