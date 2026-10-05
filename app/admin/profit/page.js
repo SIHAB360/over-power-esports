@@ -2039,56 +2039,161 @@ Damage:
 {player.damage}
 </b>
 
-</p>
+        {
+          openPerformance === item.id && (
+
+            <div
+
+              style={{
+
+                marginTop:"25px",
+
+                padding:"20px",
+
+                borderRadius:"18px",
+
+                background:"rgba(0,0,0,.35)"
+
+              }}
+
+            >
+
+              <h3>
+                🎮 PLAYER PERFORMANCE
+              </h3>
 
 
+              {
+                loadingStats === matchId ? (
 
-<p>
+                  <p>
+                    Loading player stats...
+                  </p>
 
-Assist:
-{" "}
-<b>
-{player.assists}
-</b>
+                )
 
-</p>
+                :
+
+                (
+
+                  playerStatsMap[matchId]?.length > 0 ? (
+
+                    <div
+
+                      style={{
+
+                        display:"grid",
+
+                        gridTemplateColumns:
+                        "repeat(auto-fit,minmax(220px,1fr))",
+
+                        gap:"15px"
+
+                      }}
+
+                    >
+
+                      {
+                        playerStatsMap[matchId].map(
+                          (player)=>(
+
+                            <div
+
+                              key={player.id}
+
+                              style={{
+
+                                padding:"18px",
+
+                                borderRadius:"16px",
+
+                                background:
+                                "rgba(255,255,255,.06)",
+
+                                border:
+                                "1px solid rgba(255,255,255,.1)"
+
+                              }}
+
+                            >
+
+                              <h4>
+
+                                {
+                                  player.players?.ign ||
+                                  player.players?.full_name ||
+                                  "Player"
+                                }
+
+                              </h4>
 
 
+                              <p>
+                                Kills:
+                                {" "}
+                                <b>{player.kills}</b>
+                              </p>
 
-</div>
+
+                              <p>
+                                Damage:
+                                {" "}
+                                <b>{player.damage}</b>
+                              </p>
 
 
-)
+                              <p>
+                                Assist:
+                                {" "}
+                                <b>{player.assists}</b>
+                              </p>
 
-)
+
+                            </div>
+
+                          )
+
+                        )
+
+                      }
+
+
+                    </div>
+
+                  )
+
+                  :
+
+                  (
+
+                    <p>
+                      No player performance data.
+                    </p>
+
+                  )
+
+                )
+
+              }
+
+
+            </div>
+
+          )
+        }
+
+
+      </div>
+
+    )
+
+  )
 
 }
 
 
 </div>
 
-)
-
-:
-
-(
-
-<p>
-  No player performance data.
-</p>
-
-)
-
-)
-
-}
-</div>
-
-)
-
-}
-
-</div>
 
 </main>
 
