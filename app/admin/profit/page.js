@@ -13,20 +13,22 @@ function money(value) {
 
 const inputStyle = {
   padding: "12px 16px",
-  borderRadius: "12px",
-  border: "1px solid rgba(255,255,255,0.15)",
-  background: "rgba(255,255,255,0.06)",
-  color: "#fff",
+  borderRadius: "14px",
+  border: "1px solid rgba(255,255,255,.18)",
+  background: "rgba(5,5,5,.85)",
+  color: "#ffffff",
   fontSize: "14px",
+  fontWeight: 700,
   outline: "none",
   minWidth: "160px",
+  backdropFilter: "blur(15px)",
 };
+
 
 const selectStyle = {
   ...inputStyle,
   cursor: "pointer",
 };
-
 function SummaryCard({ title, value, color, icon }) {
   return (
     <div
@@ -261,14 +263,23 @@ export default function ProfitPage() {
   }
 
   return (
-    <main
-      style={{
-      background:
+   <main
+
+style={{
+
+minHeight:"100vh",
+
+padding:"60px 20px 120px",
+
+color:"#fff",
+
+background:
+
 `
 radial-gradient(
-circle at 15% 15%,
+circle at 15% 10%,
 rgba(255,0,0,.18),
-transparent 28%
+transparent 30%
 ),
 
 radial-gradient(
@@ -285,13 +296,16 @@ transparent 30%
 
 linear-gradient(
 135deg,
-#030303 0%,
-#080808 45%,
-#120000 100%
+#030303,
+#080808 50%,
+#120000
 )
-`,
-      }}
-    >
+
+`
+
+}}
+
+>
       <h1
         style={{
           textAlign: "center",
