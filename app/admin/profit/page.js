@@ -263,31 +263,31 @@ export default function ProfitPage() {
   return (
     <main
       style={{
-       background:
+      background:
 `
 radial-gradient(
-circle at 15% 10%,
-rgba(255,0,0,.45),
-transparent 35%
+circle at 15% 15%,
+rgba(255,0,0,.18),
+transparent 28%
 ),
 
 radial-gradient(
-circle at 85% 85%,
-rgba(255,215,0,.20),
+circle at 85% 20%,
+rgba(255,215,0,.12),
+transparent 25%
+),
+
+radial-gradient(
+circle at 50% 90%,
+rgba(0,120,255,.10),
 transparent 30%
 ),
 
-radial-gradient(
-circle at 50% 50%,
-rgba(255,0,80,.12),
-transparent 45%
-),
-
 linear-gradient(
-160deg,
-#250000,
-#070707 55%,
-#120000
+135deg,
+#030303 0%,
+#080808 45%,
+#120000 100%
 )
 `,
       }}
