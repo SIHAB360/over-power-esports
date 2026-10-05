@@ -180,6 +180,45 @@ export default function ProfitPage() {
     loadPlayerStats(matchId);
   }
 
+  async function deleteFinance(id) {
+
+  const confirmDelete =
+    window.confirm(
+      "Are you sure you want to delete this financial record?"
+    );
+
+
+  if (!confirmDelete) return;
+
+
+  const {
+    error
+  } = await supabase
+    .from("match_finance")
+    .delete()
+    .eq("id", id);
+
+
+
+  if (error) {
+
+    alert(error.message);
+
+    return;
+
+  }
+
+
+
+  setFinanceData((prev) =>
+    prev.filter(
+      (item) => item.id !== id
+    )
+  );
+
+
+}
+  
   const teamOptions = [
     ...new Set(
       financeData.map((item) => item.teams?.team_name).filter(Boolean)
