@@ -1,60 +1,15 @@
+// FINAL CODE PART 1
+// app/admin/profit/page.js
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 
-/* =========================================================
-   PREMIUM DASHBOARD STYLES
-========================================================= */
-
-
-const inputStyle = {
-
-  flex: "1 1 190px",
-
-  minWidth: "180px",
-
-  height: "48px",
-
-  padding: "0 16px",
-
-  borderRadius: "14px",
-
-  border:
-    "1px solid rgba(255,255,255,0.14)",
-
-  background:
-    "rgba(10,10,18,0.85)",
-
-  color:"#ffffff",
-
-  outline:"none",
-
-  fontSize:"14px",
-
-};
-
-
-
-const selectStyle = {
-
-  ...inputStyle,
-
-  cursor:"pointer",
-
-};
-
-
-
-
 function money(value){
 
-  const amount =
-    Number(value || 0);
-
-
-  return `৳${amount.toLocaleString(
+  return `৳${Number(value || 0).toLocaleString(
     "en-BD",
     {
       minimumFractionDigits:2,
@@ -66,12 +21,6 @@ function money(value){
 
 
 
-
-/* =========================================================
-   SUMMARY CARD
-========================================================= */
-
-
 function SummaryCard({
   title,
   value,
@@ -79,121 +28,72 @@ function SummaryCard({
   icon,
 }){
 
+  return (
 
-return (
+    <div
+      style={{
+        position:"relative",
+        overflow:"hidden",
+        padding:"26px",
+        borderRadius:"22px",
+        minHeight:"145px",
+        background:
+        "linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.03))",
+        border:`1px solid ${color}66`,
+        backdropFilter:"blur(18px)",
+        boxShadow:
+        `
+        0 0 25px ${color}22,
+        inset 0 0 20px rgba(255,255,255,.04)
+        `
+      }}
+    >
 
-<div
-style={{
-
-position:"relative",
-
-overflow:"hidden",
-
-padding:"26px",
-
-borderRadius:"22px",
-
-minHeight:"145px",
-
-background:
-"linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025))",
-
-border:
-`1px solid ${color}66`,
-
-backdropFilter:
-"blur(18px)",
-
-boxShadow:
-
-`
-0 0 25px ${color}22,
-inset 0 0 20px rgba(255,255,255,.04)
-`
-
-}}
-
->
+      <div
+        style={{
+          position:"absolute",
+          width:"120px",
+          height:"120px",
+          right:"-40px",
+          top:"-40px",
+          background:color,
+          filter:"blur(70px)",
+          opacity:.35
+        }}
+      />
 
 
+      <div
+        style={{
+          color,
+          fontSize:"14px",
+          fontWeight:800,
+          letterSpacing:"1px",
+          marginBottom:"15px"
+        }}
+      >
 
-<div
-style={{
+        {icon} {title}
 
-position:"absolute",
-
-width:"120px",
-
-height:"120px",
-
-right:"-40px",
-
-top:"-40px",
-
-background:color,
-
-filter:"blur(70px)",
-
-opacity:.35,
-
-}}
-
-></div>
+      </div>
 
 
+      <div
+        style={{
+          fontSize:"34px",
+          fontWeight:900,
+          color:"#fff"
+        }}
+      >
 
-<div
-style={{
+        {money(value)}
 
-fontSize:"14px",
-
-fontWeight:700,
-
-color,
-
-letterSpacing:"1px",
-
-textTransform:"uppercase",
-
-marginBottom:"14px",
-
-}}
-
->
-
-{icon} {title}
-
-</div>
+      </div>
 
 
+    </div>
 
-
-<div
-style={{
-
-fontSize:"34px",
-
-fontWeight:900,
-
-color:"#ffffff",
-
-textShadow:
-`0 0 18px ${color}88`
-
-}}
-
->
-
-{money(value)}
-
-</div>
-
-
-
-</div>
-
-);
-
+  );
 
 }
 
@@ -201,14 +101,7 @@ textShadow:
 
 
 
-
-/* =========================================================
-   MAIN COMPONENT
-========================================================= */
-
-
 export default function ProfitPage(){
-
 
 
 const [financeData,setFinanceData]
@@ -216,11 +109,9 @@ const [financeData,setFinanceData]
 useState([]);
 
 
-
 const [loading,setLoading]
 =
 useState(true);
-
 
 
 const [errorMessage,setErrorMessage]
@@ -233,25 +124,17 @@ const [selectedTeam,setSelectedTeam]
 =
 useState("");
 
-
-
 const [selectedTournament,setSelectedTournament]
 =
 useState("");
-
-
 
 const [selectedMonth,setSelectedMonth]
 =
 useState("");
 
-
-
 const [selectedMatchType,setSelectedMatchType]
 =
 useState("");
-
-
 
 const [selectedProfitStatus,setSelectedProfitStatus]
 =
@@ -264,11 +147,9 @@ const [playerStatsMap,setPlayerStatsMap]
 useState({});
 
 
-
 const [openPerformance,setOpenPerformance]
 =
 useState(null);
-
 
 
 const [loadingStats,setLoadingStats]
@@ -282,7 +163,7 @@ useState(null);
 
 useEffect(()=>{
 
-fetchFinance();
+loadFinance();
 
 },[]);
 
@@ -291,12 +172,10 @@ fetchFinance();
 
 
 
-async function fetchFinance(){
+async function loadFinance(){
 
 
 setLoading(true);
-
-setErrorMessage("");
 
 
 
@@ -309,7 +188,6 @@ error
 }
 
 =
-
 await supabase
 
 .from("match_finance")
@@ -324,15 +202,11 @@ matches!match_finance_match_id_fkey (
 
 id,
 
-tournament_id,
-
 match_type,
 
 created_at,
 
 tournaments (
-
-id,
 
 name
 
@@ -340,10 +214,7 @@ name
 
 ),
 
-
 teams!match_finance_team_id_fkey (
-
-id,
 
 team_name
 
@@ -364,37 +235,25 @@ ascending:false
 
 if(error){
 
-
-console.error(
-"PROFIT FETCH ERROR:",
-error
+setErrorMessage(
+error.message
 );
-
 
 setFinanceData([]);
 
-setErrorMessage(
-error.message ||
-"Profit data load failed."
-);
-
-
-setLoading(false);
-
-return;
-
-
 }
 
-
+else{
 
 setFinanceData(
 data || []
 );
 
+}
+
+
 
 setLoading(false);
-
 
 
 }
@@ -404,7 +263,7 @@ setLoading(false);
 
 
 
-async function fetchPlayerStats(matchId){
+async function loadPlayerStats(matchId){
 
 
 if(!matchId)
@@ -412,17 +271,8 @@ return;
 
 
 
-if(
-Object.prototype.hasOwnProperty.call(
-playerStatsMap,
-matchId
-)
-){
-
+if(playerStatsMap[matchId])
 return;
-
-}
-
 
 
 
@@ -430,17 +280,15 @@ setLoadingStats(matchId);
 
 
 
-
 const {
 
-data:stats,
+data,
 
 error
 
 }
 
 =
-
 await supabase
 
 .from("match_player_stats")
@@ -451,19 +299,11 @@ await supabase
 
 id,
 
-match_id,
-
-player_id,
-
 kills,
 
 assists,
 
 damage,
-
-mvp,
-
-placement,
 
 players (
 
@@ -486,14 +326,6 @@ matchId
 
 if(error){
 
-
-console.error(
-"PLAYER STATS ERROR:",
-error
-);
-
-
-
 setPlayerStatsMap(
 prev=>({
 
@@ -504,23 +336,19 @@ prev=>({
 })
 );
 
-
 }
 
 else{
-
 
 setPlayerStatsMap(
 prev=>({
 
 ...prev,
 
-[matchId]:
-stats || []
+[matchId]:data || []
 
 })
 );
-
 
 }
 
@@ -529,15 +357,13 @@ stats || []
 setLoadingStats(null);
 
 
-
 }
 
 
 
 
 
-
-function handleTogglePerformance(item){
+function togglePerformance(item){
 
 
 const matchId =
@@ -546,13 +372,11 @@ item.matches?.id;
 
 
 
-if(openPerformance === item.id){
-
+if(openPerformance===item.id){
 
 setOpenPerformance(null);
 
 return;
-
 
 }
 
@@ -560,59 +384,70 @@ return;
 
 setOpenPerformance(item.id);
 
-
-fetchPlayerStats(matchId);
-
+loadPlayerStats(matchId);
 
 
 }
-// =========================================================
-// FILTER OPTIONS
-// =========================================================
 
 
-const teamOptions = [
-  ...new Set(
-    financeData
-      .map(
-        item =>
-          item.teams?.team_name
-      )
-      .filter(Boolean)
-  ),
+
+
+
+const teamOptions =
+[
+
+...new Set(
+
+financeData
+
+.map(
+item=>item.teams?.team_name
+)
+
+.filter(Boolean)
+
+)
+
 ];
 
 
 
-const tournamentOptions = [
-  ...new Set(
-    financeData
-      .map(
-        item =>
-          item.matches
-          ?.tournaments
-          ?.name
-      )
-      .filter(Boolean)
-  ),
+const tournamentOptions =
+[
+
+...new Set(
+
+financeData
+
+.map(
+item=>item.matches?.tournaments?.name
+)
+
+.filter(Boolean)
+
+)
+
 ];
 
 
 
-const matchTypeOptions = [
-  ...new Set(
-    financeData
-      .map(
-        item =>
-          item.matches
-          ?.match_type
-      )
-      .filter(Boolean)
-  ),
+const matchTypeOptions =
+[
+
+...new Set(
+
+financeData
+
+.map(
+item=>item.matches?.match_type
+)
+
+.filter(Boolean)
+
+)
+
 ];
-
-
-
+// FINAL CODE PART 2
 
 
 const filteredData =
@@ -655,6 +490,7 @@ return false;
 
 
 if(selectedProfitStatus){
+
 
 const profit =
 Number(item.profit || 0);
@@ -705,22 +541,7 @@ if(selectedMonth){
 
 
 const date =
-item.created_at
-?
-new Date(item.created_at)
-:
-null;
-
-
-
-if(
-!date ||
-Number.isNaN(date.getTime())
-){
-
-return false;
-
-}
+new Date(item.created_at);
 
 
 
@@ -783,28 +604,6 @@ sum + Number(item.management_amount || 0),
 
 
 
-
-function clearFilters(){
-
-
-setSelectedTeam("");
-
-setSelectedTournament("");
-
-setSelectedMonth("");
-
-setSelectedMatchType("");
-
-setSelectedProfitStatus("");
-
-
-}
-
-
-
-
-
-
 if(loading){
 
 
@@ -822,15 +621,13 @@ alignItems:"center",
 
 justifyContent:"center",
 
-background:
-
-"radial-gradient(circle at top,#450a0a,#050505)",
+background:"#050505",
 
 color:"#fbbf24",
 
 fontSize:"28px",
 
-fontWeight:800
+fontWeight:900
 
 }}
 
@@ -849,7 +646,6 @@ Loading Profit Dashboard...
 
 
 
-
 return (
 
 <main
@@ -862,37 +658,29 @@ padding:"50px 20px 100px",
 
 color:"#fff",
 
-fontFamily:
-"'Segoe UI',sans-serif",
-
 background:
 
 `
 
 radial-gradient(
-circle at 10% 10%,
-rgba(255,0,0,.18),
-transparent 30%
+circle at top left,
+rgba(255,0,0,.25),
+transparent 35%
 ),
 
 radial-gradient(
-circle at 90% 20%,
-rgba(59,130,246,.15),
+circle at bottom right,
+rgba(59,130,246,.18),
 transparent 35%
 ),
 
 linear-gradient(
 160deg,
 #120000,
-#050505 55%,
-#090914
+#050505
 )
 
-`,
-
-position:"relative",
-
-overflow:"hidden"
+`
 
 }}
 
@@ -900,57 +688,14 @@ overflow:"hidden"
 
 
 
-<div
-
-style={{
-
-position:"absolute",
-
-inset:0,
-
-backgroundImage:
-
-`
-
-linear-gradient(
-rgba(255,255,255,.025) 1px,
-transparent 1px
-),
-
-linear-gradient(
-90deg,
-rgba(255,255,255,.025) 1px,
-transparent 1px
-)
-
-`,
-
-backgroundSize:"40px 40px",
-
-pointerEvents:"none",
-
-opacity:.25
-
-}}
-
-></div>
-
-
-
-
-
-
-
 <h1
 
 style={{
 
-position:"relative",
-
 textAlign:"center",
 
 fontSize:
-"clamp(36px,5vw,56px)",
+"clamp(36px,5vw,58px)",
 
 fontWeight:1000,
 
@@ -959,15 +704,11 @@ letterSpacing:"3px",
 marginBottom:"45px",
 
 background:
-
-"linear-gradient(90deg,#fbbf24,#f472b6,#60a5fa,#34d399)",
+"linear-gradient(90deg,#fbbf24,#ef4444,#60a5fa)",
 
 WebkitBackgroundClip:"text",
 
-WebkitTextFillColor:"transparent",
-
-textShadow:
-"0 0 30px rgba(251,191,36,.35)"
+WebkitTextFillColor:"transparent"
 
 }}
 
@@ -981,52 +722,38 @@ textShadow:
 
 
 
+{
 
-{errorMessage && (
+errorMessage && (
 
 <div
 
 style={{
 
-maxWidth:"1000px",
-
-margin:"0 auto 30px",
-
 padding:"18px",
+
+marginBottom:"25px",
 
 borderRadius:"16px",
 
-background:
-"rgba(127,29,29,.35)",
+background:"rgba(127,29,29,.4)",
 
-border:
-"1px solid rgba(248,113,113,.5)",
-
-color:"#fecaca"
+border:"1px solid #ef4444"
 
 }}
 
 >
 
-<strong>
-Data Load Error:
-</strong>
-
-{" "}
-
 {errorMessage}
 
 </div>
 
-)}
+)
+
+}
 
 
 
-
-
-
-
-{/* SUMMARY CARDS */}
 
 
 
@@ -1036,22 +763,19 @@ style={{
 
 maxWidth:"1200px",
 
-margin:"0 auto 45px",
+margin:"0 auto 40px",
 
 display:"grid",
 
 gridTemplateColumns:
 
-"repeat(auto-fit,minmax(280px,1fr))",
+"repeat(auto-fit,minmax(260px,1fr))",
 
-gap:"25px",
-
-position:"relative"
+gap:"25px"
 
 }}
 
 >
-
 
 
 <SummaryCard
@@ -1067,11 +791,9 @@ icon="💰"
 />
 
 
-
-
 <SummaryCard
 
-title="Player Share 70%"
+title="Player Share"
 
 value={totalPlayer}
 
@@ -1082,11 +804,9 @@ icon="👥"
 />
 
 
-
-
 <SummaryCard
 
-title="Management Share 30%"
+title="Management Share"
 
 value={totalManagement}
 
@@ -1097,7 +817,6 @@ icon="🏢"
 />
 
 
-
 </div>
 
 
@@ -1105,65 +824,32 @@ icon="🏢"
 
 
 
-
-
-{/* FILTER BOX */}
-
-
-
 <div
 
 style={{
 
-maxWidth:"1000px",
+maxWidth:"1200px",
 
-margin:"0 auto 45px",
+margin:"0 auto 40px",
 
 padding:"25px",
 
 borderRadius:"24px",
 
-background:
+background:"rgba(255,255,255,.05)",
 
-"rgba(255,255,255,.05)",
+border:"1px solid rgba(255,255,255,.12)",
 
-border:
-
-"1px solid rgba(255,255,255,.12)",
-
-backdropFilter:"blur(20px)",
-
-boxShadow:
-
-"0 20px 50px rgba(0,0,0,.35)"
+backdropFilter:"blur(20px)"
 
 }}
 
 >
 
 
-
-<h3
-
-style={{
-
-color:"#fbbf24",
-
-marginBottom:"18px",
-
-fontSize:"16px",
-
-letterSpacing:"1px"
-
-}}
-
->
-
+<h3>
 🔎 FILTER FINANCIAL RECORDS
-
 </h3>
-
-
 
 
 
@@ -1173,7 +859,7 @@ style={{
 
 display:"flex",
 
-gap:"14px",
+gap:"15px",
 
 flexWrap:"wrap"
 
@@ -1218,7 +904,10 @@ All Teams
 
 
 {
-teamOptions.map(team=>(
+
+teamOptions.map(
+
+(team)=>(
 
 <option
 
@@ -1232,9 +921,12 @@ value={team}
 
 </option>
 
-))
+)
+
+)
 
 }
+
 
 </select>
 
@@ -1255,12 +947,15 @@ style={selectStyle}
 >
 
 <option value="">
-All Tournaments
+All Tournament
 </option>
 
 
 {
-tournamentOptions.map(item=>(
+
+tournamentOptions.map(
+
+(item)=>(
 
 <option
 
@@ -1274,7 +969,9 @@ value={item}
 
 </option>
 
-))
+)
+
+)
 
 }
 
@@ -1298,12 +995,15 @@ style={selectStyle}
 >
 
 <option value="">
-All Match Types
+All Match Type
 </option>
 
 
 {
-matchTypeOptions.map(item=>(
+
+matchTypeOptions.map(
+
+(item)=>(
 
 <option
 
@@ -1317,13 +1017,14 @@ value={item}
 
 </option>
 
-))
+)
+
+)
 
 }
 
 
 </select>
-
 
 
 
@@ -1341,7 +1042,7 @@ style={selectStyle}
 >
 
 <option value="">
-All Profit Status
+All Status
 </option>
 
 
@@ -1364,14 +1065,11 @@ All Profit Status
 
 
 
-
 </div>
 
 
 </div>
-{/* =========================================================
-      FINANCIAL HISTORY
-========================================================= */}
+// FINAL CODE PART 3
 
 
 <div
@@ -1380,31 +1078,24 @@ style={{
 
 maxWidth:"1200px",
 
-margin:"0 auto",
-
-position:"relative"
+margin:"0 auto"
 
 }}
 
 >
 
 
-
 <h2
 
 style={{
+
+textAlign:"center",
 
 fontSize:"32px",
 
 fontWeight:900,
 
-marginBottom:"30px",
-
-letterSpacing:"2px",
-
-color:"#ffffff",
-
-textAlign:"center"
+marginBottom:"30px"
 
 }}
 
@@ -1419,26 +1110,20 @@ textAlign:"center"
 
 
 {
-filteredData.length === 0 ? (
 
+filteredData.length===0 ? (
 
 <div
 
 style={{
 
-padding:"50px",
+padding:"40px",
 
 textAlign:"center",
 
-borderRadius:"22px",
+borderRadius:"20px",
 
-background:
-"rgba(255,255,255,.05)",
-
-border:
-"1px solid rgba(255,255,255,.1)",
-
-color:"#aaa"
+background:"rgba(255,255,255,.05)"
 
 }}
 
@@ -1448,13 +1133,11 @@ No financial records found.
 
 </div>
 
-
 )
 
 :
 
 (
-
 
 <div
 
@@ -1469,25 +1152,11 @@ gap:"25px"
 >
 
 
-
 {
 
 filteredData.map(
-(item)=>{
 
-
-const matchId =
-item.match_id ||
-item.matches?.id;
-
-
-
-const profit =
-Number(item.profit || 0);
-
-
-
-return (
+(item)=>(
 
 
 <div
@@ -1496,57 +1165,19 @@ key={item.id}
 
 style={{
 
-borderRadius:"26px",
-
 padding:"30px",
+
+borderRadius:"24px",
 
 background:
 
-`
-
-linear-gradient(
-145deg,
-rgba(255,255,255,.08),
-rgba(255,255,255,.025)
-)
-
-`,
+"linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.03))",
 
 border:
 
-`
+"1px solid rgba(255,255,255,.12)",
 
-1px solid
-
-${profit >=0
-
-?
-
-"rgba(52,211,153,.35)"
-
-:
-
-"rgba(248,113,113,.35)"
-
-}
-
-`,
-
-boxShadow:
-
-profit >=0
-
-?
-
-"0 0 35px rgba(52,211,153,.12)"
-
-:
-
-"0 0 35px rgba(248,113,113,.12)",
-
-
-backdropFilter:
-"blur(18px)"
+backdropFilter:"blur(18px)"
 
 }}
 
@@ -1557,252 +1188,6 @@ backdropFilter:
 <div
 
 style={{
-
-display:"flex",
-
-justifyContent:"space-between",
-
-gap:"20px",
-
-flexWrap:"wrap",
-
-marginBottom:"25px"
-
-}}
-
->
-
-
-<div>
-
-<div
-
-style={{
-
-color:"#94a3b8",
-
-fontSize:"13px",
-
-letterSpacing:"1px"
-
-}}
-
->
-
-TOURNAMENT
-
-</div>
-
-
-<h3
-
-style={{
-
-margin:"8px 0",
-
-fontSize:"24px"
-
-}}
-
->
-
-{
-item.matches
-?.tournaments
-?.name ||
-
-"N/A"
-
-}
-
-</h3>
-
-
-</div>
-
-
-
-
-
-<div
-
-style={{
-
-textAlign:"right"
-
-}}
-
->
-
-<div
-
-style={{
-
-color:"#94a3b8",
-
-fontSize:"13px"
-
-}}
-
->
-
-DATE
-
-</div>
-
-
-<strong>
-
-{
-new Date(
-item.created_at
-)
-.toLocaleDateString()
-}
-
-</strong>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-
-style={{
-
-display:"grid",
-
-gridTemplateColumns:
-
-"repeat(auto-fit,minmax(180px,1fr))",
-
-gap:"15px"
-
-}}
-
->
-
-
-
-<div className="finance-mini-card">
-
-<span>
-TEAM
-</span>
-
-<strong>
-
-{
-item.teams?.team_name ||
-"N/A"
-}
-
-</strong>
-
-</div>
-
-
-
-
-<div className="finance-mini-card">
-
-<span>
-ENTRY FEE
-</span>
-
-<strong>
-
-{money(item.entry_fee)}
-
-</strong>
-
-</div>
-
-
-
-
-<div className="finance-mini-card">
-
-<span>
-PRIZE MONEY
-</span>
-
-<strong>
-
-{money(item.prize_money)}
-
-</strong>
-
-</div>
-
-
-
-
-<div className="finance-mini-card">
-
-<span>
-NET PROFIT
-</span>
-
-
-<strong
-
-style={{
-
-color:
-
-profit>=0
-
-?
-
-"#34d399"
-
-:
-
-"#f87171"
-
-}}
-
->
-
-{money(profit)}
-
-</strong>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div
-
-style={{
-
-marginTop:"25px",
-
-paddingTop:"25px",
-
-borderTop:
-
-"1px solid rgba(255,255,255,.1)",
 
 display:"flex",
 
@@ -1819,13 +1204,174 @@ gap:"20px"
 
 <div>
 
-<span
+<p>
+TOURNAMENT
+</p>
+
+
+<h3>
+
+{
+item.matches
+?.tournaments
+?.name ||
+"N/A"
+
+}
+
+</h3>
+
+
+</div>
+
+
+
+<div>
+
+<p>
+TEAM
+</p>
+
+
+<h3>
+
+{
+item.teams?.team_name ||
+"N/A"
+
+}
+
+</h3>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div
+
 style={{
-color:"#94a3b8"
+
+display:"grid",
+
+gridTemplateColumns:
+
+"repeat(auto-fit,minmax(180px,1fr))",
+
+gap:"15px",
+
+marginTop:"25px"
+
 }}
+
 >
+
+
+<div className="finance-mini-card">
+
+ENTRY FEE
+
+<br/>
+
+<b>
+{money(item.entry_fee)}
+</b>
+
+</div>
+
+
+
+<div className="finance-mini-card">
+
+PRIZE MONEY
+
+<br/>
+
+<b>
+{money(item.prize_money)}
+</b>
+
+</div>
+
+
+
+<div className="finance-mini-card">
+
+NET PROFIT
+
+<br/>
+
+<b>
+
+{money(item.profit)}
+
+</b>
+
+</div>
+
+
+<div className="finance-mini-card">
+
+DATE
+
+<br/>
+
+<b>
+
+{
+new Date(
+item.created_at
+)
+.toLocaleDateString()
+}
+
+</b>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+
+style={{
+
+display:"flex",
+
+justifyContent:"space-between",
+
+alignItems:"center",
+
+flexWrap:"wrap",
+
+gap:"20px",
+
+marginTop:"25px"
+
+}}
+
+>
+
+
+<div>
+
+<p>
 PLAYER SHARE
-</span>
+</p>
 
 
 <h3
@@ -1843,16 +1389,11 @@ color:"#34d399"
 
 
 
-
 <div>
 
-<span
-style={{
-color:"#94a3b8"
-}}
->
+<p>
 MANAGEMENT SHARE
-</span>
+</p>
 
 
 <h3
@@ -1870,9 +1411,11 @@ color:"#60a5fa"
 
 
 
+
+
 <button
 
-onClick={()=>handleTogglePerformance(item)}
+onClick={()=>togglePerformance(item)}
 
 style={{
 
@@ -1880,15 +1423,15 @@ padding:"12px 24px",
 
 borderRadius:"14px",
 
-border:"1px solid #fbbf24",
-
 background:"transparent",
+
+border:"1px solid #fbbf24",
 
 color:"#fbbf24",
 
-cursor:"pointer",
+fontWeight:800,
 
-fontWeight:800
+cursor:"pointer"
 
 }}
 
@@ -1896,6 +1439,7 @@ fontWeight:800
 
 
 {
+
 openPerformance===item.id
 
 ?
@@ -1922,6 +1466,7 @@ openPerformance===item.id
 
 
 {
+
 openPerformance===item.id && (
 
 
@@ -1943,16 +1488,24 @@ background:"rgba(0,0,0,.35)"
 
 
 <h3>
-  🎮 PLAYER PERFORMANCE
+
+🎮 PLAYER PERFORMANCE
+
 </h3>
+
 
 
 {
 
-loadingStats === matchId ? (
+loadingStats ===
+(item.match_id || item.matches?.id)
+
+?
+
+(
 
 <p>
-  Loading player stats...
+Loading player stats...
 </p>
 
 )
@@ -1961,7 +1514,13 @@ loadingStats === matchId ? (
 
 (
 
-playerStatsMap[matchId]?.length > 0 ? (
+playerStatsMap[
+(item.match_id || item.matches?.id)
+]?.length > 0
+
+?
+
+(
 
 <div
 
@@ -1970,6 +1529,7 @@ style={{
 display:"grid",
 
 gridTemplateColumns:
+
 "repeat(auto-fit,minmax(220px,1fr))",
 
 gap:"15px"
@@ -1978,9 +1538,14 @@ gap:"15px"
 
 >
 
+
 {
 
-playerStatsMap[matchId].map(
+playerStatsMap[
+(item.match_id || item.matches?.id)
+]
+
+.map(
 
 (player)=>(
 
@@ -1995,11 +1560,9 @@ padding:"18px",
 
 borderRadius:"16px",
 
-background:
-"rgba(255,255,255,.06)",
+background:"rgba(255,255,255,.06)",
 
-border:
-"1px solid rgba(255,255,255,.1)"
+border:"1px solid rgba(255,255,255,.1)"
 
 }}
 
@@ -2039,127 +1602,31 @@ Damage:
 {player.damage}
 </b>
 
-       {
-openPerformance===item.id && (
-
-<div
-
-style={{
-
-marginTop:"25px",
-
-padding:"20px",
-
-borderRadius:"18px",
-
-background:"rgba(0,0,0,.35)"
-
-}}
-
->
-
-<h3>
-🎮 PLAYER PERFORMANCE
-</h3>
-
-
-{
-
-loadingStats === matchId ? (
-
-<p>
-Loading player stats...
-</p>
-
-)
-
-:
-
-(
-
-playerStatsMap[matchId]?.length > 0 ? (
-
-<div
-
-style={{
-
-display:"grid",
-
-gridTemplateColumns:
-"repeat(auto-fit,minmax(220px,1fr))",
-
-gap:"15px"
-
-}}
-
->
-
-{
-
-playerStatsMap[matchId].map(
-
-(player)=>(
-
-<div
-
-key={player.id}
-
-style={{
-
-padding:"18px",
-
-borderRadius:"16px",
-
-background:
-"rgba(255,255,255,.06)",
-
-border:
-"1px solid rgba(255,255,255,.1)"
-
-}}
-
->
-
-<h4>
-
-{
-player.players?.ign ||
-player.players?.full_name ||
-"Player"
-
-}
-
-</h4>
-
-
-<p>
-Kills:
-{" "}
-<b>{player.kills}</b>
 </p>
 
 
-<p>
-Damage:
-{" "}
-<b>{player.damage}</b>
-</p>
-
 
 <p>
+
 Assist:
 {" "}
-<b>{player.assists}</b>
+<b>
+{player.assists}
+</b>
+
 </p>
+
 
 
 </div>
 
+
 )
 
 )
 
 }
+
 
 </div>
 
@@ -2180,12 +1647,25 @@ No player performance data.
 }
 
 
+
+</div>
+
+
+)
+
+
+}
+
+
 </div>
 
 )
 
 }
+
+
 </div>
+
 
 </main>
 
