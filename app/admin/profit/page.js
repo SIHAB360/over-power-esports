@@ -583,15 +583,22 @@ linear-gradient(
                   </div>
 
                   <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                      gap: "20px",
-                      marginTop: "25px",
-                    }}
-                  >
+style={{
+
+display:"flex",
+
+justifyContent:"flex-end",
+
+alignItems:"center",
+
+gap:"15px",
+
+marginTop:"20px",
+
+flexWrap:"wrap"
+
+}}
+>
                     <div>
                       <p style={{ opacity: 0.7, marginBottom: "6px" }}>
                         PLAYER SHARE
