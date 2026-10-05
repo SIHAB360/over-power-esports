@@ -2077,44 +2077,26 @@ Assist:
 
 
 :
-
 <p>
-No player performance data.
+  No player performance data.
 </p>
 
-
 )
-
 
 }
 
-
-
 </div>
-
 
 )
 
 }
 
-
-
-
 </div>
 
-
-);
-
-
-}
-
-
 </div>
-
 
 </main>
 
 );
-
 
 }
