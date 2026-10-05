@@ -583,76 +583,96 @@ linear-gradient(
                   </div>
 
                   <div
-            style={{
-              display:"flex",
-              justifyContent:"flex-end",
-              alignItems:"center",
-              gap:"15px",
-              marginTop:"20px",
-              flexWrap:"nowrap"
-            }}
-            >
-                      <div>
-                      <p style={{ opacity: 0.7, marginBottom: "6px" }}>
-                        PLAYER SHARE
-                      </p>
-                      <h3 style={{ color: "#34d399", margin: 0 }}>
-                        {money(item.player_amount)}
-                      </h3>
-                    </div>
-                    <div>
-                      <p style={{ opacity: 0.7, marginBottom: "6px" }}>
-                        MANAGEMENT SHARE
-                      </p>
-                      <h3 style={{ color: "#60a5fa", margin: 0 }}>
-                        {money(item.management_amount)}
-                      </h3>
-                    </div>
-                        <button
-
-onClick={()=>deleteFinance(item.id)}
-
-style={{
-
-padding:"12px 20px",
-
-borderRadius:"14px",
-
-background:"#dc2626",
-
-border:"none",
-
-color:"#fff",
-
-fontWeight:800,
-
-cursor:"pointer"
-
-}}
-
+                       <div
+  style={{
+    display:"flex",
+    justifyContent:"space-between",
+    alignItems:"center",
+    gap:"20px",
+    marginTop:"20px",
+    flexWrap:"nowrap"
+  }}
 >
 
-🗑 DELETE
+  {/* SHARE SECTION */}
+  <div
+    style={{
+      display:"flex",
+      alignItems:"center",
+      gap:"30px"
+    }}
+  >
 
-</button>
+    <div>
+      <p style={{ opacity: 0.7, marginBottom: "6px" }}>
+        PLAYER SHARE
+      </p>
 
-                    <button
-                      onClick={() => togglePerformance(item)}
-                      style={{
-                        padding: "12px 24px",
-                        borderRadius: "14px",
-                        background: "transparent",
-                        border: "1px solid #fbbf24",
-                        color: "#fbbf24",
-                        fontWeight: 800,
-                        cursor: "pointer",
-                      }}
-                    >
-                      {openPerformance === item.id
-                        ? "Hide Performance"
-                        : "View Performance"}
-                    </button>
-                  </div>
+      <h3 style={{ color:"#34d399", margin:0 }}>
+        {money(item.player_amount)}
+      </h3>
+    </div>
+
+
+    <div>
+      <p style={{ opacity:0.7, marginBottom:"6px" }}>
+        MANAGEMENT SHARE
+      </p>
+
+      <h3 style={{ color:"#60a5fa", margin:0 }}>
+        {money(item.management_amount)}
+      </h3>
+    </div>
+
+  </div>
+
+
+
+  {/* BUTTON SECTION */}
+  <div
+    style={{
+      display:"flex",
+      alignItems:"center",
+      gap:"15px"
+    }}
+  >
+
+    <button
+      onClick={()=>deleteFinance(item.id)}
+      style={{
+        padding:"12px 20px",
+        borderRadius:"14px",
+        background:"#dc2626",
+        border:"none",
+        color:"#fff",
+        fontWeight:800,
+        cursor:"pointer"
+      }}
+    >
+      🗑 DELETE
+    </button>
+
+
+    <button
+      onClick={() => togglePerformance(item)}
+      style={{
+        padding:"12px 24px",
+        borderRadius:"14px",
+        background:"transparent",
+        border:"1px solid #fbbf24",
+        color:"#fbbf24",
+        fontWeight:800,
+        cursor:"pointer"
+      }}
+    >
+      {openPerformance === item.id
+        ? "Hide Performance"
+        : "View Performance"}
+    </button>
+
+  </div>
+
+</div>
 
                   {openPerformance === item.id && (
                     <div
