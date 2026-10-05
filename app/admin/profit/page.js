@@ -2039,161 +2039,153 @@ Damage:
 {player.damage}
 </b>
 
-        {
-          openPerformance === item.id && (
+       {
+openPerformance===item.id && (
 
-            <div
+<div
 
-              style={{
+style={{
 
-                marginTop:"25px",
+marginTop:"25px",
 
-                padding:"20px",
+padding:"20px",
 
-                borderRadius:"18px",
+borderRadius:"18px",
 
-                background:"rgba(0,0,0,.35)"
+background:"rgba(0,0,0,.35)"
 
-              }}
+}}
 
-            >
+>
 
-              <h3>
-                🎮 PLAYER PERFORMANCE
-              </h3>
-
-
-              {
-                loadingStats === matchId ? (
-
-                  <p>
-                    Loading player stats...
-                  </p>
-
-                )
-
-                :
-
-                (
-
-                  playerStatsMap[matchId]?.length > 0 ? (
-
-                    <div
-
-                      style={{
-
-                        display:"grid",
-
-                        gridTemplateColumns:
-                        "repeat(auto-fit,minmax(220px,1fr))",
-
-                        gap:"15px"
-
-                      }}
-
-                    >
-
-                      {
-                        playerStatsMap[matchId].map(
-                          (player)=>(
-
-                            <div
-
-                              key={player.id}
-
-                              style={{
-
-                                padding:"18px",
-
-                                borderRadius:"16px",
-
-                                background:
-                                "rgba(255,255,255,.06)",
-
-                                border:
-                                "1px solid rgba(255,255,255,.1)"
-
-                              }}
-
-                            >
-
-                              <h4>
-
-                                {
-                                  player.players?.ign ||
-                                  player.players?.full_name ||
-                                  "Player"
-                                }
-
-                              </h4>
+<h3>
+🎮 PLAYER PERFORMANCE
+</h3>
 
 
-                              <p>
-                                Kills:
-                                {" "}
-                                <b>{player.kills}</b>
-                              </p>
+{
+
+loadingStats === matchId ? (
+
+<p>
+Loading player stats...
+</p>
+
+)
+
+:
+
+(
+
+playerStatsMap[matchId]?.length > 0 ? (
+
+<div
+
+style={{
+
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(220px,1fr))",
+
+gap:"15px"
+
+}}
+
+>
+
+{
+
+playerStatsMap[matchId].map(
+
+(player)=>(
+
+<div
+
+key={player.id}
+
+style={{
+
+padding:"18px",
+
+borderRadius:"16px",
+
+background:
+"rgba(255,255,255,.06)",
+
+border:
+"1px solid rgba(255,255,255,.1)"
+
+}}
+
+>
+
+<h4>
+
+{
+player.players?.ign ||
+player.players?.full_name ||
+"Player"
+
+}
+
+</h4>
 
 
-                              <p>
-                                Damage:
-                                {" "}
-                                <b>{player.damage}</b>
-                              </p>
+<p>
+Kills:
+{" "}
+<b>{player.kills}</b>
+</p>
 
 
-                              <p>
-                                Assist:
-                                {" "}
-                                <b>{player.assists}</b>
-                              </p>
+<p>
+Damage:
+{" "}
+<b>{player.damage}</b>
+</p>
 
 
-                            </div>
-
-                          )
-
-                        )
-
-                      }
+<p>
+Assist:
+{" "}
+<b>{player.assists}</b>
+</p>
 
 
-                    </div>
+</div>
 
-                  )
+)
 
-                  :
+)
 
-                  (
+}
 
-                    <p>
-                      No player performance data.
-                    </p>
+</div>
 
-                  )
+)
 
-                )
+:
 
-              }
+(
 
+<p>
+No player performance data.
+</p>
 
-            </div>
+)
 
-          )
-        }
-
-
-      </div>
-
-    )
-
-  )
+)
 
 }
 
 
 </div>
 
+)
+
+}
+</div>
 
 </main>
 
