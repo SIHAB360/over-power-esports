@@ -1943,23 +1943,17 @@ background:"rgba(0,0,0,.35)"
 
 
 <h3>
-
-🎮 PLAYER PERFORMANCE
-
+  🎮 PLAYER PERFORMANCE
 </h3>
-
-
 
 
 {
 
-loadingStats===matchId ? (
-
+loadingStats === matchId ? (
 
 <p>
-Loading player stats...
+  Loading player stats...
 </p>
-
 
 )
 
@@ -1967,8 +1961,7 @@ Loading player stats...
 
 (
 
-playerStatsMap[matchId]?.length ?
-
+playerStatsMap[matchId]?.length > 0 ? (
 
 <div
 
@@ -1977,7 +1970,6 @@ style={{
 display:"grid",
 
 gridTemplateColumns:
-
 "repeat(auto-fit,minmax(220px,1fr))",
 
 gap:"15px"
@@ -1986,11 +1978,10 @@ gap:"15px"
 
 >
 
-
 {
 
-playerStatsMap[matchId]
-.map(
+playerStatsMap[matchId].map(
+
 (player)=>(
 
 
@@ -2031,30 +2022,32 @@ player.players?.full_name ||
 <p>
 
 Kills:
-<b>
 {" "}
+<b>
 {player.kills}
 </b>
 
 </p>
 
 
+
 <p>
 
 Damage:
-<b>
 {" "}
+<b>
 {player.damage}
 </b>
 
 </p>
 
 
+
 <p>
 
 Assist:
-<b>
 {" "}
+<b>
 {player.assists}
 </b>
 
@@ -2069,22 +2062,26 @@ Assist:
 
 )
 
-
 }
 
 
 </div>
 
+)
 
 :
+
+(
+
 <p>
   No player performance data.
 </p>
 
 )
 
-}
+)
 
+}
 </div>
 
 )
