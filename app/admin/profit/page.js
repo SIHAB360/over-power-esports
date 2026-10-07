@@ -24,11 +24,22 @@ const inputStyle = {
   backdropFilter: "blur(15px)",
 };
 
-
 const selectStyle = {
   ...inputStyle,
   cursor: "pointer",
 };
+
+const miniCardStyle = {
+  padding: "16px",
+  borderRadius: "16px",
+  background: "rgba(255,255,255,0.05)",
+  border: "1px solid rgba(255,255,255,0.1)",
+  textAlign: "center",
+  fontSize: "13px",
+  fontWeight: 600,
+  letterSpacing: "0.5px",
+};
+
 function SummaryCard({ title, value, color, icon }) {
   return (
     <div
@@ -181,44 +192,25 @@ export default function ProfitPage() {
   }
 
   async function deleteFinance(id) {
-
-  const confirmDelete =
-    window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this financial record?"
     );
 
+    if (!confirmDelete) return;
 
-  if (!confirmDelete) return;
+    const { error } = await supabase
+      .from("match_finance")
+      .delete()
+      .eq("id", id);
 
+    if (error) {
+      alert(error.message);
+      return;
+    }
 
-  const {
-    error
-  } = await supabase
-    .from("match_finance")
-    .delete()
-    .eq("id", id);
-
-
-
-  if (error) {
-
-    alert(error.message);
-
-    return;
-
+    setFinanceData((prev) => prev.filter((item) => item.id !== id));
   }
 
-
-
-  setFinanceData((prev) =>
-    prev.filter(
-      (item) => item.id !== id
-    )
-  );
-
-
-}
-  
   const teamOptions = [
     ...new Set(
       financeData.map((item) => item.teams?.team_name).filter(Boolean)
@@ -302,49 +294,19 @@ export default function ProfitPage() {
   }
 
   return (
-   <main
-
-style={{
-
-minHeight:"100vh",
-
-padding:"60px 20px 120px",
-
-color:"#fff",
-
-background:
-
-`
-radial-gradient(
-circle at 15% 10%,
-rgba(255,0,0,.18),
-transparent 30%
-),
-
-radial-gradient(
-circle at 85% 20%,
-rgba(255,215,0,.12),
-transparent 25%
-),
-
-radial-gradient(
-circle at 50% 90%,
-rgba(0,120,255,.10),
-transparent 30%
-),
-
-linear-gradient(
-135deg,
-#030303,
-#080808 50%,
-#120000
-)
-
-`
-
-}}
-
->
+    <main
+      style={{
+        minHeight: "100vh",
+        padding: "60px 20px 120px",
+        color: "#fff",
+        background: `
+          radial-gradient(circle at 15% 10%, rgba(255,0,0,.18), transparent 30%),
+          radial-gradient(circle at 85% 20%, rgba(255,215,0,.12), transparent 25%),
+          radial-gradient(circle at 50% 90%, rgba(0,120,255,.10), transparent 30%),
+          linear-gradient(135deg, #030303, #080808 50%, #120000)
+        `,
+      }}
+    >
       <h1
         style={{
           textAlign: "center",
@@ -525,6 +487,7 @@ linear-gradient(
                     backdropFilter: "blur(18px)",
                   }}
                 >
+                  {/* Tournament + Team */}
                   <div
                     style={{
                       display: "flex",
@@ -549,6 +512,7 @@ linear-gradient(
                     </div>
                   </div>
 
+                  {/* Mini Cards */}
                   <div
                     style={{
                       display: "grid",
@@ -582,98 +546,88 @@ linear-gradient(
                     </div>
                   </div>
 
+                  {/* Share + Buttons Row */}
                   <div
-                       <div
-  style={{
-    display:"flex",
-    justifyContent:"space-between",
-    alignItems:"center",
-    gap:"20px",
-    marginTop:"20px",
-    flexWrap:"nowrap"
-  }}
->
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "20px",
+                      marginTop: "25px",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* Shares */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "30px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <div>
+                        <p style={{ opacity: 0.7, marginBottom: "6px" }}>
+                          PLAYER SHARE
+                        </p>
+                        <h3 style={{ color: "#34d399", margin: 0 }}>
+                          {money(item.player_amount)}
+                        </h3>
+                      </div>
+                      <div>
+                        <p style={{ opacity: 0.7, marginBottom: "6px" }}>
+                          MANAGEMENT SHARE
+                        </p>
+                        <h3 style={{ color: "#60a5fa", margin: 0 }}>
+                          {money(item.management_amount)}
+                        </h3>
+                      </div>
+                    </div>
 
-  {/* SHARE SECTION */}
-  <div
-    style={{
-      display:"flex",
-      alignItems:"center",
-      gap:"30px"
-    }}
-  >
+                    {/* Buttons */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <button
+                        onClick={() => deleteFinance(item.id)}
+                        style={{
+                          padding: "12px 20px",
+                          borderRadius: "14px",
+                          background: "#dc2626",
+                          border: "none",
+                          color: "#fff",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                      >
+                        🗑 DELETE
+                      </button>
 
-    <div>
-      <p style={{ opacity: 0.7, marginBottom: "6px" }}>
-        PLAYER SHARE
-      </p>
+                      <button
+                        onClick={() => togglePerformance(item)}
+                        style={{
+                          padding: "12px 24px",
+                          borderRadius: "14px",
+                          background: "transparent",
+                          border: "1px solid #fbbf24",
+                          color: "#fbbf24",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                      >
+                        {openPerformance === item.id
+                          ? "Hide Performance"
+                          : "View Performance"}
+                      </button>
+                    </div>
+                  </div>
 
-      <h3 style={{ color:"#34d399", margin:0 }}>
-        {money(item.player_amount)}
-      </h3>
-    </div>
-
-
-    <div>
-      <p style={{ opacity:0.7, marginBottom:"6px" }}>
-        MANAGEMENT SHARE
-      </p>
-
-      <h3 style={{ color:"#60a5fa", margin:0 }}>
-        {money(item.management_amount)}
-      </h3>
-    </div>
-
-  </div>
-
-
-
-  {/* BUTTON SECTION */}
-  <div
-    style={{
-      display:"flex",
-      alignItems:"center",
-      gap:"15px"
-    }}
-  >
-
-    <button
-      onClick={()=>deleteFinance(item.id)}
-      style={{
-        padding:"12px 20px",
-        borderRadius:"14px",
-        background:"#dc2626",
-        border:"none",
-        color:"#fff",
-        fontWeight:800,
-        cursor:"pointer"
-      }}
-    >
-      🗑 DELETE
-    </button>
-
-
-    <button
-      onClick={() => togglePerformance(item)}
-      style={{
-        padding:"12px 24px",
-        borderRadius:"14px",
-        background:"transparent",
-        border:"1px solid #fbbf24",
-        color:"#fbbf24",
-        fontWeight:800,
-        cursor:"pointer"
-      }}
-    >
-      {openPerformance === item.id
-        ? "Hide Performance"
-        : "View Performance"}
-    </button>
-
-  </div>
-
-</div>
-
+                  {/* Player Performance */}
                   {openPerformance === item.id && (
                     <div
                       style={{
@@ -739,15 +693,3 @@ linear-gradient(
     </main>
   );
 }
-
-// Mini card style
-const miniCardStyle = {
-  padding: "16px",
-  borderRadius: "16px",
-  background: "rgba(255,255,255,0.05)",
-  border: "1px solid rgba(255,255,255,0.1)",
-  textAlign: "center",
-  fontSize: "13px",
-  fontWeight: 600,
-  letterSpacing: "0.5px",
-};
