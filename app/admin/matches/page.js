@@ -1,17 +1,15 @@
+// app/admin/matches/page.js
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
-
 const MANAGEMENT_PERCENTAGE = 30;
 const PLAYER_PERCENTAGE = 70;
 const REQUIRED_PLAYERS = 4;
 
-
 export default function AdminMatchesPage() {
-
   const router = useRouter();
 
   const [pageLoading, setPageLoading] = useState(true);
@@ -31,47 +29,36 @@ export default function AdminMatchesPage() {
     tournament_id: "",
     team1_id: "",
     team2_id: "",
-
     match_date: "",
     match_type: "Scrim",
     status: "completed",
-
     team1_score: "",
     team2_score: "",
     winner_id: "",
-
     position: "",
     points: "",
-
     entry_fee: "",
     prize_money: "",
-
     platform: "Free Fire",
     map: "",
     sponsor: "",
     notice: "",
   });
 
-
   useEffect(() => {
     initializePage();
   }, []);
 
-
   async function initializePage() {
-
     try {
-
       const {
         data: { user },
       } = await supabase.auth.getUser();
-
 
       if (!user) {
         router.replace("/login");
         return;
       }
-
 
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
@@ -79,87 +66,46 @@ export default function AdminMatchesPage() {
         .eq("id", user.id)
         .single();
 
-
-      if (profileError) {
-        throw profileError;
-      }
-
+      if (profileError) throw profileError;
 
       const role = profile?.role?.toLowerCase();
-
 
       if (role !== "admin" && role !== "moderator") {
         router.replace("/");
         return;
       }
 
-
-      await Promise.all([
-        loadTeams(),
-        loadTournaments(),
-        loadRecentMatches(),
-      ]);
-
-
+      await Promise.all([loadTeams(), loadTournaments(), loadRecentMatches()]);
     } catch (error) {
-
       console.error(error);
-
-      setMessage(
-        error.message || "Unable to load Match Management."
-      );
-
+      setMessage(error.message || "Unable to load Match Management.");
       setMessageType("error");
-
     } finally {
-
       setPageLoading(false);
-
     }
-
   }
 
-
   async function loadTeams() {
-
     const { data, error } = await supabase
       .from("teams")
       .select("id, team_name, logo, status")
       .order("team_name", { ascending: true });
 
-
-    if (error) {
-      throw error;
-    }
-
-
+    if (error) throw error;
     setTeams(data || []);
-
   }
-
 
   async function loadTournaments() {
-
     const { data, error } = await supabase
       .from("tournaments")
-      .select(
-        "id, name, status, start_date, end_date"
-      )
+      .select("id, name, status, start_date, end_date")
       .order("created_at", { ascending: false });
 
-
-    if (error) {
-      throw error;
-    }
-
-
+    if (error) throw error;
     setTournaments(data || []);
-
   }
 
-
   async function loadRecentMatches() {
-
     const { data, error } = await supabase
       .from("matches")
       .select(
@@ -175,19 +121,12 @@ export default function AdminMatchesPage() {
         profit,
         status,
         position:match_results(position)
-        `
+      `
       )
       .order("created_at", { ascending: false })
       .limit(6);
 
-
     if (error) {
-
-      /*
-        match_results relationship unavailable হলেও
-        main page যেন বন্ধ না হয়।
-      */
-
       const fallback = await supabase
         .from("matches")
         .select(
@@ -202,42 +141,30 @@ export default function AdminMatchesPage() {
           prize_money,
           profit,
           status
-          `
+        `
         )
         .order("created_at", { ascending: false })
         .limit(6);
 
-
-      if (fallback.error) {
-        throw fallback.error;
-      }
-
-
+      if (fallback.error) throw fallback.error;
       setRecentMatches(fallback.data || []);
-
       return;
     }
-
 
     setRecentMatches(data || []);
-
   }
 
-
   async function loadTeamPlayers(teamId) {
-
     setSelectedPlayers([]);
     setTeamPlayers([]);
+    setPlayerStats({});
 
-
-    if (!teamId) {
-      return;
-    }
-
+    if (!teamId) return;
 
     const { data, error } = await supabase
       .from("players")
-      .select(`
+      .select(
+        `
         id,
         full_name,
         ign,
@@ -248,3737 +175,1662 @@ export default function AdminMatchesPage() {
         verified,
         status,
         team_id
-      `)
+      `
+      )
       .eq("team_id", teamId)
       .order("full_name", { ascending: true });
 
-
     if (error) {
-
       setMessage(error.message);
       setMessageType("error");
-
       return;
-
     }
 
-
     setTeamPlayers(data || []);
-
   }
 
-
   function handleChange(e) {
-
     const { name, value } = e.target;
-
 
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-
     if (name === "team1_id") {
-
       loadTeamPlayers(value);
-
       setForm((prev) => ({
         ...prev,
         team1_id: value,
         winner_id: "",
       }));
-
     }
-
   }
 
+  function togglePlayer(player) {
+    setMessage("");
+    setMessageType("");
 
-function togglePlayer(player) {
+    setSelectedPlayers((current) => {
+      const exists = current.find((p) => p.id === player.id);
 
-  setMessage("");
-  setMessageType("");
+      if (exists) {
+        return current.filter((p) => p.id !== player.id);
+      }
 
+      if (current.length >= REQUIRED_PLAYERS) {
+        setMessage("Exactly 4 players can play this match.");
+        setMessageType("error");
+        return current;
+      }
 
-  setSelectedPlayers((current) => {
+      return [...current, player];
+    });
+  }
 
-
-    const exists = current.find(
-      (p) => p.id === player.id
-    );
-
-
-    if (exists) {
-
-      return current.filter(
-        (p) => p.id !== player.id
-      );
-
-    }
-
-
-    if (current.length >= REQUIRED_PLAYERS) {
-
-      setMessage(
-        "Exactly 4 players can play this match."
-      );
-
-      setMessageType("error");
-
-      return current;
-
-    }
-
-
-    return [
-      ...current,
-      player
-    ];
-
-  });
-
-}
-
-
-  const entryFee =
-    Number(form.entry_fee) || 0;
-
-  const prizeMoney =
-    Number(form.prize_money) || 0;
-
-  const netProfit =
-    prizeMoney - entryFee;
-
-
-  /*
-    Loss হলে negative profit database-এ থাকবে।
-    কিন্তু negative earning player-দের দেওয়া হবে না।
-  */
-
-  const distributableProfit =
-    netProfit > 0 ? netProfit : 0;
-
-
-  const managementAmount =
-    distributableProfit *
-    (MANAGEMENT_PERCENTAGE / 100);
-
-
-  const playerPool =
-    distributableProfit *
-    (PLAYER_PERCENTAGE / 100);
-
-
+  const entryFee = Number(form.entry_fee) || 0;
+  const prizeMoney = Number(form.prize_money) || 0;
+  const netProfit = prizeMoney - entryFee;
+  const distributableProfit = netProfit > 0 ? netProfit : 0;
+  const managementAmount = distributableProfit * (MANAGEMENT_PERCENTAGE / 100);
+  const playerPool = distributableProfit * (PLAYER_PERCENTAGE / 100);
   const perPlayerAmount =
     selectedPlayers.length === REQUIRED_PLAYERS
       ? playerPool / REQUIRED_PLAYERS
       : 0;
 
-
   function money(value) {
-
-    return Number(value || 0).toLocaleString(
-      "en-BD",
-      {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }
-    );
-
+    return Number(value || 0).toLocaleString("en-BD", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
   }
-
 
   function teamName(teamId) {
-
-    if (!teamId) {
-      return "—";
-    }
-
-
-    return (
-      teams.find(
-        (team) => team.id === teamId
-      )?.team_name || "Unknown Team"
-    );
-
+    if (!teamId) return "—";
+    return teams.find((team) => team.id === teamId)?.team_name || "Unknown Team";
   }
-
 
   function tournamentName(tournamentId) {
-
-    if (!tournamentId) {
-      return "Independent Match";
-    }
-
-
+    if (!tournamentId) return "Independent Match";
     return (
-      tournaments.find(
-        (item) => item.id === tournamentId
-      )?.name || "Tournament"
+      tournaments.find((item) => item.id === tournamentId)?.name || "Tournament"
     );
-
   }
-
 
   async function rollbackMatch(matchId) {
-
     if (!matchId) return;
-
-
     try {
-
-      await supabase
-        .from("matches")
-        .delete()
-        .eq("id", matchId);
-
+      await supabase.from("matches").delete().eq("id", matchId);
     } catch (error) {
-
-      console.error(
-        "Rollback failed:",
-        error
-      );
-
+      console.error("Rollback failed:", error);
     }
-
   }
 
-
   async function handleSaveMatch(e) {
-
     e.preventDefault();
-
     setMessage("");
     setMessageType("");
 
-
     if (!form.team1_id) {
-
       setMessage("Select your team.");
-
       setMessageType("error");
-
       return;
-
     }
 
-
-    if (
-      form.team2_id &&
-      form.team2_id === form.team1_id
-    ) {
-
-      setMessage(
-        "Team 1 and Team 2 cannot be the same."
-      );
-
+    if (form.team2_id && form.team2_id === form.team1_id) {
+      setMessage("Team 1 and Team 2 cannot be the same.");
       setMessageType("error");
-
       return;
-
     }
-
 
     if (!form.match_date) {
-
-      setMessage(
-        "Select match date and time."
-      );
-
+      setMessage("Select match date and time.");
       setMessageType("error");
-
       return;
-
     }
 
-
-    if (
-      selectedPlayers.length !==
-      REQUIRED_PLAYERS
-    ) {
-
-      setMessage(
-        "You must select exactly 4 active players."
-      );
-
+    if (selectedPlayers.length !== REQUIRED_PLAYERS) {
+      setMessage("You must select exactly 4 active players.");
       setMessageType("error");
-
       return;
-
     }
-
 
     setSaving(true);
-
     let createdMatchId = null;
 
-
     try {
+      // STEP 1 - CREATE MATCH
+      const matchPayload = {
+        tournament_id: form.tournament_id || null,
+        team1_id: form.team1_id,
+        team2_id: form.team2_id || null,
+        team1_score: Number(form.team1_score) || 0,
+        team2_score: Number(form.team2_score) || 0,
+        winner_id: form.winner_id || null,
+        match_date: form.match_date,
+        status: form.status,
+        match_type: form.match_type,
+        entry_fee: entryFee,
+        prize_money: prizeMoney,
+        profit: netProfit,
+        platform: form.platform,
+        map: form.map || null,
+        sponsor: form.sponsor || null,
+        notice: form.notice || null,
+      };
 
-      /*
-        STEP 1
-        CREATE MATCH
-      */
-
-     const matchPayload = {
-
- tournament_id: form.tournament_id || null,
-
- team1_id: form.team1_id,
-
- team2_id: form.team2_id || null,
-
- team1_score: Number(form.team1_score) || 0,
-
- team2_score: Number(form.team2_score) || 0,
-
- winner_id: form.winner_id || null,
-
- match_date: form.match_date,
-
- status: form.status,
-
- match_type: form.match_type,
-
- entry_fee: entryFee,
-
- prize_money: prizeMoney,
-
- profit: netProfit,
-
- platform: form.platform,
-
- map: form.map || null,
-
- sponsor: form.sponsor || null,
-
- notice: form.notice || null
-
-};
-
-
-      const {
-        data: match,
-        error: matchError,
-      } = await supabase
+      const { data: match, error: matchError } = await supabase
         .from("matches")
         .insert([matchPayload])
         .select()
         .single();
 
-
-      if (matchError) {
-        throw matchError;
-      }
-
-
+      if (matchError) throw matchError;
       createdMatchId = match.id;
 
+      // STEP 2 - SAVE 4 PLAYERS
+      const matchPlayerRows = selectedPlayers.map((player, index) => ({
+        match_id: match.id,
+        player_id: player.id,
+        team_id: form.team1_id,
+        slot_number: index + 1,
+      }));
 
-      /*
-        STEP 2
-        SAVE EXACT 4 ACTIVE PLAYERS
-      */
-      console.log("SELECTED PLAYERS:", selectedPlayers);
-     const matchPlayerRows =
-  selectedPlayers.map(
-    (player, index) => ({
-      match_id: match.id,
-      player_id: player.id,
-      team_id: form.team1_id,
-      slot_number: index + 1,
-    })
-  );
+      const { error: playersError } = await supabase
+        .from("match_players")
+        .insert(matchPlayerRows);
 
+      if (playersError) throw playersError;
 
-      const { error: playersError } =
-        await supabase
-          .from("match_players")
-          .insert(matchPlayerRows);
+      // STEP 3 - SAVE FINANCE
+      const { error: financeError } = await supabase
+        .from("match_finance")
+        .insert([
+          {
+            match_id: match.id,
+            team_id: form.team1_id,
+            entry_fee: entryFee,
+            prize_money: prizeMoney,
+            profit: netProfit,
+            management_percentage: MANAGEMENT_PERCENTAGE,
+            management_amount: managementAmount,
+            player_amount: playerPool,
+          },
+        ]);
 
+      if (financeError) throw financeError;
 
-      if (playersError) {
-        throw playersError;
+      // STEP 4 - MATCH RESULT
+      if (form.status === "completed") {
+        if (form.position || form.points || form.prize_money) {
+          const { error: resultError } = await supabase
+            .from("match_results")
+            .insert([
+              {
+                match_id: match.id,
+                team_id: form.team1_id,
+                position: form.position ? Number(form.position) : null,
+                points: form.points ? Number(form.points) : 0,
+                status: "completed",
+              },
+            ]);
+
+          if (resultError) throw resultError;
+        }
       }
 
+      // STEP 5 - PLAYER STATS
+      if (selectedPlayers.length > 0) {
+        const statsPayload = selectedPlayers.map((player) => ({
+          match_id: match.id,
+          player_id: player.id,
+          kills: playerStats[player.id]?.kills || 0,
+          assists: playerStats[player.id]?.assists || 0,
+          damage: playerStats[player.id]?.damage || 0,
+          mvp: playerStats[player.id]?.mvp || false,
+          placement: Number(form.position) || 0,
+        }));
 
-      /*
-        STEP 3
-        SAVE MATCH FINANCE
+        const { error: statsError } = await supabase
+          .from("match_player_stats")
+          .insert(statsPayload);
 
-        Profit = Prize - Entry
+        if (statsError) throw statsError;
+      }
 
-        Positive Profit:
-        Management = 30%
-        Players = 70%
-      */
+      // STEP 6 - EARNINGS
+      if (
+        form.status === "completed" &&
+        playerPool > 0 &&
+        selectedPlayers.length === REQUIRED_PLAYERS
+      ) {
+        const finalPerPlayerAmount = Number(perPlayerAmount.toFixed(2));
+        const finalManagementAmount = Number(managementAmount.toFixed(2));
 
-      const { error: financeError } =
-        await supabase
-          .from("match_finance")
+        const playerEarningRows = selectedPlayers.map((player) => ({
+          player_id: player.id,
+          match_id: match.id,
+          team_id: form.team1_id,
+          amount: finalPerPlayerAmount,
+        }));
+
+        const { error: playerEarningsError } = await supabase
+          .from("player_earnings")
+          .insert(playerEarningRows);
+
+        if (playerEarningsError) throw playerEarningsError;
+
+        const { error: teamEarningsError } = await supabase
+          .from("team_earnings")
           .insert([
             {
+              team_id: form.team1_id,
               match_id: match.id,
-
-              team_id:
-                form.team1_id,
-
-              entry_fee:
-                entryFee,
-
-              prize_money:
-                prizeMoney,
-
-              profit:
-                netProfit,
-
-              management_percentage:
-                MANAGEMENT_PERCENTAGE,
-
-              management_amount:
-                managementAmount,
-
-              player_amount:
-                playerPool,
+              amount: finalManagementAmount,
             },
           ]);
 
-
-      if (financeError) {
-        throw financeError;
+        if (teamEarningsError) throw teamEarningsError;
       }
-console.log("MATCH FINANCE SAVED:", match.id);
-
-      /*
-        STEP 4
-        COMPLETED MATCH RESULT
-      */
-
-      if (form.status === "completed") {
-
-  if (
-    form.position ||
-    form.points ||
-    form.kills ||
-    form.prize_money
-  ) {
-
-
-    const { error: resultError } =
-      await supabase
-      .from("match_results")
-      .insert([
-        {
-
-          match_id:
-            match.id,
-
-
-          team_id:
-            form.team1_id,
-
-
-          position:
-            form.position
-            ? Number(form.position)
-            : null,
-
-          points:
-            form.points
-            ? Number(form.points)
-            : 0,
-
-          status:
-            form.result_status || "completed"
-
-        },
-      ]);
-
-
-    if(resultError){
-
-      throw resultError;
-
-    }
-
-  }
-
-}
-
-// SAVE PLAYER PERFORMANCE STATS
-
-if(selectedPlayers.length > 0){
-console.log("SELECTED PLAYERS:", selectedPlayers);
-  const statsPayload = selectedPlayers.map((player)=>({
-
-  match_id: match.id,
-
-  player_id: player.id,
-
-  kills:
-    playerStats[player.id]?.kills || 0,
-
-  assists:
-    playerStats[player.id]?.assists || 0,
-
-  damage:
-    playerStats[player.id]?.damage || 0,
-
-  mvp:
-    playerStats[player.id]?.mvp || false,
-
-   placement:
-Number(form.position) || 0
-
-}));
-console.log("STATS PAYLOAD:", statsPayload);
-
-  const { error: statsError } =
-    await supabase
-    .from("match_player_stats")
-    .insert(statsPayload);
-
-
-  if(statsError){
-
-  console.log(
-    "PLAYER STATS ERROR:",
-    statsError.message
-  );
-
-  throw statsError;
-
-  }
-  } 
-       /*
-  STEP 5
-  PLAYER EARNINGS
-
-  IMPORTANT:
-  Only COMPLETED matches can add money
-  to player lifetime earnings.
-
-  Exactly 4 selected players receive
-  the 70% player profit share.
-*/
-
-if (
-  form.status === "completed" &&
-  playerPool > 0 &&
-  selectedPlayers.length === REQUIRED_PLAYERS
-) {
-  const finalPerPlayerAmount = Number(
-    perPlayerAmount.toFixed(2)
-  );
-
-  const finalManagementAmount = Number(
-    managementAmount.toFixed(2)
-  );
-
-  const playerEarningRows = selectedPlayers.map(
-    (player) => ({
-      player_id: player.id,
-      match_id: match.id,
-      team_id: form.team1_id,
-      amount: finalPerPlayerAmount,
-    })
-  );
-
-  const { error: playerEarningsError } =
-    await supabase
-      .from("player_earnings")
-      .insert(playerEarningRows);
-
-  if (playerEarningsError) {
-    console.error(
-      "PLAYER EARNINGS ERROR:",
-      playerEarningsError
-    );
-
-    throw playerEarningsError;
-  }
-
-  console.log(
-    "PLAYER EARNINGS SAVED:",
-    playerEarningRows
-  );
-
-  /*
-    MANAGEMENT / TEAM EARNING
-  */
-
-  const { error: teamEarningsError } =
-    await supabase
-      .from("team_earnings")
-      .insert([
-        {
-          team_id: form.team1_id,
-          match_id: match.id,
-          amount: finalManagementAmount,
-        },
-      ]);
-
-  if (teamEarningsError) {
-    console.error(
-      "TEAM EARNINGS ERROR:",
-      teamEarningsError
-    );
-
-    throw teamEarningsError;
-  }
-
-  console.log(
-    "TEAM EARNING SAVED:",
-    finalManagementAmount
-  );
-}
 
       setMessage(
         form.status === "completed"
-          ? `Match saved. Each active player receives ${money(perPlayerAmount)}`
+          ? `Match saved. Each active player receives ৳${money(perPlayerAmount)}`
           : "Match created successfully."
       );
-
       setMessageType("success");
-        
 
-
+      // Reset form
       setForm({
         tournament_id: "",
         team1_id: "",
         team2_id: "",
-
         match_date: "",
         match_type: "Scrim",
         status: "completed",
-
         team1_score: "",
         team2_score: "",
         winner_id: "",
-
         position: "",
         points: "",
-
         entry_fee: "",
         prize_money: "",
-
         platform: "Free Fire",
         map: "",
         sponsor: "",
         notice: "",
       });
 
-
       setTeamPlayers([]);
       setSelectedPlayers([]);
-
+      setPlayerStats({});
 
       await loadRecentMatches();
 
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-
-
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
-
       console.error(error);
 
-
-      /*
-        কোনো child insert fail করলে
-        partially-created match রেখে দেব না।
-      */
-
       if (createdMatchId) {
-
-        await rollbackMatch(
-          createdMatchId
-        );
-
+        await rollbackMatch(createdMatchId);
       }
 
-
-      setMessage(
-        error.message ||
-          "Unable to save match."
-      );
-
+      setMessage(error.message || "Unable to save match.");
       setMessageType("error");
-
-
-   } finally {
-
-  setSaving(false);
-
-}
-
-}
-
-if (pageLoading) {
-    return (
-
-      <main className="op-loading">
-
-        <div className="loader"></div>
-
-        <span>
-          LOADING MATCH COMMAND CENTER
-        </span>
-
-
-        <style jsx>{`
-
-          .op-loading {
-
-            min-height: 100vh;
-
-            background: #050507;
-
-            color: white;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 20px;
-
-            font-family:
-              system-ui,
-              -apple-system,
-              BlinkMacSystemFont,
-              "Segoe UI",
-              sans-serif;
-
-          }
-
-
-          .loader {
-
-            width: 52px;
-
-            height: 52px;
-
-            border-radius: 50%;
-
-            border:
-              3px solid
-              rgba(
-                255,
-                255,
-                255,
-                0.08
-              );
-
-            border-top-color:
-              #ff2457;
-
-            animation:
-              spin 0.8s linear
-              infinite;
-
-          }
-
-
-          span {
-
-            color: #747481;
-
-            font-size: 11px;
-
-            letter-spacing: 2px;
-
-            font-weight: 800;
-
-          }
-
-
-          @keyframes spin {
-
-            to {
-              transform:
-                rotate(360deg);
-            }
-
-          }
-
-        `}</style>
-
-      </main>
-
-    );
-
+    } finally {
+      setSaving(false);
+    }
   }
 
+  if (pageLoading) {
+    return (
+      <main className="op-loading">
+        <div className="loader"></div>
+        <span>LOADING MATCH COMMAND CENTER</span>
+
+        <style jsx>{`
+          .op-loading {
+            min-height: 100vh;
+            background: #050507;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+              sans-serif;
+          }
+          .loader {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.08);
+            border-top-color: #ff2457;
+            animation: spin 0.8s linear infinite;
+          }
+          span {
+            color: #747481;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 800;
+          }
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+      </main>
+    );
+  }
 
   return (
-
     <main className="op-match-page">
-
-
       <div className="ambient ambient-one"></div>
       <div className="ambient ambient-two"></div>
-
+      <div className="ambient ambient-three"></div>
 
       <div className="shell">
-
-
         {/* HEADER */}
-
         <header className="topbar">
-
-
           <div>
-
-            <span className="eyebrow">
-              OVER POWER ESPORTS
-            </span>
-
-            <h1>
-              MATCH COMMAND CENTER
-            </h1>
-
-            <p>
-              Record matches, active
-              players, results and
-              earnings.
-            </p>
-
+            <span className="eyebrow">OVER POWER ESPORTS</span>
+            <h1>MATCH COMMAND CENTER</h1>
+            <p>Record matches, active players, results and earnings.</p>
           </div>
-
 
           <div className="rule-pill">
-
-            <span>
-              PROFIT RULE
-            </span>
-
-            <strong>
-              30 / 70
-            </strong>
-
+            <span>PROFIT RULE</span>
+            <strong>30 / 70</strong>
           </div>
-
-
         </header>
 
-
-
         {message && (
-
           <div
             className={
-              messageType ===
-              "success"
-                ? "message success"
-                : "message error"
+              messageType === "success" ? "message success" : "message error"
             }
           >
-
             {message}
-
           </div>
-
         )}
 
-
-
-        <form
-          onSubmit={
-            handleSaveMatch
-          }
-        >
-
-
+        <form onSubmit={handleSaveMatch}>
           {/* STEP 01 */}
-
           <section className="panel">
-
-
             <SectionTitle
               number="01"
               small="MATCH SETUP"
               title="MATCH INFORMATION"
             />
 
-
             <div className="form-grid">
-
-
-              <FieldWrap
-                label="Tournament Creator"
-              >
-
+              <FieldWrap label="Tournament">
                 <select
                   name="tournament_id"
-                  value={
-                    form.tournament_id
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.tournament_id}
+                  onChange={handleChange}
                 >
-
-                  <option value="">
-                   Manager/
-                    Modrator
-                  </option>
-
-                  {tournaments.map(
-                    (item) => (
-
-                      <option
-                        key={item.id}
-                        value={item.id}
-                      >
-                        {item.name}
-                      </option>
-
-                    )
-                  )}
-
+                  <option value="">Independent / No Tournament</option>
+                  {tournaments.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
                 </select>
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Match Type"
-              >
-
+              <FieldWrap label="Match Type">
                 <select
                   name="match_type"
-                  value={
-                    form.match_type
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.match_type}
+                  onChange={handleChange}
                 >
-
-                  <option value="Scrim">
-                    Scrim / 
-                  </option>
-
-                  <option value="CR">
-                    Champion Rush
-                  </option>
-
-
-                  <option value="Offical">
-                    Offical Tournament
-                  </option>
-
-                  <option value="Custom">
-                    Custom Tournamnet
-                  </option>
-
+                  <option value="Scrim">Scrim</option>
+                  <option value="CR">Champion Rush</option>
+                  <option value="Official">Official Tournament</option>
+                  <option value="Custom">Custom Tournament</option>
                 </select>
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Date & Time"
-              >
-
+              <FieldWrap label="Date & Time">
                 <input
                   type="datetime-local"
                   name="match_date"
-                  value={
-                    form.match_date
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.match_date}
+                  onChange={handleChange}
                   required
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Status"
-              >
-
+              <FieldWrap label="Status">
                 <select
                   name="status"
                   value={form.status}
-                  onChange={
-                    handleChange
-                  }
+                  onChange={handleChange}
                 >
-
-                  <option value="completed">
-                    Completed
-                  </option>
-
-                  <option value="upcoming">
-                    Upcoming
-                  </option>
-
-                  <option value="live">
-                    Live
-                  </option>
-
+                  <option value="completed">Completed</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="live">Live</option>
                 </select>
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Platform"
-              >
-
+              <FieldWrap label="Platform">
                 <input
                   name="platform"
-                  value={
-                    form.platform
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.platform}
+                  onChange={handleChange}
                   placeholder="Free Fire"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Map"
-              >
-
+              <FieldWrap label="Map">
                 <input
                   name="map"
                   value={form.map}
-                  onChange={
-                    handleChange
-                  }
+                  onChange={handleChange}
                   placeholder="Optional"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Sponsor / Organizer"
-              >
-
+              <FieldWrap label="Sponsor / Organizer">
                 <input
                   name="sponsor"
-                  value={
-                    form.sponsor
-                  }
-
-                  onChange={
-                    handleChange
-                  }
+                  value={form.sponsor}
+                  onChange={handleChange}
                   placeholder="Optional"
                 />
-
               </FieldWrap>
-
-
             </div>
-
-
           </section>
-
-
 
           {/* STEP 02 */}
-
           <section className="panel">
-
-
-            <SectionTitle
-              number="02"
-              small="TEAM"
-              title="SELECT TEAM"
-            />
-
+            <SectionTitle number="02" small="TEAM" title="SELECT TEAM" />
 
             <div className="team-grid">
-
-
-              <FieldWrap
-                label="Your Team"
-              >
-
+              <FieldWrap label="Your Team">
                 <select
                   name="team1_id"
-                  value={
-                    form.team1_id
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.team1_id}
+                  onChange={handleChange}
                   required
                 >
-
-                  <option value="">
-                    Select Team
-                  </option>
-
-                  {teams.map(
-                    (team) => (
-
-                      <option
-                        key={team.id}
-                        value={team.id}
-                      >
-                        {
-                          team.team_name
-                        }
-                      </option>
-
-                    )
-                  )}
-
+                  <option value="">Select Team</option>
+                  {teams.map((team) => (
+                    <option key={team.id} value={team.id}>
+                      {team.team_name}
+                    </option>
+                  ))}
                 </select>
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Opponent Team (Optional)"
-              >
-
+              <FieldWrap label="Opponent Team (Optional)">
                 <select
                   name="team2_id"
-                  value={
-                    form.team2_id
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.team2_id}
+                  onChange={handleChange}
                 >
-
-                  <option value="">
-                    No Opponent
-                  </option>
-
+                  <option value="">No Opponent</option>
                   {teams
-                    .filter(
-                      (team) =>
-                        team.id !==
-                        form.team1_id
-                    )
-                    .map(
-                      (team) => (
-
-                        <option
-                          key={
-                            team.id
-                          }
-                          value={
-                            team.id
-                          }
-                        >
-                          {
-                            team.team_name
-                          }
-                        </option>
-
-                      )
-                    )}
-
+                    .filter((team) => team.id !== form.team1_id)
+                    .map((team) => (
+                      <option key={team.id} value={team.id}>
+                        {team.team_name}
+                      </option>
+                    ))}
                 </select>
-
               </FieldWrap>
-
-
             </div>
-
-
           </section>
 
-
-
           {/* STEP 03 */}
-
           <section className="panel">
-
-
             <SectionTitle
               number="03"
               small="ACTIVE LINEUP"
               title="SELECT EXACTLY 4 PLAYERS"
             />
 
-
             <div className="selection-counter">
-
-              <span>
-                SELECTED
-              </span>
-
+              <span>SELECTED</span>
               <strong>
-                {
-                  selectedPlayers.length
-                } / 4
+                {selectedPlayers.length} / 4
               </strong>
-
             </div>
 
-
             {!form.team1_id ? (
-
+              <div className="empty-state">Select your team first.</div>
+            ) : teamPlayers.length === 0 ? (
               <div className="empty-state">
-
-                Select your team
-                first.
-
+                No players are connected to this team.
               </div>
-
-            ) : teamPlayers.length ===
-              0 ? (
-
-              <div className="empty-state">
-
-                No players are
-                connected to this
-                team.
-
-              </div>
-
             ) : (
-
               <div className="player-grid">
-
-                {teamPlayers.map(
-                  (player) => {
-
-                    const selected =
-                    selectedPlayers.some(
+                {teamPlayers.map((player) => {
+                  const selected = selectedPlayers.some(
                     (p) => p.id === player.id
                   );
 
-
-                    return (
-
-                      <button
-                        type="button"
-                        key={
-                          player.id
-                        }
-                        className={
-                          selected
-                            ? "player-card selected"
-                            : "player-card"
-                        }
-                        onClick={() =>
-                         togglePlayer(
-                        player
-                        )
-                        }
-                      >
-
-
-                        <div className="avatar">
-
-                          {player.profile_image ||
-                          player.avatar_url ? (
-
-                            <img
-                              src={
-                                player.profile_image ||
-                                player.avatar_url
-                              }
-                              alt={
-                                player.ign ||
-                                player.full_name
-                              }
-                            />
-
-                          ) : (
-
-                            <span>
-
-                              {(
-                                player.ign ||
-                                player.full_name ||
-                                "P"
-                              )
-                                .charAt(
-                                  0
-                                )
-                                .toUpperCase()}
-
-                            </span>
-
-                          )}
-
-                        </div>
-
-
-                        <div className="player-copy">
-
-                          <strong>
-                            {
-                              player.ign ||
-                              player.full_name
-                            }
-                          </strong>
-
+                  return (
+                    <button
+                      type="button"
+                      key={player.id}
+                      className={
+                        selected ? "player-card selected" : "player-card"
+                      }
+                      onClick={() => togglePlayer(player)}
+                    >
+                      <div className="avatar">
+                        {player.profile_image || player.avatar_url ? (
+                          <img
+                            src={player.profile_image || player.avatar_url}
+                            alt={player.ign || player.full_name}
+                          />
+                        ) : (
                           <span>
-                            {
-                              player.full_name
-                            }
+                            {(player.ign || player.full_name || "P")
+                              .charAt(0)
+                              .toUpperCase()}
                           </span>
+                        )}
+                      </div>
 
-                          <small>
-                            {
-                              player.primary_role ||
-                              "PLAYER"
-                            }
-                          </small>
+                      <div className="player-copy">
+                        <strong>{player.ign || player.full_name}</strong>
+                        <span>{player.full_name}</span>
+                        <small>{player.primary_role || "PLAYER"}</small>
+                      </div>
 
-                        </div>
-
-
-                        <div className="check">
-
-                          {selected
-                            ? "✓"
-                            : "+"}
-
-                        </div>
-
-
-                      </button>
-
-                    );
-
-                  }
-                )}
-
+                      <div className="check">{selected ? "✓" : "+"}</div>
+                    </button>
+                  );
+                })}
               </div>
-
             )}
-
-
           </section>
 
-
-
-          {/* STEP 04 */}
-
+          {/* STEP 04 - RESULT + PERFORMANCE */}
           <section className="panel">
-
-
-           <SectionTitle
-  number="04"
-  small="RESULT"
-  title="MATCH RESULT"
-/>
-
-
-{/* PLAYER PERFORMANCE */}
-
-<div
-  style={{
-    marginTop:"25px",
-    padding:"20px",
-    borderRadius:"20px",
-    background:
-      "linear-gradient(145deg, rgba(255,20,80,0.12), rgba(15,15,25,0.85))",
-    border:"1px solid rgba(255,20,80,0.35)",
-    boxShadow:
-      "0 0 35px rgba(255,20,80,0.15)",
-    backdropFilter:"blur(15px)"
-  }}
->
-
-<h3>
-🎮 Player Performance
-</h3>
-
-
-{selectedPlayers.map((player)=>(
-
-<div
-key={player.id}
-style={{
-display:"grid",
-gridTemplateColumns:"180px repeat(4,1fr)",
-gap:"10px",
-marginBottom:"12px"
-}}
->
-
-<div
- style={{
-  fontWeight:"600",
-  color:"#ffffff",
-  whiteSpace:"nowrap",
-  overflow:"hidden",
-  textOverflow:"ellipsis",
-}}
->
-  {player.ign ||
- player.full_name ||
- "Player"}
-</div>
-
-
-<input
-type="number"
-placeholder="Kills"
-
-onChange={(e)=>{
-
-setPlayerStats(prev=>({
-
-...prev,
-
-[player.id]:{
-
-...prev[player.id],
-
-kills:Number(e.target.value)
-
-}
-
-}))
-
-}}
-/>
-
-
-<input
-type="number"
-placeholder="Assist"
-onChange={(e)=>{
-
-setPlayerStats(prev=>({
-
-...prev,
-
-[player.id]:{
-
-...prev[player.id],
-
-assists:Number(e.target.value)
-
-}
-
-}))
-
-}}
-/>
-
-
-<input
-type="number"
-placeholder="Damage"
-onChange={(e)=>{
-
-setPlayerStats(prev=>({
-
-...prev,
-
-[player.id]:{
-
-...prev[player.id],
-
-damage:Number(e.target.value)
-
-}
-
-}))
-
-}}
-/>
-
-
-<label>
-
-<input
-type="checkbox"
-
-onChange={(e)=>{
-
-setPlayerStats(prev=>({
-
-...prev,
-
-[player.id]:{
-
-...prev[player.id],
-
-mvp:e.target.checked
-
-}
-
-}))
-
-}}
-
-/>
-
- MVP
-
-</label>
-
-
-</div>
-
-))}
-
-
-</div>
-
-
-<div className="form-grid">
-
-
-              <FieldWrap
-                label="Position"
-              >
-
+            <SectionTitle number="04" small="RESULT" title="MATCH RESULT" />
+
+            {/* PLAYER PERFORMANCE */}
+            {selectedPlayers.length > 0 && (
+              <div className="performance-box">
+                <h3>🎮 Player Performance</h3>
+
+                <div className="performance-header">
+                  <span>Player</span>
+                  <span>Kills</span>
+                  <span>Assist</span>
+                  <span>Damage</span>
+                  <span>MVP</span>
+                </div>
+
+                {selectedPlayers.map((player) => (
+                  <div key={player.id} className="performance-row">
+                    <div className="player-name">
+                      {player.ign || player.full_name || "Player"}
+                    </div>
+
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      value={playerStats[player.id]?.kills ?? ""}
+                      onChange={(e) =>
+                        setPlayerStats((prev) => ({
+                          ...prev,
+                          [player.id]: {
+                            ...prev[player.id],
+                            kills: Number(e.target.value) || 0,
+                          },
+                        }))
+                      }
+                    />
+
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      value={playerStats[player.id]?.assists ?? ""}
+                      onChange={(e) =>
+                        setPlayerStats((prev) => ({
+                          ...prev,
+                          [player.id]: {
+                            ...prev[player.id],
+                            assists: Number(e.target.value) || 0,
+                          },
+                        }))
+                      }
+                    />
+
+                    <input
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      value={playerStats[player.id]?.damage ?? ""}
+                      onChange={(e) =>
+                        setPlayerStats((prev) => ({
+                          ...prev,
+                          [player.id]: {
+                            ...prev[player.id],
+                            damage: Number(e.target.value) || 0,
+                          },
+                        }))
+                      }
+                    />
+
+                    <label className="mvp-check">
+                      <input
+                        type="checkbox"
+                        checked={playerStats[player.id]?.mvp || false}
+                        onChange={(e) =>
+                          setPlayerStats((prev) => ({
+                            ...prev,
+                            [player.id]: {
+                              ...prev[player.id],
+                              mvp: e.target.checked,
+                            },
+                          }))
+                        }
+                      />
+                      <span>MVP</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="form-grid" style={{ marginTop: "24px" }}>
+              <FieldWrap label="Position">
                 <input
                   type="number"
                   min="1"
                   name="position"
-                  value={
-                    form.position
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.position}
+                  onChange={handleChange}
                   placeholder="Example: 1"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Points"
-              >
-
+              <FieldWrap label="Points">
                 <input
                   type="number"
                   min="0"
                   name="points"
-                  value={
-                    form.points
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.points}
+                  onChange={handleChange}
                   placeholder="0"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Team 1 Score"
-              >
-
+              <FieldWrap label="Team 1 Score">
                 <input
                   type="number"
                   min="0"
                   name="team1_score"
-                  value={
-                    form.team1_score
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.team1_score}
+                  onChange={handleChange}
                   placeholder="0"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Team 2 Score"
-              >
-
+              <FieldWrap label="Team 2 Score">
                 <input
                   type="number"
                   min="0"
                   name="team2_score"
-                  value={
-                    form.team2_score
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.team2_score}
+                  onChange={handleChange}
                   placeholder="0"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Winner"
-              >
-
+              <FieldWrap label="Winner">
                 <select
                   name="winner_id"
-                  value={
-                    form.winner_id
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.winner_id}
+                  onChange={handleChange}
                 >
-
-                  <option value="">
-                    No Winner /
-                    Placement Match
-                  </option>
-
+                  <option value="">No Winner / Placement Match</option>
                   {form.team1_id && (
-
-                    <option
-                      value={
-                        form.team1_id
-                      }
-                    >
-                      {
-                        teamName(
-                          form.team1_id
-                        )
-                      }
+                    <option value={form.team1_id}>
+                      {teamName(form.team1_id)}
                     </option>
-
                   )}
-
                   {form.team2_id && (
-
-                    <option
-                      value={
-                        form.team2_id
-                      }
-                    >
-                      {
-                        teamName(
-                          form.team2_id
-                        )
-                      }
+                    <option value={form.team2_id}>
+                      {teamName(form.team2_id)}
                     </option>
-
                   )}
-
                 </select>
-
               </FieldWrap>
-
-
             </div>
-
-
           </section>
 
-
-
-          {/* STEP 05 */}
-
+          {/* STEP 05 - FINANCE */}
           <section className="panel finance-panel">
-
-
             <SectionTitle
               number="05"
               small="FINANCE ENGINE"
               title="PROFIT & PLAYER EARNINGS"
             />
 
-
             <div className="money-inputs">
-
-
-              <FieldWrap
-                label="Entry Fee"
-              >
-
+              <FieldWrap label="Entry Fee">
                 <input
                   type="number"
                   min="0"
                   step="0.01"
                   name="entry_fee"
-                  value={
-                    form.entry_fee
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.entry_fee}
+                  onChange={handleChange}
                   placeholder="0"
                 />
-
               </FieldWrap>
 
-
-
-              <FieldWrap
-                label="Prize Money"
-              >
-
+              <FieldWrap label="Prize Money">
                 <input
                   type="number"
                   min="0"
                   step="0.01"
                   name="prize_money"
-                  value={
-                    form.prize_money
-                  }
-                  onChange={
-                    handleChange
-                  }
+                  value={form.prize_money}
+                  onChange={handleChange}
                   placeholder="0"
                 />
-
               </FieldWrap>
-
-
             </div>
-
-
 
             <div className="finance-grid">
-
-
               <FinanceCard
                 label="NET PROFIT"
-                value={`৳${money(
-                  netProfit
-                )}`}
-                type={
-                  netProfit >= 0
-                    ? "green"
-                    : "red"
-                }
+                value={`৳${money(netProfit)}`}
+                type={netProfit >= 0 ? "green" : "red"}
               />
-
-
               <FinanceCard
                 label="MANAGEMENT 30%"
-                value={`৳${money(
-                  managementAmount
-                )}`}
+                value={`৳${money(managementAmount)}`}
                 type="red"
               />
-
-
               <FinanceCard
                 label="PLAYERS 70%"
-                value={`৳${money(
-                  playerPool
-                )}`}
+                value={`৳${money(playerPool)}`}
                 type="purple"
               />
-
-
               <FinanceCard
                 label="EACH PLAYER"
-                value={`৳${money(
-                  perPlayerAmount
-                )}`}
+                value={`৳${money(perPlayerAmount)}`}
                 type="green"
               />
-
-
             </div>
-
-
 
             <div className="rule-box">
-
-
               <div>
-
-                <span>
-                  ACTIVE PLAYERS
-                </span>
-
+                <span>ACTIVE PLAYERS</span>
                 <strong>
-                  {
-                    selectedPlayers.length
-                  } / 4
+                  {selectedPlayers.length} / 4
                 </strong>
-
               </div>
-
-
               <p>
-
-                Only the 4 players
-                selected for this
-                match receive the
-                player share.
-
-                Players who did not
-                participate receive
-                no earning record
+                Only the 4 players selected for this match receive the player
+                share. Players who did not participate receive no earning record
                 for this match.
-
               </p>
-
-
             </div>
-
-
           </section>
 
-
-
           {/* STEP 06 */}
-
           <section className="panel">
-
-
-            <SectionTitle
-              number="06"
-              small="NOTES"
-              title="MATCH NOTICE"
-            />
-
+            <SectionTitle number="06" small="NOTES" title="MATCH NOTICE" />
 
             <textarea
               name="notice"
-              value={
-                form.notice
-              }
-              onChange={
-                handleChange
-              }
+              value={form.notice}
+              onChange={handleChange}
               placeholder="Optional notes about this match..."
             />
-
-
           </section>
 
-
-
-          <button
-            type="submit"
-            className="save-button"
-            disabled={saving}
-          >
-
+          <button type="submit" className="save-button" disabled={saving}>
             <span>
-
-              {saving
-                ? "PROCESSING MATCH..."
-                : "SAVE MATCH & CALCULATE"}
-
+              {saving ? "PROCESSING MATCH..." : "SAVE MATCH & CALCULATE"}
             </span>
-
-            <strong>
-              →
-            </strong>
-
+            <strong>→</strong>
           </button>
-
-
         </form>
 
-
-
         {/* RECENT MATCHES */}
-
         <section className="history">
+          <SectionTitle number="07" small="HISTORY" title="RECENT MATCHES" />
 
-
-          <SectionTitle
-            number="07"
-            small="HISTORY"
-            title="RECENT MATCHES"
-          />
-
-
-          {recentMatches.length ===
-          0 ? (
-
-            <div className="empty-state">
-
-              No match history yet.
-
-            </div>
-
+          {recentMatches.length === 0 ? (
+            <div className="empty-state">No match history yet.</div>
           ) : (
-
             <div className="history-list">
+              {recentMatches.map((match) => (
+                <article key={match.id} className="history-card">
+                  <div className="history-main">
+                    <span>{tournamentName(match.tournament_id)}</span>
+                    <strong>{teamName(match.team1_id)}</strong>
+                    <small>{match.match_type || "Match"}</small>
+                  </div>
 
-              {recentMatches.map(
-                (match) => (
+                  <div className="history-money">
+                    <span>PROFIT</span>
+                    <strong>৳{money(match.profit)}</strong>
+                  </div>
 
-                  <article
-                    key={
-                      match.id
-                    }
-                    className="history-card"
-                  >
-
-
-                    <div className="history-main">
-
-                      <span>
-
-                        {
-                          tournamentName(
-                            match.tournament_id
-                          )
-                        }
-
-                      </span>
-
-                      <strong>
-
-                        {
-                          teamName(
-                            match.team1_id
-                          )
-                        }
-
-                      </strong>
-
-                      <small>
-
-                        {
-                          match.match_type ||
-                          "Match"
-                        }
-
-                      </small>
-
-                    </div>
-
-
-                    <div className="history-money">
-
-                      <span>
-                        PROFIT
-                      </span>
-
-                      <strong>
-
-                        ৳
-                        {money(
-                          match.profit
-                        )}
-
-                      </strong>
-
-                    </div>
-
-
-                    <div className="history-status">
-
-                      {
-                        match.status
-                      }
-
-                    </div>
-
-
-                  </article>
-
-                )
-              )}
-
+                  <div className="history-status">{match.status}</div>
+                </article>
+              ))}
             </div>
-
           )}
-
-
         </section>
-
-
       </div>
 
-
-
       <style jsx global>{`
-
-
         .op-match-page,
         .op-match-page * {
-
-          box-sizing:
-            border-box;
-
-          font-family:
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
+          box-sizing: border-box;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
             sans-serif;
-
         }
-
 
         body {
-
           margin: 0;
-
-          background:
-            #050507;
-
+          background: #050507;
         }
-
 
         .op-match-page {
-
           position: relative;
-
           min-height: 100vh;
-
           overflow: hidden;
-
-          padding:
-            30px 18px 80px;
-
-          background:
-
-            radial-gradient(
+          padding: 30px 18px 80px;
+          background: radial-gradient(
               circle at 8% 0%,
-              rgba(
-                255,
-                20,
-                75,
-                0.13
-              ),
+              rgba(255, 20, 75, 0.16),
               transparent 28%
             ),
-
             radial-gradient(
               circle at 95% 20%,
-              rgba(
-                116,
-                40,
-                255,
-                0.13
-              ),
+              rgba(116, 40, 255, 0.14),
               transparent 30%
             ),
-
+            radial-gradient(
+              circle at 50% 100%,
+              rgba(255, 20, 75, 0.08),
+              transparent 40%
+            ),
             #050507;
-
           color: white;
-
         }
-
 
         .ambient {
-
           position: fixed;
-
           border-radius: 50%;
-
-          filter:
-            blur(150px);
-
+          filter: blur(150px);
           pointer-events: none;
-
-          opacity: 0.22;
-
+          opacity: 0.25;
+          z-index: 0;
         }
-
 
         .ambient-one {
-
-          width: 400px;
-
-          height: 400px;
-
-          background:
-            #ff174d;
-
+          width: 420px;
+          height: 420px;
+          background: #ff174d;
           top: -200px;
-
           left: -160px;
-
         }
-
 
         .ambient-two {
-
-          width: 450px;
-
-          height: 450px;
-
-          background:
-            #6524ff;
-
+          width: 480px;
+          height: 480px;
+          background: #6524ff;
           right: -220px;
-
           top: 280px;
-
         }
 
+        .ambient-three {
+          width: 350px;
+          height: 350px;
+          background: #ff174d;
+          bottom: -100px;
+          left: 40%;
+          opacity: 0.15;
+        }
 
         .shell {
-
           width: 100%;
-
           max-width: 1180px;
-
           margin: auto;
-
           position: relative;
-
           z-index: 2;
-
         }
-
 
         .topbar {
-
           display: flex;
-
-          justify-content:
-            space-between;
-
-          align-items:
-            center;
-
+          justify-content: space-between;
+          align-items: center;
           gap: 30px;
-
-          padding:
-            34px;
-
-          margin-bottom:
-            20px;
-
-          border-radius:
-            26px;
-
-          background:
-
-            linear-gradient(
-              145deg,
-              rgba(
-                28,
-                10,
-                17,
-                0.94
-              ),
-              rgba(
-                8,
-                8,
-                13,
-                0.96
-              )
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              38,
-              83,
-              0.22
-            );
-
-          box-shadow:
-
-            0 30px 80px
-            rgba(
-              0,
-              0,
-              0,
-              0.4
-            );
-
+          padding: 34px;
+          margin-bottom: 20px;
+          border-radius: 26px;
+          background: linear-gradient(
+            145deg,
+            rgba(28, 10, 17, 0.94),
+            rgba(8, 8, 13, 0.96)
+          );
+          border: 1px solid rgba(255, 38, 83, 0.28);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45),
+            0 0 40px rgba(255, 23, 77, 0.08);
         }
-
 
         .eyebrow {
-
           color: #ff4167;
-
-          font-size: 9px;
-
+          font-size: 10px;
           font-weight: 900;
-
-          letter-spacing:
-            2.7px;
-
+          letter-spacing: 2.8px;
+          text-shadow: 0 0 12px rgba(255, 65, 103, 0.5);
         }
-
 
         .topbar h1 {
-
-          margin:
-            7px 0 8px;
-
-          font-size:
-            clamp(
-              26px,
-              4vw,
-              46px
-            );
-
-          line-height: 1;
-
+          margin: 8px 0 8px;
+          font-size: clamp(26px, 4vw, 46px);
+          line-height: 1.05;
+          background: linear-gradient(90deg, #ffffff, #ff8fa3);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 0 30px rgba(255, 65, 103, 0.3);
         }
-
 
         .topbar p {
-
           margin: 0;
-
-          color: #777784;
-
-          font-size: 13px;
-
+          color: #9a9aa8;
+          font-size: 13.5px;
         }
-
 
         .rule-pill {
-
-          min-width:
-            150px;
-
-          padding:
-            17px 20px;
-
-          border-radius:
-            17px;
-
-          background:
-            rgba(
-              255,
-              23,
-              77,
-              0.07
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              23,
-              77,
-              0.18
-            );
-
-          text-align:
-            center;
-
+          min-width: 150px;
+          padding: 17px 20px;
+          border-radius: 17px;
+          background: rgba(255, 23, 77, 0.1);
+          border: 1px solid rgba(255, 23, 77, 0.3);
+          text-align: center;
+          box-shadow: 0 0 25px rgba(255, 23, 77, 0.15);
         }
-
 
         .rule-pill span {
-
           display: block;
-
-          color: #777784;
-
-          font-size: 8px;
-
+          color: #a0a0ae;
+          font-size: 9px;
           font-weight: 900;
-
-          letter-spacing:
-            1.5px;
-
+          letter-spacing: 1.6px;
         }
-
 
         .rule-pill strong {
-
           display: block;
-
-          margin-top:
-            5px;
-
+          margin-top: 6px;
           color: #ff4368;
-
-          font-size: 23px;
-
+          font-size: 24px;
+          text-shadow: 0 0 15px rgba(255, 67, 104, 0.6);
         }
-
 
         .message {
-
-          padding:
-            15px 18px;
-
-          margin-bottom:
-            16px;
-
-          border-radius:
-            13px;
-
-          font-size: 13px;
-
+          padding: 15px 18px;
+          margin-bottom: 16px;
+          border-radius: 14px;
+          font-size: 13.5px;
           font-weight: 700;
-
         }
-
 
         .message.success {
-
-          color:
-            #64ffb6;
-
-          background:
-            rgba(
-              25,
-              255,
-              155,
-              0.07
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              25,
-              255,
-              155,
-              0.2
-            );
-
+          color: #64ffb6;
+          background: rgba(25, 255, 155, 0.08);
+          border: 1px solid rgba(25, 255, 155, 0.25);
+          box-shadow: 0 0 20px rgba(25, 255, 155, 0.1);
         }
-
 
         .message.error {
-
-          color:
-            #ff718d;
-
-          background:
-            rgba(
-              255,
-              25,
-              75,
-              0.07
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              25,
-              75,
-              0.2
-            );
-
+          color: #ff718d;
+          background: rgba(255, 25, 75, 0.08);
+          border: 1px solid rgba(255, 25, 75, 0.25);
+          box-shadow: 0 0 20px rgba(255, 25, 75, 0.1);
         }
-
 
         .panel,
         .history {
-
           position: relative;
-
-          margin-bottom:
-            18px;
-
-          padding:
-            28px;
-
-          border-radius:
-            22px;
-
-          background:
-
-            linear-gradient(
-              145deg,
-              rgba(
-                18,
-                18,
-                24,
-                0.95
-              ),
-              rgba(
-                8,
-                8,
-                12,
-                0.97
-              )
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.075
-            );
-
-          box-shadow:
-
-            0 22px 60px
-            rgba(
-              0,
-              0,
-              0,
-              0.25
-            );
-
+          margin-bottom: 18px;
+          padding: 28px;
+          border-radius: 22px;
+          background: linear-gradient(
+            145deg,
+            rgba(18, 18, 24, 0.96),
+            rgba(8, 8, 12, 0.98)
+          );
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 22px 60px rgba(0, 0, 0, 0.3);
         }
-
 
         .section-title {
-
           display: flex;
-
-          align-items:
-            center;
-
+          align-items: center;
           gap: 14px;
-
-          margin-bottom:
-            24px;
-
-          padding-bottom:
-            20px;
-
-          border-bottom:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.055
-            );
-
+          margin-bottom: 24px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-
 
         .section-number {
-
-          width: 45px;
-
-          height: 45px;
-
+          width: 46px;
+          height: 46px;
           display: flex;
-
-          align-items:
-            center;
-
-          justify-content:
-            center;
-
+          align-items: center;
+          justify-content: center;
           flex-shrink: 0;
-
-          border-radius:
-            13px;
-
-          color:
-            #ff4167;
-
-          background:
-            rgba(
-              255,
-              23,
-              77,
-              0.08
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              23,
-              77,
-              0.2
-            );
-
-          font-size: 11px;
-
+          border-radius: 13px;
+          color: #ff4167;
+          background: rgba(255, 23, 77, 0.1);
+          border: 1px solid rgba(255, 23, 77, 0.25);
+          font-size: 12px;
           font-weight: 900;
-
+          box-shadow: 0 0 18px rgba(255, 23, 77, 0.2);
         }
-
 
         .section-title small {
-
           display: block;
-
-          margin-bottom:
-            3px;
-
-          color: #626270;
-
-          font-size: 8px;
-
+          margin-bottom: 4px;
+          color: #7a7a88;
+          font-size: 9px;
           font-weight: 900;
-
-          letter-spacing:
-            2px;
-
+          letter-spacing: 2.2px;
         }
-
 
         .section-title h2 {
-
           margin: 0;
-
           font-size: 18px;
-
-          letter-spacing:
-            0.4px;
-
+          letter-spacing: 0.4px;
+          color: #f0f0f5;
         }
-
 
         .form-grid {
-
           display: grid;
-
-          grid-template-columns:
-            repeat(
-              3,
-              1fr
-            );
-
+          grid-template-columns: repeat(3, 1fr);
           gap: 15px;
-
         }
-
 
         .team-grid,
         .money-inputs {
-
           display: grid;
-
-          grid-template-columns:
-            1fr 1fr;
-
+          grid-template-columns: 1fr 1fr;
           gap: 15px;
-
         }
-
 
         .field-wrap label {
-
           display: block;
-
-          margin-bottom:
-            8px;
-
-          color: #8a8a96;
-
-          font-size: 9px;
-
+          margin-bottom: 8px;
+          color: #9a9aa8;
+          font-size: 10px;
           font-weight: 900;
-
-          letter-spacing:
-            1.2px;
-
-          text-transform:
-            uppercase;
-
+          letter-spacing: 1.3px;
+          text-transform: uppercase;
         }
-
 
         .field-wrap input,
         .field-wrap select,
         textarea {
-
           width: 100%;
-
-          min-height:
-            52px;
-
-          border-radius:
-            13px;
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.09
-            );
-
-          background:
-            rgba(
-              0,
-              0,
-              0,
-              0.28
-            );
-
+          min-height: 52px;
+          border-radius: 13px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(0, 0, 0, 0.35);
           color: white;
-
           outline: none;
-
-          padding:
-            0 15px;
-
-          font-size: 13px;
-
-          transition:
-            0.2s ease;
-
-          color-scheme:
-            dark;
-
+          padding: 0 15px;
+          font-size: 14px;
+          transition: 0.2s ease;
+          color-scheme: dark;
         }
-
 
         textarea {
-
-          min-height:
-            120px;
-
+          min-height: 120px;
           padding: 15px;
-
           resize: vertical;
-
         }
-
 
         .field-wrap input:focus,
         .field-wrap select:focus,
         textarea:focus {
-
-          border-color:
-            rgba(
-              255,
-              35,
-              80,
-              0.55
-            );
-
-          box-shadow:
-
-            0 0 0 3px
-            rgba(
-              255,
-              23,
-              77,
-              0.08
-            );
-
+          border-color: rgba(255, 35, 80, 0.6);
+          box-shadow: 0 0 0 3px rgba(255, 23, 77, 0.12);
         }
 
+        /* ===== PLAYER PERFORMANCE ===== */
+        .performance-box {
+          margin-top: 8px;
+          padding: 22px;
+          border-radius: 20px;
+          background: linear-gradient(
+            145deg,
+            rgba(255, 20, 80, 0.1),
+            rgba(15, 15, 25, 0.9)
+          );
+          border: 1px solid rgba(255, 20, 80, 0.35);
+          box-shadow: 0 0 40px rgba(255, 20, 80, 0.12);
+        }
+
+        .performance-box h3 {
+          margin: 0 0 18px;
+          font-size: 16px;
+          color: #ff8fa3;
+          letter-spacing: 0.5px;
+        }
+
+        .performance-header {
+          display: grid;
+          grid-template-columns: 180px repeat(3, 1fr) 80px;
+          gap: 10px;
+          margin-bottom: 12px;
+          padding: 0 4px;
+          color: #8a8a96;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
+
+        .performance-row {
+          display: grid;
+          grid-template-columns: 180px repeat(3, 1fr) 80px;
+          gap: 10px;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+
+        .player-name {
+          font-weight: 700;
+          color: #ffffff;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 14px;
+        }
+
+        .performance-row input {
+          width: 100%;
+          min-height: 44px;
+          border-radius: 11px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(0, 0, 0, 0.4);
+          color: white;
+          padding: 0 12px;
+          font-size: 14px;
+          outline: none;
+          transition: 0.2s ease;
+        }
+
+        .performance-row input:focus {
+          border-color: rgba(255, 35, 80, 0.6);
+          box-shadow: 0 0 0 3px rgba(255, 23, 77, 0.12);
+        }
+
+        .mvp-check {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+          color: #c9c9d0;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .mvp-check input {
+          width: 18px;
+          height: 18px;
+          accent-color: #ff174d;
+          cursor: pointer;
+        }
 
         .selection-counter {
-
           display: flex;
-
-          align-items:
-            center;
-
-          justify-content:
-            space-between;
-
-          margin-bottom:
-            15px;
-
-          padding:
-            12px 15px;
-
-          border-radius:
-            12px;
-
-          background:
-            rgba(
-              255,
-              23,
-              77,
-              0.04
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              23,
-              77,
-              0.1
-            );
-
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          padding: 13px 16px;
+          border-radius: 13px;
+          background: rgba(255, 23, 77, 0.06);
+          border: 1px solid rgba(255, 23, 77, 0.15);
         }
-
 
         .selection-counter span {
-
-          color:
-            #73737f;
-
-          font-size: 8px;
-
+          color: #8a8a96;
+          font-size: 10px;
           font-weight: 900;
-
-          letter-spacing:
-            1.6px;
-
+          letter-spacing: 1.8px;
         }
-
 
         .selection-counter strong {
-
-          color:
-            #ff4167;
-
-          font-size: 17px;
-
+          color: #ff4167;
+          font-size: 18px;
+          text-shadow: 0 0 12px rgba(255, 65, 103, 0.5);
         }
-
 
         .player-grid {
-
           display: grid;
-
-          grid-template-columns:
-            repeat(
-              2,
-              1fr
-            );
-
+          grid-template-columns: repeat(2, 1fr);
           gap: 12px;
-
         }
-
 
         .player-card {
-
           width: 100%;
-
           display: grid;
-
-          grid-template-columns:
-            auto 1fr auto;
-
-          align-items:
-            center;
-
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
           gap: 13px;
-
-          padding:
-            14px;
-
+          padding: 14px;
           text-align: left;
-
           color: white;
-
           cursor: pointer;
-
-          border-radius:
-            15px;
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.075
-            );
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.025
-            );
-
-          transition:
-            0.22s ease;
-
+          border-radius: 15px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.03);
+          transition: 0.22s ease;
         }
-
 
         .player-card:hover {
-
-          border-color:
-            rgba(
-              255,
-              23,
-              77,
-              0.28
-            );
-
-          transform:
-            translateY(-2px);
-
+          border-color: rgba(255, 23, 77, 0.35);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
-
 
         .player-card.selected {
-
-          background:
-            rgba(
-              255,
-              23,
-              77,
-              0.075
-            );
-
-          border-color:
-            rgba(
-              255,
-              23,
-              77,
-              0.45
-            );
-
-          box-shadow:
-
-            0 0 25px
-            rgba(
-              255,
-              23,
-              77,
-              0.08
-            );
-
+          background: rgba(255, 23, 77, 0.1);
+          border-color: rgba(255, 23, 77, 0.5);
+          box-shadow: 0 0 30px rgba(255, 23, 77, 0.15);
         }
-
 
         .avatar {
-
           width: 52px;
-
           height: 52px;
-
-          border-radius:
-            14px;
-
+          border-radius: 14px;
           overflow: hidden;
-
           display: flex;
-
-          align-items:
-            center;
-
-          justify-content:
-            center;
-
-          background:
-
-            linear-gradient(
-              135deg,
-              #ff174d,
-              #702dff
-            );
-
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #ff174d, #702dff);
           font-weight: 900;
-
+          font-size: 18px;
         }
-
 
         .avatar img {
-
           width: 100%;
-
           height: 100%;
-
-          object-fit:
-            cover;
-
+          object-fit: cover;
         }
-
 
         .player-copy strong {
-
           display: block;
-
-          font-size: 13px;
-
+          font-size: 14px;
+          color: #fff;
         }
-
 
         .player-copy span {
-
           display: block;
-
-          margin-top:
-            3px;
-
-          color: #777784;
-
-          font-size: 10px;
-
+          margin-top: 3px;
+          color: #8a8a96;
+          font-size: 11px;
         }
-
 
         .player-copy small {
-
           display: inline-block;
-
-          margin-top:
-            5px;
-
+          margin-top: 5px;
           color: #ff6483;
-
-          font-size: 8px;
-
+          font-size: 9px;
           font-weight: 800;
-
         }
-
 
         .check {
-
-          width: 31px;
-
-          height: 31px;
-
+          width: 32px;
+          height: 32px;
           display: flex;
-
-          align-items:
-            center;
-
-          justify-content:
-            center;
-
-          border-radius:
-            9px;
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.05
-            );
-
+          align-items: center;
+          justify-content: center;
+          border-radius: 9px;
+          background: rgba(255, 255, 255, 0.06);
           font-size: 15px;
-
           font-weight: 900;
-
         }
-
 
         .selected .check {
-
-          background:
-            #ff174d;
-
-          box-shadow:
-
-            0 0 15px
-            rgba(
-              255,
-              23,
-              77,
-              0.3
-            );
-
+          background: #ff174d;
+          box-shadow: 0 0 18px rgba(255, 23, 77, 0.4);
         }
-
 
         .finance-panel {
-
-          border-color:
-            rgba(
-              112,
-              43,
-              255,
-              0.18
-            );
-
+          border-color: rgba(112, 43, 255, 0.22);
         }
-
 
         .finance-grid {
-
           display: grid;
-
-          grid-template-columns:
-            repeat(
-              4,
-              1fr
-            );
-
+          grid-template-columns: repeat(4, 1fr);
           gap: 12px;
-
-          margin-top:
-            18px;
-
+          margin-top: 18px;
         }
-
 
         .finance-card {
-
-          min-height:
-            120px;
-
-          padding:
-            18px;
-
+          min-height: 120px;
+          padding: 18px;
           display: flex;
-
-          flex-direction:
-            column;
-
-          justify-content:
-            space-between;
-
-          border-radius:
-            17px;
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.025
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.07
-            );
-
+          flex-direction: column;
+          justify-content: space-between;
+          border-radius: 17px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
 
         .finance-card span {
-
-          color: #777784;
-
-          font-size: 8px;
-
+          color: #8a8a96;
+          font-size: 9px;
           font-weight: 900;
-
-          letter-spacing:
-            1.5px;
-
+          letter-spacing: 1.5px;
         }
-
 
         .finance-card strong {
-
-          font-size:
-            clamp(
-              20px,
-              3vw,
-              30px
-            );
-
+          font-size: clamp(20px, 3vw, 28px);
         }
-
 
         .finance-card.green strong {
-
-          color:
-            #22f29d;
-
+          color: #22f29d;
+          text-shadow: 0 0 15px rgba(34, 242, 157, 0.4);
         }
-
 
         .finance-card.red strong {
-
-          color:
-            #ff456a;
-
+          color: #ff456a;
+          text-shadow: 0 0 15px rgba(255, 69, 106, 0.4);
         }
-
 
         .finance-card.purple strong {
-
-          color:
-            #a77aff;
-
+          color: #a77aff;
+          text-shadow: 0 0 15px rgba(167, 122, 255, 0.4);
         }
-
 
         .rule-box {
-
           display: grid;
-
-          grid-template-columns:
-            auto 1fr;
-
-          align-items:
-            center;
-
+          grid-template-columns: auto 1fr;
+          align-items: center;
           gap: 20px;
-
-          margin-top:
-            14px;
-
-          padding:
-            16px;
-
-          border-radius:
-            15px;
-
-          background:
-            rgba(
-              0,
-              0,
-              0,
-              0.23
-            );
-
+          margin-top: 16px;
+          padding: 16px;
+          border-radius: 15px;
+          background: rgba(0, 0, 0, 0.28);
         }
-
 
         .rule-box div {
-
-          min-width:
-            110px;
-
-          padding:
-            12px;
-
-          text-align:
-            center;
-
-          border-radius:
-            12px;
-
-          background:
-            rgba(
-              255,
-              23,
-              77,
-              0.07
-            );
-
+          min-width: 110px;
+          padding: 12px;
+          text-align: center;
+          border-radius: 12px;
+          background: rgba(255, 23, 77, 0.09);
         }
-
 
         .rule-box span {
-
           display: block;
-
-          color: #777784;
-
-          font-size: 7px;
-
+          color: #8a8a96;
+          font-size: 8px;
           font-weight: 900;
-
         }
-
 
         .rule-box strong {
-
           display: block;
-
-          margin-top:
-            5px;
-
-          color:
-            #ff456a;
-
-          font-size: 19px;
-
+          margin-top: 5px;
+          color: #ff456a;
+          font-size: 20px;
         }
-
 
         .rule-box p {
-
           margin: 0;
-
-          color: #898995;
-
-          font-size: 11px;
-
+          color: #9a9aa8;
+          font-size: 12px;
           line-height: 1.65;
-
         }
-
 
         .save-button {
-
           width: 100%;
-
-          min-height:
-            64px;
-
-          margin:
-            3px 0 28px;
-
-          padding:
-            0 22px;
-
+          min-height: 66px;
+          margin: 6px 0 28px;
+          padding: 0 22px;
           display: flex;
-
-          align-items:
-            center;
-
-          justify-content:
-            space-between;
-
+          align-items: center;
+          justify-content: space-between;
           color: white;
-
           cursor: pointer;
-
-          border-radius:
-            17px;
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.18
-            );
-
-          background:
-
-            linear-gradient(
-              105deg,
-              #c90038,
-              #ff174d,
-              #6f2bff
-            );
-
-          box-shadow:
-
-            0 16px 45px
-            rgba(
-              255,
-              0,
-              70,
-              0.18
-            );
-
-          font-size: 12px;
-
+          border-radius: 17px;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          background: linear-gradient(105deg, #c90038, #ff174d, #6f2bff);
+          box-shadow: 0 16px 45px rgba(255, 0, 70, 0.25);
+          font-size: 13px;
           font-weight: 900;
-
-          letter-spacing:
-            1.5px;
-
-          transition:
-            0.25s ease;
-
+          letter-spacing: 1.6px;
+          transition: 0.25s ease;
         }
-
 
         .save-button:hover {
-
-          transform:
-            translateY(-2px);
-
-          box-shadow:
-
-            0 20px 55px
-            rgba(
-              255,
-              0,
-              70,
-              0.27
-            );
-
+          transform: translateY(-2px);
+          box-shadow: 0 22px 55px rgba(255, 0, 70, 0.35);
         }
-
 
         .save-button:disabled {
-
           opacity: 0.5;
-
-          cursor:
-            not-allowed;
-
+          cursor: not-allowed;
           transform: none;
-
         }
-
 
         .save-button strong {
-
           font-size: 24px;
-
         }
-
 
         .empty-state {
-
-          padding:
-            28px;
-
-          border-radius:
-            14px;
-
-          color: #70707c;
-
-          text-align:
-            center;
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.02
-            );
-
-          border:
-
-            1px dashed
-            rgba(
-              255,
-              255,
-              255,
-              0.08
-            );
-
-          font-size: 12px;
-
+          padding: 28px;
+          border-radius: 14px;
+          color: #7a7a88;
+          text-align: center;
+          background: rgba(255, 255, 255, 0.025);
+          border: 1px dashed rgba(255, 255, 255, 0.1);
+          font-size: 13px;
         }
-
 
         .history {
-
           margin-bottom: 0;
-
         }
-
 
         .history-list {
-
           display: flex;
-
-          flex-direction:
-            column;
-
-          gap: 9px;
-
+          flex-direction: column;
+          gap: 10px;
         }
-
 
         .history-card {
-
           display: grid;
-
-          grid-template-columns:
-            1fr auto auto;
-
-          align-items:
-            center;
-
+          grid-template-columns: 1fr auto auto;
+          align-items: center;
           gap: 20px;
-
-          padding:
-            16px;
-
-          border-radius:
-            14px;
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.025
-            );
-
-          border:
-
-            1px solid
-            rgba(
-              255,
-              255,
-              255,
-              0.06
-            );
-
+          padding: 16px;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          transition: 0.2s ease;
         }
 
+        .history-card:hover {
+          border-color: rgba(255, 23, 77, 0.25);
+          background: rgba(255, 23, 77, 0.04);
+        }
 
         .history-main span {
-
           display: block;
-
-          color:
-            #ff5878;
-
-          font-size: 8px;
-
+          color: #ff5878;
+          font-size: 10px;
           font-weight: 900;
-
-          letter-spacing:
-            1.2px;
-
+          letter-spacing: 1.3px;
         }
-
 
         .history-main strong {
-
           display: block;
-
-          margin-top:
-            4px;
-
-          font-size: 13px;
-
+          margin-top: 4px;
+          font-size: 14px;
+          color: #fff;
         }
-
 
         .history-main small {
-
           display: block;
-
-          margin-top:
-            3px;
-
-          color: #696976;
-
+          margin-top: 3px;
+          color: #7a7a88;
         }
-
 
         .history-money {
-
-          text-align:
-            right;
-
+          text-align: right;
         }
-
 
         .history-money span {
-
           display: block;
-
-          color: #676774;
-
-          font-size: 7px;
-
+          color: #7a7a88;
+          font-size: 9px;
           font-weight: 900;
-
         }
-
 
         .history-money strong {
-
           display: block;
-
-          margin-top:
-            3px;
-
-          color:
-            #25efa0;
-
-          font-size: 16px;
-
+          margin-top: 3px;
+          color: #25efa0;
+          font-size: 17px;
+          text-shadow: 0 0 12px rgba(37, 239, 160, 0.4);
         }
-
 
         .history-status {
-
-          padding:
-            8px 11px;
-
-          border-radius:
-            999px;
-
-          color:
-            #c9c9d0;
-
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.05
-            );
-
-          font-size: 8px;
-
+          padding: 8px 12px;
+          border-radius: 999px;
+          color: #c9c9d0;
+          background: rgba(255, 255, 255, 0.06);
+          font-size: 10px;
           font-weight: 800;
-
-          text-transform:
-            uppercase;
-
+          text-transform: uppercase;
         }
 
-
-        @media (
-          max-width: 900px
-        ) {
-
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
           .form-grid {
-
-            grid-template-columns:
-              repeat(
-                2,
-                1fr
-              );
-
+            grid-template-columns: repeat(2, 1fr);
           }
-
-
           .finance-grid {
-
-            grid-template-columns:
-              1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
           }
-
+          .performance-header,
+          .performance-row {
+            grid-template-columns: 140px repeat(3, 1fr) 70px;
+          }
         }
 
-
-        @media (
-          max-width: 650px
-        ) {
-
+        @media (max-width: 650px) {
           .op-match-page {
-
-            padding:
-              12px 10px
-              45px;
-
+            padding: 14px 12px 50px;
           }
-
-
           .topbar {
-
-            align-items:
-              flex-start;
-
-            padding:
-              24px 18px;
-
-            border-radius:
-              20px;
-
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 24px 18px;
+            border-radius: 20px;
           }
-
-
           .rule-pill {
-
-            min-width:
-              110px;
-
+            margin-top: 16px;
           }
-
-
           .panel,
           .history {
-
-            padding:
-              20px 14px;
-
-            border-radius:
-              18px;
-
+            padding: 20px 14px;
+            border-radius: 18px;
           }
-
-
           .form-grid,
           .team-grid,
           .money-inputs {
-
-            grid-template-columns:
-              1fr;
-
+            grid-template-columns: 1fr;
           }
-
-
           .player-grid {
-
-            grid-template-columns:
-              1fr;
-
+            grid-template-columns: 1fr;
           }
-
-
           .finance-grid {
-
-            grid-template-columns:
-              1fr 1fr;
-
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .performance-header {
+            display: none;
+          }
+          .performance-row {
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            margin-bottom: 12px;
           }
-
-
-          .finance-card {
-
-            min-height:
-              105px;
-
-            padding:
-              14px;
-
+          .player-name {
+            grid-column: 1 / -1;
+            margin-bottom: 4px;
           }
-
-
+          .mvp-check {
+            grid-column: 1 / -1;
+            justify-content: flex-start;
+          }
           .rule-box {
-
-            grid-template-columns:
-              1fr;
-
+            grid-template-columns: 1fr;
           }
-
-
           .history-card {
-
-            grid-template-columns:
-              1fr auto;
-
+            grid-template-columns: 1fr auto;
           }
-
-
           .history-status {
-
-            grid-column:
-              1 / -1;
-
-            width:
-              fit-content;
-
+            grid-column: 1 / -1;
+            width: fit-content;
           }
-
         }
 
-
-        @media (
-          max-width: 420px
-        ) {
-
-          .topbar {
-
-            display: block;
-
-          }
-
-
-          .rule-pill {
-
-            margin-top:
-              18px;
-
-            width:
-              fit-content;
-
-          }
-
-
+        @media (max-width: 420px) {
           .finance-grid {
-
-            grid-template-columns:
-              1fr;
-
+            grid-template-columns: 1fr;
           }
-
         }
-
-
       `}</style>
-
-
     </main>
-
   );
-
 }
 
-
-
-function SectionTitle({
-  number,
-  small,
-  title,
-}) {
-
+function SectionTitle({ number, small, title }) {
   return (
-
     <div className="section-title">
-
-      <div className="section-number">
-
-        {number}
-
-      </div>
-
-
+      <div className="section-number">{number}</div>
       <div>
-
-        <small>
-          {small}
-        </small>
-
-        <h2>
-          {title}
-        </h2>
-
+        <small>{small}</small>
+        <h2>{title}</h2>
       </div>
-
     </div>
-
   );
-
 }
 
-
-
-function FieldWrap({
-  label,
-  children,
-}) {
-
+function FieldWrap({ label, children }) {
   return (
-
     <div className="field-wrap">
-
-      <label>
-        {label}
-      </label>
-
+      <label>{label}</label>
       {children}
-
     </div>
-
   );
-
 }
 
-
-
-function FinanceCard({
-  label,
-  value,
-  type,
-}) {
-
+function FinanceCard({ label, value, type }) {
   return (
-
-    <article
-      className={`finance-card ${type}`}
-    >
-
-      <span>
-        {label}
-      </span>
-
-      <strong>
-        {value}
-      </strong>
-
+    <article className={`finance-card ${type}`}>
+      <span>{label}</span>
+      <strong>{value}</strong>
     </article>
-
   );
-
 }
