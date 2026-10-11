@@ -231,9 +231,9 @@ export default function AdminMatchesPage() {
   const entryFee = Number(form.entry_fee) || 0;
   const prizeMoney = Number(form.prize_money) || 0;
   const netProfit = prizeMoney - entryFee;
-  const distributableProfit = netProfit > 0 ? netProfit : 0;
-  const managementAmount = distributableProfit * (MANAGEMENT_PERCENTAGE / 100);
-  const playerPool = distributableProfit * (PLAYER_PERCENTAGE / 100);
+  // Signed values: the same 30/70 rule applies to profit and loss.
+  const managementAmount = Math.round(netProfit * (MANAGEMENT_PERCENTAGE / 100) * 100) / 100;
+  const playerPool = Math.round((netProfit - managementAmount) * 100) / 100;
   const perPlayerAmount =
     selectedPlayers.length === REQUIRED_PLAYERS
       ? playerPool / REQUIRED_PLAYERS
@@ -256,15 +256,6 @@ export default function AdminMatchesPage() {
     return (
       tournaments.find((item) => item.id === tournamentId)?.name || "Tournament"
     );
-  }
-
-  async function rollbackMatch(matchId) {
-    if (!matchId) return;
-    try {
-      await supabase.from("matches").delete().eq("id", matchId);
-    } catch (error) {
-      console.error("Rollback failed:", error);
-    }
   }
 
   async function handleSaveMatch(e) {
@@ -296,148 +287,54 @@ export default function AdminMatchesPage() {
       return;
     }
 
+    if (
+      !Number.isFinite(entryFee) || !Number.isFinite(prizeMoney) ||
+      entryFee < 0 || prizeMoney < 0 ||
+      Math.abs(Math.round(entryFee * 100) - entryFee * 100) > 1e-7 ||
+      Math.abs(Math.round(prizeMoney * 100) - prizeMoney * 100) > 1e-7
+    ) {
+      setMessage("Enter non-negative entry fee and prize money (maximum 2 decimals).");
+      setMessageType("error");
+      return;
+    }
+
     setSaving(true);
-    let createdMatchId = null;
 
     try {
-      // STEP 1 - CREATE MATCH
-      const matchPayload = {
-        tournament_id: form.tournament_id || null,
-        team1_id: form.team1_id,
-        team2_id: form.team2_id || null,
+      // Single atomic database transaction. The RPC handles match, players,
+      // stats, finance, results and the trigger-based earnings calculation.
+      const payload = {
+        ...form,
         team1_score: Number(form.team1_score) || 0,
         team2_score: Number(form.team2_score) || 0,
-        winner_id: form.winner_id || null,
-        match_date: form.match_date,
-        status: form.status,
-        match_type: form.match_type,
         entry_fee: entryFee,
         prize_money: prizeMoney,
-        profit: netProfit,
-        platform: form.platform,
-        map: form.map || null,
-        sponsor: form.sponsor || null,
-        notice: form.notice || null,
       };
 
-      const { data: match, error: matchError } = await supabase
-        .from("matches")
-        .insert([matchPayload])
-        .select()
-        .single();
-
-      if (matchError) throw matchError;
-      createdMatchId = match.id;
-
-      // STEP 2 - SAVE 4 PLAYERS
-      const matchPlayerRows = selectedPlayers.map((player, index) => ({
-        match_id: match.id,
-        player_id: player.id,
-        team_id: form.team1_id,
-        slot_number: index + 1,
+      const participants = selectedPlayers.map((selected) => ({
+        player_id: selected.id,
+        kills: Number(playerStats[selected.id]?.kills) || 0,
+        assists: Number(playerStats[selected.id]?.assists) || 0,
+        damage: Number(playerStats[selected.id]?.damage) || 0,
+        mvp: Boolean(playerStats[selected.id]?.mvp),
       }));
 
-      const { error: playersError } = await supabase
-        .from("match_players")
-        .insert(matchPlayerRows);
+      const { data: matchId, error: saveError } = await supabase.rpc(
+        "create_esports_match",
+        { p_match: payload, p_players: participants }
+      );
 
-      if (playersError) throw playersError;
-
-      // STEP 3 - SAVE FINANCE
-      const { error: financeError } = await supabase
-        .from("match_finance")
-        .insert([
-          {
-            match_id: match.id,
-            team_id: form.team1_id,
-            entry_fee: entryFee,
-            prize_money: prizeMoney,
-            profit: netProfit,
-            management_percentage: MANAGEMENT_PERCENTAGE,
-            management_amount: managementAmount,
-            player_amount: playerPool,
-          },
-        ]);
-
-      if (financeError) throw financeError;
-
-      // STEP 4 - MATCH RESULT
-      if (form.status === "completed") {
-        if (form.position || form.points || form.prize_money) {
-          const { error: resultError } = await supabase
-            .from("match_results")
-            .insert([
-              {
-                match_id: match.id,
-                team_id: form.team1_id,
-                position: form.position ? Number(form.position) : null,
-                points: form.points ? Number(form.points) : 0,
-                status: "completed",
-              },
-            ]);
-
-          if (resultError) throw resultError;
-        }
-      }
-
-      // STEP 5 - PLAYER STATS
-      if (selectedPlayers.length > 0) {
-        const statsPayload = selectedPlayers.map((player) => ({
-          match_id: match.id,
-          player_id: player.id,
-          kills: playerStats[player.id]?.kills || 0,
-          assists: playerStats[player.id]?.assists || 0,
-          damage: playerStats[player.id]?.damage || 0,
-          mvp: playerStats[player.id]?.mvp || false,
-          placement: Number(form.position) || 0,
-        }));
-
-        const { error: statsError } = await supabase
-          .from("match_player_stats")
-          .insert(statsPayload);
-
-        if (statsError) throw statsError;
-      }
-
-      // STEP 6 - EARNINGS
-      if (
-        form.status === "completed" &&
-        playerPool > 0 &&
-        selectedPlayers.length === REQUIRED_PLAYERS
-      ) {
-        const finalPerPlayerAmount = Number(perPlayerAmount.toFixed(2));
-        const finalManagementAmount = Number(managementAmount.toFixed(2));
-
-        const playerEarningRows = selectedPlayers.map((player) => ({
-          player_id: player.id,
-          match_id: match.id,
-          team_id: form.team1_id,
-          amount: finalPerPlayerAmount,
-        }));
-
-        const { error: playerEarningsError } = await supabase
-          .from("player_earnings")
-          .insert(playerEarningRows);
-
-        if (playerEarningsError) throw playerEarningsError;
-
-        const { error: teamEarningsError } = await supabase
-          .from("team_earnings")
-          .insert([
-            {
-              team_id: form.team1_id,
-              match_id: match.id,
-              amount: finalManagementAmount,
-            },
-          ]);
-
-        if (teamEarningsError) throw teamEarningsError;
-      }
+      if (saveError) throw saveError;
+      if (!matchId) throw new Error("Match ID was not returned by Supabase.");
 
       setMessage(
         form.status === "completed"
-          ? `Match saved. Each active player receives ৳${money(perPlayerAmount)}`
-          : "Match created successfully."
+          ? netProfit > 0
+            ? `Match saved. Player pool: +৳${money(playerPool)} (shared by 4 players).`
+            : netProfit < 0
+              ? `Match saved. Player loss: ৳${money(Math.abs(playerPool))} (shared by 4 players).`
+              : "Match saved. Break-even: no player earnings or losses."
+          : "Match created. No player earnings until completion."
       );
       setMessageType("success");
 
@@ -471,10 +368,6 @@ export default function AdminMatchesPage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error(error);
-
-      if (createdMatchId) {
-        await rollbackMatch(createdMatchId);
-      }
 
       setMessage(error.message || "Unable to save match.");
       setMessageType("error");
@@ -952,19 +845,19 @@ export default function AdminMatchesPage() {
                 type={netProfit >= 0 ? "green" : "red"}
               />
               <FinanceCard
-                label="MANAGEMENT 30%"
+                label="MANAGEMENT 30% (SIGNED)"
                 value={`৳${money(managementAmount)}`}
                 type="red"
               />
               <FinanceCard
-                label="PLAYERS 70%"
+                label="PLAYERS 70% (SIGNED)"
                 value={`৳${money(playerPool)}`}
                 type="purple"
               />
               <FinanceCard
                 label="EACH PLAYER"
                 value={`৳${money(perPlayerAmount)}`}
-                type="green"
+                type={perPlayerAmount >= 0 ? "green" : "red"}
               />
             </div>
 
