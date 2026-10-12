@@ -1881,6 +1881,67 @@ export default function AdminMatchesPage() {
         @media(prefers-reduced-motion:reduce){.op-match-page .rule-pill,.op-match-page .ambient,.op-match-page .save-button::after{animation:none!important}
           .op-match-page .panel,.op-match-page .finance-card{transition:none!important}}
 
+
+        /* V4 FULL-WIDTH REPAIR — scoped, with no financial JS changes */
+        .op-match-page {--op-green:#39ffab;--op-blue:#57baff;--op-gold:#ffe176;--op-white:#f5faff;}
+        .op-match-page .shell{max-width:1280px;width:min(100%,1280px);}
+        .op-match-page .shell>form{width:100%!important;max-width:none!important;display:block!important;}
+        .op-match-page .shell>form>.panel{width:100%!important;max-width:none!important;margin-left:0!important;margin-right:0!important;padding:clamp(20px,3vw,36px)!important;}
+        .op-match-page .form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;column-gap:24px!important;row-gap:25px!important;align-items:start;}
+        .op-match-page .form-grid>*{min-width:0;width:100%;}
+        .op-match-page .op-smart-date-field{grid-column:1/-1!important;min-width:0;width:100%;}
+        .op-match-page .field-wrap{min-width:0;width:100%;}
+        .op-match-page .field-wrap :is(input,select){width:100%;min-width:0;}
+        .op-match-page .topbar{border-color:rgba(89,194,255,.5);box-shadow:0 0 27px rgba(66,163,255,.18),0 22px 65px #0009,inset 0 1px rgba(255,255,255,.19);}
+        .op-match-page .topbar h1{background:linear-gradient(90deg,#fff,#98ecff,#fff2a7,#b4ffdb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 14px #62bfff5a);}
+        .op-match-page .section-title h2{color:var(--op-white)!important;text-shadow:0 0 13px #a5f8ff55,0 0 28px #49afff40;font-weight:950;}
+        .op-match-page .field-wrap label,.op-match-page .section-title small{color:#ceeeff!important;text-shadow:0 0 10px #82e1ff80;letter-spacing:1.35px;}
+        .op-match-page .panel,.op-match-page .history{border:1px solid rgba(103,195,255,.43)!important;background:linear-gradient(140deg,#12101e,#0a101a 64%,#12121c)!important;box-shadow:0 0 25px rgba(45,167,255,.12),0 18px 54px #0008,inset 0 1px rgba(255,255,255,.10)!important;overflow:visible;}
+        .op-match-page .field-wrap :is(input,select),.op-match-page textarea{border:1px solid #5fa6d966!important;background:#0a1020!important;color:#f6fbff!important;min-height:50px;box-shadow:inset 0 0 12px #76bbff0c,0 0 11px #71bbff0e;}
+        .op-match-page .field-wrap :is(input,select):focus{border-color:#64e5ff!important;box-shadow:0 0 0 3px #67dfff25,0 0 22px #46a4ff55!important;}
+        .op-match-page .rule-pill{border:1px solid #ffdc73!important;background:linear-gradient(145deg,#261c1b,#101422)!important;animation:opV4MultiGlow 4.5s linear infinite!important;}
+        .op-match-page .rule-pill strong{color:#ffe78f!important;text-shadow:0 0 12px #ffe27d,0 0 26px #ffd24a88!important;}
+        .op-match-page .section-number{border-color:#75dbff!important;color:white!important;background:linear-gradient(130deg,#242046,#132d41)!important;box-shadow:0 0 18px #48c5ff55!important;}
+        .op-match-page .save-button{animation:opV4Save 4.5s ease-in-out infinite!important;background:linear-gradient(110deg,#006dd8,#14b7a2,#7953f6,#eb368b)!important;background-size:250% 250%!important;}
+        .op-match-page .finance-card{border-color:#76baff66!important;box-shadow:0 0 15px #66aaff26,inset 0 1px #ffffff1c!important;}
+        .op-match-page .finance-card strong{filter:drop-shadow(0 0 12px currentColor);}
+        .op-match-page .op-v4-scheduler{width:100%;max-width:none;padding:24px!important;border:1px solid #61d5ff88!important;border-radius:22px!important;background:linear-gradient(120deg,#111d2b,#131025 70%,#131b25)!important;box-shadow:0 0 30px #36aaff2a,inset 0 1px #ffffff22!important;}
+        .op-match-page .op-v4-scheduler-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding-bottom:17px;margin-bottom:20px;border-bottom:1px solid #79c4ff3d;}
+        .op-match-page .op-v4-scheduler-head>span:first-child{color:#d7f9ff;font-weight:950;letter-spacing:1.4px;font-size:12px;text-shadow:0 0 12px #4ac5ff91;}
+        .op-match-page .op-v4-scheduler-hint{color:#ffe68d;font-size:10px;font-weight:850;letter-spacing:1px;}
+        .op-match-page .op-v4-live-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#41ffc0;box-shadow:0 0 12px #41ffab;margin-right:8px;animation:opV4Dot 1.7s ease-in-out infinite;}
+        .op-match-page .op-v4-scheduler-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start;}
+        .op-match-page .op-v4-date-column,.op-match-page .op-v4-time-column{position:relative;min-width:0;padding:20px;border:1px solid #67c0ff44;border-radius:16px;background:#0b1120a8;}
+        .op-match-page .op-date-subheading{color:#bfe9ff!important;font-size:11px!important;margin-bottom:12px!important;text-shadow:0 0 12px #57adff55;}
+        .op-match-page .op-v4-date-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:58px;text-align:left;padding:13px 17px;border-radius:13px;background:#0f1930;border:1px solid #75c7ff88;color:#fff;font-size:14px;font-weight:850;cursor:pointer;box-shadow:0 0 15px #40aaff1c;}
+        .op-match-page .op-v4-date-button:hover,.op-match-page .op-v4-date-button[aria-expanded=true]{border-color:#67f9ff;box-shadow:0 0 20px #55cfff4a;}
+        .op-match-page .op-v4-date-button span:last-child{color:#ffe184;font-size:24px;}
+        .op-match-page .op-v4-clock-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) minmax(0,1.2fr);gap:10px;align-items:center;}
+        .op-match-page .op-v4-clock-row select{width:100%;min-width:0;height:58px;padding:0 10px;border:1px solid #6cbbff88;border-radius:13px;background:#0f1930;color:#fff;font-size:17px;font-weight:900;cursor:pointer;color-scheme:dark;}
+        .op-match-page .op-v4-colon{font-size:22px;font-weight:900;color:#ffe17b;text-shadow:0 0 15px #ffe17b66;}
+        .op-match-page .op-v4-preset-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px;}
+        .op-match-page .op-v4-preset-group>span{width:100%;color:#93aeca;font-size:10px;letter-spacing:1px;font-weight:850;}
+        .op-match-page .op-v4-chip{padding:9px 13px;border-radius:9px;border:1px solid #6b9bd265;background:#142238;color:#eaf7ff;font-size:11px;font-weight:850;cursor:pointer;}
+        .op-match-page .op-v4-chip:hover,.op-match-page .op-v4-chip[aria-pressed=true]{color:#09121f;background:#ffe68e;border-color:#ffe68e;box-shadow:0 0 18px #ffdb736b;}
+        .op-match-page .op-v4-calendar{position:absolute;top:106px;left:20px;right:20px;z-index:180;background:#0d1527;color:#fff;border:1px solid #6dcfff;padding:15px;border-radius:15px;box-shadow:0 24px 54px #000e,0 0 30px #4eaaff66;}
+        .op-match-page .op-v4-calendar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;color:#fff3be;}
+        .op-match-page .op-v4-calendar-top button{border:1px solid #77c8ff66;border-radius:9px;background:#162b42;color:#fff;font-size:23px;width:38px;height:35px;cursor:pointer;}
+        .op-match-page .op-v4-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center;}
+        .op-match-page .op-v4-weekday{font-size:11px;font-weight:900;color:#81cfff;padding:8px 0;}
+        .op-match-page .op-v4-calendar-cell button{width:100%;aspect-ratio:1/1;min-height:28px;background:transparent;border:0;border-radius:8px;color:#f4f8ff;font-weight:800;cursor:pointer;}
+        .op-match-page .op-v4-calendar-cell button:hover{background:#295275;}
+        .op-match-page .op-v4-calendar-cell button.today{box-shadow:inset 0 0 0 1px #5df3c4;color:#80ffd7;}
+        .op-match-page .op-v4-calendar-cell button.chosen{background:#ffe47b;color:#131424;box-shadow:0 0 15px #ffe47b88;}
+        .op-match-page .op-v4-preview{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-top:19px;padding:17px 19px;background:#09182b;border:1px solid #52e6c466;border-radius:13px;box-shadow:0 0 14px #3dffc21b;}
+        .op-match-page .op-v4-preview span{font-size:11px;font-weight:950;letter-spacing:1px;color:#8cfbd5;}
+        .op-match-page .op-v4-preview strong{font-size:15px;color:#ffe998;text-shadow:0 0 15px #ffe99888;}
+        .op-match-page .op-sponsor-trigger{border-color:#ffe68099!important;box-shadow:0 0 14px #ffe6802b!important;}
+        @keyframes opV4MultiGlow{0%,100%{box-shadow:0 0 20px #4db6ff77,0 0 36px #4db6ff26;}25%{box-shadow:0 0 25px #45ffaa88,0 0 40px #45ffaa33;}50%{box-shadow:0 0 25px #ffe77b99,0 0 45px #ffe77b33;}75%{box-shadow:0 0 23px #fff9eb99,0 0 43px #fff9eb33;}}
+        @keyframes opV4Dot{0%,100%{opacity:.55;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
+        @keyframes opV4Save{0%,100%{background-position:0 50%;box-shadow:0 0 17px #4db6ff55}50%{background-position:100% 50%;box-shadow:0 0 27px #50ffa666}}
+        @media(max-width:900px){.op-match-page .op-v4-scheduler-columns{grid-template-columns:1fr;}.op-match-page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+        @media(max-width:640px){.op-match-page .form-grid,.op-match-page .team-grid,.op-match-page .money-inputs{grid-template-columns:1fr!important;}.op-match-page .op-smart-date-field{grid-column:1/-1!important;}.op-match-page .op-v4-scheduler{padding:14px!important;}.op-match-page .op-v4-date-column,.op-match-page .op-v4-time-column{padding:13px;}.op-match-page .op-v4-calendar{top:93px;left:7px;right:7px;}.op-match-page .op-v4-clock-row{gap:5px;}.op-match-page .op-v4-clock-row select{font-size:14px;padding:0 5px;}}
+        @media(prefers-reduced-motion:reduce){.op-match-page .op-v4-live-dot,.op-match-page .rule-pill,.op-match-page .save-button{animation:none!important;}}
       `}</style>
     </main>
   );
@@ -1890,105 +1951,82 @@ export default function AdminMatchesPage() {
 // Premium Date & Time picker, using the same local YYYY-MM-DDTHH:mm value
 // that the existing create_esports_match RPC expects.
 function SmartMatchDateTime({ value, onChange }) {
-  const dateInputRef = useRef(null);
-  const date = value?.split("T")[0] || "";
-  const time = value?.split("T")[1]?.slice(0, 5) || "20:00";
-  const hours24 = Number(time.slice(0, 2));
-  const minute = time.slice(3, 5);
-  const hour12 = String(hours24 % 12 || 12).padStart(2, "0");
-  const period = hours24 >= 12 ? "PM" : "AM";
-
-  function update(nextDate, nextTime) {
-    // No premature date value: the match form still validates the date.
-    onChange(nextDate ? `${nextDate}T${nextTime}` : "");
+  const today = new Date();
+  const selectedDate = value?.split("T")[0] || "";
+  const selectedTime = value?.split("T")[1]?.slice(0, 5) || "20:00";
+  const hour24 = Number(selectedTime.slice(0, 2));
+  const minute = selectedTime.slice(3, 5);
+  const hour12 = String(hour24 % 12 || 12).padStart(2, "0");
+  const period = hour24 >= 12 ? "PM" : "AM";
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [visibleMonth, setVisibleMonth] = useState(() => {
+    const parts = selectedDate.split("-").map(Number);
+    return parts.length === 3 && parts[0] ? new Date(parts[0], parts[1] - 1, 1) : new Date(today.getFullYear(), today.getMonth(), 1);
+  });
+  const pad = (x) => String(x).padStart(2, "0");
+  function iso(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+  function setDate(d) { onChange(`${d}T${selectedTime}`); setCalendarOpen(false); }
+  function setTime24(t) { onChange(`${selectedDate || iso(new Date())}T${t}`); }
+  function setClock(h, m, p) {
+    const next = (Number(h) % 12) + (p === "PM" ? 12 : 0);
+    setTime24(`${pad(next)}:${m}`);
   }
-
-  function localISODate(offset = 0) {
-    const d = new Date();
-    d.setHours(12, 0, 0, 0);
-    d.setDate(d.getDate() + offset);
-    const pad = (n) => String(n).padStart(2, "0");
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  }
-
-  function setTime(h12, mins, ap) {
-    const hours = (Number(h12) % 12) + (ap === "PM" ? 12 : 0);
-    update(date, `${String(hours).padStart(2, "0")}:${mins}`);
-  }
-
-  function displayDateTime() {
-    if (!date) return "Choose a date to schedule your match";
-    const [y, m, d] = date.split("-").map(Number);
-    const friendly = new Date(y, m - 1, d).toLocaleDateString("en-GB", {
-      weekday: "short", day: "numeric", month: "short", year: "numeric"
-    });
-    return `${friendly}  •  ${hour12}:${minute} ${period}`;
-  }
-
+  function offsetDate(n) { const d = new Date(); d.setDate(d.getDate() + n); return iso(d); }
+  function shiftMonth(n) { setVisibleMonth(d => new Date(d.getFullYear(), d.getMonth() + n, 1)); }
+  const calendarStart = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), 1);
+  const offset = (calendarStart.getDay() + 6) % 7;
+  const daysInMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 0).getDate();
+  const cells = Array.from({ length: Math.ceil((offset + daysInMonth) / 7) * 7 }, (_, i) => {
+    const day = i - offset + 1;
+    return day >= 1 && day <= daysInMonth ? day : null;
+  });
+  const friendlyDate = selectedDate ? (() => {
+    const [y,m,d] = selectedDate.split("-").map(Number);
+    return new Date(y, m-1, d).toLocaleDateString("en-GB", {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+  })() : "Choose match date";
   return (
-    <div className="op-smart-scheduler">
-      <div className="op-date-controls">
-        <div className="op-date-picker-area">
-          <span className="op-date-subheading">📅 CHOOSE DATE</span>
-          <div className="op-date-input-wrap">
-            <input ref={dateInputRef} type="date" value={date}
-              aria-label="Match date" required
-              onChange={(e) => update(e.target.value, time)} />
-            <button type="button" className="op-calendar-action" title="Open calendar"
-              aria-label="Open match date calendar"
-              onClick={() => {
-                const input = dateInputRef.current;
-                if (!input) return;
-                if (typeof input.showPicker === "function") {
-                  try { input.showPicker(); } catch { input.focus(); }
-                } else { input.focus(); }
-              }}>▦</button>
-          </div>
-        </div>
-        <div className="op-time-picker-area">
-          <span className="op-date-subheading">⏰ CHOOSE TIME</span>
-          <div className="op-time-controls">
-            <select aria-label="Hour" value={hour12}
-              onChange={(e) => setTime(e.target.value, minute, period)}>
-              {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"))
-                .map(h => <option key={h} value={h}>{h}</option>)}
-            </select>
-            <select aria-label="Minute" value={minute}
-              onChange={(e) => setTime(hour12, e.target.value, period)}>
-              {Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
-                .map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-            <select aria-label="AM or PM" value={period}
-              onChange={(e) => setTime(hour12, minute, e.target.value)}>
-              <option value="AM">AM</option>
-              <option value="PM">PM</option>
-            </select>
-          </div>
-        </div>
+    <div className="op-smart-scheduler op-v4-scheduler">
+      <div className="op-v4-scheduler-head">
+        <span><span className="op-v4-live-dot" /> SMART MATCH SCHEDULER</span>
+        <span className="op-v4-scheduler-hint">ONE-CLICK DATE & TIME</span>
       </div>
-      <div className="op-quick-dates">
-        <span className="op-quick-label">QUICK DATE</span>
-        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(0)}
-          onClick={() => update(localISODate(0), time)}>Today</button>
-        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(1)}
-          onClick={() => update(localISODate(1), time)}>Tomorrow</button>
-        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(2)}
-          onClick={() => update(localISODate(2), time)}>Day After</button>
-      </div>
-      <div className="op-quick-times">
-        <span className="op-quick-label">QUICK TIME</span>
-        {["18:00", "20:00", "22:00", "00:00"].map(t => (
-          <button type="button" key={t} className="op-preset-chip"
-            aria-pressed={time === t} onClick={() => update(date || localISODate(0), t)}>
-            {t === "18:00" ? "6 PM" : t === "20:00" ? "8 PM" : t === "22:00" ? "10 PM" : "12 AM"}
+      <div className="op-v4-scheduler-columns">
+        <div className="op-v4-date-column">
+          <span className="op-date-subheading">📅 SELECT MATCH DATE</span>
+          <button type="button" className="op-v4-date-button" aria-expanded={calendarOpen} aria-label="Choose match date" onClick={() => setCalendarOpen(v => !v)}>
+            <span>{friendlyDate}</span><span>▦</span>
           </button>
-        ))}
+          {calendarOpen && <div className="op-v4-calendar">
+            <div className="op-v4-calendar-top">
+              <button type="button" onClick={() => shiftMonth(-1)} aria-label="Previous month">‹</button>
+              <strong>{visibleMonth.toLocaleDateString("en-US", {month:"long", year:"numeric"})}</strong>
+              <button type="button" onClick={() => shiftMonth(1)} aria-label="Next month">›</button>
+            </div>
+            <div className="op-v4-calendar-grid">
+              {["M","T","W","T","F","S","S"].map((d,i) => <span key={i} className="op-v4-weekday">{d}</span>)}
+              {cells.map((day,i) => <div key={i} className="op-v4-calendar-cell">{day && <button type="button" className={`${selectedDate === iso(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), day)) ? "chosen" : ""} ${iso(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), day)) === iso(new Date()) ? "today" : ""}`} onClick={() => setDate(iso(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), day)))}>{day}</button>}</div>)}
+            </div>
+          </div>}
+          <div className="op-v4-preset-group">
+            <span>QUICK DATE</span>
+            {[{label:"Today",n:0},{label:"Tomorrow",n:1},{label:"Day After",n:2}].map(x => <button type="button" key={x.n} className="op-v4-chip" aria-pressed={selectedDate===offsetDate(x.n)} onClick={() => setDate(offsetDate(x.n))}>{x.label}</button>)}
+          </div>
+        </div>
+        <div className="op-v4-time-column">
+          <span className="op-date-subheading">⏰ SELECT MATCH TIME</span>
+          <div className="op-v4-clock-row">
+            <select aria-label="Hour" value={hour12} onChange={e => setClock(e.target.value, minute, period)}>{Array.from({length:12},(_,i)=>pad(i+1)).map(h=><option value={h} key={h}>{h}</option>)}</select>
+            <span className="op-v4-colon">:</span>
+            <select aria-label="Minute" value={minute} onChange={e => setClock(hour12,e.target.value,period)}>{Array.from({length:60},(_,i)=>pad(i)).map(m=><option value={m} key={m}>{m}</option>)}</select>
+            <select aria-label="AM PM" value={period} onChange={e => setClock(hour12,minute,e.target.value)}><option>AM</option><option>PM</option></select>
+          </div>
+          <div className="op-v4-preset-group">
+            <span>QUICK TIME</span>
+            {[{label:"6 PM",time:"18:00"},{label:"8 PM",time:"20:00"},{label:"10 PM",time:"22:00"},{label:"12 AM",time:"00:00"}].map(x=><button type="button" key={x.time} className="op-v4-chip" aria-pressed={selectedTime===x.time} onClick={()=>setTime24(x.time)}>{x.label}</button>)}
+          </div>
+        </div>
       </div>
-      <div className="op-schedule-preview" aria-live="polite">
-        <span>✦ MATCH SCHEDULE</span>
-        <strong>{displayDateTime()}</strong>
-      </div>
-      <div className="op-date-help">Tap a preset, or open the calendar and select time from the dropdowns.</div>
+      <div className="op-v4-preview"><span>✦ LIVE MATCH SCHEDULE</span><strong>{friendlyDate} · {hour12}:{minute} {period}</strong></div>
     </div>
   );
 }
