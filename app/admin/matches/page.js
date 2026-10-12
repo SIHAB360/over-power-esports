@@ -1719,6 +1719,77 @@ export default function AdminMatchesPage() {
             grid-template-columns: 1fr;
           }
         }
+
+
+        /* ========= OVER POWER PREMIUM / RESPONSIVE V2 ========= */
+        .op-match-page {
+          background: radial-gradient(ellipse 800px 430px at 3% 0%,rgba(239,18,75,.17),transparent 75%),
+            radial-gradient(ellipse 650px 600px at 100% 16%,rgba(110,48,245,.15),transparent 75%),
+            linear-gradient(145deg,#07070c 0%,#0b0911 50%,#05060b 100%);
+          padding: 32px clamp(14px, 3vw, 48px) 96px;
+        }
+        .op-match-page .shell { max-width: 1180px; width:100%; margin:0 auto; }
+        .op-match-page .shell > form {display:flex;flex-direction:column;gap:20px;width:100%;min-width:0;}
+        .op-match-page .topbar { width:100%;margin-bottom:26px;padding:clamp(22px,3vw,38px);
+          border:1px solid rgba(255,68,115,.40);background:linear-gradient(112deg,rgba(36,10,23,.95),rgba(15,11,24,.96) 65%,rgba(27,12,37,.94));
+          box-shadow:0 24px 70px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08),0 0 30px rgba(251,29,82,.10); }
+        .op-match-page .topbar h1 {background:linear-gradient(92deg,#fff 5%,#ffb7c9 53%,#ffd16e 100%);-webkit-background-clip:text;background-clip:text;
+          -webkit-text-fill-color:transparent;letter-spacing:-.8px;line-height:1.12;}
+        .op-match-page .topbar .eyebrow {color:#ff517f;}
+        .op-match-page .rule-pill {border-color:rgba(255,193,90,.55);background:linear-gradient(145deg,rgba(101,29,53,.45),rgba(34,20,34,.9));
+          box-shadow:0 0 24px rgba(255,65,99,.17),inset 0 1px rgba(255,255,255,.06);animation:opSoftPulse 4s ease-in-out infinite;}
+        .op-match-page .rule-pill strong {color:#ffc46e;text-shadow:0 0 18px rgba(255,157,59,.45);}
+        .op-match-page .panel, .op-match-page .history {width:100%;min-width:0;margin:0;padding:clamp(20px,2.6vw,32px);
+          border:1px solid rgba(155,110,195,.20);border-radius:24px;background:linear-gradient(150deg,rgba(23,22,34,.98),rgba(11,11,20,.98));
+          box-shadow:0 20px 55px rgba(0,0,0,.30),inset 0 1px rgba(255,255,255,.035);transition:border-color .25s,box-shadow .25s;}
+        .op-match-page .panel:hover,.op-match-page .history:hover {border-color:rgba(255,71,123,.37);box-shadow:0 22px 60px rgba(0,0,0,.37),0 0 24px rgba(242,45,99,.075);}
+        .op-match-page .section-title {gap:16px;margin-bottom:26px;padding-bottom:19px;border-bottom-color:rgba(255,255,255,.09);}
+        .op-match-page .section-number {background:linear-gradient(145deg,rgba(255,35,90,.22),rgba(112,42,235,.16));border-color:rgba(255,61,115,.40);
+          box-shadow:0 0 14px rgba(255,33,85,.17);color:#ff668d;}
+        .op-match-page .section-title h2 {font-size:clamp(16px,1.8vw,21px);letter-spacing:.4px;}
+        .op-match-page .section-title small {color:#ba96c8;}
+        .op-match-page .form-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+        .op-match-page .team-grid,.op-match-page .money-inputs {grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;}
+        .op-match-page .field-wrap {min-width:0;}
+        .op-match-page .field-wrap label {color:#b8b3c8;letter-spacing:1.1px;font-size:10px;}
+        .op-match-page .field-wrap :is(input,select),.op-match-page textarea {
+          width:100%;max-width:100%;min-width:0;background:#0d0e17;border:1px solid rgba(185,165,210,.21);
+          border-radius:13px;min-height:52px;color:#f8f5fc;transition:border-color .2s,box-shadow .2s,background .2s;}
+        .op-match-page .field-wrap :is(input,select):hover,.op-match-page textarea:hover {border-color:rgba(255,92,139,.46);}
+        .op-match-page .field-wrap :is(input,select):focus,.op-match-page textarea:focus {border-color:#ff427a;background:#12101d;
+          box-shadow:0 0 0 3px rgba(255,44,106,.14),0 0 22px rgba(255,35,96,.12);}
+        .op-match-page .field-wrap select[name="sponsor"] {border-color:rgba(255,193,92,.52);background:linear-gradient(110deg,#17111b,#0d0e17);
+          box-shadow:0 0 18px rgba(255,176,67,.08);cursor:pointer;}
+        .op-match-page .field-wrap select[name="sponsor"]:focus {border-color:#ffcf78;box-shadow:0 0 0 3px rgba(255,190,92,.15),0 0 24px rgba(255,190,92,.18);}
+        .op-match-page .finance-panel {border-color:rgba(145,93,255,.38);background:linear-gradient(145deg,rgba(28,20,45,.98),rgba(13,11,23,.98));}
+        .op-match-page .finance-grid {grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+        .op-match-page .finance-card {border-color:rgba(174,137,255,.24);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+          transition:transform .25s,border-color .25s,box-shadow .25s;min-width:0;}
+        .op-match-page .finance-card:hover {transform:translateY(-3px);border-color:rgba(255,103,155,.48);box-shadow:0 10px 28px rgba(0,0,0,.25);}
+        .op-match-page .finance-card strong {overflow-wrap:anywhere;}
+        .op-match-page .save-button {background:linear-gradient(100deg,#d20b48 0%,#fa315e 42%,#a137ef 100%);border-color:rgba(255,255,255,.25);
+          box-shadow:0 12px 35px rgba(227,20,83,.26);position:relative;overflow:hidden;}
+        .op-match-page .save-button:not(:disabled)::after {content:"";position:absolute;inset:0;
+          background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.16) 48%,transparent 70%);
+          transform:translateX(-125%);animation:opShine 5.5s ease-in-out infinite;pointer-events:none;}
+        .op-match-page .save-button > * {position:relative;z-index:1;}
+        .op-match-page .player-card.selected {border-color:#ff4d89;background:linear-gradient(130deg,rgba(255,33,94,.20),rgba(92,39,168,.17));box-shadow:0 0 18px rgba(255,44,106,.17);}
+        .op-match-page .history {margin-top:22px;}
+        .op-match-page .ambient {animation:opAmbient 9s ease-in-out infinite alternate;}
+        .op-match-page .ambient-two {animation-delay:-3s;}
+        .op-match-page .ambient-three {animation-delay:-6s;}
+        @keyframes opSoftPulse {0%,100%{box-shadow:0 0 13px rgba(255,65,99,.12)}50%{box-shadow:0 0 29px rgba(255,110,93,.28)}}
+        @keyframes opShine {0%,68%,100%{transform:translateX(-125%)}82%{transform:translateX(125%)}}
+        @keyframes opAmbient {from{opacity:.13;transform:scale(.95)}to{opacity:.27;transform:scale(1.08)}}
+        @media(max-width:950px){.op-match-page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.op-match-page .finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:650px){.op-match-page {padding:15px 12px 58px}.op-match-page .topbar{padding:24px 19px;gap:13px}.op-match-page .topbar h1{font-size:clamp(25px,7vw,36px)}
+          .op-match-page .rule-pill{margin-top:0;min-width:0}.op-match-page .panel,.op-match-page .history{padding:21px 16px;border-radius:18px}
+          .op-match-page .form-grid,.op-match-page .team-grid,.op-match-page .money-inputs{grid-template-columns:minmax(0,1fr);gap:16px}
+          .op-match-page .finance-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.op-match-page .section-title h2{font-size:16px}}
+        @media(max-width:390px){.op-match-page .finance-grid{grid-template-columns:minmax(0,1fr)}.op-match-page .topbar h1{font-size:25px}}
+        @media(prefers-reduced-motion:reduce){.op-match-page .rule-pill,.op-match-page .ambient,.op-match-page .save-button::after{animation:none!important}
+          .op-match-page .panel,.op-match-page .finance-card{transition:none!important}}
+
       `}</style>
     </main>
   );
