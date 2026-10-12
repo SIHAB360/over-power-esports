@@ -17,6 +17,8 @@ export default function AdminMatchesPage() {
 
   const [teams, setTeams] = useState([]);
   const [registeredPlayers, setRegisteredPlayers] = useState([]);
+  const [sponsorOpen, setSponsorOpen] = useState(false);
+  const [sponsorSearch, setSponsorSearch] = useState("");
   const [tournaments, setTournaments] = useState([]);
   const [teamPlayers, setTeamPlayers] = useState([]);
   const [recentMatches, setRecentMatches] = useState([]);
@@ -544,23 +546,41 @@ export default function AdminMatchesPage() {
               </FieldWrap>
 
               <FieldWrap label="Sponsor / Organizer">
-                <select
-                  name="sponsor"
-                  value={form.sponsor}
-                  onChange={handleChange}
-                >
-                  <option value="">Select registered player (optional)</option>
-                  {registeredPlayers.map((registeredPlayer) => {
-                    const name = registeredPlayer.full_name || registeredPlayer.ign || "Registered Player";
-                    return (
-                      <option key={registeredPlayer.id} value={name}>
-                        {registeredPlayer.ign && registeredPlayer.ign !== name
-                          ? `${registeredPlayer.ign} — ${name}`
-                          : name}
-                      </option>
-                    );
-                  })}
-                </select>
+                <div className="op-sponsor-picker">
+                  <button type="button" className={`op-sponsor-trigger ${sponsorOpen ? "is-open" : ""}`}
+                    aria-haspopup="listbox" aria-expanded={sponsorOpen}
+                    onClick={() => { setSponsorOpen(!sponsorOpen); setSponsorSearch(""); }}>
+                    <span className={form.sponsor ? "op-sponsor-chosen" : "op-sponsor-placeholder"}>
+                      {form.sponsor || "Select registered player (optional)"}
+                    </span>
+                    <span className="op-picker-chevron">{sponsorOpen ? "▴" : "▾"}</span>
+                  </button>
+                  {sponsorOpen && (
+                    <div className="op-sponsor-menu" role="listbox" aria-label="Registered sponsor players">
+                      <input autoFocus type="search" className="op-sponsor-search"
+                        placeholder="Search IGN or player name..." value={sponsorSearch}
+                        onChange={(e) => setSponsorSearch(e.target.value)} />
+                      <div className="op-sponsor-options">
+                        <button type="button" role="option" aria-selected={!form.sponsor}
+                          className="op-sponsor-option" onClick={() => {
+                            setForm(prev => ({...prev, sponsor: ""})); setSponsorOpen(false);
+                          }}>No sponsor / organizer</button>
+                        {registeredPlayers.filter(p => `${p.ign || ""} ${p.full_name || ""}`
+                          .toLowerCase().includes(sponsorSearch.trim().toLowerCase())).map(p => {
+                          const name = p.full_name || p.ign || "Registered Player";
+                          return <button type="button" role="option" aria-selected={form.sponsor === name}
+                            className="op-sponsor-option" key={p.id} onClick={() => {
+                              setForm(prev => ({...prev, sponsor: name})); setSponsorOpen(false);
+                            }}><span className="op-sponsor-ign">{p.ign || "PLAYER"}</span>
+                            <span className="op-sponsor-fullname">{p.full_name || ""}</span></button>;
+                        })}
+                        {registeredPlayers.filter(p => `${p.ign || ""} ${p.full_name || ""}`
+                          .toLowerCase().includes(sponsorSearch.trim().toLowerCase())).length === 0 &&
+                          <p className="op-sponsor-empty">No registered players found</p>}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </FieldWrap>
             </div>
           </section>
@@ -1787,6 +1807,54 @@ export default function AdminMatchesPage() {
           .op-match-page .form-grid,.op-match-page .team-grid,.op-match-page .money-inputs{grid-template-columns:minmax(0,1fr);gap:16px}
           .op-match-page .finance-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.op-match-page .section-title h2{font-size:16px}}
         @media(max-width:390px){.op-match-page .finance-grid{grid-template-columns:minmax(0,1fr)}.op-match-page .topbar h1{font-size:25px}}
+        /* PREMIUM V3: full-width content + brighter hierarchy */
+        .op-match-page .shell {width:100%;max-width:1320px;}
+        .op-match-page .shell > form {width:100%!important;max-width:none!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;justify-items:stretch!important;align-items:stretch!important;}
+        .op-match-page .shell > form > .panel,
+        .op-match-page .shell > form > .save-button {width:100%!important;max-width:none!important;min-width:0;justify-self:stretch!important;}
+        .op-match-page .topbar {box-shadow:0 22px 80px rgba(0,0,0,.55),0 0 55px rgba(255,40,107,.22),inset 0 1px rgba(255,255,255,.12);}
+        .op-match-page .topbar h1 {filter:drop-shadow(0 0 14px rgba(255,125,159,.24));}
+        .op-match-page .section-title h2 {color:#fff5fc;text-shadow:0 0 16px rgba(255,92,162,.30);font-weight:900;}
+        .op-match-page .section-title small,.op-match-page .field-wrap label {color:#f6bddf;font-weight:900;text-shadow:0 0 11px rgba(255,56,127,.32);}
+        .op-match-page .section-number {color:#ffd0e0;box-shadow:0 0 22px rgba(249,38,115,.40);}
+        .op-match-page .panel,.op-match-page .history {overflow:visible;box-shadow:0 22px 75px rgba(0,0,0,.46),0 0 25px rgba(145,56,235,.12),inset 0 1px rgba(255,255,255,.09);border-color:rgba(195,116,248,.40);}
+        .op-match-page .form-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
+        .op-match-page .field-wrap :is(input,select),.op-match-page textarea {background:#10101c;border:1px solid rgba(222,169,252,.39);color:#fff;font-size:14px;}
+        .op-match-page .field-wrap :is(input,select):focus,.op-match-page textarea:focus {box-shadow:0 0 0 3px rgba(255,65,124,.19),0 0 23px rgba(255,65,124,.28);}
+        .op-match-page .rule-pill {animation:opGlowFlash 3.2s ease-in-out infinite;}
+        .op-match-page .rule-pill strong {color:#ffe092;text-shadow:0 0 22px rgba(255,193,76,.70);}
+        .op-match-page .finance-card {box-shadow:inset 0 1px rgba(255,255,255,.08),0 0 16px rgba(151,76,248,.13);}
+        .op-match-page .finance-card strong {text-shadow:0 0 22px currentColor;}
+        .op-match-page .save-button {box-shadow:0 13px 38px rgba(240,28,94,.4),0 0 25px rgba(237,42,144,.25);}
+        /* Native select options are OS-painted and can become white. Use custom dark menu. */
+        .op-match-page .op-sponsor-picker {position:relative;width:100%;z-index:50;}
+        .op-match-page .op-sponsor-trigger {display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;
+          border:1px solid rgba(255,198,89,.75);border-radius:13px;padding:13px 15px;text-align:left;
+          background:linear-gradient(120deg,#231422,#10111e);color:#fff4da;font-weight:750;cursor:pointer;
+          box-shadow:0 0 19px rgba(255,188,75,.16);transition:box-shadow .2s,border-color .2s;}
+        .op-match-page .op-sponsor-trigger:hover,.op-match-page .op-sponsor-trigger.is-open {border-color:#ffe099;
+          box-shadow:0 0 0 3px rgba(255,193,82,.16),0 0 29px rgba(255,173,70,.33);}
+        .op-match-page .op-sponsor-placeholder {color:#e6c4cd;font-weight:550;}
+        .op-match-page .op-sponsor-chosen {color:#ffe7ac;text-shadow:0 0 11px rgba(255,203,112,.26);}
+        .op-match-page .op-picker-chevron {font-size:18px;color:#ffd079;flex-shrink:0;}
+        .op-match-page .op-sponsor-menu {position:absolute;z-index:500;top:calc(100% + 8px);left:0;right:0;min-width:260px;
+          background:#120f1e!important;color:#fff!important;border:1px solid rgba(255,202,118,.73);
+          border-radius:15px;padding:9px;box-shadow:0 22px 55px rgba(0,0,0,.85),0 0 30px rgba(255,166,65,.21);}
+        .op-match-page .op-sponsor-search {display:block;width:100%;min-width:0;min-height:43px;margin-bottom:8px;
+          border-radius:9px;border:1px solid rgba(208,155,255,.45);background:#21172d!important;color:white!important;padding:0 12px;outline:none;}
+        .op-match-page .op-sponsor-search::placeholder {color:#cdb6db;}
+        .op-match-page .op-sponsor-options {max-height:265px;overflow-y:auto;overscroll-behavior:contain;scrollbar-color:#ae4e90 #171121;}
+        .op-match-page .op-sponsor-option {display:flex;flex-direction:column;gap:3px;width:100%;padding:11px 13px;
+          border:0;border-radius:9px;background:#171323!important;color:#fff!important;text-align:left;cursor:pointer;margin:3px 0;}
+        .op-match-page .op-sponsor-option:hover,.op-match-page .op-sponsor-option[aria-selected="true"] {
+          background:#35213e!important;box-shadow:inset 3px 0 #ffbd65;}
+        .op-match-page .op-sponsor-ign {font-size:13px;color:#fff;font-weight:850;}
+        .op-match-page .op-sponsor-fullname {font-size:11px;color:#ebc7dc;}
+        .op-match-page .op-sponsor-empty {padding:12px;color:#e7b1c9;font-size:12px;}
+        @keyframes opGlowFlash {0%,100% {box-shadow:0 0 12px rgba(255,179,77,.22)}50% {box-shadow:0 0 30px rgba(255,166,65,.52),0 0 54px rgba(255,48,126,.18)}}
+        @media (max-width:950px){.op-match-page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+        @media (max-width:650px){.op-match-page .form-grid{grid-template-columns:minmax(0,1fr);gap:15px}.op-match-page .op-sponsor-menu{min-width:0;}}
+        @media (prefers-reduced-motion:reduce){.op-match-page .rule-pill{animation:none!important;}}
         @media(prefers-reduced-motion:reduce){.op-match-page .rule-pill,.op-match-page .ambient,.op-match-page .save-button::after{animation:none!important}
           .op-match-page .panel,.op-match-page .finance-card{transition:none!important}}
 
