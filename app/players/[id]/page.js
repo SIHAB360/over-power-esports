@@ -917,9 +917,9 @@ error
 }
 =
 await supabase.rpc(
-"get_public_player_total_earnings",
+"get_player_positive_earnings_v2",
 {
-target_player_id:
+p_player_id:
 player.id
 }
 );
