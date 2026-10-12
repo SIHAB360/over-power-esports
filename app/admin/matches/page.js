@@ -16,6 +16,7 @@ export default function AdminMatchesPage() {
   const [saving, setSaving] = useState(false);
 
   const [teams, setTeams] = useState([]);
+  const [registeredPlayers, setRegisteredPlayers] = useState([]);
   const [tournaments, setTournaments] = useState([]);
   const [teamPlayers, setTeamPlayers] = useState([]);
   const [recentMatches, setRecentMatches] = useState([]);
@@ -75,7 +76,7 @@ export default function AdminMatchesPage() {
         return;
       }
 
-      await Promise.all([loadTeams(), loadTournaments(), loadRecentMatches()]);
+      await Promise.all([loadTeams(), loadTournaments(), loadRecentMatches(), loadRegisteredPlayers()]);
     } catch (error) {
       console.error(error);
       setMessage(error.message || "Unable to load Match Management.");
@@ -93,6 +94,20 @@ export default function AdminMatchesPage() {
 
     if (error) throw error;
     setTeams(data || []);
+  }
+
+  // Sponsor dropdown shows players with an actual registered login account.
+  // The existing matches.sponsor column is text, so store the selected player name
+  // without requiring a database migration or changing existing match logic.
+  async function loadRegisteredPlayers() {
+    const { data, error } = await supabase
+      .from("players")
+      .select("id, user_id, full_name, ign")
+      .not("user_id", "is", null)
+      .order("full_name", { ascending: true });
+
+    if (error) throw new Error(`Could not load registered players: ${error.message}`);
+    setRegisteredPlayers(data || []);
   }
 
   async function loadTournaments() {
@@ -529,12 +544,23 @@ export default function AdminMatchesPage() {
               </FieldWrap>
 
               <FieldWrap label="Sponsor / Organizer">
-                <input
+                <select
                   name="sponsor"
                   value={form.sponsor}
                   onChange={handleChange}
-                  placeholder="Optional"
-                />
+                >
+                  <option value="">Select registered player (optional)</option>
+                  {registeredPlayers.map((registeredPlayer) => {
+                    const name = registeredPlayer.full_name || registeredPlayer.ign || "Registered Player";
+                    return (
+                      <option key={registeredPlayer.id} value={name}>
+                        {registeredPlayer.ign && registeredPlayer.ign !== name
+                          ? `${registeredPlayer.ign} — ${name}`
+                          : name}
+                      </option>
+                    );
+                  })}
+                </select>
               </FieldWrap>
             </div>
           </section>
