@@ -1,7 +1,7 @@
 // app/admin/matches/page.js
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 
@@ -505,15 +505,14 @@ export default function AdminMatchesPage() {
                 </select>
               </FieldWrap>
 
-              <FieldWrap label="Date & Time">
-                <input
-                  type="datetime-local"
-                  name="match_date"
-                  value={form.match_date}
-                  onChange={handleChange}
-                  required
-                />
-              </FieldWrap>
+              <div className="op-smart-date-field">
+                <FieldWrap label="Date & Time · Smart Scheduler">
+                  <SmartMatchDateTime
+                    value={form.match_date}
+                    onChange={(next) => setForm((prev) => ({ ...prev, match_date: next }))}
+                  />
+                </FieldWrap>
+              </div>
 
               <FieldWrap label="Status">
                 <select
@@ -1854,12 +1853,143 @@ export default function AdminMatchesPage() {
         @keyframes opGlowFlash {0%,100% {box-shadow:0 0 12px rgba(255,179,77,.22)}50% {box-shadow:0 0 30px rgba(255,166,65,.52),0 0 54px rgba(255,48,126,.18)}}
         @media (max-width:950px){.op-match-page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
         @media (max-width:650px){.op-match-page .form-grid{grid-template-columns:minmax(0,1fr);gap:15px}.op-match-page .op-sponsor-menu{min-width:0;}}
+
+        /* Smart scheduler: clear click-to-select calendar and accessible time presets */
+        .op-match-page .op-smart-date-field{grid-column:span 2;min-width:0;}
+        .op-match-page .op-smart-scheduler{padding:16px;border:1px solid rgba(255,124,182,.52);border-radius:17px;background:linear-gradient(135deg,#1b1124,#10101b 68%);box-shadow:inset 0 1px rgba(255,255,255,.09),0 0 22px rgba(225,45,127,.11);}
+        .op-match-page .op-date-controls{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:13px;align-items:end;}
+        .op-match-page .op-date-picker-area,.op-match-page .op-time-picker-area{min-width:0;}
+        .op-match-page .op-date-subheading{display:block;color:#f9bfdd;font-weight:850;font-size:10px;letter-spacing:1.3px;margin-bottom:8px;}
+        .op-match-page .op-date-input-wrap{display:flex;gap:7px;align-items:center;}
+        .op-match-page .op-date-input-wrap input[type="date"]{width:100%;min-width:0;min-height:48px;color:#fff!important;color-scheme:dark;background:#12111e;border-radius:11px;cursor:pointer;}
+        .op-match-page .op-calendar-action{width:48px;min-width:48px;height:48px;border:1px solid rgba(255,143,191,.6);background:#30182c;border-radius:11px;color:#ffd1e7;cursor:pointer;font-size:20px;box-shadow:0 0 14px rgba(255,65,133,.17);}
+        .op-match-page .op-calendar-action:hover{background:#52233e;box-shadow:0 0 20px rgba(255,65,133,.36);}
+        .op-match-page .op-time-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.05fr);gap:7px;}
+        .op-match-page .op-time-controls select{min-width:0;width:100%;height:48px;min-height:48px;padding:0 8px;border-radius:11px;font-weight:800;color-scheme:dark;background:#12111e;border:1px solid rgba(218,165,240,.36);}
+        .op-match-page .op-quick-dates,.op-match-page .op-quick-times{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;align-items:center;}
+        .op-match-page .op-quick-label{font-size:10px;color:#cc9ab6;font-weight:750;letter-spacing:.5px;margin-right:2px;}
+        .op-match-page .op-preset-chip{border-radius:999px;border:1px solid rgba(245,137,204,.35);background:#26172b;color:#ffdaeb;padding:8px 12px;cursor:pointer;font-size:11px;font-weight:800;transition:background .18s,border-color .18s,box-shadow .18s;}
+        .op-match-page .op-preset-chip:hover,.op-match-page .op-preset-chip[aria-pressed="true"]{background:#542340;border-color:#ff82bc;box-shadow:0 0 14px rgba(248,79,149,.20);}
+        .op-match-page .op-schedule-preview{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(6,8,16,.65);border:1px solid rgba(232,145,213,.2);}
+        .op-match-page .op-schedule-preview span{font-size:10px;letter-spacing:1px;font-weight:850;color:#ccacc8;}
+        .op-match-page .op-schedule-preview strong{color:#fff0bd;text-shadow:0 0 13px rgba(255,195,101,.37);font-size:13px;}
+        .op-match-page .op-date-help{margin-top:9px;color:#ab91ac;font-size:11px;}
+        @media(max-width:950px){.op-match-page .op-smart-date-field{grid-column:1/-1;}}
+        @media(max-width:650px){.op-match-page .op-date-controls{grid-template-columns:minmax(0,1fr);}.op-match-page .op-smart-scheduler{padding:13px;}.op-match-page .op-smart-date-field{grid-column:1/-1;}}
+
         @media (prefers-reduced-motion:reduce){.op-match-page .rule-pill{animation:none!important;}}
         @media(prefers-reduced-motion:reduce){.op-match-page .rule-pill,.op-match-page .ambient,.op-match-page .save-button::after{animation:none!important}
           .op-match-page .panel,.op-match-page .finance-card{transition:none!important}}
 
       `}</style>
     </main>
+  );
+}
+
+
+// Premium Date & Time picker, using the same local YYYY-MM-DDTHH:mm value
+// that the existing create_esports_match RPC expects.
+function SmartMatchDateTime({ value, onChange }) {
+  const dateInputRef = useRef(null);
+  const date = value?.split("T")[0] || "";
+  const time = value?.split("T")[1]?.slice(0, 5) || "20:00";
+  const hours24 = Number(time.slice(0, 2));
+  const minute = time.slice(3, 5);
+  const hour12 = String(hours24 % 12 || 12).padStart(2, "0");
+  const period = hours24 >= 12 ? "PM" : "AM";
+
+  function update(nextDate, nextTime) {
+    // No premature date value: the match form still validates the date.
+    onChange(nextDate ? `${nextDate}T${nextTime}` : "");
+  }
+
+  function localISODate(offset = 0) {
+    const d = new Date();
+    d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() + offset);
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  function setTime(h12, mins, ap) {
+    const hours = (Number(h12) % 12) + (ap === "PM" ? 12 : 0);
+    update(date, `${String(hours).padStart(2, "0")}:${mins}`);
+  }
+
+  function displayDateTime() {
+    if (!date) return "Choose a date to schedule your match";
+    const [y, m, d] = date.split("-").map(Number);
+    const friendly = new Date(y, m - 1, d).toLocaleDateString("en-GB", {
+      weekday: "short", day: "numeric", month: "short", year: "numeric"
+    });
+    return `${friendly}  •  ${hour12}:${minute} ${period}`;
+  }
+
+  return (
+    <div className="op-smart-scheduler">
+      <div className="op-date-controls">
+        <div className="op-date-picker-area">
+          <span className="op-date-subheading">📅 CHOOSE DATE</span>
+          <div className="op-date-input-wrap">
+            <input ref={dateInputRef} type="date" value={date}
+              aria-label="Match date" required
+              onChange={(e) => update(e.target.value, time)} />
+            <button type="button" className="op-calendar-action" title="Open calendar"
+              aria-label="Open match date calendar"
+              onClick={() => {
+                const input = dateInputRef.current;
+                if (!input) return;
+                if (typeof input.showPicker === "function") {
+                  try { input.showPicker(); } catch { input.focus(); }
+                } else { input.focus(); }
+              }}>▦</button>
+          </div>
+        </div>
+        <div className="op-time-picker-area">
+          <span className="op-date-subheading">⏰ CHOOSE TIME</span>
+          <div className="op-time-controls">
+            <select aria-label="Hour" value={hour12}
+              onChange={(e) => setTime(e.target.value, minute, period)}>
+              {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"))
+                .map(h => <option key={h} value={h}>{h}</option>)}
+            </select>
+            <select aria-label="Minute" value={minute}
+              onChange={(e) => setTime(hour12, e.target.value, period)}>
+              {Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"))
+                .map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+            <select aria-label="AM or PM" value={period}
+              onChange={(e) => setTime(hour12, minute, e.target.value)}>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="op-quick-dates">
+        <span className="op-quick-label">QUICK DATE</span>
+        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(0)}
+          onClick={() => update(localISODate(0), time)}>Today</button>
+        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(1)}
+          onClick={() => update(localISODate(1), time)}>Tomorrow</button>
+        <button type="button" className="op-preset-chip" aria-pressed={date === localISODate(2)}
+          onClick={() => update(localISODate(2), time)}>Day After</button>
+      </div>
+      <div className="op-quick-times">
+        <span className="op-quick-label">QUICK TIME</span>
+        {["18:00", "20:00", "22:00", "00:00"].map(t => (
+          <button type="button" key={t} className="op-preset-chip"
+            aria-pressed={time === t} onClick={() => update(date || localISODate(0), t)}>
+            {t === "18:00" ? "6 PM" : t === "20:00" ? "8 PM" : t === "22:00" ? "10 PM" : "12 AM"}
+          </button>
+        ))}
+      </div>
+      <div className="op-schedule-preview" aria-live="polite">
+        <span>✦ MATCH SCHEDULE</span>
+        <strong>{displayDateTime()}</strong>
+      </div>
+      <div className="op-date-help">Tap a preset, or open the calendar and select time from the dropdowns.</div>
+    </div>
   );
 }
 
