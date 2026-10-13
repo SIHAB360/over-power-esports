@@ -49,13 +49,15 @@ return(
 <div className="ring"></div>
 
 
-<Image
-src={logo}
-alt="OP Logo"
-width={90}
-height={90}
-className="logo"
-/>
+<div className="logo-holder">
+  <Image
+    src={logo}
+    alt="OP Logo"
+    width={84}
+    height={84}
+    className="logo"
+  />
+</div>
 
 
 <div className="shine"></div>
@@ -163,27 +165,48 @@ appear .8s ease;
 
 
 
-.logo{
-
+.logo-holder{
 
 position:relative;
 
-
 z-index:3;
 
+width:84px;
+height:84px;
 
 border-radius:50%;
 
+overflow:hidden;
 
-filter:
+display:flex;
+align-items:center;
+justify-content:center;
 
-drop-shadow(0 0 25px red);
+background:#050505;
 
+box-shadow:
+0 0 18px rgba(255,0,0,.35),
+inset 0 0 12px rgba(255,0,0,.18);
 
 animation:
-
 logoFloat .8s ease;
 
+}
+
+
+.logo{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+display:block;
+
+border-radius:50%;
+
+filter:
+drop-shadow(0 0 18px rgba(255,0,0,.45));
 
 }
 
