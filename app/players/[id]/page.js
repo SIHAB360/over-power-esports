@@ -2553,16 +2553,7 @@ No highlights available.
 
 </div>
 
-
-
 </div>
-
-
-
-</section>
-
-
-
 
 <style jsx>{`
 
@@ -3493,11 +3484,13 @@ font-size:28px;
 }
 
 
-
 `}</style>
 
 
-</>
+</section>
+
+
 );
+
 
 }
