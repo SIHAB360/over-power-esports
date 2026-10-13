@@ -50,9 +50,9 @@ export default function PageTransition(){
 
 
       <h2>
-        ENTERING
+        Loading
         <span>
-          BATTLE ZONE
+          Here
         </span>
       </h2>
 
