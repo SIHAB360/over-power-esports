@@ -1,3 +1,4 @@
+
 /* =========================
 GLOBAL RESET
 ========================= */
@@ -856,10 +857,966 @@ letter-spacing:2px;
 
 
 }
+/* =========================
+PLAYER PROFILE PREMIUM
+========================= */
 
 
-/* Player dashboard CSS removed - will be replaced inside page component */
+.esports-profile{
 
+max-width:1200px;
+
+margin:80px auto;
+
+padding:30px;
+
+
+background:
+
+linear-gradient(
+145deg,
+#150000,
+#050505
+);
+
+
+
+border:
+
+1px solid rgba(255,0,0,.45);
+
+
+
+border-radius:30px;
+
+
+
+box-shadow:
+
+0 0 50px rgba(255,0,0,.25);
+
+
+}
+
+
+
+/* =========================
+PROFILE HEADER
+========================= */
+
+
+.profile-header{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+gap:40px;
+
+
+
+padding:40px;
+
+
+background:
+
+linear-gradient(
+145deg,
+#220000,
+#080808
+);
+
+
+
+border-radius:25px;
+
+
+border:
+
+1px solid rgba(255,0,0,.5);
+
+
+}
+
+
+
+.player-heading{
+
+flex:1;
+
+}
+
+
+
+.player-heading h1{
+
+
+font-size:48px;
+
+
+color:white;
+
+
+text-shadow:
+
+0 0 25px red;
+
+
+}
+
+
+
+.player-heading h3{
+
+
+margin-top:15px;
+
+
+font-size:24px;
+
+
+color:#ff2020;
+
+
+}
+
+
+
+.player-heading h4{
+
+
+margin-top:10px;
+
+
+color:#ffcc00;
+
+
+}
+
+
+
+.player-heading p{
+
+
+margin-top:18px;
+
+
+color:#aaa;
+
+
+font-size:18px;
+
+
+}
+
+
+
+
+
+
+/* =========================
+WINNING CARD
+========================= */
+
+
+.winning-card{
+
+
+width:230px;
+
+
+padding:30px;
+
+
+
+text-align:center;
+
+
+
+background:
+
+linear-gradient(
+145deg,
+#071a10,
+#050505
+);
+
+
+
+border:
+
+1px solid #00ff88;
+
+
+
+border-radius:25px;
+
+
+
+box-shadow:
+
+0 0 35px rgba(0,255,100,.4);
+
+
+}
+
+
+
+.winning-card span{
+
+
+color:#00ff88;
+
+
+font-weight:900;
+
+
+}
+
+
+
+.winning-card h2{
+
+
+margin-top:15px;
+
+
+font-size:42px;
+
+
+color:white;
+
+
+text-shadow:
+
+0 0 20px #00ff88;
+
+
+}
+
+
+
+
+
+
+/* =========================
+PROFILE BODY
+========================= */
+
+
+.profile-layout{
+
+
+display:grid;
+
+
+grid-template-columns:330px 1fr;
+
+
+gap:30px;
+
+
+
+margin-top:40px;
+
+
+align-items:start;
+
+
+}
+
+
+
+.profile-left,
+.profile-right{
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+gap:25px;
+
+
+}
+
+
+
+
+
+
+/* =========================
+PHOTO
+========================= */
+
+
+.photo-box{
+
+
+padding:10px;
+
+
+background:
+
+linear-gradient(
+145deg,
+red,
+#050505
+);
+
+
+
+border-radius:25px;
+
+
+
+box-shadow:
+
+0 0 40px red;
+
+
+}
+
+
+
+
+.profile-photo{
+
+
+width:100%;
+
+
+height:380px;
+
+
+object-fit:cover;
+
+
+border-radius:20px;
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+INFO CARD
+========================= */
+
+
+.info-box,
+.profile-table{
+
+
+background:
+
+linear-gradient(
+145deg,
+#180000,
+#070707
+);
+
+
+
+border:
+
+1px solid rgba(255,0,0,.35);
+
+
+
+border-radius:25px;
+
+
+
+padding:25px;
+
+
+
+box-shadow:
+
+0 0 30px rgba(255,0,0,.15);
+
+
+}
+
+
+
+
+.info-box h3,
+.profile-table h2{
+
+
+color:#ff2020;
+
+
+font-size:22px;
+
+
+margin-bottom:25px;
+
+
+}
+
+
+
+
+
+
+.info-item{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+gap:20px;
+
+
+
+padding:14px 0;
+
+
+
+border-bottom:
+
+1px solid rgba(255,255,255,.08);
+
+
+}
+
+
+
+.info-item label{
+
+
+color:#999;
+
+
+}
+
+
+
+.info-item strong{
+
+
+color:white;
+
+
+text-align:right;
+
+
+flex:1;
+
+
+word-break:break-word;
+
+
+}
+
+
+
+
+
+.player-status.active{
+
+
+color:#00ff88;
+
+
+text-shadow:
+
+0 0 12px #00ff88;
+
+
+}
+
+
+
+
+
+/* =========================
+SOCIAL LINKS
+========================= */
+
+
+.profile-social{
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+gap:12px;
+
+
+}
+
+
+
+.profile-social a{
+
+
+height:55px;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+gap:15px;
+
+
+padding:0 20px;
+
+
+
+background:#080808;
+
+
+
+border-radius:15px;
+
+
+
+border:
+
+1px solid rgba(255,255,255,.15);
+
+
+
+color:white;
+
+
+
+}
+
+
+
+.profile-social a:hover{
+
+
+transform:translateX(8px);
+
+
+box-shadow:
+
+0 0 25px red;
+
+
+}
+
+
+
+.profile-social i{
+
+
+font-size:22px;
+
+
+width:25px;
+
+
+}
+
+
+
+
+
+.profile-social .fa-facebook-f{
+
+color:#1877f2;
+
+}
+
+
+.profile-social .fa-instagram{
+
+color:#ff3cac;
+
+}
+
+
+.profile-social .fa-youtube{
+
+color:red;
+
+}
+
+
+.profile-social .fa-tiktok{
+
+color:white;
+
+}
+
+
+
+
+
+
+/* =========================
+TABLE
+========================= */
+
+
+.profile-table table{
+
+
+width:100%;
+
+
+border-collapse:collapse;
+
+
+}
+
+
+
+.profile-table th{
+
+
+padding:15px;
+
+
+color:#ff2020;
+
+
+text-align:left;
+
+
+}
+
+
+
+.profile-table td{
+
+
+padding:15px;
+
+
+color:#ddd;
+
+
+border-bottom:
+
+1px solid rgba(255,255,255,.08);
+
+
+}
+
+
+
+.profile-table tr:hover{
+
+
+background:
+
+rgba(255,0,0,.1);
+
+
+}
+
+
+
+
+
+
+
+/* =========================
+VIDEO HIGHLIGHT
+========================= */
+
+
+.video-grid{
+
+
+display:grid;
+
+
+grid-template-columns:
+
+repeat(2,1fr);
+
+
+
+gap:25px;
+
+
+}
+
+
+
+
+.video-card{
+
+
+overflow:hidden;
+
+
+border-radius:20px;
+
+
+border:
+
+1px solid rgba(255,0,0,.5);
+
+
+
+box-shadow:
+
+0 0 25px rgba(255,0,0,.25);
+
+
+}
+
+
+
+.video-card iframe{
+
+
+width:100%;
+
+
+height:240px;
+
+
+border:0;
+
+
+display:block;
+
+
+}
+
+
+
+.video-card:hover{
+
+
+transform:
+
+translateY(-8px);
+
+
+box-shadow:
+
+0 0 40px red;
+
+
+transition:.3s;
+
+
+}
+
+
+
+
+
+
+/* =========================
+FLOATING CONTACT
+========================= */
+
+
+.floating-contact{
+
+
+position:fixed;
+
+
+right:25px;
+
+
+bottom:25px;
+
+
+z-index:99999;
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+align-items:center;
+
+
+}
+
+
+
+.floating-links{
+
+
+display:flex;
+
+
+flex-direction:column;
+
+
+gap:12px;
+
+
+margin-bottom:15px;
+
+
+}
+
+
+
+.floating-link{
+
+
+width:50px;
+
+
+height:50px;
+
+
+border-radius:50%;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+color:white;
+
+
+font-size:22px;
+
+
+opacity:0;
+
+
+transform:
+
+translateY(20px)
+scale(.5);
+
+
+
+transition:.35s;
+
+
+}
+
+
+
+.floating-contact:hover .floating-link,
+.floating-contact.is-open .floating-link{
+
+
+opacity:1;
+
+
+transform:
+
+translateY(0)
+scale(1);
+
+
+}
+
+
+
+.whatsapp{
+
+background:#25D366;
+
+box-shadow:0 0 20px #25D366;
+
+}
+
+
+
+.discord{
+
+background:#5865F2;
+
+box-shadow:0 0 20px #5865F2;
+
+}
+
+
+
+.floating-main-button{
+
+
+width:70px;
+
+
+height:70px;
+
+
+border-radius:50%;
+
+
+border:none;
+
+
+background:
+
+linear-gradient(
+135deg,
+#ff2020,
+#800000
+);
+
+
+
+box-shadow:
+
+0 0 30px red;
+
+
+}
+
+
+
+.contact-icon{
+
+
+width:100%;
+
+
+height:100%;
+
+
+object-fit:contain;
+
+
+padding:8px;
+
+
+}
 /* =========================
 TEAMS SECTION
 ========================= */
@@ -1081,9 +2038,292 @@ box-shadow:
 }
 
 
+/* =========================
+PLAYER PROFILE FINAL ALIGNMENT
+========================= */
+
+/* Keeps left and right sides balanced */
+
+.profile-layout{
+align-items:stretch;
+}
+
+.profile-left{
+height:100%;
+}
+
+.profile-right{
+display:grid;
+grid-template-rows:auto auto 1fr;
+gap:25px;
+height:100%;
+}
 
 
-/* Player dashboard CSS removed - will be replaced inside page component */
+/* Perfect player information alignment */
+
+.info-item{
+display:grid;
+grid-template-columns:118px minmax(0,1fr);
+align-items:center;
+gap:12px;
+
+padding:14px 0;
+
+border-bottom:
+1px solid rgba(255,255,255,.08);
+}
+
+.info-item:last-child{
+border-bottom:none;
+}
+
+.info-item label{
+color:#999;
+font-size:13px;
+font-weight:600;
+line-height:1.3;
+}
+
+.info-item strong{
+display:block;
+
+color:#fff;
+
+font-size:13px;
+font-weight:700;
+
+line-height:1.35;
+
+text-align:right;
+
+min-width:0;
+
+word-break:break-word;
+}
+
+
+/* UID + Copy button */
+
+.uid-action{
+display:flex;
+align-items:center;
+justify-content:flex-end;
+gap:8px;
+min-width:0;
+}
+
+.uid-action strong{
+flex:0 1 auto;
+}
+
+.uid-action button{
+flex:0 0 auto;
+
+padding:5px 9px;
+
+border:1px solid rgba(255,0,0,.55);
+border-radius:8px;
+
+background:rgba(255,0,0,.08);
+
+color:#fff;
+
+font-size:11px;
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+}
+
+.uid-action button:hover{
+background:#ff2020;
+box-shadow:0 0 15px rgba(255,0,0,.7);
+}
+
+
+/* Social buttons - icon + name */
+
+.profile-social{
+display:grid;
+grid-template-columns:1fr;
+gap:11px;
+}
+
+.profile-social a{
+width:100%;
+min-width:0;
+height:52px;
+
+display:flex;
+align-items:center;
+justify-content:flex-start;
+gap:14px;
+
+padding:0 17px;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+rgba(255,255,255,.035),
+rgba(0,0,0,.45)
+);
+
+border:1px solid rgba(255,255,255,.12);
+
+color:#fff;
+
+font-size:14px;
+font-weight:700;
+
+overflow:hidden;
+
+transition:
+transform .3s ease,
+border-color .3s ease,
+box-shadow .3s ease;
+}
+
+.profile-social a:hover{
+transform:translateX(6px);
+
+border-color:rgba(255,0,0,.65);
+
+box-shadow:
+0 0 20px rgba(255,0,0,.3);
+}
+
+.profile-social i{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+width:30px;
+height:30px;
+
+flex:0 0 30px;
+
+border-radius:9px;
+
+font-size:18px;
+
+background:rgba(255,255,255,.05);
+}
+
+.profile-social .fa-facebook-f{
+color:#1877f2;
+text-shadow:0 0 12px rgba(24,119,242,.7);
+}
+
+.profile-social .fa-instagram{
+color:#ff4dac;
+text-shadow:0 0 12px rgba(255,77,172,.65);
+}
+
+.profile-social .fa-youtube{
+color:#ff2020;
+text-shadow:0 0 12px rgba(255,0,0,.7);
+}
+
+.profile-social .fa-tiktok{
+color:white;
+text-shadow:
+-2px 0 8px rgba(0,242,234,.65),
+2px 0 8px rgba(255,0,80,.65);
+}
+
+
+/* Team history */
+
+.info-box p{
+color:#ddd;
+font-size:15px;
+line-height:1.8;
+}
+
+.info-box p span{
+color:#ff3030;
+font-weight:800;
+
+text-shadow:
+0 0 10px rgba(255,0,0,.45);
+}
+
+
+/* Highlights fills remaining right-side space */
+
+.video-gallery{
+display:flex;
+flex-direction:column;
+
+min-height:0;
+height:100%;
+}
+
+.video-gallery h2{
+flex:0 0 auto;
+}
+
+.video-grid{
+flex:1;
+
+display:grid;
+
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+
+grid-template-rows:
+repeat(3,minmax(210px,1fr));
+
+gap:18px;
+}
+
+.video-card{
+width:100%;
+height:100%;
+min-width:0;
+min-height:210px;
+
+overflow:hidden;
+
+border-radius:18px;
+
+background:#050505;
+
+border:
+1px solid rgba(255,0,0,.45);
+
+box-shadow:
+0 8px 24px rgba(0,0,0,.45),
+0 0 18px rgba(255,0,0,.16);
+
+transition:.35s ease;
+}
+
+.video-card iframe{
+width:100%;
+height:100%;
+
+min-height:210px;
+
+display:block;
+
+border:0;
+}
+
+.video-card:hover{
+transform:translateY(-6px);
+
+border-color:#ff2020;
+
+box-shadow:
+0 14px 35px rgba(0,0,0,.6),
+0 0 30px rgba(255,0,0,.45);
+}
+
 
 /* =========================
 TOURNAMENT SECTION
@@ -2078,9 +3318,466 @@ option,
 a {
   font-family: Arial, Helvetica, sans-serif;
 }
+/* =========================================================
+   OVER POWER ESPORTS
+   PREMIUM PUBLIC PLAYER HEADER
+========================================================= */
+
+.profile-header {
+  position: relative;
+  overflow: hidden;
+
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 40px;
+
+  padding: 36px 42px !important;
+
+  background:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 0, 60, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 82% 50%,
+      rgba(0, 255, 157, 0.07),
+      transparent 35%
+    ),
+    #140203;
+
+  border: 1px solid rgba(255, 20, 55, 0.75);
+  border-radius: 22px;
+
+  box-shadow:
+    0 0 25px rgba(255, 0, 50, 0.1),
+    inset 0 0 25px rgba(255, 0, 50, 0.035);
+}
 
 
-/* Player dashboard CSS removed - will be replaced inside page component */
+/* =========================================================
+   MOVING LIGHT EFFECT
+========================================================= */
+
+.profile-header::before {
+  content: "";
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  top: 50%;
+  left: -300px;
+
+  transform: translateY(-50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 70, 0.22),
+    rgba(255, 0, 70, 0.06) 42%,
+    transparent 70%
+  );
+
+  filter: blur(18px);
+
+  animation: opHeaderLightMove 7s linear infinite;
+
+  pointer-events: none;
+}
+
+
+.profile-header::after {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 55%;
+  height: 100%;
+
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255, 255, 255, 0.025),
+    rgba(255, 0, 70, 0.09),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  animation: opHeaderSweep 5s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PLAYER HEADING ALIGNMENT
+========================================================= */
+
+.profile-header .player-heading {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start !important;
+  justify-content: center;
+
+  text-align: left !important;
+}
+
+
+.profile-header .player-heading h1,
+.profile-header .player-heading h3,
+.profile-header .player-heading h4,
+.profile-header .player-heading p {
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+
+/* =========================================================
+   IGN — PREMIUM COLOR WAVE
+========================================================= */
+
+.profile-header .player-heading h1 {
+  margin-top: 0;
+  margin-bottom: 14px !important;
+
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.05;
+
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ff1744 20%,
+    #ff8a00 40%,
+    #ffe600 55%,
+    #ffffff 70%,
+    #ff1744 100%
+  );
+
+  background-size: 300% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  animation:
+    opNameColorWave 4s linear infinite,
+    opNameGlow 2.2s ease-in-out infinite;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255, 23, 68, 0.45))
+    drop-shadow(0 0 12px rgba(255, 23, 68, 0.2));
+}
+
+
+/* =========================================================
+   ROLE — SNIPER / RUSHER / ETC
+========================================================= */
+
+.profile-header .player-heading h3 {
+  margin: 0 0 7px !important;
+
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 900;
+
+  color: #ff1744;
+
+  text-shadow:
+    0 0 5px rgba(255, 23, 68, 0.85),
+    0 0 14px rgba(255, 23, 68, 0.45);
+
+  animation: opRolePulse 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   TEAM NAME — GOLD/GREEN COLOR WAVE
+========================================================= */
+
+.profile-header .player-heading h4 {
+  margin: 0 0 14px !important;
+
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+
+  background: linear-gradient(
+    90deg,
+    #ffe600,
+    #ff9f00,
+    #00ff9d,
+    #ffe600
+  );
+
+  background-size: 250% 100%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  animation:
+    opTeamWave 3s linear infinite,
+    opTeamGlow 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.profile-header .player-heading p {
+  margin-top: 6px !important;
+  margin-bottom: 0 !important;
+
+  max-width: 620px;
+
+  color: #d7d7d7;
+  font-size: 15px;
+  line-height: 1.7;
+
+  opacity: 0.92;
+}
+
+
+/* =========================================================
+   TOTAL WINNINGS CARD
+========================================================= */
+
+.profile-header .winning-card {
+  position: relative;
+  z-index: 3;
+
+  justify-self: end;
+  align-self: center;
+
+  width: 210px;
+  min-height: 140px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #00ff88 !important;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0, 255, 136, 0.09),
+      rgba(0, 12, 8, 0.92) 70%
+    ) !important;
+
+  box-shadow:
+    0 0 12px rgba(0, 255, 136, 0.55),
+    0 0 30px rgba(0, 255, 136, 0.20),
+    inset 0 0 18px rgba(0, 255, 136, 0.08);
+
+  animation: opWinningGlow 2s ease-in-out infinite;
+}
+
+
+.profile-header .winning-card span {
+  color: #00ff88 !important;
+  font-weight: 900;
+  text-align: center;
+
+  text-shadow:
+    0 0 6px rgba(0, 255, 136, 0.7);
+}
+
+
+.profile-header .winning-card h2 {
+  margin-top: 10px !important;
+
+  color: #ffffff !important;
+
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 14px rgba(0, 255, 136, 0.8),
+    0 0 26px rgba(0, 255, 136, 0.45);
+
+  animation: opMoneyBlink 1.8s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes opNameColorWave {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+
+@keyframes opNameGlow {
+  0%,
+  100% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 4px rgba(255, 23, 68, 0.35))
+      drop-shadow(0 0 9px rgba(255, 23, 68, 0.15));
+  }
+
+  50% {
+    opacity: 0.9;
+    filter:
+      drop-shadow(0 0 7px rgba(255, 23, 68, 0.8))
+      drop-shadow(0 0 20px rgba(255, 120, 0, 0.55));
+  }
+}
+
+
+@keyframes opRolePulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    text-shadow:
+      0 0 4px rgba(255, 23, 68, 0.5);
+  }
+
+  50% {
+    opacity: 1;
+    text-shadow:
+      0 0 8px rgba(255, 23, 68, 1),
+      0 0 18px rgba(255, 23, 68, 0.8),
+      0 0 30px rgba(255, 23, 68, 0.45);
+  }
+}
+
+
+@keyframes opTeamWave {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 250% 50%;
+  }
+}
+
+
+@keyframes opTeamGlow {
+  0%,
+  100% {
+    filter: drop-shadow(
+      0 0 3px rgba(255, 230, 0, 0.35)
+    );
+  }
+
+  50% {
+    filter: drop-shadow(
+      0 0 9px rgba(0, 255, 157, 0.85)
+    );
+  }
+}
+
+
+@keyframes opWinningGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 10px rgba(0, 255, 136, 0.4),
+      0 0 25px rgba(0, 255, 136, 0.15);
+  }
+
+  50% {
+    box-shadow:
+      0 0 18px rgba(0, 255, 136, 0.9),
+      0 0 45px rgba(0, 255, 136, 0.35),
+      inset 0 0 20px rgba(0, 255, 136, 0.1);
+  }
+}
+
+
+@keyframes opMoneyBlink {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+
+  50% {
+    transform: scale(1.055);
+    opacity: 1;
+  }
+}
+
+
+@keyframes opHeaderLightMove {
+  0% {
+    left: -300px;
+  }
+
+  100% {
+    left: calc(100% + 100px);
+  }
+}
+
+
+@keyframes opHeaderSweep {
+  0%,
+  20% {
+    left: -120%;
+  }
+
+  70%,
+  100% {
+    left: 150%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .profile-header {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+
+    padding: 28px 22px !important;
+  }
+
+  .profile-header .player-heading {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .profile-header .player-heading h1,
+  .profile-header .player-heading h3,
+  .profile-header .player-heading h4,
+  .profile-header .player-heading p {
+    text-align: center !important;
+  }
+
+  .profile-header .winning-card {
+    justify-self: center;
+
+    width: min(100%, 230px);
+  }
+}
+
 
 /* Reduce animation for accessibility */
 @media (prefers-reduced-motion: reduce) {
