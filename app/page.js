@@ -15,9 +15,12 @@ import PreLoader from "./components/PreLoader";
 export default function Home() {
 
   return (
-    <PreLoader />
 
-    <main className="home-animation">
+  <>
+
+  <PreLoader />
+
+  <main className="home-animation">
 
 
       <Navbar />
