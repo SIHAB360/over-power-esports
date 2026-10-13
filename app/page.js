@@ -1,3 +1,4 @@
+"use client";
 import FloatingContact from "./components/FloatingContact";
 import Image from "next/image";
 import logo from "./assets/logo.png";
@@ -8,11 +9,13 @@ import Tournaments from "./components/Tournaments";
 import Games from "./components/Games";
 import Teams from "./components/Teams";
 import Leadership from "./components/Leadership";
+import PreLoader from "./components/PreLoader";
 
 
 export default function Home() {
 
   return (
+    <PreLoader />
 
     <main className="home-animation">
 
