@@ -7,17 +7,17 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-
   return (
     <>
 
       <nav className="op-navbar">
 
+        <div className="op-light"></div>
+
 
         <div className="op-logo">
           OVER POWER <span>ESPORTS</span>
         </div>
-
 
 
         <div className="op-actions">
@@ -28,17 +28,14 @@ export default function Navbar() {
           </a>
 
 
-
           <button
             className="op-menu-btn"
             onClick={() => setMenuOpen(true)}
             aria-label="Open Menu"
           >
-
             <span></span>
             <span></span>
             <span></span>
-
           </button>
 
 
@@ -56,25 +53,26 @@ export default function Navbar() {
 
 
 
+
 <style jsx>{`
 
 .op-navbar{
 
 position:fixed;
 
-top:18px;
+top:0;
 
 left:50%;
 
 transform:translateX(-50%);
 
 
-width:calc(100% - 40px);
+width:100%;
 
-max-width:1400px;
+max-width:1500px;
 
 
-height:68px;
+height:92px;
 
 
 display:flex;
@@ -84,49 +82,138 @@ align-items:center;
 justify-content:space-between;
 
 
-padding:0 28px;
+padding:0 45px;
 
 
 background:
 
-rgba(5,5,5,.75);
+linear-gradient(
+180deg,
+rgba(20,0,5,.92),
+rgba(5,0,2,.75)
+);
 
 
-backdrop-filter:
-
-blur(20px);
+backdrop-filter:blur(25px);
 
 
-border:
+border-bottom:
 
-1px solid rgba(255,0,60,.35);
+1px solid rgba(255,0,70,.35);
 
 
-border-radius:20px;
+z-index:9999;
+
+
+overflow:hidden;
 
 
 box-shadow:
 
-0 0 35px rgba(255,0,60,.15);
+0 10px 40px rgba(255,0,60,.18);
 
-
-z-index:9999;
 
 }
 
 
 
+/* top premium light */
+
+.op-light{
+
+position:absolute;
+
+top:-60px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+
+width:500px;
+
+height:120px;
+
+
+background:
+
+radial-gradient(
+circle,
+rgba(255,0,70,.45),
+transparent 70%
+);
+
+
+filter:blur(20px);
+
+
+}
+
+
+
+
+.op-navbar:before{
+
+content:"";
+
+position:absolute;
+
+bottom:0;
+
+left:10%;
+
+
+width:80%;
+
+height:1px;
+
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+#ff003c,
+#ffe600,
+#ff003c,
+transparent
+);
+
+
+box-shadow:
+
+0 0 20px #ff003c;
+
+
+}
+
+
+
+
 .op-logo{
+
+
+position:relative;
+
+z-index:2;
+
 
 color:white;
 
-font-size:22px;
 
-font-weight:900;
+font-size:24px;
 
-letter-spacing:3px;
 
-white-space:nowrap;
+font-weight:950;
+
+
+letter-spacing:4px;
+
+
+text-shadow:
+
+0 0 15px rgba(255,255,255,.3);
+
 
 }
 
@@ -134,34 +221,45 @@ white-space:nowrap;
 
 .op-logo span{
 
+
 color:#ff2020;
+
 
 text-shadow:
 
-0 0 15px #ff2020;
+0 0 10px #ff2020,
+0 0 25px #ff2020;
+
 
 }
+
 
 
 
 .op-actions{
 
+
 display:flex;
 
 align-items:center;
 
-gap:15px;
+gap:18px;
+
+z-index:2;
+
 
 }
+
 
 
 
 .op-login{
 
 
-height:38px;
+height:42px;
 
-padding:0 25px;
+
+padding:0 30px;
 
 
 display:flex;
@@ -176,50 +274,65 @@ color:white;
 
 font-size:13px;
 
-font-weight:700;
 
-letter-spacing:2px;
+font-weight:800;
+
+
+letter-spacing:3px;
 
 
 text-decoration:none;
 
 
-border-radius:25px;
+border-radius:30px;
 
 
 border:
 
-1px solid rgba(255,0,60,.7);
+1px solid rgba(255,0,70,.8);
 
 
 
 background:
 
-rgba(255,0,60,.10);
+linear-gradient(
+135deg,
+rgba(255,0,60,.25),
+rgba(255,0,60,.05)
+);
 
 
 
 box-shadow:
 
-0 0 15px rgba(255,0,60,.3);
+0 0 20px rgba(255,0,60,.45),
+inset 0 0 15px rgba(255,0,60,.2);
 
 
-transition:.3s;
+transition:.35s;
 
 
 }
+
 
 
 
 .op-login:hover{
 
-background:#ff2020;
+
+background:#ff003c;
+
 
 box-shadow:
 
-0 0 30px #ff2020;
+0 0 40px #ff003c;
+
+
+transform:translateY(-2px);
+
 
 }
+
 
 
 
@@ -227,35 +340,34 @@ box-shadow:
 .op-menu-btn{
 
 
-width:42px;
+width:48px;
 
-height:42px;
-
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-
-gap:5px;
+height:48px;
 
 
 border-radius:50%;
 
 
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+flex-direction:column;
+
+
+gap:5px;
+
+
 border:
 
-1px solid rgba(255,0,60,.7);
-
+1px solid rgba(255,0,70,.8);
 
 
 background:
 
-rgba(255,0,60,.12);
+rgba(255,0,60,.15);
 
 
 cursor:pointer;
@@ -263,35 +375,27 @@ cursor:pointer;
 
 box-shadow:
 
-0 0 20px rgba(255,0,60,.5);
+0 0 25px rgba(255,0,60,.6);
 
 
 transition:.3s;
-
-
-padding:0;
-
-
-overflow:hidden;
 
 
 }
 
 
 
+
 .op-menu-btn span{
 
 
-display:block;
-
-
-width:18px;
+width:20px;
 
 
 height:2px;
 
 
-background:#ffffff;
+background:white;
 
 
 border-radius:10px;
@@ -299,34 +403,29 @@ border-radius:10px;
 
 box-shadow:
 
-0 0 8px #ffffff;
-
-
-flex-shrink:0;
+0 0 8px white;
 
 
 }
+
 
 
 
 .op-menu-btn:hover{
 
-transform:scale(1.1);
+
+transform:scale(1.12);
+
+
+background:#ff003c;
+
 
 box-shadow:
 
-0 0 35px #ff2020;
+0 0 45px #ff003c;
+
 
 }
-
-
-
-.op-menu-btn:hover span{
-
-background:#ff2020;
-
-}
-
 
 
 
@@ -337,62 +436,9 @@ background:#ff2020;
 .op-navbar{
 
 
-top:12px;
+height:72px;
 
-
-width:calc(100% - 24px);
-
-
-height:58px;
-
-
-padding:0 14px;
-
-
-}
-
-
-
-.op-menu-btn{
-
-
-width:38px;
-
-height:38px;
-
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-
-gap:4px;
-
-
-padding:0;
-
-
-flex-shrink:0;
-
-
-}
-
-
-
-.op-menu-btn span{
-
-
-width:16px;
-
-
-height:2px;
-
-
-}
+padding:0 18px;
 
 
 }
@@ -401,17 +447,11 @@ height:2px;
 
 .op-logo{
 
-font-size:14px;
 
-letter-spacing:1px;
+font-size:15px;
 
-}
+letter-spacing:2px;
 
-
-
-.op-actions{
-
-gap:8px;
 
 }
 
@@ -420,9 +460,9 @@ gap:8px;
 .op-login{
 
 
-height:32px;
+height:34px;
 
-padding:0 14px;
+padding:0 16px;
 
 
 font-size:10px;
@@ -434,11 +474,19 @@ font-size:10px;
 
 .op-menu-btn{
 
+
 width:38px;
 
 height:38px;
 
-flex-shrink:0;
+
+}
+
+
+
+.op-menu-btn span{
+
+width:16px;
 
 }
 
@@ -446,32 +494,9 @@ flex-shrink:0;
 
 }
 
-
-
-@media(max-width:400px){
-
-
-.op-login{
-
-display:flex;
-
-}
-
-
-
-.op-logo{
-
-font-size:13px;
-
-}
-
-
-
-}
 
 
 `}</style>
-
 
 
     </>
