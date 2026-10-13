@@ -107,11 +107,9 @@ left:50%;
 
 transform:translateX(-50%);
 
+width:100vw;
 
-width:100%;
-
-max-width:1500px;
-
+max-width:none;
 
 height:90px;
 
@@ -123,7 +121,7 @@ align-items:center;
 justify-content:space-between;
 
 
-padding:0 45px;
+padding:0 60px;
 
 
 z-index:9999;
