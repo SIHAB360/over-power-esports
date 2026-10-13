@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 
 export default function PageTransition(){
@@ -36,16 +37,28 @@ export default function PageTransition(){
 
 return(
 
-<div className="portal-screen">
+<div className="transition">
 
 
-<div className="portal-glow"></div>
+<div className="glow"></div>
 
 
-<div className="portal">
+<div className="orb">
 
 
-<div className="core"></div>
+<div className="ring"></div>
+
+
+<Image
+src="/assets/logo.png"
+alt="OP Logo"
+width={90}
+height={90}
+className="logo"
+/>
+
+
+<div className="shine"></div>
 
 
 </div>
@@ -55,7 +68,8 @@ return(
 <style jsx>{`
 
 
-.portal-screen{
+.transition{
+
 
 position:fixed;
 
@@ -65,7 +79,7 @@ inset:0;
 z-index:999999;
 
 
-background:#000;
+background:#030303;
 
 
 display:flex;
@@ -80,51 +94,141 @@ overflow:hidden;
 
 animation:
 
-fadeIn .35s ease;
+fade .3s ease;
 
 
 }
 
 
 
-.portal{
+.glow{
 
 
-width:20px;
-
-height:20px;
+position:absolute;
 
 
-border-radius:50%;
+width:300px;
+
+height:300px;
 
 
 background:
 
 radial-gradient(
 circle,
-white 0%,
-#ff2020 25%,
-red 50%,
+rgba(255,0,60,.35),
 transparent 70%
 );
 
 
-box-shadow:
-
-0 0 40px red,
-0 0 100px red;
+filter:blur(60px);
 
 
 animation:
 
-warp 0.85s ease forwards;
+pulse 1s infinite;
 
 
 }
 
 
 
-.portal::before{
+
+
+.orb{
+
+
+position:relative;
+
+
+width:120px;
+
+height:120px;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+animation:
+
+appear .8s ease;
+
+
+}
+
+
+
+
+.logo{
+
+
+position:relative;
+
+
+z-index:3;
+
+
+border-radius:50%;
+
+
+filter:
+
+drop-shadow(0 0 25px red);
+
+
+animation:
+
+logoFloat .8s ease;
+
+
+}
+
+
+
+
+.ring{
+
+
+position:absolute;
+
+
+inset:0;
+
+
+border-radius:50%;
+
+
+border:
+
+2px solid transparent;
+
+
+border-top-color:#ff2020;
+
+
+border-right-color:#ff2020;
+
+
+box-shadow:
+
+0 0 20px red;
+
+
+animation:
+
+rotate 1s linear infinite;
+
+
+}
+
+
+
+
+.ring:after{
 
 
 content:"";
@@ -133,71 +237,52 @@ content:"";
 position:absolute;
 
 
-inset:-20px;
+inset:-10px;
 
 
 border-radius:50%;
 
 
-border:2px solid rgba(255,0,0,.8);
+border:
 
-
-animation:
-
-ring 0.85s ease forwards;
+1px solid rgba(255,0,60,.5);
 
 
 }
 
 
 
-.portal-glow{
+
+.shine{
 
 
 position:absolute;
 
 
-width:500px;
+width:140px;
 
-height:500px;
+height:20px;
 
 
 background:
 
-radial-gradient(
-circle,
-rgba(255,0,0,.45),
-transparent 65%
+linear-gradient(
+90deg,
+transparent,
+white,
+transparent
 );
 
 
-filter:blur(80px);
+opacity:.7;
+
+
+transform:translateX(-150px) rotate(-30deg);
 
 
 animation:
 
-glow 0.85s ease;
-
-
-}
-
-
-
-.core{
-
-
-width:100%;
-
-height:100%;
-
-
-background:white;
-
-
-border-radius:50%;
-
-
-opacity:.8;
+shineMove .8s ease;
 
 
 }
@@ -205,63 +290,13 @@ opacity:.8;
 
 
 
-@keyframes warp{
 
-
-0%{
-
-transform:scale(.1);
-
-opacity:1;
-
-}
-
-
-
-70%{
-
-transform:scale(35);
-
-opacity:1;
-
-}
-
+@keyframes rotate{
 
 
 100%{
 
-transform:scale(70);
-
-opacity:0;
-
-}
-
-
-
-}
-
-
-
-
-
-@keyframes ring{
-
-
-0%{
-
-transform:scale(.1);
-
-opacity:1;
-
-}
-
-
-
-100%{
-
-transform:scale(45);
-
-opacity:0;
+transform:rotate(360deg);
 
 }
 
@@ -270,12 +305,10 @@ opacity:0;
 
 
 
+@keyframes appear{
 
 
-@keyframes glow{
-
-
-0%{
+from{
 
 transform:scale(.3);
 
@@ -284,20 +317,41 @@ opacity:0;
 }
 
 
+to{
 
-50%{
+transform:scale(1);
 
 opacity:1;
 
 }
 
 
+}
+
+
+
+
+@keyframes logoFloat{
+
+
+50%{
+
+transform:scale(1.08);
+
+}
+
+
+}
+
+
+
+
+@keyframes shineMove{
+
 
 100%{
 
-transform:scale(3);
-
-opacity:0;
+transform:translateX(150px) rotate(-30deg);
 
 }
 
@@ -307,8 +361,21 @@ opacity:0;
 
 
 
+@keyframes pulse{
 
-@keyframes fadeIn{
+
+50%{
+
+transform:scale(1.3);
+
+}
+
+
+}
+
+
+
+@keyframes fade{
 
 
 from{
