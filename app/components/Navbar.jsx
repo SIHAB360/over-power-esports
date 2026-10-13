@@ -1,62 +1,103 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 
-export default function Navbar() {
 
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar(){
 
-  return (
+  const [menuOpen,setMenuOpen]=useState(false);
+  const [scrolled,setScrolled]=useState(false);
+
+
+  useEffect(()=>{
+
+    const handleScroll=()=>{
+
+      if(window.scrollY > 40){
+        setScrolled(true);
+      }else{
+        setScrolled(false);
+      }
+
+    };
+
+
+    window.addEventListener("scroll",handleScroll);
+
+
+    return()=>window.removeEventListener("scroll",handleScroll);
+
+
+  },[]);
+
+
+
+  return(
     <>
 
-      <nav className="op-navbar">
 
-        <div className="op-light"></div>
+    <nav className={`op-navbar ${scrolled ? "scrolled":""}`}>
 
-
-        <div className="op-logo">
-          OVER POWER <span>ESPORTS</span>
-        </div>
+      
+      <div className="light-beam"></div>
 
 
-        <div className="op-actions">
+      <div className="energy-line"></div>
 
 
-          <a href="/login" className="op-login">
-            LOGIN
-          </a>
+      <div className="op-logo">
 
+        OVER POWER 
+        <span>ESPORTS</span>
 
-          <button
-            className="op-menu-btn"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open Menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
-
-        </div>
-
-
-      </nav>
+      </div>
 
 
 
-      <SideMenu
-        open={menuOpen}
-        close={() => setMenuOpen(false)}
-      />
+      <div className="op-actions">
 
+
+        <a href="/login" className="op-login">
+          LOGIN
+        </a>
+
+
+
+        <button
+        className="op-menu-btn"
+        onClick={()=>setMenuOpen(true)}
+        >
+
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+
+        </button>
+
+
+      </div>
+
+
+
+    </nav>
+
+
+
+    <SideMenu
+      open={menuOpen}
+      close={()=>setMenuOpen(false)}
+    />
 
 
 
 <style jsx>{`
 
+
 .op-navbar{
+
 
 position:fixed;
 
@@ -72,7 +113,7 @@ width:100%;
 max-width:1500px;
 
 
-height:92px;
+height:90px;
 
 
 display:flex;
@@ -85,66 +126,124 @@ justify-content:space-between;
 padding:0 45px;
 
 
+z-index:9999;
+
+
 background:
 
 linear-gradient(
 180deg,
-rgba(20,0,5,.92),
-rgba(5,0,2,.75)
+rgba(10,0,3,.35),
+rgba(10,0,3,.15)
 );
 
-
-backdrop-filter:blur(25px);
 
 
 border-bottom:
 
-1px solid rgba(255,0,70,.35);
+1px solid rgba(255,0,60,.25);
 
 
-z-index:9999;
+transition:.5s ease;
 
 
 overflow:hidden;
-
-
-box-shadow:
-
-0 10px 40px rgba(255,0,60,.18);
 
 
 }
 
 
 
-/* top premium light */
 
-.op-light{
+/* scroll state */
+
+
+.op-navbar.scrolled{
+
+
+top:15px;
+
+
+width:calc(100% - 50px);
+
+
+border-radius:25px;
+
+
+background:
+
+rgba(5,5,5,.85);
+
+
+
+backdrop-filter:
+
+blur(25px);
+
+
+box-shadow:
+
+0 0 40px rgba(255,0,60,.35);
+
+
+border:
+
+1px solid rgba(255,0,60,.5);
+
+
+}
+
+
+
+
+.light-beam{
+
 
 position:absolute;
 
-top:-60px;
 
-left:50%;
+top:-80px;
 
-transform:translateX(-50%);
+left:-300px;
 
 
-width:500px;
+width:280px;
 
-height:120px;
+height:250px;
 
 
 background:
 
 radial-gradient(
 circle,
-rgba(255,0,70,.45),
+rgba(255,0,60,.5),
 transparent 70%
 );
 
 
-filter:blur(20px);
+filter:blur(30px);
+
+
+animation:
+
+moveLight 6s linear infinite;
+
+
+}
+
+
+
+@keyframes moveLight{
+
+
+0%{
+left:-300px;
+}
+
+
+100%{
+left:110%;
+}
 
 
 }
@@ -152,20 +251,20 @@ filter:blur(20px);
 
 
 
-.op-navbar:before{
+.energy-line{
 
-content:"";
 
 position:absolute;
 
 bottom:0;
 
-left:10%;
+left:0;
 
 
-width:80%;
+height:2px;
 
-height:1px;
+
+width:100%;
 
 
 background:
@@ -173,16 +272,19 @@ background:
 linear-gradient(
 90deg,
 transparent,
-#ff003c,
-#ffe600,
-#ff003c,
+red,
+yellow,
+red,
 transparent
 );
 
 
-box-shadow:
+background-size:300%;
 
-0 0 20px #ff003c;
+
+animation:
+
+lineMove 4s linear infinite;
 
 
 }
@@ -190,15 +292,27 @@ box-shadow:
 
 
 
+@keyframes lineMove{
+
+
+0%{
+background-position:0%;
+}
+
+
+100%{
+background-position:300%;
+}
+
+
+}
+
+
+
+
+
+
 .op-logo{
-
-
-position:relative;
-
-z-index:2;
-
-
-color:white;
 
 
 font-size:24px;
@@ -210,12 +324,19 @@ font-weight:950;
 letter-spacing:4px;
 
 
+color:white;
+
+
 text-shadow:
 
-0 0 15px rgba(255,255,255,.3);
+0 0 15px rgba(255,255,255,.4);
+
+
+z-index:2;
 
 
 }
+
 
 
 
@@ -225,10 +346,13 @@ text-shadow:
 color:#ff2020;
 
 
+margin-left:8px;
+
+
 text-shadow:
 
-0 0 10px #ff2020,
-0 0 25px #ff2020;
+0 0 15px red,
+0 0 30px red;
 
 
 }
@@ -244,6 +368,7 @@ display:flex;
 align-items:center;
 
 gap:18px;
+
 
 z-index:2;
 
@@ -275,13 +400,10 @@ color:white;
 font-size:13px;
 
 
-font-weight:800;
+font-weight:900;
 
 
 letter-spacing:3px;
-
-
-text-decoration:none;
 
 
 border-radius:30px;
@@ -289,49 +411,65 @@ border-radius:30px;
 
 border:
 
-1px solid rgba(255,0,70,.8);
-
+1px solid red;
 
 
 background:
 
-linear-gradient(
-135deg,
-rgba(255,0,60,.25),
-rgba(255,0,60,.05)
-);
-
+rgba(255,0,40,.12);
 
 
 box-shadow:
 
-0 0 20px rgba(255,0,60,.45),
-inset 0 0 15px rgba(255,0,60,.2);
+0 0 20px rgba(255,0,40,.5);
 
 
 transition:.35s;
 
 
-}
+animation:
 
+buttonGlow 2s infinite;
+
+
+}
 
 
 
 .op-login:hover{
 
 
-background:#ff003c;
+background:red;
+
+
+transform:translateY(-3px);
 
 
 box-shadow:
 
-0 0 40px #ff003c;
-
-
-transform:translateY(-2px);
+0 0 45px red;
 
 
 }
+
+
+
+
+
+@keyframes buttonGlow{
+
+
+50%{
+
+box-shadow:
+
+0 0 35px rgba(255,0,60,.9);
+
+}
+
+
+}
+
 
 
 
@@ -348,21 +486,9 @@ height:48px;
 border-radius:50%;
 
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-flex-direction:column;
-
-
-gap:5px;
-
-
 border:
 
-1px solid rgba(255,0,70,.8);
+1px solid red;
 
 
 background:
@@ -370,19 +496,31 @@ background:
 rgba(255,0,60,.15);
 
 
+display:flex;
+
+flex-direction:column;
+
+
+justify-content:center;
+
+align-items:center;
+
+
+gap:5px;
+
+
 cursor:pointer;
 
 
 box-shadow:
 
-0 0 25px rgba(255,0,60,.6);
+0 0 25px red;
 
 
-transition:.3s;
+transition:.35s;
 
 
 }
-
 
 
 
@@ -401,9 +539,7 @@ background:white;
 border-radius:10px;
 
 
-box-shadow:
-
-0 0 8px white;
+transition:.3s;
 
 
 }
@@ -414,18 +550,31 @@ box-shadow:
 .op-menu-btn:hover{
 
 
-transform:scale(1.12);
+transform:rotate(180deg) scale(1.1);
 
 
-background:#ff003c;
+background:red;
 
 
 box-shadow:
 
-0 0 45px #ff003c;
+0 0 45px red;
 
 
 }
+
+
+
+
+.op-menu-btn:hover span{
+
+
+background:white;
+
+
+}
+
+
 
 
 
@@ -436,9 +585,21 @@ box-shadow:
 .op-navbar{
 
 
-height:72px;
+height:70px;
 
 padding:0 18px;
+
+
+}
+
+
+
+.op-navbar.scrolled{
+
+
+width:calc(100% - 24px);
+
+top:10px;
 
 
 }
@@ -448,7 +609,8 @@ padding:0 18px;
 .op-logo{
 
 
-font-size:15px;
+font-size:14px;
+
 
 letter-spacing:2px;
 
@@ -462,8 +624,7 @@ letter-spacing:2px;
 
 height:34px;
 
-padding:0 16px;
-
+padding:0 15px;
 
 font-size:10px;
 
@@ -486,7 +647,9 @@ height:38px;
 
 .op-menu-btn span{
 
+
 width:16px;
+
 
 }
 
@@ -499,6 +662,9 @@ width:16px;
 `}</style>
 
 
-    </>
+
+</>
+
   );
+
 }
