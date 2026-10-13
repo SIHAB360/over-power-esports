@@ -20,7 +20,7 @@ export default function PageTransition(){
 
       setShow(false);
 
-    },900);
+    },850);
 
 
     return ()=>clearTimeout(timer);
@@ -34,71 +34,124 @@ export default function PageTransition(){
 
 
 
-  return(
+return(
 
-    <div className="transition-screen">
-
-
-      <div className="flash"></div>
+<div className="portal-screen">
 
 
-      <div className="op-mark">
-
-        OP
-
-      </div>
+<div className="portal-glow"></div>
 
 
-      <h2>
-        Loading
-        <span>
-          Here
-        </span>
-      </h2>
+<div className="portal">
 
 
-      <div className="line"></div>
+<div className="core"></div>
+
+
+</div>
 
 
 
 <style jsx>{`
 
-.transition-screen{
+
+.portal-screen{
 
 position:fixed;
 
 inset:0;
 
-background:
-
-radial-gradient(
-circle,
-#400000,
-#000 65%
-);
-
 
 z-index:999999;
 
 
-display:flex;
+background:#000;
 
-flex-direction:column;
+
+display:flex;
 
 align-items:center;
 
 justify-content:center;
 
 
-animation:fade .9s;
+overflow:hidden;
+
+
+animation:
+
+fadeIn .35s ease;
 
 
 }
 
 
 
+.portal{
 
-.flash{
+
+width:20px;
+
+height:20px;
+
+
+border-radius:50%;
+
+
+background:
+
+radial-gradient(
+circle,
+white 0%,
+#ff2020 25%,
+red 50%,
+transparent 70%
+);
+
+
+box-shadow:
+
+0 0 40px red,
+0 0 100px red;
+
+
+animation:
+
+warp 0.85s ease forwards;
+
+
+}
+
+
+
+.portal::before{
+
+
+content:"";
+
+
+position:absolute;
+
+
+inset:-20px;
+
+
+border-radius:50%;
+
+
+border:2px solid rgba(255,0,0,.8);
+
+
+animation:
+
+ring 0.85s ease forwards;
+
+
+}
+
+
+
+.portal-glow{
 
 
 position:absolute;
@@ -109,54 +162,42 @@ width:500px;
 height:500px;
 
 
-background:red;
+background:
+
+radial-gradient(
+circle,
+rgba(255,0,0,.45),
+transparent 65%
+);
 
 
-filter:blur(150px);
+filter:blur(80px);
 
 
-opacity:.25;
+animation:
 
-
-animation:pulse 1s infinite;
+glow 0.85s ease;
 
 
 }
 
 
 
-.op-mark{
+.core{
 
 
-width:90px;
+width:100%;
 
-height:90px;
+height:100%;
+
+
+background:white;
 
 
 border-radius:50%;
 
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
-font-size:45px;
-
-font-weight:900;
-
-
-border:3px solid red;
-
-
-box-shadow:
-
-0 0 30px red;
-
-
-animation:zoom .8s;
+opacity:.8;
 
 
 }
@@ -164,72 +205,37 @@ animation:zoom .8s;
 
 
 
-h2{
+@keyframes warp{
 
 
-margin-top:30px;
+0%{
 
+transform:scale(.1);
 
-font-size:20px;
-
-
-letter-spacing:5px;
-
-
-color:white;
-
-
-text-align:center;
-
+opacity:1;
 
 }
 
 
 
-h2 span{
+70%{
 
+transform:scale(35);
 
-display:block;
-
-
-font-size:38px;
-
-
-color:#ff2020;
-
-
-text-shadow:
-
-0 0 25px red;
-
+opacity:1;
 
 }
 
 
 
-.line{
+100%{
 
+transform:scale(70);
 
-margin-top:35px;
+opacity:0;
 
+}
 
-width:250px;
-
-height:4px;
-
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-red,
-yellow,
-transparent
-);
-
-
-animation:move 1s infinite;
 
 
 }
@@ -237,7 +243,72 @@ animation:move 1s infinite;
 
 
 
-@keyframes fade{
+
+@keyframes ring{
+
+
+0%{
+
+transform:scale(.1);
+
+opacity:1;
+
+}
+
+
+
+100%{
+
+transform:scale(45);
+
+opacity:0;
+
+}
+
+
+}
+
+
+
+
+
+@keyframes glow{
+
+
+0%{
+
+transform:scale(.3);
+
+opacity:0;
+
+}
+
+
+
+50%{
+
+opacity:1;
+
+}
+
+
+
+100%{
+
+transform:scale(3);
+
+opacity:0;
+
+}
+
+
+}
+
+
+
+
+
+@keyframes fadeIn{
 
 
 from{
@@ -245,6 +316,7 @@ from{
 opacity:0;
 
 }
+
 
 to{
 
@@ -257,67 +329,14 @@ opacity:1;
 
 
 
-@keyframes zoom{
-
-
-from{
-
-transform:scale(.3);
-
-}
-
-
-to{
-
-transform:scale(1);
-
-}
-
-
-}
-
-
-
-@keyframes pulse{
-
-
-50%{
-
-transform:scale(1.3);
-
-}
-
-
-}
-
-
-
-@keyframes move{
-
-
-from{
-
-transform:translateX(-100px);
-
-}
-
-
-to{
-
-transform:translateX(100px);
-
-}
-
-
-}
-
-
 
 `}</style>
 
 
-    </div>
+</div>
 
-  );
+
+);
+
 
 }
