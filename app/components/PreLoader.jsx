@@ -171,7 +171,7 @@ filter:blur(150px);
 opacity:.25;
 
 
-animation:pulse 5s infinite;
+animation:pulse 10s infinite;
 
 
 }
