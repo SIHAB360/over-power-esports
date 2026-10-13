@@ -2,6 +2,7 @@ import "./globals.css";
 
 import { Orbitron, Rajdhani } from "next/font/google";
 import PreLoader from "./components/PreLoader";
+import PageTransition from "./components/PageTransition";
 
 const orbitron = Orbitron({
 
@@ -71,6 +72,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 
 <body className={`${orbitron.variable} ${rajdhani.variable}`}>
+  
+<PageTransition />
 
 {children}
 
