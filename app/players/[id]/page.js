@@ -1,11 +1,16 @@
 import CopyUID from "../../components/CopyUID";
 import { supabase } from "../../lib/supabase";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+
 /* =========================================================
    STATIC PUBLIC PLAYER DATA
 ========================================================= */
+
 const PLAYER_PROFILES = {
+
   appelo: {
     name: "SAKIB HASAN",
     ign: "EXE APPELO",
@@ -20,298 +25,400 @@ const PLAYER_PROFILES = {
     location: "Dhaka, Bangladesh",
     status: "Active",
     image: "/players/appelo.png",
+
     facebook:
-    "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+      "https://www.facebook.com/share/19XKoR58cb/?mibextid=wwXIfr",
+
     instagram:
-    "https://www.instagram.com/_appelo_ff",
+      "https://www.instagram.com/_appelo_ff",
+
     youtube:
-    "https://youtube.com/@appelo_ff",
+      "https://youtube.com/@appelo_ff",
+
     tiktok:
-    "https://www.tiktok.com/@appelo_offical",
-    youtubeVideos:[
+      "https://www.tiktok.com/@appelo_offical",
+
+    youtubeVideos: [
       "94JjtPH6Rp4",
       "WiXfH8lHkao",
       "T9gEdEC1BqA",
       "S12LAik5ovc",
       "8jzmVk4sd2Q",
-      "p9Bf-zGCefg"
-    ]
+      "p9Bf-zGCefg",
+    ],
   },
+
+
   oggy: {
-    name:"SOMIR",
-    ign:"BE1NG OGGY",
-    uid:"4455951906",
-    role:"SECONDARY RUSHER",
-    team:"OVER POWER MAIN TEAM",
-    experience:"1 Year",
-    profession:"Student",
-    age:"17",
-    joinDate:"2026-08-21",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/oggy.png",
+    name: "SOMIR",
+    ign: "BE1NG OGGY",
+    uid: "4455951906",
+    role: "SECONDARY RUSHER",
+    team: "OVER POWER MAIN TEAM",
+    experience: "1 Year",
+    profession: "Student",
+    age: "17",
+    joinDate: "2026-08-21",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/oggy.png",
+
     facebook:
-    "https://www.facebook.com/share/1JEkiAK2J6/",
+      "https://www.facebook.com/share/1JEkiAK2J6/",
+
     instagram:
-    "https://www.instagram.com/being_ogggyy",
+      "https://www.instagram.com/being_ogggyy",
+
     youtube:
-    "https://youtube.com/@being_ogggyy",
+      "https://youtube.com/@being_ogggyy",
+
     tiktok:
-    "https://www.tiktok.com/@being_ogggyy",
-    youtubeVideos:[]
+      "https://www.tiktok.com/@being_ogggyy",
+
+    youtubeVideos: [],
   },
-  itachix:{
-    name:"MD SALMAN",
-    ign:"OP ITACHIx",
-    uid:"7743068119",
-    role:"BOMBER",
-    team:"OVER POWER MAIN TEAM",
-    experience:"1 Year",
-    profession:"Student",
-    age:"17",
-    joinDate:"2026-05-01",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/itachix.png",
+
+
+  itachix: {
+    name: "MD SALMAN",
+    ign: "OP ITACHIx",
+    uid: "7743068119",
+    role: "BOMBER",
+    team: "OVER POWER MAIN TEAM",
+    experience: "1 Year",
+    profession: "Student",
+    age: "17",
+    joinDate: "2026-05-01",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/itachix.png",
+
     facebook:
-    "https://www.facebook.com/profile.php?id=61590102347309",
-    instagram:"",
+      "https://www.facebook.com/profile.php?id=61590102347309",
+
+    instagram: "",
+
     youtube:
-    "https://youtube.com/@itachiontop-r2p",
+      "https://youtube.com/@itachiontop-r2p",
+
     tiktok:
-    "https://www.tiktok.com/@itachix074",
-    youtubeVideos:[
+      "https://www.tiktok.com/@itachix074",
+
+    youtubeVideos: [
       "89Z_9Rffa1M",
-      "-dzH4tBo0yY"
-    ]
+      "-dzH4tBo0yY",
+    ],
   },
+
+
   rejwan: {
-    name:"REJWAN AHAMMED",
-    ign:"OP REJWAN",
-    uid:"1111551408",
-    role:"IGL + SUPPORTER",
-    team:"OVER POWER MAIN TEAM",
-    experience:"8 Month",
-    profession:"JOB HOLDER",
-    age:"18",
-    joinDate:"2026-04-23",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/rejwan.png",
+    name: "REJWAN AHAMMED",
+    ign: "OP REJWAN",
+    uid: "1111551408",
+    role: "IGL + SUPPORTER",
+    team: "OVER POWER MAIN TEAM",
+    experience: "8 Month",
+    profession: "JOB HOLDER",
+    age: "18",
+    joinDate: "2026-04-23",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/rejwan.png",
+
     facebook:
-    "https://www.facebook.com/rejwan.ahammed11",
+      "https://www.facebook.com/rejwan.ahammed11",
+
     instagram:
-    "https://www.instagram.com/rahammed_",
+      "https://www.instagram.com/rahammed_",
+
     youtube:
-    "https://youtube.com/@rejwan-ff6711",
+      "https://youtube.com/@rejwan-ff6711",
+
     tiktok:
-    "https://www.tiktok.com/@rejwanahammed",
-    youtubeVideos:[
+      "https://www.tiktok.com/@rejwanahammed",
+
+    youtubeVideos: [
       "YzetH_r6KpE",
       "1OGnv9NlgnI",
       "G9O0kwdpLmA",
       "CoRiZx_oFCU",
       "a7kPD66eTlU",
-      "V2hA8Sl049Q"
-    ]
+      "V2hA8Sl049Q",
+    ],
   },
   fixfire: {
-    name:"JISAN BISWAS",
-    ign:"FixFIRE",
-    uid:"63999291",
-    role:"SNIPER",
-    team:"OVER POWER MAIN TEAM",
-    experience:"3 Years",
-    profession:"Student",
-    age:"21",
-    joinDate:"2026-07-26",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/fixfire.png",
+    name: "JISAN BISWAS",
+    ign: "FixFIRE",
+    uid: "63999291",
+    role: "SNIPER",
+    team: "OVER POWER MAIN TEAM",
+    experience: "3 Years",
+    profession: "Student",
+    age: "21",
+    joinDate: "2026-07-26",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/fixfire.png",
+
     facebook:
-    "https://www.facebook.com/share/1DYEWmWzRr/",
+      "https://www.facebook.com/share/1DYEWmWzRr/",
+
     instagram:
-    "https://www.instagram.com/xr_jisan09",
+      "https://www.instagram.com/xr_jisan09",
+
     youtube:
-    "https://www.youtube.com/@fixfire09",
+      "https://www.youtube.com/@fixfire09",
+
     tiktok:
-    "https://tiktok.com/@fixfire09",
-    youtubeVideos:[
+      "https://tiktok.com/@fixfire09",
+
+    youtubeVideos: [
       "1L7XQBFOoEk",
       "eh7GKKDVvoY",
       "q1VdGlmr8_g",
       "G5tMntbjd_s",
       "JD9yIRFYHco",
-      "m1s34WavzGw"
-    ]
+      "m1s34WavzGw",
+    ],
   },
+
+
   foysal: {
-    name:"MD FOYSAL",
-    ign:"OP RF NTC",
-    uid:"2628615876",
-    role:"PRIMARY RUSHER",
-    team:"OVER POWER ELITE",
-    experience:"1 Year",
-    profession:"OUT OF COUNTRY",
-    age:"23",
-    joinDate:"2026-07-20",
-    nationality:"Malaysia",
-    location:"Kuala Lumpur",
-    status:"Active",
-    image:"/players/rfntc.png",
+    name: "MD FOYSAL",
+    ign: "OP RF NTC",
+    uid: "2628615876",
+    role: "PRIMARY RUSHER",
+    team: "OVER POWER ELITE",
+    experience: "1 Year",
+    profession: "OUT OF COUNTRY",
+    age: "23",
+    joinDate: "2026-07-20",
+    nationality: "Malaysia",
+    location: "Kuala Lumpur",
+    status: "Active",
+    image: "/players/rfntc.png",
+
     facebook:
-    "https://www.facebook.com/share/1GyYZjBWmZ/",
+      "https://www.facebook.com/share/1GyYZjBWmZ/",
+
     instagram:
-    "https://www.instagram.com/md_rasel._123",
+      "https://www.instagram.com/md_rasel._123",
+
     youtube:
-    "https://www.youtube.com/@EmranKhan-y1p4s",
+      "https://www.youtube.com/@EmranKhan-y1p4s",
+
     tiktok:
-    "https://www.tiktok.com/@emran.khan3103",
-    youtubeVideos:[]
+      "https://www.tiktok.com/@emran.khan3103",
+
+    youtubeVideos: [],
   },
+
+
   jellal: {
-    name:"SHAWON AHMED",
-    ign:"OP JELLAL",
-    uid:"6587036423",
-    role:"SECONDARY RUSHER",
-    team:"OVER POWER ELITE",
-    experience:"6 Month",
-    profession:"JOB HOLDER",
-    age:"21",
-    joinDate:"2026-07-26",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/jellal.png",
+    name: "SHAWON AHMED",
+    ign: "OP JELLAL",
+    uid: "6587036423",
+    role: "SECONDARY RUSHER",
+    team: "OVER POWER ELITE",
+    experience: "6 Month",
+    profession: "JOB HOLDER",
+    age: "21",
+    joinDate: "2026-07-26",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/jellal.png",
+
     facebook:
-    "https://www.facebook.com/ew.r.sawon.739315",
+      "https://www.facebook.com/ew.r.sawon.739315",
+
     instagram:
-    "https://www.instagram.com/sgr100m",
+      "https://www.instagram.com/sgr100m",
+
     youtube:
-    "https://youtube.com/@sgr100m",
-    tiktok:"",
-    youtubeVideos:[
+      "https://youtube.com/@sgr100m",
+
+    tiktok: "",
+
+    youtubeVideos: [
       "sOU0G3abc0M",
       "Q_qe4D70jFE",
       "w2hgp0jga1w",
       "lQZ8SeM75Mg",
       "EJZTmnixjIg",
-      "_Cg-g_K-6ic"
-    ]
+      "_Cg-g_K-6ic",
+    ],
   },
-     sojib: {
-    name:"MD SOJIB",
-    ign:"SOJIB",
-    uid:"",
-    role:"BOMBER",
-    team:"OVER POWER ELITE",
-    experience:"1 Year",
-    profession:"STUDENT",
-    age:"18",
-    joinDate:"2026-09-06",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/sojib.png",
-    facebook:"",
-    instagram:"",
-    youtube:"",
-    tiktok:"",
-    youtubeVideos:[]
+
+
+  sojib: {
+    name: "MD SOJIB",
+    ign: "SOJIB",
+    uid: "",
+    role: "BOMBER",
+    team: "OVER POWER ELITE",
+    experience: "1 Year",
+    profession: "STUDENT",
+    age: "18",
+    joinDate: "2026-09-06",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/sojib.png",
+
+    facebook: "",
+    instagram: "",
+    youtube: "",
+    tiktok: "",
+
+    youtubeVideos: [],
   },
+
+
   nafiz: {
-    name:"MD NAFIZ",
-    ign:"NXE NAFIZ",
-    uid:"5540170894",
-    role:"SUPPORTER",
-    team:"OVER POWER ELITE",
-    experience:"1 Year",
-    profession:"STUDENT",
-    age:"22",
-    joinDate:"2026-08-31",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/nafiz.jpeg",
+    name: "MD NAFIZ",
+    ign: "NXE NAFIZ",
+    uid: "5540170894",
+    role: "SUPPORTER",
+    team: "OVER POWER ELITE",
+    experience: "1 Year",
+    profession: "STUDENT",
+    age: "22",
+    joinDate: "2026-08-31",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/nafiz.jpeg",
+
     facebook:
-    "https://www.facebook.com/share/1FrtytpbHg/",
+      "https://www.facebook.com/share/1FrtytpbHg/",
+
     instagram:
-    "https://www.instagram.com/nxe_nafiz_00",
+      "https://www.instagram.com/nxe_nafiz_00",
+
     youtube:
-    "https://www.youtube.com/@MdBijoy-t7m",
+      "https://www.youtube.com/@MdBijoy-t7m",
+
     tiktok:
-    "https://www.tiktok.com/@md.bijoy4059",
-    youtubeVideos:[]
+      "https://www.tiktok.com/@md.bijoy4059",
+
+    youtubeVideos: [],
   },
+
+
   baymax: {
-    name:"SAIF AHMED",
-    ign:"OP BAYMAX",
-    uid:"15767917163",
-    role:"SNIPER",
-    team:"OVER POWER ELITE",
-    experience:"4 Month",
-    profession:"STUDENT",
-    age:"20",
-    joinDate:"2026-07-23",
-    nationality:"Bangladesh 🇧🇩",
-    location:"Dhaka",
-    status:"Active",
-    image:"/players/baymax.png",
+    name: "SAIF AHMED",
+    ign: "OP BAYMAX",
+    uid: "15767917163",
+    role: "SNIPER",
+    team: "OVER POWER ELITE",
+    experience: "4 Month",
+    profession: "STUDENT",
+    age: "20",
+    joinDate: "2026-07-23",
+    nationality: "Bangladesh 🇧🇩",
+    location: "Dhaka",
+    status: "Active",
+    image: "/players/baymax.png",
+
     facebook:
-    "https://www.facebook.com/share/18E6u8Mo18/",
+      "https://www.facebook.com/share/18E6u8Mo18/",
+
     instagram:
-    "https://www.instagram.com/_mhs_1037",
+      "https://www.instagram.com/_mhs_1037",
+
     youtube:
-    "https://youtube.com/@mhsgaming211",
-    tiktok:"",
-    youtubeVideos:[
+      "https://youtube.com/@mhsgaming211",
+
+    tiktok: "",
+
+    youtubeVideos: [
       "yDz2FzDJFc0",
       "u2wJUDb72xc",
-      "DDfeZfVBJzQ"
-    ]
+      "DDfeZfVBJzQ",
+    ],
   },
+
 };
+
 function getExperience(joinDate) {
+
   if (!joinDate) return "N/A";
+
   const start = new Date(joinDate);
   const now = new Date();
+
+
   if (Number.isNaN(start.getTime())) {
     return "N/A";
   }
+
+
   if (start > now) {
     return "0 Months";
   }
+
+
   let years =
     now.getFullYear() -
     start.getFullYear();
+
+
   let months =
     now.getMonth() -
     start.getMonth();
+
+
   if (now.getDate() < start.getDate()) {
     months--;
   }
+
+
   if (months < 0) {
     years--;
     months += 12;
   }
+
+
   if (years > 0 && months > 0) {
+
     return `${years} Year${years > 1 ? "s" : ""} ${months} Month${months > 1 ? "s" : ""}`;
+
   }
+
+
   if (years > 0) {
+
     return `${years} Year${years > 1 ? "s" : ""}`;
+
   }
+
+
   return `${Math.max(months,0)} Month${months === 1 ? "" : "s"}`;
+
 }
+
+
+
 function formatDate(date) {
+
   if (!date) return "N/A";
+
+
   const parsed = new Date(date);
+
+
   if (Number.isNaN(parsed.getTime())) {
+
     return date;
+
   }
+
+
   return parsed.toLocaleDateString(
     "en-GB",
     {
@@ -320,8 +427,13 @@ function formatDate(date) {
       year:"numeric",
     }
   );
+
 }
+
+
+
 function cleanVideoIds(videos = []) {
+
   const cleaned =
     videos
       .filter(Boolean)
@@ -333,250 +445,447 @@ function cleanVideoIds(videos = []) {
           .trim()
       )
       .filter(Boolean);
+
+
   return [...new Set(cleaned)];
+
 }
+
+
+
 function isUUID(value) {
+
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
   .test(value);
+
 }
+
+
+
 function formatMoney(value) {
+
   const number =
     Number(value || 0);
+
+
   return `৳${number.toLocaleString(
     "en-BD",
     {
       maximumFractionDigits:2,
     }
   )}`;
+
 }
+
+
+
+
 export default async function PlayerProfile({
   params,
 }) {
-  const resolvedParams = await params;
-  const routeId =
-    decodeURIComponent(
-      resolvedParams?.id || ""
-    )
-    .trim()
-    .toLowerCase();
-  const staticPlayer =
-    PLAYER_PROFILES[routeId] || null;
-  let dbPlayer = null;
-  /* ===========================
-     PLAYER DATABASE LOOKUP
-  =========================== */
-  if (staticPlayer?.uid) {
-    const {data} =
-      await supabase
-      .from("players")
-      .select("*")
-      .eq(
-        "freefire_uid",
-        staticPlayer.uid
-      )
-      .limit(1)
-      .maybeSingle();
-    dbPlayer = data || null;
-  }
-  if(!dbPlayer && isUUID(routeId)){
-    const {data} =
-      await supabase
-      .from("players")
-      .select("*")
-      .eq(
-        "id",
-        routeId
-      )
-      .limit(1)
-      .maybeSingle();
-    dbPlayer = data || null;
-  }
-  if(!dbPlayer && staticPlayer?.name){
-    const {data} =
-      await supabase
-      .from("players")
-      .select("*")
-      .ilike(
-        "full_name",
-        `%${staticPlayer.name}%`
-      )
-      .limit(1)
-      .maybeSingle();
-    dbPlayer = data || null;
-  }
-  if(!dbPlayer){
-    const safeRouteId =
-      routeId.replace(
-        /[%_]/g,
-        ""
-      );
-    if(safeRouteId){
-      const {data} =
-        await supabase
-        .from("players")
-        .select("*")
-        .ilike(
-          "ign",
-          `%${safeRouteId}%`
-        )
-        .limit(1)
-        .maybeSingle();
-      dbPlayer = data || null;
-    }
-  }
-  if(!dbPlayer && !staticPlayer){
-    return (
-      <section className="esports-profile">
-        <div className="profile-header">
-          <div className="player-heading">
-            <h1>
-              Player Not Found
-            </h1>
-            <p>
-              No player profile was found for this URL.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-   const player = {
+
+
+const resolvedParams = await params;
+
+
+const routeId =
+decodeURIComponent(
+resolvedParams?.id || ""
+)
+.trim()
+.toLowerCase();
+
+
+
+const staticPlayer =
+PLAYER_PROFILES[routeId] || null;
+
+
+
+let dbPlayer = null;
+
+
+
+/* ===========================
+ PLAYER DATABASE LOOKUP
+=========================== */
+
+
+if (staticPlayer?.uid) {
+
+
+const {data} =
+await supabase
+.from("players")
+.select("*")
+.eq(
+"freefire_uid",
+staticPlayer.uid
+)
+.limit(1)
+.maybeSingle();
+
+
+dbPlayer = data || null;
+
+
+}
+
+
+
+if(!dbPlayer && isUUID(routeId)){
+
+
+const {data} =
+await supabase
+.from("players")
+.select("*")
+.eq(
+"id",
+routeId
+)
+.limit(1)
+.maybeSingle();
+
+
+dbPlayer = data || null;
+
+
+}
+
+
+
+if(!dbPlayer && staticPlayer?.name){
+
+
+const {data} =
+await supabase
+.from("players")
+.select("*")
+.ilike(
+"full_name",
+`%${staticPlayer.name}%`
+)
+.limit(1)
+.maybeSingle();
+
+
+dbPlayer = data || null;
+
+
+}
+
+
+
+if(!dbPlayer){
+
+
+const safeRouteId =
+routeId.replace(
+/[%_]/g,
+""
+);
+
+
+if(safeRouteId){
+
+
+const {data} =
+await supabase
+.from("players")
+.select("*")
+.ilike(
+"ign",
+`%${safeRouteId}%`
+)
+.limit(1)
+.maybeSingle();
+
+
+dbPlayer = data || null;
+
+
+}
+
+}
+
+
+
+
+
+if(!dbPlayer && !staticPlayer){
+
+
+return (
+
+<section className="esports-profile">
+
+<div className="profile-header">
+
+<div className="player-heading">
+
+<h1>
+Player Not Found
+</h1>
+
+<p>
+No player profile was found for this URL.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+);
+
+
+}
+
+
+
+
+const player = {
+
+
 id:
 dbPlayer?.id || null,
+
+
 name:
 dbPlayer?.full_name ||
 staticPlayer?.name ||
 "Unknown Player",
+
+
 ign:
 dbPlayer?.ign ||
 staticPlayer?.ign ||
 "Unknown IGN",
+
+
 uid:
 dbPlayer?.freefire_uid ||
 staticPlayer?.uid ||
 "",
+
+
 role:
 dbPlayer?.primary_role ||
 dbPlayer?.position ||
 staticPlayer?.role ||
 "N/A",
+
+
 secondaryRole:
 dbPlayer?.secondary_role ||
 "",
+
+
 team:
 dbPlayer?.team_name ||
 staticPlayer?.team ||
 "N/A",
+
+
 image:
 dbPlayer?.profile_image ||
 dbPlayer?.avatar_url ||
 staticPlayer?.image ||
 "/players/default.png",
+
+
 status:
 dbPlayer?.status ||
 staticPlayer?.status ||
 "N/A",
-experience:
-dbPlayer?.experience ||
-staticPlayer?.experience ||
-"N/A",
-profession:
-dbPlayer?.profession ||
-staticPlayer?.profession ||
-"N/A",
-age:
-dbPlayer?.age ||
-staticPlayer?.age ||
-"N/A",
-nationality:
-dbPlayer?.nationality ||
-staticPlayer?.nationality ||
-"Bangladesh 🇧🇩",
-location:
-dbPlayer?.location ||
-staticPlayer?.location ||
-"N/A",
+
+                      experience:
+                     dbPlayer?.experience ||
+                     staticPlayer?.experience ||
+                     "N/A",
+                     
+                     profession:
+                     dbPlayer?.profession ||
+                     staticPlayer?.profession ||
+                     "N/A",
+                     
+                     age:
+                     dbPlayer?.age ||
+                     staticPlayer?.age ||
+                     "N/A",
+                     
+                     nationality:
+                     dbPlayer?.nationality ||
+                     staticPlayer?.nationality ||
+                     "Bangladesh 🇧🇩",
+                     
+                     location:
+                     dbPlayer?.location ||
+                     staticPlayer?.location ||
+                     "N/A",  
+
 joinDate:
 dbPlayer?.joining_date ||
 staticPlayer?.joinDate ||
 null,
+
+
 youtubeVideos:
 cleanVideoIds(
 staticPlayer?.youtubeVideos || []
 ),
+
+
 facebook:
 dbPlayer?.facebook_link ||
 staticPlayer?.facebook ||
 "",
+
+
 instagram:
 dbPlayer?.instagram_link ||
 staticPlayer?.instagram ||
 "",
+
+
 youtube:
 dbPlayer?.youtube_link ||
 staticPlayer?.youtube ||
 "",
+
+
 tiktok:
 dbPlayer?.tiktok_link ||
 staticPlayer?.tiktok ||
 "",
+
+
 previousTeam:
 dbPlayer?.previous_team || "",
+
+
 device:
 dbPlayer?.device || "N/A",
+
+
 internet:
 dbPlayer?.internet_connection || "N/A",
+
+
 practiceTime:
 dbPlayer?.practice_time || "N/A",
+
+
 gameExperience:
 dbPlayer?.game_experience || "N/A",
+
+
 tournamentExperience:
 dbPlayer?.tournament_experience || "N/A",
+
+
 kdRate:
 dbPlayer?.average_br_kd_rate || "N/A",
+
+
 expertWeapon:
 dbPlayer?.expert_weapon || "N/A",
+
+
 };
+
 const isActive =
-String(player.status).toLowerCase() === "active";
+  String(player.status).toLowerCase() === "active";
+
+
+
 /* ===========================
-   MATCH STATISTICS
+ MATCH STATISTICS
 =========================== */
+
+
 let stats = [];
+
 const targetPlayerId = dbPlayer?.id;
-if(targetPlayerId){
-const {data,error} =
-await supabase
-.from("match_player_stats")
-.select("*")
-.eq(
-"player_id",
-targetPlayerId
+
+   console.log("TARGET PLAYER UUID:", targetPlayerId);
+console.log("PLAYER DATABASE:", dbPlayer);
+console.log("PLAYER ID FOR STATS:", targetPlayerId);
+
+
+if (targetPlayerId) {
+
+  const { data, error } = await supabase
+    .from("match_player_stats")
+    .select("*")
+    .eq("player_id", targetPlayerId);
+
+     console.log("STATS FROM DATABASE:", data);
+  console.log("STATS ERROR:", error);
+
+
+  if (error) {
+
+    console.error(
+      "PLAYER STATS ERROR:",
+      error
+    );
+
+  }
+
+
+  stats = data || [];
+
+
+}
+
+   
+
+// fallback check
+
+console.log(
+  "FINAL PLAYER STATS:",
+  stats
 );
-if(!error){
-stats = data || [];
-}
-}
+
+
+
+
+
 const totalMatches =
 stats.length;
+
+
+
 const totalKills =
 stats.reduce(
 (sum,item)=>
 sum + Number(item.kills || 0),
 0
 );
+
+
+
 const totalAssists =
 stats.reduce(
 (sum,item)=>
 sum + Number(item.assists || 0),
 0
 );
+
+
+
 const totalDamage =
 stats.reduce(
 (sum,item)=>
 sum + Number(item.damage || 0),
 0
 );
+
+
+
 const totalMVP =
 stats.filter(
 item =>
@@ -585,560 +894,1041 @@ item.mvp === "true" ||
 item.mvp === 1
 )
 .length;
+
+
+
+
+
 /* ===========================
-   TOTAL EARNINGS
+ TOTAL EARNINGS
 =========================== */
+
+
 let totalEarning = 0;
+
+
+
 if(player.id){
-  const {
-    data,
-    error
-  } = await supabase.rpc(
-    "get_player_positive_earnings_v2",
-    {
-      p_player_id:
-      player.id
-    }
-  );
-  if(!error){
-    totalEarning =
-    Number(data || 0);
-  }
+
+
+const {
+data,
+error
+}
+=
+await supabase.rpc(
+"get_player_positive_earnings_v2",
+{
+p_player_id:
+player.id
+}
+);
+
+
+
+if(!error){
+
+totalEarning =
+Number(data || 0);
+
+}
+
+
 }
 return (
-<section className="op-player-dashboard">
-<div className="op-player-container">
-{/* ===========================
-    PLAYER HERO SECTION
-=========================== */}
-<div className="op-player-hero">
-<div className="op-profile-main">
-<div className="op-avatar-box">
-<img
-src={player.image}
-alt={player.name}
-className="op-avatar"
-/>
-<div className="op-status">
-{player.status}
-</div>
-</div>
-<div className="op-player-title">
+
+<section className="esports-profile">
+
+
+<div className="profile-header reveal-header">
+
+<div className="player-heading">
+
 <h1>
 {player.ign}
 </h1>
+
 <h3>
 {player.role}
 </h3>
-<p>
+
+<h4>
 {player.team}
-</p>
-<span>
+</h4>
+
+<p>
 Professional Free Fire esports player of Over Power Esports.
-</span>
+</p>
+
 </div>
-</div>
-<div className="op-winning-card">
-<div>
+
+
+
+<div className="winning-card reveal-win">
+
+<span>
 🏆 TOTAL WINNINGS
-</div>
+</span>
+
 <h2>
 {formatMoney(totalEarning)}
 </h2>
+
 </div>
+
+
 </div>
-{/* ===========================
-    MAIN DASHBOARD GRID
-=========================== */}
-<div className="op-dashboard-grid">
-{/* LEFT COLUMN */}
-<div className="op-left-column">
-{/* PLAYER INFORMATION */}
-<div className="op-card">
-<h2>
+
+
+
+
+
+<div className="profile-layout">
+
+
+
+<aside className="profile-left">
+
+
+
+<div className="photo-box reveal-photo">
+
+<img
+className="profile-photo"
+src={player.image}
+alt={player.name}
+/>
+
+</div>
+
+
+
+
+
+<div className="info-box reveal-card">
+
+
+<h3>
 👤 PLAYER INFORMATION
-</h2>
-<div className="op-info-grid">
-<div className="op-info-item">
+</h3>
+
+
+
+<div className="info-item">
+
 <label>
 👤 Player Name
 </label>
+
 <strong>
 {player.name}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+
+<div className="info-item">
+
 <label>
 🎮 IGN Name
 </label>
+
 <strong>
 {player.ign}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item uid-box">
+
 <label>
 🆔 Game UID
 </label>
-<div className="op-uid-box">
+
+
+<div className="uid-action">
+
 <strong>
 {player.uid || "Not Available"}
 </strong>
+
+
 {
 player.uid && (
 <CopyUID uid={player.uid}/>
 )
 }
+
+
 </div>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+
+<div className="info-item">
+
 <label>
 🎯 Primary Role
 </label>
+
+
 <strong>
 {player.role}
 </strong>
+
+
 </div>
+
+
+
+
+
 {
 player.secondaryRole && (
-<div className="op-info-item">
+
+<div className="info-item">
+
 <label>
 🎯 Secondary Role
 </label>
+
+
 <strong>
 {player.secondaryRole}
 </strong>
+
+
 </div>
+
 )
 }
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 🛡️ Team
 </label>
+
+
 <strong>
 {player.team}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 ⏳ Experience
 </label>
+
+
 <strong>
 {player.experience}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 💼 Profession
 </label>
+
+
 <strong>
 {player.profession}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 🎂 Age
 </label>
+
+
 <strong>
 {player.age}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 📅 Join Date
 </label>
+
+
 <strong>
 {formatDate(player.joinDate)}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 🌍 Nationality
 </label>
+
+
 <strong>
 {player.nationality}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 📍 Location
 </label>
+
+
 <strong>
 {player.location}
 </strong>
+
+
 </div>
-<div className="op-info-item">
+
+
+
+
+
+<div className="info-item">
+
 <label>
 🟢 Status
 </label>
-<strong className={
-`op-status-text ${
+
+
+<strong
+className={
+`player-status ${
 isActive ? "active" : ""
 }`
-}>
+}
+>
+
 {player.status}
+
 </strong>
+
+
 </div>
+
+
+
 </div>
-</div>
-{/* GAME DETAILS */}
-<div className="op-card">
-<h2>
+   
+
+
+
+<div className="info-box reveal-card">
+
+
+<h3>
 🎮 GAME DETAILS
-</h2>
-<div className="op-info-grid">
-<div className="op-info-item">
+</h3>
+
+
+
+<div className="info-item">
+
 <label>
 📱 Device
 </label>
+
 <strong>
 {player.device}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 🌐 Internet
 </label>
+
 <strong>
 {player.internet}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 ⏰ Practice Time
 </label>
+
 <strong>
 {player.practiceTime}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 🎮 Game Experience
 </label>
+
 <strong>
 {player.gameExperience}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 🏆 Tournament Experience
 </label>
+
 <strong>
 {player.tournamentExperience}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 📊 BR K/D Rate
 </label>
+
 <strong>
 {player.kdRate}
 </strong>
+
 </div>
-<div className="op-info-item">
+
+
+
+<div className="info-item">
+
 <label>
 🔫 Expert Weapon
 </label>
+
 <strong>
 {player.expertWeapon}
 </strong>
+
 </div>
+
+
 </div>
-</div>
-{/* ===========================
-   SOCIAL LINKS
-=========================== */}
-<div className="op-card">
-<h2>
+
+
+
+
+
+<div className="info-box reveal-card">
+
+
+<h3>
 🔗 SOCIAL LINKS
-</h2>
-<div className="op-social-grid">
+</h3>
+
+
+<div className="profile-social">
+
+
 {
 player.facebook && (
+
 <a
 href={player.facebook}
 target="_blank"
 rel="noopener noreferrer"
 >
+
 <i className="fa-brands fa-facebook-f"></i>
+
 Facebook
+
 </a>
+
 )
 }
+
+
+
+
 {
 player.instagram && (
+
 <a
 href={player.instagram}
 target="_blank"
 rel="noopener noreferrer"
 >
+
 <i className="fa-brands fa-instagram"></i>
+
 Instagram
+
 </a>
+
 )
+
 }
+
+
+
+
 {
 player.youtube && (
+
 <a
 href={player.youtube}
 target="_blank"
 rel="noopener noreferrer"
 >
+
 <i className="fa-brands fa-youtube"></i>
+
 YouTube
+
 </a>
+
 )
+
 }
+
+
+
+
+
 {
 player.tiktok && (
+
 <a
 href={player.tiktok}
 target="_blank"
 rel="noopener noreferrer"
 >
+
 <i className="fa-brands fa-tiktok"></i>
+
 TikTok
+
 </a>
+
 )
+
 }
+
+
+
+
 </div>
+
+
 </div>
-{/* TEAM HISTORY */}
-<div className="op-card">
-<h2>
+
+
+
+
+
+
+
+<div className="info-box reveal-card">
+
+
+<h3>
 📜 TEAM HISTORY
-</h2>
-<div className="op-history">
+</h3>
+
+
+
 <p>
-<strong>
-{formatDate(player.joinDate)}
-</strong>
+
+{formatDate(player.joinDate)} - Present
+
 <br/>
+
+
 <span>
 {player.team}
 </span>
+
+
+
 {
 player.previousTeam && (
+
 <>
+
 <br/>
-Previous Team:
-<strong>
-{player.previousTeam}
-</strong>
+
+<span>
+Previous Team: {player.previousTeam}
+</span>
+
 </>
+
 )
+
 }
-</p>
-<div className="op-active-time">
-🟢 Active For:
+
+
+
+<br/>
+
+
 <strong>
+
+🟢 Active For:
+{" "}
 {getExperience(player.joinDate)}
+
 </strong>
+
+
+</p>
+
+
 </div>
-</div>
-</div>
-</div>
-{/* RIGHT COLUMN */}
-<div className="op-right-column">
-{/* CAREER STATISTICS */}
-<div className="op-card op-stat-dashboard">
+
+
+
+</aside>
+
+
+
+
+
+
+
+<div className="profile-right">
+
+
+
+<div className="profile-table reveal-table">
+
+
 <h2>
 📊 CAREER STATISTICS
 </h2>
-<div className="op-stat-grid">
-<div className="op-stat-box">
-<span>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
 MATCHES
-</span>
-<strong>
-{totalMatches}
-</strong>
-</div>
-<div className="op-stat-box">
-<span>
+</th>
+
+<th>
 KILLS
-</span>
-<strong>
-{totalKills}
-</strong>
-</div>
-<div className="op-stat-box">
-<span>
+</th>
+
+<th>
 ASSISTS
-</span>
-<strong>
-{totalAssists}
-</strong>
-</div>
-<div className="op-stat-box">
-<span>
+</th>
+
+<th>
 DAMAGE
-</span>
-<strong>
-{totalDamage}
-</strong>
-</div>
-<div className="op-stat-box">
-<span>
+</th>
+
+<th>
 MVP
-</span>
-<strong>
+</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+<tr>
+
+<td>
+{totalMatches}
+</td>
+
+
+<td>
+{totalKills}
+</td>
+
+
+<td>
+{totalAssists}
+</td>
+
+
+<td>
+{totalDamage}
+</td>
+
+
+<td>
 {totalMVP}
-</strong>
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
 </div>
-</div>
-</div>
-{/* ACHIEVEMENTS */}
-<div className="op-card">
+
+
+
+
+
+
+<div className="profile-table reveal-table">
+
+
 <h2>
 🏆 ACHIEVEMENTS
 </h2>
-<div className="op-table-wrap">
+
+
+
 <table>
+
+
 <thead>
+
 <tr>
+
 <th>
 DATE
 </th>
+
 <th>
 TIER
 </th>
+
 <th>
 TOURNAMENT
 </th>
+
 <th>
 PRIZE
 </th>
+
+
 </tr>
+
+
 </thead>
+
+
 <tbody>
+
+
 <tr>
+
 <td>
 2026
 </td>
+
 <td>
 A-Tier
 </td>
+
 <td>
 Free Fire Championship
 </td>
+
 <td>
 $120
 </td>
+
 </tr>
+
+
 <tr>
+
 <td>
 2026
 </td>
+
 <td>
 A-Tier
 </td>
+
 <td>
 Asia Invitational
 </td>
+
 <td>
 $181
 </td>
+
 </tr>
+
+
 <tr>
+
 <td>
 2026
 </td>
+
 <td>
 C-Tier
 </td>
+
 <td>
 Community Tournament
 </td>
+
 <td>
 $48
 </td>
+
 </tr>
+
+
 </tbody>
+
+
 </table>
+
+
 </div>
-</div>
-{/* ===========================
-   AWARDS
-=========================== */}
-<div className="op-card">
+
+
+
+
+
+
+<div className="profile-table reveal-table">
+
+
 <h2>
 🏅 AWARDS
 </h2>
-<div className="op-award-grid">
-<div className="op-award-card">
-<div className="award-icon">
-🏆
-</div>
-<h3>
-Tournament Champion
-</h3>
-<p>
-Free Fire Championship Winner
-</p>
-</div>
-<div className="op-award-card">
-<div className="award-icon">
-🥇
-</div>
-<h3>
-MVP Award
-</h3>
-<p>
-Best Performance Player
-</p>
-</div>
-<div className="op-award-card">
-<div className="award-icon">
-🔥
-</div>
-<h3>
-Top Fragger
-</h3>
-<p>
-Highest Kill Contribution
-</p>
-</div>
-</div>
-</div>
-{/* ===========================
-   PLAYER HIGHLIGHTS
-=========================== */}
-<div className="op-card">
-<h2>
-🎥 PLAYER HIGHLIGHTS
-</h2>
-<div className="op-video-grid">
-{
-player.youtubeVideos.length > 0 ? (
-player.youtubeVideos.map(
-(video,index)=>(
-<div
-className="op-video-card"
-key={index}
->
-<iframe
-src={`https://www.youtube.com/embed/${video}`}
-title="Player Highlight"
-allowFullScreen
-></iframe>
-</div>
-)
-)
-)
-:
-(
-<p>
-No highlights available.
-</p>
-)
-}
-</div>
-</div>
-</div>
-</div>
-</div>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>
+DATE
+</th>
+
+
+<th>
+AWARD
+</th>
+
+
+<th>
+ORGANIZATION
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody>
+
+
+<tr>
+
+<td>
+2026
+</td>
+
+
+<td>
+Elite Player Award
+</td>
+
+
+<td>
+Over Power Esports
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
 </div>
 
+
+
+
+
+
+
+<div className="profile-table video-gallery">
+
+
+<h2>
+🎬 PLAYER HIGHLIGHTS
+</h2>
+
+
+
+
+{
+player.youtubeVideos.length > 0 ? (
+
+
+<div className="video-grid">
+
+
+{
+player.youtubeVideos.map(
+(video,index)=>(
+
+
+<div
+className="video-card"
+key={`${video}-${index}`}
+>
+
+
+<iframe
+
+src={`https://www.youtube.com/embed/${video}`}
+
+title={`${player.ign} Highlight ${index + 1}`}
+
+loading="lazy"
+
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+
+referrerPolicy="strict-origin-when-cross-origin"
+
+allowFullScreen
+
+></iframe>
+
+
+</div>
+
+
+)
+
+)
+
+
+}
+
+
+</div>
+
+
+) : (
+
+
+<p>
+No player highlights available yet.
+</p>
+
+
+)
+
+}
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
 </section>
+
+
 );
+
 }
