@@ -8,9 +8,16 @@ export default function PreLoader(){
   const [progress,setProgress]=useState(0);
   const [hide,setHide]=useState(false);
   const [exit,setExit]=useState(false);
-
+  const [started,setStarted]=useState(false);
 
   useEffect(()=>{
+    
+    if (performance.navigation.type === 2) {
+  setHide(true);
+  return;
+}
+
+setStarted(true);
 
     const timer=setInterval(()=>{
 
@@ -48,7 +55,7 @@ export default function PreLoader(){
 
 
 
-if(hide) return null;
+if(hide || !started) return null;
 
 
 
