@@ -10,12 +10,67 @@ export default function PageTransition(){
 
   const pathname = usePathname();
 
-  const [show,setShow]=useState(false);
+  const [show,setShow] = useState(false);
+  const [reverse,setReverse] = useState(false);
+
 
 
   useEffect(()=>{
 
+
+    const handlePopState = ()=>{
+
+      setReverse(true);
+      setShow(true);
+
+
+      setTimeout(()=>{
+
+        setShow(false);
+
+      },1200);
+
+
+    };
+
+
+    window.addEventListener(
+      "popstate",
+      handlePopState
+    );
+
+
+
+    return()=>{
+
+      window.removeEventListener(
+        "popstate",
+        handlePopState
+      );
+
+    }
+
+
+  },[]);
+
+
+
+
+
+  useEffect(()=>{
+
+
+    if(!window.history.state){
+
+      return;
+
+    }
+
+
+    setReverse(false);
+
     setShow(true);
+
 
 
     const timer=setTimeout(()=>{
@@ -25,10 +80,13 @@ export default function PageTransition(){
     },1200);
 
 
-    return ()=>clearTimeout(timer);
+
+    return()=>clearTimeout(timer);
 
 
   },[pathname]);
+
+
 
 
 
@@ -38,21 +96,24 @@ export default function PageTransition(){
 
 return(
 
-<div className="transition">
+<div className={`transition ${reverse ? "reverse":""}`}>
+
 
 
 <div className="background-glow"></div>
 
 
 
+
 <div className="orb">
+
 
 
 <div className="threads">
 
 {Array.from({length:20}).map((_,i)=>(
 
-<span 
+<span
 key={i}
 style={{
 "--i":i
@@ -61,7 +122,10 @@ style={{
 
 ))}
 
+
 </div>
+
+
 
 
 
@@ -69,7 +133,10 @@ style={{
 
 
 
+
+
 <div className="logo-holder">
+
 
 <Image
 
@@ -85,17 +152,12 @@ className="logo"
 
 />
 
-</div>
-
-
-
-<div className="shine"></div>
-
 
 </div>
 
 
 
+</div>
 <style jsx>{`
 
 .transition{
@@ -108,31 +170,21 @@ z-index:999999;
 
 background:#020202;
 
-
 display:flex;
 
 align-items:center;
 
 justify-content:center;
 
-
 overflow:hidden;
-
-
-animation:fade .4s ease;
-
 
 }
 
 
 
-
-
 .background-glow{
 
-
 position:absolute;
-
 
 width:350px;
 
@@ -164,9 +216,7 @@ glowPulse 2s infinite;
 
 .orb{
 
-
 position:relative;
-
 
 width:120px;
 
@@ -180,9 +230,15 @@ align-items:center;
 justify-content:center;
 
 
+z-index:5;
+
+
+animation:
+
+logoAppear .8s ease;
+
+
 }
-
-
 
 
 
@@ -211,12 +267,7 @@ background:#050505;
 
 box-shadow:
 
-0 0 25px rgba(255,0,60,.6);
-
-
-animation:
-
-logoIn .8s ease;
+0 0 30px rgba(255,0,60,.7);
 
 
 }
@@ -244,7 +295,6 @@ border-radius:50%;
 
 
 
-
 .ring{
 
 
@@ -259,7 +309,12 @@ border-radius:50%;
 
 border:
 
-1.5px solid rgba(255,0,60,.9);
+2px solid transparent;
+
+
+border-top-color:#ff2020;
+
+border-right-color:#ff2020;
 
 
 box-shadow:
@@ -269,7 +324,7 @@ box-shadow:
 
 animation:
 
-rotate 2s linear infinite;
+rotate 1.5s linear infinite;
 
 
 z-index:8;
@@ -281,7 +336,7 @@ z-index:8;
 
 
 
-/* 20 THIN ENERGY FIBERS */
+/* ENERGY THREAD SYSTEM */
 
 
 .threads{
@@ -290,10 +345,13 @@ z-index:8;
 position:absolute;
 
 
-inset:-900px;
+inset:-800px;
 
 
-z-index:3;
+z-index:2;
+
+
+pointer-events:none;
 
 
 }
@@ -324,8 +382,8 @@ background:
 linear-gradient(
 to top,
 transparent,
-rgba(255,255,255,.9),
-rgba(255,0,80,.8)
+rgba(255,0,80,.9),
+rgba(255,255,255,.7)
 );
 
 
@@ -339,17 +397,12 @@ opacity:0;
 
 animation:
 
-fiber 1.2s ease forwards;
+fiberOut 1.1s ease forwards;
 
 
 animation-delay:
 
-calc(var(--i) * .03s);
-
-
-filter:
-
-drop-shadow(0 0 5px rgba(255,0,80,.8));
+calc(var(--i) * .025s);
 
 
 }
@@ -358,110 +411,21 @@ drop-shadow(0 0 5px rgba(255,0,80,.8));
 
 
 
-.threads span:nth-child(1){
-transform:rotate(0deg);
-}
+.reverse .threads span{
 
 
-.threads span:nth-child(2){
-transform:rotate(18deg);
-}
+animation:
+
+fiberBack 1.1s ease forwards;
 
 
-.threads span:nth-child(3){
-transform:rotate(36deg);
-}
-
-
-.threads span:nth-child(4){
-transform:rotate(54deg);
-}
-
-
-.threads span:nth-child(5){
-transform:rotate(72deg);
-}
-
-
-.threads span:nth-child(6){
-transform:rotate(90deg);
-}
-
-
-.threads span:nth-child(7){
-transform:rotate(108deg);
-}
-
-
-.threads span:nth-child(8){
-transform:rotate(126deg);
-}
-
-
-.threads span:nth-child(9){
-transform:rotate(144deg);
-}
-
-
-.threads span:nth-child(10){
-transform:rotate(162deg);
-}
-
-
-.threads span:nth-child(11){
-transform:rotate(180deg);
-}
-
-
-.threads span:nth-child(12){
-transform:rotate(198deg);
-}
-
-
-.threads span:nth-child(13){
-transform:rotate(216deg);
-}
-
-
-.threads span:nth-child(14){
-transform:rotate(234deg);
-}
-
-
-.threads span:nth-child(15){
-transform:rotate(252deg);
-}
-
-
-.threads span:nth-child(16){
-transform:rotate(270deg);
-}
-
-
-.threads span:nth-child(17){
-transform:rotate(288deg);
-}
-
-
-.threads span:nth-child(18){
-transform:rotate(306deg);
-}
-
-
-.threads span:nth-child(19){
-transform:rotate(324deg);
-}
-
-
-.threads span:nth-child(20){
-transform:rotate(342deg);
 }
 
 
 
 
 
-@keyframes fiber{
+@keyframes fiberOut{
 
 
 0%{
@@ -474,7 +438,7 @@ opacity:0;
 }
 
 
-30%{
+25%{
 
 opacity:1;
 
@@ -497,61 +461,66 @@ opacity:0;
 
 
 
-.shine{
+
+@keyframes fiberBack{
 
 
-position:absolute;
+0%{
 
+height:1000px;
 
-z-index:15;
-
-
-width:140px;
-
-height:18px;
-
-
-background:
-
-linear-gradient(
-90deg,
-transparent,
-white,
-transparent
-);
-
-
-transform:
-
-translateX(-150px)
-rotate(-30deg);
-
-
-animation:
-
-shineMove .8s ease;
+opacity:0;
 
 
 }
 
 
+35%{
+
+opacity:1;
 
 
-@keyframes shineMove{
+}
 
 
 100%{
 
-transform:
+height:0;
 
-translateX(150px)
-rotate(-30deg);
+opacity:0;
+
+
+}
 
 
 }
 
 
-}
+
+
+
+
+.threads span:nth-child(1){transform:rotate(0deg)}
+.threads span:nth-child(2){transform:rotate(18deg)}
+.threads span:nth-child(3){transform:rotate(36deg)}
+.threads span:nth-child(4){transform:rotate(54deg)}
+.threads span:nth-child(5){transform:rotate(72deg)}
+.threads span:nth-child(6){transform:rotate(90deg)}
+.threads span:nth-child(7){transform:rotate(108deg)}
+.threads span:nth-child(8){transform:rotate(126deg)}
+.threads span:nth-child(9){transform:rotate(144deg)}
+.threads span:nth-child(10){transform:rotate(162deg)}
+.threads span:nth-child(11){transform:rotate(180deg)}
+.threads span:nth-child(12){transform:rotate(198deg)}
+.threads span:nth-child(13){transform:rotate(216deg)}
+.threads span:nth-child(14){transform:rotate(234deg)}
+.threads span:nth-child(15){transform:rotate(252deg)}
+.threads span:nth-child(16){transform:rotate(270deg)}
+.threads span:nth-child(17){transform:rotate(288deg)}
+.threads span:nth-child(18){transform:rotate(306deg)}
+.threads span:nth-child(19){transform:rotate(324deg)}
+.threads span:nth-child(20){transform:rotate(342deg)}
+
 
 
 
@@ -559,25 +528,21 @@ rotate(-30deg);
 
 @keyframes rotate{
 
-
 100%{
 
 transform:rotate(360deg);
 
+}
 
 }
 
 
-}
 
 
+@keyframes logoAppear{
 
 
-
-@keyframes logoIn{
-
-
-from{
+0%{
 
 transform:scale(.5);
 
@@ -587,7 +552,7 @@ opacity:0;
 }
 
 
-to{
+100%{
 
 transform:scale(1);
 
@@ -602,7 +567,6 @@ opacity:1;
 
 
 
-
 @keyframes glowPulse{
 
 
@@ -610,44 +574,14 @@ opacity:1;
 
 transform:scale(1.3);
 
-}
+opacity:.5;
 
 
 }
 
-
-
-
-
-@keyframes fade{
-
-
-from{
-
-opacity:0;
-
 }
 
-
-to{
-
-opacity:1;
-
-
-}
-
-
-}
 
 
 
 `}</style>
-
-
-</div>
-
-
-);
-
-
-}
