@@ -48,7 +48,7 @@ export default function PreLoader(){
 
 
 
-  if(hide) return null;
+if(hide) return null;
 
 
 
