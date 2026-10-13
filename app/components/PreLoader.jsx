@@ -5,43 +5,44 @@ import { useEffect, useState } from "react";
 
 export default function PreLoader(){
 
-  const [progress,setProgress] = useState(0);
-  const [hide,setHide] = useState(false);
+  const [progress,setProgress]=useState(0);
+  const [hide,setHide]=useState(false);
+  const [exit,setExit]=useState(false);
 
 
   useEffect(()=>{
 
-    const interval = setInterval(()=>{
+    const timer=setInterval(()=>{
 
       setProgress(prev=>{
 
-        if(prev >= 100){
+        if(prev>=100){
 
-          clearInterval(interval);
+          clearInterval(timer);
 
           setTimeout(()=>{
 
-            setHide(true);
+            setExit(true);
 
-          },400);
+            setTimeout(()=>{
+              setHide(true);
+            },700);
+
+          },300);
 
 
           return 100;
-
         }
 
-
-        return prev + 5;
+        return prev+4;
 
       });
 
 
-    },50);
+    },45);
 
 
-
-    return ()=>clearInterval(interval);
-
+    return()=>clearInterval(timer);
 
   },[]);
 
@@ -51,69 +52,81 @@ export default function PreLoader(){
 
 
 
-  return(
+return(
 
-    <div className="loader">
-
-
-      <div className="loader-light"></div>
+<div className={`loader ${exit?"exit":""}`}>
 
 
-      <div className="logo">
+<div className="laser"></div>
 
-        OP
 
-      </div>
+<div className="energy"></div>
 
 
 
-      <h1>
-        WELCOME TO
-        <span>
-          OVER POWER
-        </span>
-      </h1>
+<div className="logo-wrap">
+
+<div className="ring"></div>
+
+<div className="logo">
+OP
+</div>
+
+</div>
 
 
 
-      <div className="loading-text">
 
-        Loading...
+<h1>
 
-      </div>
+WELCOME TO
 
+<span>
+OVER POWER
+</span>
 
-
-      <div className="bar">
-
-        <div 
-        className="fill"
-        style={{
-          width:`${progress}%`
-        }}
-        ></div>
-
-
-      </div>
+</h1>
 
 
 
-      <div className="percent">
 
-        {progress}%
+<div className="loading">
 
-      </div>
+<div className="loading-title">
+LOADING...
+</div>
+
+
+<div className="bar">
+
+<div 
+className="fill"
+style={{
+width:`${progress}%`
+}}
+></div>
+
+</div>
+
+
+<div className="percent">
+{progress}%
+</div>
+
+
+</div>
 
 
 
-      <p>
-        EVERY SECOND MATTERS
-      </p>
+
+<p>
+EVERY SECOND MATTERS
+</p>
+
 
 
 
 <style jsx>{`
-
 
 .loader{
 
@@ -121,12 +134,13 @@ position:fixed;
 
 inset:0;
 
+
 background:
 
 radial-gradient(
 circle at center,
-#300000,
-#000
+#520000,
+#050505 60%
 );
 
 
@@ -134,9 +148,9 @@ display:flex;
 
 flex-direction:column;
 
-align-items:center;
-
 justify-content:center;
+
+align-items:center;
 
 
 z-index:999999;
@@ -148,44 +162,120 @@ overflow:hidden;
 color:white;
 
 
+transition:.7s;
+
+
 }
 
 
 
-.loader-light{
+.loader.exit{
+
+opacity:0;
+
+transform:scale(1.08);
+
+}
+
+
+
+
+.laser{
+
 
 position:absolute;
 
 
-width:400px;
+width:900px;
 
-height:400px;
+height:2px;
+
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+red,
+yellow,
+transparent
+);
+
+
+top:45%;
+
+
+left:-100%;
+
+
+filter:
+
+blur(2px);
+
+
+animation:
+
+laserMove 3s infinite;
+
+
+}
+
+
+
+
+@keyframes laserMove{
+
+
+100%{
+
+left:120%;
+
+}
+
+
+}
+
+
+
+
+
+.energy{
+
+
+position:absolute;
+
+
+width:500px;
+
+height:500px;
 
 
 background:red;
 
 
-filter:blur(150px);
+opacity:.15;
 
 
-opacity:.25;
+filter:blur(160px);
 
 
-animation:pulse 10s infinite;
+animation:
+
+energyPulse 3s infinite;
 
 
 }
 
 
 
-@keyframes pulse{
+@keyframes energyPulse{
 
 
 50%{
 
 transform:scale(1.4);
 
-opacity:.5;
+opacity:.3;
 
 }
 
@@ -194,14 +284,18 @@ opacity:.5;
 
 
 
-.logo{
-
-width:100px;
-
-height:100px;
 
 
-border-radius:50%;
+
+.logo-wrap{
+
+
+position:relative;
+
+
+width:160px;
+
+height:160px;
 
 
 display:flex;
@@ -211,20 +305,6 @@ align-items:center;
 justify-content:center;
 
 
-font-size:45px;
-
-font-weight:900;
-
-
-border:3px solid red;
-
-
-box-shadow:
-
-0 0 30px red,
-0 0 70px red;
-
-
 margin-bottom:35px;
 
 
@@ -232,14 +312,113 @@ margin-bottom:35px;
 
 
 
+.ring{
+
+
+position:absolute;
+
+
+inset:0;
+
+
+border-radius:50%;
+
+
+background:
+
+conic-gradient(
+red,
+yellow,
+red,
+transparent,
+red
+);
+
+
+animation:
+
+rotate 3s linear infinite;
+
+
+filter:blur(1px);
+
+
+}
+
+
+
+
+@keyframes rotate{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+
+
+.logo{
+
+
+width:140px;
+
+height:140px;
+
+
+border-radius:50%;
+
+
+background:#090909;
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+
+font-size:55px;
+
+font-weight:1000;
+
+
+border:2px solid red;
+
+
+box-shadow:
+
+0 0 30px red,
+inset 0 0 30px red;
+
+
+z-index:2;
+
+
+}
+
+
+
+
 h1{
 
 
-font-size:24px;
+font-size:28px;
 
-letter-spacing:4px;
+
+letter-spacing:5px;
+
 
 text-align:center;
+
+
+animation:
+
+textShow 1s;
 
 
 }
@@ -248,16 +427,45 @@ text-align:center;
 
 h1 span{
 
+
 display:block;
 
-color:#ff2020;
 
-font-size:38px;
+font-size:55px;
+
+
+color:#ff2020;
 
 
 text-shadow:
 
-0 0 20px red;
+0 0 20px red,
+0 0 50px red;
+
+
+}
+
+
+
+@keyframes textShow{
+
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
 
 
 }
@@ -265,12 +473,30 @@ text-shadow:
 
 
 
-.loading-text{
+
+.loading{
 
 
-margin-top:35px;
+margin-top:40px;
 
-font-size:18px;
+
+text-align:center;
+
+
+}
+
+
+
+.loading-title{
+
+
+letter-spacing:5px;
+
+
+font-size:14px;
+
+
+margin-bottom:15px;
 
 
 }
@@ -280,15 +506,13 @@ font-size:18px;
 .bar{
 
 
-margin-top:15px;
+width:350px;
 
 
-width:280px;
-
-height:8px;
+height:10px;
 
 
-background:#222;
+background:#1b1b1b;
 
 
 border-radius:20px;
@@ -297,7 +521,12 @@ border-radius:20px;
 overflow:hidden;
 
 
-border:1px solid #444;
+border:1px solid #555;
+
+
+box-shadow:
+
+0 0 20px rgba(255,0,0,.5);
 
 
 }
@@ -322,7 +551,7 @@ red
 
 box-shadow:
 
-0 0 20px red;
+0 0 25px red;
 
 
 transition:.1s;
@@ -332,12 +561,16 @@ transition:.1s;
 
 
 
-
 .percent{
 
-margin-top:12px;
 
-font-weight:bold;
+margin-top:15px;
+
+
+font-weight:900;
+
+
+font-size:20px;
 
 
 }
@@ -347,12 +580,14 @@ font-weight:bold;
 p{
 
 
-margin-top:25px;
+margin-top:35px;
+
+
+letter-spacing:8px;
+
 
 font-size:12px;
 
-
-letter-spacing:5px;
 
 color:#aaa;
 
@@ -361,13 +596,68 @@ color:#aaa;
 
 
 
+
+
+@media(max-width:600px){
+
+
+.logo-wrap{
+
+width:120px;
+
+height:120px;
+
+}
+
+
+
+.logo{
+
+width:105px;
+
+height:105px;
+
+font-size:40px;
+
+}
+
+
+
+h1{
+
+font-size:20px;
+
+}
+
+
+
+h1 span{
+
+font-size:38px;
+
+}
+
+
+
+.bar{
+
+width:260px;
+
+}
+
+
+
+}
+
+
 `}</style>
 
 
 
-    </div>
+</div>
 
 
-  );
+);
+
 
 }
