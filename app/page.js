@@ -119,8 +119,10 @@ export default function Home() {
       <FloatingContact />
 
 
-    </main>
+   </main>
 
-  );
+</>
+
+);
 
 }
