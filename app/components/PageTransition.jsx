@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import logo from "../assets/logo.png";
 
 export default function PageTransition(){
 
@@ -50,7 +50,7 @@ return(
 
 
 <Image
-src="/assets/logo.png"
+src={logo}
 alt="OP Logo"
 width={90}
 height={90}
