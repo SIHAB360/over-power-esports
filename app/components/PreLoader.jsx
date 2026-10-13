@@ -70,11 +70,11 @@ setTimeout(()=>{
 setHide(true);
 
 
-},700);
+},450);
 
 
 
-},300);
+},150);
 
 
 
@@ -93,7 +93,7 @@ return prev+4;
 
 
 
-},45);
+},30);
 
 
 
@@ -236,7 +236,7 @@ overflow:hidden;
 color:white;
 
 
-transition:.7s;
+transition:.45s;
 
 
 }
