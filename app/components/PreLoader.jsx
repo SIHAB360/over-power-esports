@@ -8,118 +8,105 @@ export default function PreLoader(){
   const [progress,setProgress] = useState(0);
   const [hide,setHide] = useState(false);
   const [exit,setExit] = useState(false);
+  const [ready,setReady]=useState(false);
 
 
+useEffect(()=>{
 
-  useEffect(()=>{
 
+const hasVisited =
+sessionStorage.getItem("op_home_loaded");
 
-    // Check how user entered the page
 
-    const navigation =
-    window.performance.getEntriesByType("navigation")[0];
+// যদি আগে থেকেই এই session এ Home দেখা হয়ে থাকে
+// তাহলে loader দেখাবে না
 
+if(hasVisited){
 
+  setHide(true);
 
-    // Browser back / forward navigation
-    // Home loader বন্ধ থাকবে
+  return;
 
-    if(
-      navigation &&
-      navigation.type === "back_forward"
-    ){
+}
 
-      setHide(true);
 
-      return;
 
-    }
+// প্রথমবার Home entry
 
+sessionStorage.setItem(
+"op_home_loaded",
+"true"
+);
 
 
-    // Internal Next.js navigation হলে বন্ধ
 
-    const referrer =
-    document.referrer;
+setReady(true);
 
 
-    if(
-      referrer &&
-      referrer.includes(
-        window.location.hostname
-      )
-    ){
 
-      setHide(true);
+const timer=setInterval(()=>{
 
-      return;
 
-    }
+setProgress(prev=>{
 
 
+if(prev>=100){
 
-    // Direct entry হলে loader চলবে
 
+clearInterval(timer);
 
-    const timer=setInterval(()=>{
 
 
-      setProgress(prev=>{
+setTimeout(()=>{
 
 
-        if(prev >= 100){
+setExit(true);
 
 
-          clearInterval(timer);
 
+setTimeout(()=>{
 
 
-          setTimeout(()=>{
+setHide(true);
 
 
-            setExit(true);
+},700);
 
 
 
-            setTimeout(()=>{
+},300);
 
-              setHide(true);
 
-            },700);
 
+return 100;
 
 
-          },300);
+}
 
 
 
-          return 100;
+return prev+4;
 
-        }
 
 
+});
 
-        return prev + 4;
 
 
-      });
+},45);
 
 
 
-    },45);
+return()=>clearInterval(timer);
 
 
 
-    return ()=>clearInterval(timer);
+},[]);
 
 
 
-  },[]);
 
-
-
-
-  if(hide) return null;
+if(hide || !ready) return null;
 
 
 
