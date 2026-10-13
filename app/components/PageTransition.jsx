@@ -16,12 +16,11 @@ export default function PageTransition(){
 
     setShow(true);
 
-
     const timer=setTimeout(()=>{
 
       setShow(false);
 
-    },850);
+    },1000);
 
 
     return ()=>clearTimeout(timer);
@@ -47,10 +46,6 @@ return(
 <div className="orb">
 
 
-<div className="ring"></div>
-
-
-
 <div className="threads">
 
 <span></span>
@@ -64,6 +59,9 @@ return(
 
 </div>
 
+
+
+<div className="ring"></div>
 
 
 
@@ -80,7 +78,6 @@ className="logo"
 </div>
 
 
-
 <div className="shine"></div>
 
 
@@ -89,7 +86,6 @@ className="logo"
 
 
 <style jsx>{`
-
 
 .transition{
 
@@ -109,10 +105,9 @@ justify-content:center;
 
 overflow:hidden;
 
-animation:fade .3s ease;
+animation:fade .35s ease;
 
 }
-
 
 
 
@@ -121,24 +116,24 @@ animation:fade .3s ease;
 
 position:absolute;
 
-width:300px;
+width:350px;
 
-height:300px;
+height:350px;
 
 
 background:
 
 radial-gradient(
 circle,
-rgba(255,0,60,.35),
+rgba(255,0,80,.3),
 transparent 70%
 );
 
 
-filter:blur(60px);
+filter:blur(80px);
 
 
-animation:pulse 1s infinite;
+animation:pulse 2s infinite;
 
 }
 
@@ -154,6 +149,7 @@ width:120px;
 
 height:120px;
 
+
 display:flex;
 
 align-items:center;
@@ -163,13 +159,14 @@ justify-content:center;
 
 animation:appear .8s ease;
 
+
 }
 
 
 
 
-
 .logo-holder{
+
 
 position:relative;
 
@@ -187,21 +184,12 @@ border-radius:50%;
 overflow:hidden;
 
 
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-
 background:#050505;
 
 
 box-shadow:
 
-0 0 18px rgba(255,0,0,.35),
-
-inset 0 0 12px rgba(255,0,0,.18);
+0 0 25px rgba(255,0,60,.45);
 
 
 animation:
@@ -214,9 +202,7 @@ logoFloat .8s ease;
 
 
 
-
 .logo{
-
 
 width:100%;
 
@@ -226,23 +212,21 @@ height:100%;
 object-fit:cover;
 
 
-display:block;
-
-
 border-radius:50%;
 
 
 filter:
 
-drop-shadow(0 0 18px rgba(255,0,0,.45));
+drop-shadow(0 0 20px red);
+
 
 }
 
 
 
 
-
 .ring{
+
 
 position:absolute;
 
@@ -260,12 +244,13 @@ border:
 
 border-top-color:#ff2020;
 
+
 border-right-color:#ff2020;
 
 
 box-shadow:
 
-0 0 20px red;
+0 0 25px red;
 
 
 animation:
@@ -282,52 +267,26 @@ z-index:4;
 
 
 
-.ring:after{
 
-
-content:"";
-
-
-position:absolute;
-
-
-inset:-10px;
-
-
-border-radius:50%;
-
-
-border:
-
-1px solid rgba(255,0,60,.5);
-
-
-}
-
-
-
-
-
-/* COLOR ENERGY THREAD */
+/* PREMIUM ENERGY FIBERS */
 
 
 .threads{
 
+
 position:absolute;
 
-inset:-180px;
+
+inset:-600px;
 
 
-z-index:1;
+z-index:2;
 
 
-animation:
-
-threadRotate 3s linear infinite;
+pointer-events:none;
 
 
 }
-
 
 
 
@@ -343,39 +302,29 @@ left:50%;
 top:50%;
 
 
-width:2px;
+width:1px;
 
 
-height:180px;
+height:900px;
 
 
 transform-origin:center bottom;
 
 
-background:linear-gradient(
-to top,
-transparent,
-#ff004c,
-#fff,
-#00ffff
-);
+opacity:0;
 
 
-box-shadow:
+filter:
 
-0 0 12px currentColor;
+blur(.2px);
 
 
 animation:
 
-threadMove .8s ease forwards;
-
-
-opacity:.8;
+fiberMove 1.1s ease forwards;
 
 
 }
-
 
 
 
@@ -387,11 +336,12 @@ transform:rotate(0deg);
 background:linear-gradient(
 to top,
 transparent,
-red,
-yellow
+#ff003c,
+white
 );
 
 }
+
 
 
 .threads span:nth-child(2){
@@ -401,11 +351,12 @@ transform:rotate(45deg);
 background:linear-gradient(
 to top,
 transparent,
-#00ffff,
+#00eaff,
 blue
 );
 
 }
+
 
 
 
@@ -416,11 +367,12 @@ transform:rotate(90deg);
 background:linear-gradient(
 to top,
 transparent,
-lime,
-green
+#00ff88,
+lime
 );
 
 }
+
 
 
 
@@ -439,6 +391,7 @@ pink
 
 
 
+
 .threads span:nth-child(5){
 
 transform:rotate(180deg);
@@ -451,6 +404,7 @@ red
 );
 
 }
+
 
 
 
@@ -469,6 +423,7 @@ blue
 
 
 
+
 .threads span:nth-child(7){
 
 transform:rotate(270deg);
@@ -481,6 +436,7 @@ yellow
 );
 
 }
+
 
 
 
@@ -500,23 +456,10 @@ red
 
 
 
-@keyframes threadRotate{
-
-
-100%{
-
-transform:rotate(360deg);
-
-}
-
-
-}
 
 
 
-
-
-@keyframes threadMove{
+@keyframes fiberMove{
 
 
 0%{
@@ -525,28 +468,49 @@ height:20px;
 
 opacity:0;
 
+transform-origin:center;
+
+
 }
 
 
-50%{
 
-height:220px;
+20%{
 
 opacity:1;
 
+
 }
+
+
+
+70%{
+
+height:1000px;
+
+
+opacity:.8;
+
+
+}
+
 
 
 100%{
 
-height:180px;
+height:1300px;
+
 
 opacity:0;
 
+
 }
 
 
+
 }
+
+
 
 
 
@@ -561,7 +525,7 @@ position:absolute;
 z-index:6;
 
 
-width:140px;
+width:150px;
 
 
 height:20px;
@@ -582,7 +546,8 @@ opacity:.7;
 
 transform:
 
-translateX(-150px) rotate(-30deg);
+translateX(-150px)
+rotate(-30deg);
 
 
 animation:
@@ -591,6 +556,7 @@ shineMove .8s ease;
 
 
 }
+
 
 
 
@@ -617,7 +583,7 @@ transform:rotate(360deg);
 
 from{
 
-transform:scale(.3);
+transform:scale(.4);
 
 opacity:0;
 
@@ -644,7 +610,7 @@ opacity:1;
 
 50%{
 
-transform:scale(1.08);
+transform:scale(1.06);
 
 }
 
@@ -661,7 +627,8 @@ transform:scale(1.08);
 
 transform:
 
-translateX(150px) rotate(-30deg);
+translateX(150px)
+rotate(-30deg);
 
 
 }
@@ -678,14 +645,12 @@ translateX(150px) rotate(-30deg);
 
 50%{
 
-transform:scale(1.3);
-
-
-}
-
+transform:scale(1.25);
 
 }
 
+
+}
 
 
 
@@ -709,6 +674,8 @@ opacity:1;
 
 
 }
+
+
 
 
 
