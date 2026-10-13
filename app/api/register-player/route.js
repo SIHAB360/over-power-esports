@@ -55,14 +55,15 @@ export async function POST(request) {
 
     for (const [key, value] of formData.entries()) {
 
-      if (
-        key !== "profile_image" &&
-        key !== "game_id_screenshot"
-      ) {
-        playerData[key] = value;
-      }
-    }
-
+  if (
+    key !== "profile_image" &&
+    key !== "game_id_screenshot" &&
+    key !== "password" &&
+    key !== "confirm_password"
+  ) {
+    playerData[key] = value;
+  }
+}
 
     if (profileImageUrl) {
       playerData.profile_image = profileImageUrl;
