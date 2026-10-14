@@ -1,26 +1,26 @@
 "use client";
 
+import Link from "next/link";
+
 export default function SideMenu({ open, close }) {
 
   return (
     <>
 
-   {open && (
-  <div
-    className="op-overlay"
-    onClick={() => close()}
-  />
-)}
-
+      {open && (
+        <div
+          className="op-overlay"
+          onClick={close}
+        />
+      )}
 
 
       <aside className={`op-side-menu ${open ? "open" : ""}`}>
 
 
-
         <button
           className="op-close"
-       onMouseDown={close}
+          onClick={close}
         >
           ×
         </button>
@@ -36,39 +36,66 @@ export default function SideMenu({ open, close }) {
 
 
 
+
         <div className="op-menu-links">
 
-          <a href="/">HOME</a>
 
-          <a href="/players">PLAYERS</a>
+          <Link href="/" onClick={close}>
+            HOME
+          </Link>
 
-          <a href="/teams">TEAMS</a>
 
-          <a href="/tournaments">
+
+          <Link href="/players" onClick={close}>
+            PLAYERS
+          </Link>
+
+
+
+          <Link href="/teams" onClick={close}>
+            TEAMS
+          </Link>
+
+
+
+          <Link href="/tournaments" onClick={close}>
             TOURNAMENTS
-          </a>
+          </Link>
 
-          <a href="/rankings">
+
+
+          <Link href="/rankings" onClick={close}>
             RANKINGS
-          </a>
+          </Link>
 
-          <a href="/join-team">
+
+
+          <Link href="/join-team" onClick={close}>
             JOIN TEAM
-          </a>
+          </Link>
 
-          <a href="/login">
+
+
+          <Link href="/login" onClick={close}>
             LOGIN
-          </a>
+          </Link>
+
+
 
         </div>
+
+
 
 
 
         <div className="op-side-footer">
+
           OVER POWER ESPORTS
           <br/>
           PLAY WITH DISCIPLINE
+
         </div>
+
 
 
 
@@ -291,21 +318,6 @@ background:#ff2020;
 box-shadow:
 
 0 0 35px #ff2020;
-
-
-}
-
-
-
-
-
-.op-close:hover{
-
-
-transform:rotate(90deg) scale(1.1);
-
-
-background:#ff1744;
 
 
 }
