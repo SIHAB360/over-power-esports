@@ -55,7 +55,7 @@ export default function BestPlayerCard({ data }) {
           position: relative;
           width: 100%;
           height: 100%;
-          min-height: 580px;
+          min-height: 520px;
           padding: 28px 24px;
           border-radius: 28px;
           overflow: hidden;
@@ -83,7 +83,6 @@ export default function BestPlayerCard({ data }) {
           border-color: rgba(255, 215, 74, 0.7);
         }
 
-        /* Animated energy border */
         .energy-border {
           position: absolute;
           inset: -2px;
@@ -107,7 +106,6 @@ export default function BestPlayerCard({ data }) {
           animation-duration: 2.5s;
         }
 
-        /* Badge */
         .badge {
           display: inline-flex;
           align-items: center;
@@ -124,7 +122,6 @@ export default function BestPlayerCard({ data }) {
           animation: pulseGlow 2.5s ease-in-out infinite;
         }
 
-        /* Team name */
         .team {
           margin-top: 18px;
           color: #00f5ff;
@@ -134,7 +131,6 @@ export default function BestPlayerCard({ data }) {
           text-transform: uppercase;
         }
 
-        /* Avatar */
         .avatar-box {
           position: relative;
           width: 150px;
@@ -185,7 +181,6 @@ export default function BestPlayerCard({ data }) {
           margin: 0;
         }
 
-        /* Score box */
         .score {
           width: 100%;
           margin: 22px 0 18px;
@@ -212,7 +207,6 @@ export default function BestPlayerCard({ data }) {
           line-height: 1;
         }
 
-        /* Stats grid */
         .stats {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -257,7 +251,6 @@ export default function BestPlayerCard({ data }) {
           color: white;
         }
 
-        /* Rank badge */
         .rank {
           margin-top: 20px;
           padding: 10px 22px;
@@ -272,19 +265,27 @@ export default function BestPlayerCard({ data }) {
           animation: pulseRed 2.2s ease-in-out infinite;
         }
 
-        /* Animations */
         @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
 
         @keyframes borderMove {
-          0% { background-position: 0%; }
-          100% { background-position: 300%; }
+          0% {
+            background-position: 0%;
+          }
+          100% {
+            background-position: 300%;
+          }
         }
 
         @keyframes pulseGlow {
-          0%, 100% {
+          0%,
+          100% {
             box-shadow: 0 0 15px rgba(255, 215, 74, 0.2);
           }
           50% {
@@ -293,7 +294,8 @@ export default function BestPlayerCard({ data }) {
         }
 
         @keyframes pulseRed {
-          0%, 100% {
+          0%,
+          100% {
             box-shadow: 0 0 15px rgba(255, 23, 68, 0.2);
           }
           50% {
@@ -303,13 +305,24 @@ export default function BestPlayerCard({ data }) {
 
         @media (max-width: 600px) {
           .vip-card {
-            min-height: 540px;
+            min-height: 500px;
+            padding: 22px 18px;
           }
           .score strong {
-            font-size: 42px;
+            font-size: 40px;
           }
           h2 {
             font-size: 22px;
+          }
+          .avatar-box {
+            width: 130px;
+            height: 130px;
+          }
+          .avatar-box img {
+            width: 110px;
+            height: 110px;
+            top: 10px;
+            left: 10px;
           }
         }
       `}</style>
