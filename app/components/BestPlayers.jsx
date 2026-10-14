@@ -13,9 +13,7 @@ export default function BestPlayers() {
 
   async function loadBestPlayers() {
     try {
-      /*
-        1. GET ALL ACTIVE TEAMS
-      */
+      // 1. GET ALL ACTIVE TEAMS
       const { data: teams, error: teamError } = await supabase
         .from("teams")
         .select(`
@@ -29,13 +27,8 @@ export default function BestPlayers() {
 
       const result = [];
 
-      /*
-        LOOP EACH TEAM
-      */
       for (const team of teams) {
-        /*
-          2. GET TEAM PLAYERS
-        */
+        // 2. GET TEAM PLAYERS
         const { data: players, error: playerError } = await supabase
           .from("players")
           .select(`
@@ -53,9 +46,7 @@ export default function BestPlayers() {
 
         let ranking = [];
 
-        /*
-          3. GET PLAYER PERFORMANCE
-        */
+        // 3. GET PLAYER PERFORMANCE
         for (const player of players) {
           const { data: stats } = await supabase
             .from("match_player_stats")
@@ -73,6 +64,7 @@ export default function BestPlayers() {
           let assists = 0;
           let mvp = 0;
           let wins = 0;
+          const totalMatches = (stats || []).length;
 
           (stats || []).forEach((item) => {
             kills += Number(item.kills || 0);
@@ -85,16 +77,27 @@ export default function BestPlayers() {
             }
           });
 
+          // Win Rate (%)
+          const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
+
           /*
-            PERFORMANCE SCORE
+            ================================
+            BEST PLAYER SCORE FORMULA
+            ================================
+            (Kills × 40%)
+            + (Damage × 25%)
+            + (Win Rate × 20%)
+            + (Assist × 10%)
+            + (MVP Count × 5%)
           */
           const rawScore =
             kills * 0.4 +
-            damage * 0.0025 +
+            damage * 0.25 +
+            winRate * 0.2 +
             assists * 0.1 +
-            mvp * 5 +
-            wins * 3;
+            mvp * 0.05;
 
+          // Score cap 0-100
           const score = Math.min(100, Number(rawScore.toFixed(1)));
 
           ranking.push({
@@ -113,14 +116,14 @@ export default function BestPlayers() {
               assists,
               mvp,
               wins,
+              winRate: Number(winRate.toFixed(1)),
+              matches: totalMatches,
             },
-            score: Number(score.toFixed(2)),
+            score: Number(score.toFixed(1)),
           });
         }
 
-        /*
-          4. SORT TOP PLAYER
-        */
+        // 4. SORT TOP PLAYER
         ranking.sort((a, b) => b.score - a.score);
 
         if (ranking.length) {
@@ -217,8 +220,8 @@ export default function BestPlayers() {
 
         .best-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 40px;
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 30px;
           max-width: 1400px;
           margin: auto;
         }
