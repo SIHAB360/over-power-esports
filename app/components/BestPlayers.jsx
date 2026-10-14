@@ -77,13 +77,8 @@ export default function BestPlayers() {
             }
           });
 
-          /*
-            ================================
-            BEST PLAYER SCORE (Option 3)
-            ================================
-            Total = Kills + Assists + MVP + Damage
-          */
-          const score = kills + assists + mvp + damage;
+          // Raw Total Score
+          const rawScore = kills + assists + mvp + damage;
 
           ranking.push({
             player: {
@@ -103,11 +98,20 @@ export default function BestPlayers() {
               wins,
               matches: totalMatches,
             },
-            score: Number(score),
+            rawScore, // temporary
           });
         }
 
-        // 4. SORT TOP PLAYER
+        // 4. Find the highest raw score in this team
+        const maxRawScore = Math.max(...ranking.map((p) => p.rawScore), 1);
+
+        // 5. Convert to 0-100 scale
+        ranking = ranking.map((item) => ({
+          ...item,
+          score: Number(((item.rawScore / maxRawScore) * 100).toFixed(1)),
+        }));
+
+        // 6. Sort by score
         ranking.sort((a, b) => b.score - a.score);
 
         if (ranking.length) {
