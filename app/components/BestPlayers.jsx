@@ -220,45 +220,42 @@ export default function BestPlayers(){
           */
 
 
-          const score =
+        const rawScore =
 
-          (
+(
+  kills * 0.35
+)
 
-            kills * 0.40
++
 
-          )
+(
+  damage * 0.0005
+)
 
-          +
++
 
-          (
+(
+  assists * 0.15
+)
 
-            damage * 0.0025
++
 
-          )
+(
+  mvp * 8
+)
 
-          +
++
 
-          (
+(
+  wins * 5
+);
 
-            assists * 0.10
 
-          )
 
-          +
-
-          (
-
-            mvp * 5
-
-          )
-
-          +
-
-          (
-
-            wins * 3
-
-          );
+const score = Math.min(
+  100,
+  Number(rawScore.toFixed(1))
+);
 
 
 
@@ -452,13 +449,28 @@ return (
 
 <div className="section-title">
 
+
+<div className="trophy">
+🏆
+</div>
+
+
 <h2>
-🏆 BEST PLAYERS
+THE ELITE LEGENDS
 </h2>
 
+
+<h3>
+BEST PLAYERS OF
+<br/>
+OVER POWER ESPORTS
+</h3>
+
+
 <p>
-POWER • UNITY • DOMINATION
+আমাদের (অরা) একটু বেশি
 </p>
+
 
 </div>
 
@@ -517,6 +529,98 @@ margin-bottom:60px;
 
 }
 
+.section-title{
+
+text-align:center;
+
+margin-bottom:80px;
+
+}
+
+
+.trophy{
+
+font-size:55px;
+
+filter:
+
+drop-shadow(
+0 0 25px #FFD54A
+);
+
+animation:
+
+float 3s infinite ease-in-out;
+
+}
+
+
+.section-title h2{
+
+font-size:55px;
+
+font-weight:1000;
+
+letter-spacing:6px;
+
+
+background:
+
+linear-gradient(
+90deg,
+#FFD54A,
+#FF1744,
+#FFD54A
+);
+
+
+-webkit-background-clip:text;
+
+color:transparent;
+
+
+text-shadow:
+
+0 0 40px rgba(255,215,74,.4);
+
+
+}
+
+
+
+.section-title h3{
+
+font-size:22px;
+
+color:white;
+
+letter-spacing:4px;
+
+margin-top:15px;
+
+}
+
+
+
+                      .section-title p{
+                      
+                      color:#00F5FF;
+                      
+                      letter-spacing:5px;
+                      
+                      }
+                      
+                      
+                      
+                      @keyframes float{
+                      
+                      50%{
+                      
+                      transform:translateY(-10px);
+                      
+                      }
+                      
+                      }
 
 .section-title h2{
 
