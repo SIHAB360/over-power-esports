@@ -4,6 +4,17 @@ import Link from "next/link";
 
 export default function SideMenu({ open, close }) {
 
+  const menus = [
+    {name:"HOME", href:"/"},
+    {name:"PLAYERS", href:"/players"},
+    {name:"TEAMS", href:"/teams"},
+    {name:"TOURNAMENTS", href:"/tournaments"},
+    {name:"RANKINGS", href:"/rankings"},
+    {name:"JOIN TEAM", href:"/join-team"},
+    {name:"LOGIN", href:"/login"},
+  ];
+
+
   return (
     <>
 
@@ -15,7 +26,9 @@ export default function SideMenu({ open, close }) {
       )}
 
 
-      <aside className={`op-side-menu ${open ? "open" : ""}`}>
+
+      <aside className={`op-side-menu ${open ? "open":""}`}>
+
 
 
         <button
@@ -28,11 +41,18 @@ export default function SideMenu({ open, close }) {
 
 
         <div className="op-side-logo">
+
           OVER POWER
+
           <span>
             ESPORTS
           </span>
+
+
+          <div className="logo-line"></div>
+
         </div>
+
 
 
 
@@ -40,46 +60,24 @@ export default function SideMenu({ open, close }) {
         <div className="op-menu-links">
 
 
-          <Link href="/" onClick={close}>
-            HOME
-          </Link>
+        {
+          menus.map((item,index)=>(
+
+            <Link
+              key={index}
+              href={item.href}
+              onClick={close}
+            >
+
+              <span className="menu-dot"></span>
+
+              {item.name}
 
 
+            </Link>
 
-          <Link href="/players" onClick={close}>
-            PLAYERS
-          </Link>
-
-
-
-          <Link href="/teams" onClick={close}>
-            TEAMS
-          </Link>
-
-
-
-          <Link href="/tournaments" onClick={close}>
-            TOURNAMENTS
-          </Link>
-
-
-
-          <Link href="/rankings" onClick={close}>
-            RANKINGS
-          </Link>
-
-
-
-          <Link href="/join-team" onClick={close}>
-            JOIN TEAM
-          </Link>
-
-
-
-          <Link href="/login" onClick={close}>
-            LOGIN
-          </Link>
-
+          ))
+        }
 
 
         </div>
@@ -99,15 +97,18 @@ export default function SideMenu({ open, close }) {
 
 
 
+
 <style jsx>{`
 
+
 *{
- box-sizing:border-box;
+box-sizing:border-box;
 }
 
 
 
-/* BACKDROP */
+/* BACKGROUND */
+
 
 .op-overlay{
 
@@ -117,104 +118,183 @@ inset:0;
 
 background:
 
-rgba(0,0,0,.55);
+rgba(0,0,0,.65);
 
 backdrop-filter:
 
-blur(10px);
+blur(12px);
 
 
 z-index:9998;
 
 
-cursor:pointer;
-
 }
 
 
 
-/* GLASS DRAWER */
+
+/* GLASS PANEL */
 
 
 .op-side-menu{
 
-pointer-events:auto;
 
 position:fixed;
 
 
-top:0;
+top:20px;
 
-left:-450px;
+left:-430px;
 
 
 width:390px;
 
-height:100vh;
+height:calc(100vh - 40px);
 
 
-padding:90px 40px 40px;
+
+padding:
+
+70px 35px 40px;
+
+
+
+border-radius:30px;
+
 
 
 background:
 
 linear-gradient(
+
 135deg,
-rgba(255,255,255,.08),
-rgba(10,0,5,.75)
+
+rgba(255,255,255,.10),
+
+rgba(20,0,10,.75)
+
 );
+
 
 
 backdrop-filter:
 
-blur(30px);
+blur(35px);
 
 
 
-border-right:
+border:
 
-1px solid rgba(255,0,60,.45);
+1px solid rgba(255,255,255,.18);
 
 
 
 box-shadow:
 
 
-20px 0 60px rgba(255,0,60,.25),
+0 0 50px rgba(255,0,80,.25),
 
-
-inset -20px 0 50px rgba(255,0,60,.08);
+inset 0 0 40px rgba(255,0,80,.08);
 
 
 
 transition:
 
-.45s cubic-bezier(.77,0,.18,1);
+.55s cubic-bezier(.77,0,.18,1);
 
 
 
 z-index:9999;
 
 
-overflow-y:auto;
-
-
-isolation:isolate;
+overflow:hidden;
 
 
 }
+
+
+
+
+.op-side-menu:before{
+
+
+content:"";
+
+
+position:absolute;
+
+
+inset:-2px;
+
+
+border-radius:30px;
+
+
+background:
+
+linear-gradient(
+
+90deg,
+
+transparent,
+
+#ff1744,
+
+transparent
+
+);
+
+
+opacity:.4;
+
+
+animation:
+
+borderMove 4s linear infinite;
+
+
+z-index:-1;
+
+
+}
+
+
+
+@keyframes borderMove{
+
+
+0%{
+
+transform:translateX(-100%);
+
+}
+
+
+100%{
+
+transform:translateX(100%);
+
+}
+
+
+}
+
 
 
 
 .op-side-menu.open{
 
-left:0;
+
+left:20px;
+
 
 }
 
 
 
-/* CLOSE BUTTON */
+
+
+/* CLOSE */
 
 
 .op-close{
@@ -229,76 +309,54 @@ right:25px;
 
 
 
-width:48px;
+width:50px;
 
-height:48px;
-
-
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
+height:50px;
 
 
 
 border-radius:50%;
 
 
-
 border:
 
-1px solid rgba(255,0,60,.8);
+1px solid rgba(255,0,80,.8);
 
 
 
 background:
 
-linear-gradient(
-145deg,
-rgba(255,30,60,.25),
-rgba(20,0,10,.8)
-);
+rgba(255,255,255,.08);
 
 
 
 color:white;
 
 
-
-font-size:30px;
-
-
-font-weight:400;
-
+font-size:32px;
 
 
 cursor:pointer;
 
 
 
-box-shadow:
-
-0 0 18px rgba(255,0,60,.5),
-inset 0 0 15px rgba(255,0,60,.2);
-
-
-
 backdrop-filter:
 
-blur(10px);
+blur(20px);
+
+
+
+box-shadow:
+
+0 0 25px rgba(255,0,80,.6);
 
 
 
 transition:.35s;
 
 
-
-z-index:10000;
-
-
 }
+
 
 
 
@@ -310,17 +368,11 @@ transform:
 rotate(90deg) scale(1.1);
 
 
-
-background:#ff2020;
-
-
-
-box-shadow:
-
-0 0 35px #ff2020;
+background:#ff1744;
 
 
 }
+
 
 
 
@@ -331,17 +383,21 @@ box-shadow:
 .op-side-logo{
 
 
-font-size:26px;
+font-size:28px;
 
 
-font-weight:900;
+font-weight:1000;
 
 
-letter-spacing:3px;
+letter-spacing:4px;
 
 
 color:white;
 
+
+text-shadow:
+
+0 0 20px rgba(255,255,255,.3);
 
 
 }
@@ -357,9 +413,43 @@ display:block;
 color:#ff1744;
 
 
+margin-top:5px;
+
+
 text-shadow:
 
-0 0 20px #ff1744;
+0 0 25px #ff1744;
+
+
+}
+
+
+
+
+.logo-line{
+
+
+width:120px;
+
+
+height:3px;
+
+
+margin-top:18px;
+
+
+background:
+
+linear-gradient(
+
+90deg,
+
+#ff1744,
+
+transparent
+
+);
+
 
 
 }
@@ -368,7 +458,7 @@ text-shadow:
 
 
 
-/* LINKS */
+/* MENU */
 
 
 .op-menu-links{
@@ -393,6 +483,25 @@ gap:18px;
 .op-menu-links a{
 
 
+height:55px;
+
+
+display:flex;
+
+
+align-items:center;
+
+
+gap:15px;
+
+
+padding:0 20px;
+
+
+border-radius:18px;
+
+
+
 color:white;
 
 
@@ -408,34 +517,137 @@ font-weight:700;
 letter-spacing:2px;
 
 
-padding:12px 0;
+
+background:
+
+rgba(255,255,255,.05);
 
 
-transition:.3s;
+
+border:
+
+1px solid rgba(255,255,255,.08);
+
+
+
+transition:.35s;
+
 
 
 position:relative;
 
 
+
+overflow:hidden;
+
+
 }
+
+
 
 
 
 .op-menu-links a:hover{
 
 
+transform:
+
+translateX(10px);
+
+
+border-color:#ff1744;
+
+
+box-shadow:
+
+0 0 25px rgba(255,0,80,.5);
+
+
 color:#ff1744;
 
 
-padding-left:18px;
+}
 
 
-text-shadow:
+
+
+
+.menu-dot{
+
+
+width:10px;
+
+height:10px;
+
+
+border-radius:50%;
+
+
+background:#ff1744;
+
+
+
+box-shadow:
 
 0 0 15px #ff1744;
 
 
+
+animation:
+
+blink 1.5s infinite;
+
+
 }
+
+
+
+.op-menu-links a:nth-child(2) .menu-dot{
+
+background:#00ffff;
+
+box-shadow:0 0 15px #00ffff;
+
+}
+
+
+
+.op-menu-links a:nth-child(3) .menu-dot{
+
+background:#9b5cff;
+
+box-shadow:0 0 15px #9b5cff;
+
+}
+
+
+
+.op-menu-links a:nth-child(4) .menu-dot{
+
+background:#ffd000;
+
+box-shadow:0 0 15px #ffd000;
+
+}
+
+
+
+
+
+@keyframes blink{
+
+
+50%{
+
+opacity:.3;
+
+transform:scale(.7);
+
+}
+
+
+}
+
 
 
 
@@ -452,13 +664,10 @@ position:absolute;
 bottom:35px;
 
 
-left:40px;
-
-
 font-size:11px;
 
 
-letter-spacing:2px;
+letter-spacing:3px;
 
 
 color:#888;
@@ -470,65 +679,13 @@ color:#888;
 
 
 
-/* MOBILE */
-
-
 @media(max-width:600px){
 
 
 .op-side-menu{
 
 
-width:85%;
-
-
-padding:
-
-80px 28px 30px;
-
-
-}
-
-
-
-.op-side-logo{
-
-font-size:20px;
-
-}
-
-
-
-.op-menu-links{
-
-
-margin-top:40px;
-
-
-gap:14px;
-
-
-}
-
-
-
-.op-menu-links a{
-
-
-font-size:16px;
-
-
-}
-
-
-
-.op-side-footer{
-
-
-left:28px;
-
-
-font-size:10px;
+width:calc(100% - 40px);
 
 
 }
@@ -542,8 +699,8 @@ font-size:10px;
 `}</style>
 
 
-      </aside>
 
+      </aside>
 
     </>
   );
