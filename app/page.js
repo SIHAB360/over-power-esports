@@ -67,10 +67,17 @@ export default function Home() {
 
 
       <section className="reveal-card">
+  
+  <BestPlayers />
 
-        <Teams />
+</section>
 
-      </section>
+
+<section className="reveal-card reveal-delay-1">
+
+  <Teams />
+
+</section>
     
       <Leadership />
 
