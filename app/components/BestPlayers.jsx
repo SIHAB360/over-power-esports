@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import BestPlayerCard from "./BestPlayerCard";
 
 
 export default function BestPlayers(){
@@ -436,15 +437,172 @@ export default function BestPlayers(){
 
 
 
-  if(loading){
-
-    return null;
-
-  }
-
-
+ if(loading){
 
   return null;
+
+}
+
+
+
+return (
+
+<section className="best-players">
+
+
+<div className="section-title">
+
+<h2>
+🏆 BEST PLAYERS
+</h2>
+
+<p>
+POWER • UNITY • DOMINATION
+</p>
+
+</div>
+
+
+
+<div className="best-grid">
+
+
+{
+bestPlayers.map((item,index)=>(
+
+
+<BestPlayerCard
+
+key={
+item.team.id || index
+}
+
+data={item}
+
+/>
+
+
+))
+
+}
+
+
+</div>
+
+
+
+<style jsx>{`
+
+.best-players{
+
+padding:100px 30px;
+
+background:
+
+radial-gradient(
+circle at top,
+rgba(255,215,74,.12),
+transparent 35%
+);
+
+}
+
+
+
+.section-title{
+
+text-align:center;
+
+margin-bottom:60px;
+
+}
+
+
+.section-title h2{
+
+
+font-size:48px;
+
+font-weight:900;
+
+letter-spacing:4px;
+
+color:#FFD54A;
+
+
+text-shadow:
+
+0 0 30px #FFD54A;
+
+
+}
+
+
+
+.section-title p{
+
+color:#00F5FF;
+
+letter-spacing:3px;
+
+}
+
+
+
+.best-grid{
+
+
+display:grid;
+
+
+grid-template-columns:
+
+repeat(
+auto-fit,
+minmax(300px,1fr)
+);
+
+
+gap:40px;
+
+
+max-width:1400px;
+
+
+margin:auto;
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.section-title h2{
+
+font-size:32px;
+
+}
+
+
+.best-players{
+
+padding:60px 20px;
+
+}
+
+
+}
+
+
+
+`}</style>
+
+
+</section>
+
+);
 
 
 }
