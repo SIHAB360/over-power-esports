@@ -220,7 +220,7 @@ export default function BestPlayers(){
           */
 
 
-        const rawScore =
+     const performanceRaw =
 
 (
   kills * 0.35
@@ -229,25 +229,40 @@ export default function BestPlayers(){
 +
 
 (
-  damage * 0.0005
+  damage * 0.0008
 )
 
 +
 
 (
-  assists * 0.15
+  assists * 0.20
 )
 
 +
 
 (
-  mvp * 8
+  mvp * 10
 )
 
 +
 
 (
-  wins * 5
+  wins * 8
+);
+
+
+
+const score = Math.min(
+  99.9,
+  Number(
+    (
+      performanceRaw /
+      (performanceRaw + 120)
+      *
+      100
+    )
+    .toFixed(1)
+  )
 );
 
 
