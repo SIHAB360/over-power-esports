@@ -10,6 +10,7 @@ import Games from "./components/Games";
 import Teams from "./components/Teams";
 import Leadership from "./components/Leadership";
 import PreLoader from "./components/PreLoader";
+import BestPlayers from "./components/BestPlayers";
 
 
 export default function Home() {
