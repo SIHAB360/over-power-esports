@@ -77,28 +77,13 @@ export default function BestPlayers() {
             }
           });
 
-          // Win Rate (%)
-          const winRate = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
-
           /*
             ================================
-            BEST PLAYER SCORE FORMULA
+            BEST PLAYER SCORE (Option 3)
             ================================
-            (Kills × 40%)
-            + (Damage × 25%)
-            + (Win Rate × 20%)
-            + (Assist × 10%)
-            + (MVP Count × 5%)
+            Total = Kills + Assists + MVP + Damage
           */
-          const rawScore =
-            kills * 0.4 +
-            damage * 0.25 +
-            winRate * 0.2 +
-            assists * 0.1 +
-            mvp * 0.05;
-
-          // Score cap 0-100
-          const score = Math.min(100, Number(rawScore.toFixed(1)));
+          const score = kills + assists + mvp + damage;
 
           ranking.push({
             player: {
@@ -116,10 +101,9 @@ export default function BestPlayers() {
               assists,
               mvp,
               wins,
-              winRate: Number(winRate.toFixed(1)),
               matches: totalMatches,
             },
-            score: Number(score.toFixed(1)),
+            score: Number(score),
           });
         }
 
