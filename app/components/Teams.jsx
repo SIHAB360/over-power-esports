@@ -151,7 +151,7 @@ export default function Teams() {
           name:teamName,
 
           slogan:
-          "POWER • UNITY • DOMINATION",
+          "আমাদের (অরা) একটু বেশি",
 
           players:[]
 
@@ -243,7 +243,7 @@ OUR TEAMS
 
 
 <p>
-POWER • UNITY • DOMINATION
+আমাদের (অরা) একটু বেশি
 </p>
 
 
