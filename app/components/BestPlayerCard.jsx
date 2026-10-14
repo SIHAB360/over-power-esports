@@ -10,7 +10,6 @@ export default function BestPlayerCard({ data }) {
   } = data;
 
 
-
   const {
     player,
     stats,
@@ -21,16 +20,21 @@ export default function BestPlayerCard({ data }) {
 
   return (
 
-    <div className="best-card">
+    <div className="vip-card">
 
 
-      <div className="champion-badge">
+      <div className="energy-border"></div>
+
+
+      <div className="badge">
+
         🏆 BEST PLAYER
+
       </div>
 
 
 
-      <div className="team-name">
+      <div className="team">
 
         {team.name}
 
@@ -38,16 +42,15 @@ export default function BestPlayerCard({ data }) {
 
 
 
+      <div className="avatar-box">
 
-      <div className="player-glow">
+
+        <div className="ring"></div>
 
 
         <img
-
           src={player.image}
-
           alt={player.ign}
-
         />
 
 
@@ -63,22 +66,22 @@ export default function BestPlayerCard({ data }) {
       </h2>
 
 
-
-      <span className="role">
+      <p className="role">
 
         {player.role}
 
-      </span>
+      </p>
 
 
 
 
-      <div className="score-box">
+
+      <div className="score">
 
 
-        <small>
+        <span>
           PERFORMANCE SCORE
-        </small>
+        </span>
 
 
         <strong>
@@ -92,80 +95,63 @@ export default function BestPlayerCard({ data }) {
 
 
 
+
       <div className="stats">
 
 
         <div>
 
           ⚔
-
-          <span>
-            KILLS
-          </span>
+          <small>KILLS</small>
 
           <b>
             {stats.kills}
           </b>
 
-
         </div>
-
 
 
 
         <div>
 
           💥
-
-          <span>
-            DAMAGE
-          </span>
+          <small>DAMAGE</small>
 
           <b>
             {stats.damage}
           </b>
 
-
         </div>
-
 
 
 
         <div>
 
           🎯
-
-          <span>
-            ASSIST
-          </span>
+          <small>ASSIST</small>
 
           <b>
             {stats.assists}
           </b>
 
-
         </div>
-
 
 
 
         <div>
 
           🏆
-
-          <span>
-            MVP
-          </span>
+          <small>MVP</small>
 
           <b>
             {stats.mvp}
           </b>
 
-
         </div>
 
 
       </div>
+
 
 
 
@@ -178,26 +164,32 @@ export default function BestPlayerCard({ data }) {
 
 
 
-      <style jsx>{`
 
+<style jsx>{`
 
-.best-card{
+.vip-card{
 
 position:relative;
 
-width:320px;
+width:380px;
 
-padding:35px 25px;
+min-height:560px;
 
-border-radius:28px;
+padding:35px;
+
+border-radius:35px;
+
+overflow:hidden;
+
+text-align:center;
 
 
 background:
 
 linear-gradient(
 145deg,
-rgba(255,255,255,.08),
-rgba(5,5,5,.9)
+rgba(255,255,255,.12),
+rgba(5,0,10,.95)
 );
 
 
@@ -208,31 +200,29 @@ border:
 
 box-shadow:
 
-0 0 40px rgba(255,23,68,.25),
-inset 0 0 30px rgba(255,215,74,.08);
+0 0 60px rgba(255,23,68,.25),
+inset 0 0 40px rgba(139,92,255,.15);
 
 
-text-align:center;
-
-
-overflow:hidden;
-
-
-transition:.4s;
+transition:.5s;
 
 
 }
 
 
 
-.best-card:hover{
+.vip-card:hover{
 
-transform:translateY(-12px);
+transform:
+
+translateY(-15px)
+scale(1.03);
 
 
 box-shadow:
 
-0 0 60px rgba(255,215,74,.45);
+0 0 80px rgba(255,215,74,.35),
+0 0 120px rgba(139,92,255,.25);
 
 
 }
@@ -241,13 +231,51 @@ box-shadow:
 
 
 
-.champion-badge{
+.energy-border{
+
+
+position:absolute;
+
+inset:0;
+
+
+border-radius:35px;
+
+
+background:
+
+linear-gradient(
+90deg,
+#FF1744,
+#FFD54A,
+#8B5CFF,
+#00F5FF,
+#FF1744
+);
+
+
+background-size:300%;
+
+
+animation:borderMove 5s linear infinite;
+
+
+z-index:-1;
+
+
+}
+
+
+
+
+
+.badge{
 
 
 display:inline-block;
 
 
-padding:8px 18px;
+padding:10px 25px;
 
 
 border-radius:50px;
@@ -266,10 +294,7 @@ border:
 color:#FFD54A;
 
 
-font-weight:800;
-
-
-font-size:12px;
+font-weight:900;
 
 
 letter-spacing:2px;
@@ -280,55 +305,19 @@ letter-spacing:2px;
 
 
 
-.team-name{
+.team{
 
 
-margin-top:20px;
+margin-top:25px;
 
 
 color:#00F5FF;
 
 
-font-size:14px;
+font-weight:800;
 
 
-letter-spacing:2px;
-
-
-}
-
-
-
-
-.player-glow{
-
-
-margin:25px auto;
-
-
-width:150px;
-
-height:150px;
-
-
-border-radius:50%;
-
-
-padding:5px;
-
-
-background:
-
-linear-gradient(
-45deg,
-#FF1744,
-#8B5CFF,
-#00F5FF,
-#FFD54A
-);
-
-
-animation:rotate 5s linear infinite;
+letter-spacing:3px;
 
 
 }
@@ -336,12 +325,31 @@ animation:rotate 5s linear infinite;
 
 
 
-.player-glow img{
+
+.avatar-box{
 
 
-width:100%;
+position:relative;
 
-height:100%;
+
+width:190px;
+
+height:190px;
+
+
+margin:35px auto;
+
+
+}
+
+
+
+.avatar-box img{
+
+
+width:160px;
+
+height:160px;
 
 
 object-fit:cover;
@@ -350,7 +358,49 @@ object-fit:cover;
 border-radius:50%;
 
 
-border:5px solid #080808;
+position:absolute;
+
+
+top:15px;
+
+left:15px;
+
+
+border:6px solid #050505;
+
+
+}
+
+
+
+
+
+.ring{
+
+
+position:absolute;
+
+
+width:190px;
+
+height:190px;
+
+
+border-radius:50%;
+
+
+background:
+
+conic-gradient(
+#FF1744,
+#FFD54A,
+#8B5CFF,
+#00F5FF,
+#FF1744
+);
+
+
+animation:spin 4s linear infinite;
 
 
 }
@@ -362,13 +412,16 @@ border:5px solid #080808;
 h2{
 
 
+margin-top:15px;
+
+
+font-size:32px;
+
+
 color:white;
 
 
-font-size:26px;
-
-
-margin:15px 0 5px;
+letter-spacing:2px;
 
 
 }
@@ -391,10 +444,85 @@ font-weight:700;
 
 
 
-.score-box{
+
+.score{
 
 
-margin:25px 0;
+margin:30px 0;
+
+
+padding:20px;
+
+
+border-radius:25px;
+
+
+background:
+
+rgba(255,23,68,.12);
+
+
+border:
+
+1px solid rgba(255,215,74,.3);
+
+
+}
+
+
+
+.score span{
+
+
+display:block;
+
+
+font-size:12px;
+
+
+color:#aaa;
+
+
+}
+
+
+
+.score strong{
+
+
+font-size:55px;
+
+
+color:#FFD54A;
+
+
+text-shadow:
+
+0 0 35px #FFD54A;
+
+
+}
+
+
+
+
+
+.stats{
+
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+
+gap:15px;
+
+
+}
+
+
+
+.stats div{
 
 
 padding:18px;
@@ -405,78 +533,12 @@ border-radius:18px;
 
 background:
 
-rgba(255,23,68,.12);
-
-
-}
-
-
-
-.score-box small{
-
-
-display:block;
-
-color:#aaa;
-
-
-}
-
-
-
-.score-box strong{
-
-
-font-size:48px;
-
-
-color:#FFD54A;
-
-
-text-shadow:
-
-0 0 25px #FFD54A;
-
-
-}
-
-
-
-
-.stats{
-
-
-display:grid;
-
-
-grid-template-columns:1fr 1fr;
-
-
-gap:12px;
-
-
-}
-
-
-
-
-.stats div{
-
-
-padding:12px;
-
-
-border-radius:15px;
-
-
-background:
-
-rgba(255,255,255,.05);
+rgba(255,255,255,.06);
 
 
 border:
 
-1px solid rgba(255,255,255,.1);
+1px solid rgba(255,255,255,.15);
 
 
 }
@@ -484,35 +546,33 @@ border:
 
 
 
-.stats span{
+
+.stats small{
 
 
 display:block;
 
-font-size:10px;
 
 color:#aaa;
 
 
-}
+font-size:11px;
 
+
+}
 
 
 
 .stats b{
 
 
-display:block;
+font-size:22px;
 
 
 color:white;
 
 
-font-size:18px;
-
-
 }
-
 
 
 
@@ -520,16 +580,16 @@ font-size:18px;
 .rank{
 
 
-margin-top:25px;
-
-
-color:#FF1744;
+margin-top:30px;
 
 
 font-weight:900;
 
 
-letter-spacing:2px;
+color:#FF1744;
+
+
+letter-spacing:3px;
 
 
 }
@@ -537,7 +597,7 @@ letter-spacing:2px;
 
 
 
-@keyframes rotate{
+@keyframes spin{
 
 
 from{
@@ -557,7 +617,43 @@ transform:rotate(360deg);
 
 
 
+@keyframes borderMove{
+
+
+0%{
+
+background-position:0%;
+
+}
+
+
+100%{
+
+background-position:300%;
+
+}
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.vip-card{
+
+width:100%;
+
+}
+
+
+}
+
+
+
 `}</style>
+
 
 
     </div>
