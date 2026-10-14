@@ -5,13 +5,13 @@ import Link from "next/link";
 export default function SideMenu({ open, close }) {
 
   const menus = [
-    {name:"HOME", href:"/"},
-    {name:"PLAYERS", href:"/players"},
-    {name:"TEAMS", href:"/teams"},
-    {name:"TOURNAMENTS", href:"/tournaments"},
-    {name:"RANKINGS", href:"/rankings"},
-    {name:"JOIN TEAM", href:"/join-team"},
-    {name:"LOGIN", href:"/login"},
+    { name: "HOME", href: "/" },
+    { name: "PLAYERS", href: "/players" },
+    { name: "TEAMS", href: "/teams" },
+    { name: "TOURNAMENTS", href: "/tournaments" },
+    { name: "RANKINGS", href: "/rankings" },
+    { name: "JOIN TEAM", href: "/join-team" },
+    { name: "LOGIN", href: "/login" },
   ];
 
 
@@ -27,8 +27,7 @@ export default function SideMenu({ open, close }) {
 
 
 
-      <aside className={`op-side-menu ${open ? "open":""}`}>
-
+      <aside className={`op-side-menu ${open ? "open" : ""}`}>
 
 
         <button
@@ -48,7 +47,6 @@ export default function SideMenu({ open, close }) {
             ESPORTS
           </span>
 
-
           <div className="logo-line"></div>
 
         </div>
@@ -56,28 +54,25 @@ export default function SideMenu({ open, close }) {
 
 
 
-
         <div className="op-menu-links">
 
+          {
+            menus.map((item,index)=>(
 
-        {
-          menus.map((item,index)=>(
+              <Link
+                href={item.href}
+                key={index}
+                onClick={close}
+              >
 
-            <Link
-              key={index}
-              href={item.href}
-              onClick={close}
-            >
+                <span className="menu-dot"></span>
 
-              <span className="menu-dot"></span>
+                {item.name}
 
-              {item.name}
+              </Link>
 
-
-            </Link>
-
-          ))
-        }
+            ))
+          }
 
 
         </div>
@@ -100,15 +95,12 @@ export default function SideMenu({ open, close }) {
 
 <style jsx>{`
 
-
 *{
-box-sizing:border-box;
+ box-sizing:border-box;
 }
 
 
-
-/* BACKGROUND */
-
+/* OVERLAY */
 
 .op-overlay{
 
@@ -117,40 +109,32 @@ position:fixed;
 inset:0;
 
 background:
-
 rgba(0,0,0,.65);
 
 backdrop-filter:
-
 blur(12px);
 
-
 z-index:9998;
-
 
 }
 
 
 
-
 /* GLASS PANEL */
-
 
 .op-side-menu{
 
-
 position:fixed;
 
-
-top:20px;
+top:30px;
 
 left:-430px;
 
 
-width:390px;
+width:360px;
 
-height:calc(100vh - 40px);
 
+height:calc(100vh - 60px);
 
 
 padding:
@@ -158,8 +142,7 @@ padding:
 70px 35px 40px;
 
 
-
-border-radius:30px;
+border-radius:35px;
 
 
 
@@ -169,7 +152,7 @@ linear-gradient(
 
 135deg,
 
-rgba(255,255,255,.10),
+rgba(255,255,255,.12),
 
 rgba(20,0,10,.75)
 
@@ -191,17 +174,13 @@ border:
 
 box-shadow:
 
-
-0 0 50px rgba(255,0,80,.25),
+0 0 60px rgba(255,0,80,.3),
 
 inset 0 0 40px rgba(255,0,80,.08);
 
 
 
-transition:
-
-.55s cubic-bezier(.77,0,.18,1);
-
+transition:.5s;
 
 
 z-index:9999;
@@ -209,84 +188,13 @@ z-index:9999;
 
 overflow:hidden;
 
-
 }
-
-
-
-
-.op-side-menu:before{
-
-
-content:"";
-
-
-position:absolute;
-
-
-inset:-2px;
-
-
-border-radius:30px;
-
-
-background:
-
-linear-gradient(
-
-90deg,
-
-transparent,
-
-#ff1744,
-
-transparent
-
-);
-
-
-opacity:.4;
-
-
-animation:
-
-borderMove 4s linear infinite;
-
-
-z-index:-1;
-
-
-}
-
-
-
-@keyframes borderMove{
-
-
-0%{
-
-transform:translateX(-100%);
-
-}
-
-
-100%{
-
-transform:translateX(100%);
-
-}
-
-
-}
-
 
 
 
 .op-side-menu.open{
 
-
 left:20px;
-
 
 }
 
@@ -295,7 +203,6 @@ left:20px;
 
 
 /* CLOSE */
-
 
 .op-close{
 
@@ -314,13 +221,13 @@ width:50px;
 height:50px;
 
 
-
 border-radius:50%;
+
 
 
 border:
 
-1px solid rgba(255,0,80,.8);
+1px solid #ff1744;
 
 
 
@@ -340,28 +247,18 @@ cursor:pointer;
 
 
 
-backdrop-filter:
-
-blur(20px);
-
-
-
 box-shadow:
 
-0 0 25px rgba(255,0,80,.6);
+0 0 25px rgba(255,0,80,.5);
 
 
-
-transition:.35s;
-
+transition:.3s;
 
 }
 
 
 
-
 .op-close:hover{
-
 
 transform:
 
@@ -369,7 +266,6 @@ rotate(90deg) scale(1.1);
 
 
 background:#ff1744;
-
 
 }
 
@@ -386,19 +282,13 @@ background:#ff1744;
 font-size:28px;
 
 
-font-weight:1000;
+font-weight:900;
 
 
 letter-spacing:4px;
 
 
 color:white;
-
-
-text-shadow:
-
-0 0 20px rgba(255,255,255,.3);
-
 
 }
 
@@ -413,16 +303,11 @@ display:block;
 color:#ff1744;
 
 
-margin-top:5px;
-
-
 text-shadow:
 
 0 0 25px #ff1744;
 
-
 }
-
 
 
 
@@ -451,9 +336,7 @@ transparent
 );
 
 
-
 }
-
 
 
 
@@ -473,8 +356,7 @@ display:flex;
 flex-direction:column;
 
 
-gap:18px;
-
+gap:16px;
 
 }
 
@@ -498,14 +380,16 @@ gap:15px;
 padding:0 20px;
 
 
+
 border-radius:18px;
 
 
 
-color:white;
+color:white !important;
 
 
-text-decoration:none;
+text-decoration:none !important;
+
 
 
 font-size:18px;
@@ -520,30 +404,26 @@ letter-spacing:2px;
 
 background:
 
-rgba(255,255,255,.05);
+rgba(255,255,255,.06);
 
 
 
 border:
 
-1px solid rgba(255,255,255,.08);
+1px solid rgba(255,255,255,.12);
+
+
+
+backdrop-filter:
+
+blur(15px);
 
 
 
 transition:.35s;
 
 
-
-position:relative;
-
-
-
-overflow:hidden;
-
-
 }
-
-
 
 
 
@@ -552,10 +432,15 @@ overflow:hidden;
 
 transform:
 
-translateX(10px);
+translateX(12px);
+
+
+color:#ff1744 !important;
+
 
 
 border-color:#ff1744;
+
 
 
 box-shadow:
@@ -563,11 +448,7 @@ box-shadow:
 0 0 25px rgba(255,0,80,.5);
 
 
-color:#ff1744;
-
-
 }
-
 
 
 
@@ -577,10 +458,12 @@ color:#ff1744;
 
 width:10px;
 
+
 height:10px;
 
 
 border-radius:50%;
+
 
 
 background:#ff1744;
@@ -599,37 +482,6 @@ blink 1.5s infinite;
 
 
 }
-
-
-
-.op-menu-links a:nth-child(2) .menu-dot{
-
-background:#00ffff;
-
-box-shadow:0 0 15px #00ffff;
-
-}
-
-
-
-.op-menu-links a:nth-child(3) .menu-dot{
-
-background:#9b5cff;
-
-box-shadow:0 0 15px #9b5cff;
-
-}
-
-
-
-.op-menu-links a:nth-child(4) .menu-dot{
-
-background:#ffd000;
-
-box-shadow:0 0 15px #ffd000;
-
-}
-
 
 
 
@@ -664,6 +516,7 @@ position:absolute;
 bottom:35px;
 
 
+
 font-size:11px;
 
 
@@ -678,14 +531,15 @@ color:#888;
 
 
 
-
 @media(max-width:600px){
 
 
 .op-side-menu{
 
 
-width:calc(100% - 40px);
+width:
+
+calc(100% - 40px);
 
 
 }
@@ -693,7 +547,6 @@ width:calc(100% - 40px);
 
 
 }
-
 
 
 `}</style>
@@ -702,6 +555,9 @@ width:calc(100% - 40px);
 
       </aside>
 
+
     </>
+
   );
+
 }
