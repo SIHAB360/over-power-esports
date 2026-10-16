@@ -49,9 +49,8 @@ export default function Footer() {
               </span>
               <span className="opx-brandname"><strong>OVER POWER</strong><b>ESPORTS</b></span>
             </Link>
-            <Link href="/join-team" className="opx-join" aria-label="Join the Over Power Esports roster">
-              <span>JOIN THE ROSTER</span>
-              <b aria-hidden="true">↗</b>
+            <Link href="/join-team" className="opx-join magic-join-btn" aria-label="Join the Over Power Esports team">
+              <span>JOIN THE TEAM</span>
             </Link>
           </div>
         </div>
@@ -78,8 +77,11 @@ export default function Footer() {
 
           <section className="opx-connect" id="opx-connect" aria-label="Connect with Over Power Esports">
             <div className="opx-connect-heading">
-              <div><div className="opx-section-title"><i /> YOUR SQUAD. YOUR COMMUNITY.</div><h3>STAY <span>CONNECTED.</span></h3></div>
-              <span className="opx-connect-decor">04 / OFFICIAL CHANNELS · LIVE CONNECTIONS</span>
+              <div className="opx-social-head">
+                <div className="opx-section-title"><i /> YOUR SQUAD. YOUR COMMUNITY.</div>
+                <h3>STAY <span>CONNECTED.</span></h3>
+                <span className="opx-connect-decor">04 / OFFICIAL CHANNELS · LIVE CONNECTIONS</span>
+              </div>
             </div>
             <div className="opx-social-grid">
               {social.map(({ name, detail, href, color, Icon }) => (
@@ -563,6 +565,99 @@ export default function Footer() {
           .opx-brandname strong { font-size:23px !important;letter-spacing:.7px !important; }
           .opx-brandname b { font-size:24px !important;letter-spacing:3px !important; }
           .opx-join { font-size:11px !important;letter-spacing:1px !important;padding-left:10px !important; }
+        }
+
+
+        /* ===== MAGIC NEON CTA: glowing edge, dark glass core ===== */
+        .opx-footer .opx-join.magic-join-btn {
+          position: relative !important; isolation: isolate !important; overflow: hidden !important;
+          display: flex !important; align-items: center !important; justify-content: center !important;
+          width: min(100%, 390px) !important; min-height: 68px !important;
+          margin: 32px auto 0 !important; padding: 0 28px !important;
+          border: 0 !important; border-radius: 999px !important;
+          background: radial-gradient(ellipse at 24% 50%, rgba(112,55,255,.25), transparent 42%),
+                      radial-gradient(ellipse at 78% 50%, rgba(45,218,255,.19), transparent 44%),
+                      linear-gradient(180deg, rgba(13,15,43,.99), rgba(5,7,23,.99)) !important;
+          box-shadow: 0 0 10px rgba(255,255,255,.36), 0 0 20px rgba(129,75,255,.76),
+                      0 0 42px rgba(104,75,255,.40), 0 0 64px rgba(52,215,255,.16),
+                      inset 0 0 20px rgba(124,98,255,.13) !important;
+          text-decoration: none !important;
+          transition: transform .28s ease, filter .28s ease, box-shadow .28s ease !important;
+          animation: opxMagicAura 4s ease-in-out infinite alternate;
+        }
+        .opx-footer .opx-join.magic-join-btn::before {
+          content: ""; position: absolute; inset: 0; z-index: 0; padding: 2px;
+          border-radius: inherit; pointer-events: none;
+          background: linear-gradient(105deg,#a855ff 0%,#e6d8ff 23%,#fff 43%,#b9f5ff 68%,#54cfff 84%,#a855ff 100%);
+          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          -webkit-mask-composite: xor; mask-composite: exclude; opacity: .98;
+        }
+        .opx-footer .opx-join.magic-join-btn::after {
+          content: ""; position: absolute; top: -60%; left: -75%; width: 45%; height: 220%;
+          z-index: 1; border-radius: 50%; pointer-events: none;
+          background: linear-gradient(90deg,transparent,rgba(255,255,255,.33),rgba(166,230,255,.50),transparent);
+          filter: blur(5px); transform: rotate(20deg);
+          animation: opxMagicSweep 5.5s ease-in-out infinite;
+        }
+        .opx-footer .opx-join.magic-join-btn span {
+          position: relative; z-index: 2; display: block; width: 100%; flex: 1 1 100%;
+          text-align: center; color: #fff !important;
+          font-family: var(--font-orbitron),Arial,sans-serif;
+          font-size: clamp(13px,1.25vw,16px) !important; font-weight: 950 !important;
+          letter-spacing: 2.2px !important;
+          text-shadow: 0 0 7px rgba(255,255,255,.95),0 0 16px rgba(177,151,255,.95),0 0 28px rgba(82,205,255,.52);
+          white-space: nowrap;
+        }
+        .opx-footer .opx-join.magic-join-btn:hover {
+          transform: translateY(-3px) scale(1.015) !important; filter: brightness(1.13) saturate(1.12) !important;
+          box-shadow: 0 0 13px rgba(255,255,255,.58),0 0 27px rgba(155,93,255,.95),
+                      0 0 54px rgba(105,95,255,.58),0 0 76px rgba(65,220,255,.28),
+                      inset 0 0 24px rgba(124,98,255,.2) !important;
+        }
+
+        /* ===== CENTERED, HIGHLIGHTED SOCIAL HEADING ===== */
+        .opx-footer .opx-connect-heading {
+          display: flex !important; width: 100% !important; align-items: center !important;
+          justify-content: center !important; margin: 0 auto 25px !important; text-align: center !important;
+        }
+        .opx-footer .opx-social-head {
+          display: flex !important; flex-direction: column !important; align-items: center !important;
+          justify-content: center !important; width: 100% !important; margin: 0 auto !important; text-align: center !important;
+        }
+        .opx-footer .opx-social-head .opx-section-title {
+          justify-content: center !important; width: 100% !important; text-align: center !important;
+        }
+        .opx-footer .opx-social-head h3 {
+          width: 100% !important; margin: 12px auto 0 !important; text-align: center !important;
+          font-size: clamp(28px,3.1vw,43px) !important; line-height: 1.12 !important;
+          font-weight: 1000 !important; letter-spacing: .4px !important;
+          text-shadow: 0 0 10px rgba(255,255,255,.32),0 0 24px rgba(255,118,166,.24),0 0 35px rgba(126,220,255,.15) !important;
+        }
+        .opx-footer .opx-social-head h3 span {
+          background: linear-gradient(95deg,#ffd0bd 0%,#ff80b0 42%,#c7b2ff 72%,#91edff 100%) !important;
+          background-clip: text !important; -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          filter: drop-shadow(0 0 11px rgba(255,118,166,.34)) drop-shadow(0 0 16px rgba(126,220,255,.19)) !important;
+        }
+        .opx-footer .opx-social-head .opx-connect-decor {
+          display: block !important; width: 100% !important; margin: 11px auto 0 !important;
+          text-align: center !important; color: #c6bddb !important; font-size: 10px !important;
+          font-weight: 850 !important; letter-spacing: 1.5px !important;
+          text-shadow: 0 0 13px rgba(173,151,255,.22) !important;
+        }
+        @keyframes opxMagicSweep {
+          0%,12% { left: -75%; opacity: 0; } 24% { opacity: .9; }
+          58% { left: 140%; opacity: .8; } 68%,100% { left: 140%; opacity: 0; }
+        }
+        @keyframes opxMagicAura { from { filter: brightness(.99); } to { filter: brightness(1.08); } }
+        @media(max-width:620px) {
+          .opx-footer .opx-join.magic-join-btn { width: min(100%,340px) !important; min-height: 61px !important; margin-top: 26px !important; padding: 0 18px !important; }
+          .opx-footer .opx-join.magic-join-btn span { font-size: 12px !important; letter-spacing: 1.7px !important; }
+          .opx-footer .opx-social-head h3 { font-size: clamp(27px,7vw,36px) !important; margin-top: 10px !important; }
+          .opx-footer .opx-social-head .opx-connect-decor { font-size: 8px !important; letter-spacing: 1px !important; }
+        }
+        @media(prefers-reduced-motion:reduce) {
+          .opx-footer .opx-join.magic-join-btn, .opx-footer .opx-join.magic-join-btn::after { animation: none !important; }
         }
 
       `}</style>
