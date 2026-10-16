@@ -582,8 +582,8 @@ export default function AchievementGallery() {
         .op-achieve__container {
           position: relative;
           z-index: 1;
-          width: 100%;
-          max-width: 1370px;
+          width: min(100%, 1540px);
+          max-width: 1540px;
           margin: 0 auto;
         }
 
