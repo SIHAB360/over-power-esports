@@ -6,10 +6,10 @@ import Link from "next/link";
 import logo from "../assets/logo.png";
 
 const exploreLinks = [
-  { label: "Home", href: "/" },
-  { label: "Our Players", href: "/players" },
-  { label: "Our Teams", href: "/teams" },
-  { label: "Tournaments", href: "/tournaments" },
+  { label: "Home", href: "/#home" },
+  { label: "Our Players", href: "/#players" },
+  { label: "Our Teams", href: "/#teams" },
+  { label: "Tournaments", href: "/#tournaments" },
 ];
 
 const communityLinks = [
@@ -141,6 +141,8 @@ export default function Footer() {
       </div>
 
       <style jsx global>{`
+        /* Scroll target clearance for the homepage fixed navbar. */
+        #home, #players, #teams, #tournaments { scroll-margin-top: 110px; }
         .op-vip-footer, .op-vip-footer * { box-sizing: border-box; }
         .op-vip-footer {
           --vip-gold:#ffd789;
