@@ -611,17 +611,6 @@ const bestPlacement =
       <div className="light light-3"></div>
 
       <div className="wrap">
-        {/* Top Bar */}
-        <div className="topbar">
-          <div className="logo-area">
-            <div className="logo">OP</div>
-            <div>
-              <b>OVER POWER</b>
-              <small>PLAYER DASHBOARD</small>
-            </div>
-          </div>
-        </div>
-
         <div className="dashboard-layout">
 
           <div className="dashboard-content">
@@ -2537,6 +2526,312 @@ const bestPlacement =
           .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
           .logout.magic-logout { width: 100%; max-width: 320px; min-height: 56px; }
           .dashboard-bottom-actions { padding-top: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .logout.magic-logout, .logout.magic-logout::after { animation: none !important; transition: none !important; }
+        }
+
+
+
+        /* READABILITY PASS: larger text, stronger contrast, more comfortable card sizing */
+        .page {
+          font-size: 16px;
+          padding: clamp(12px, 1.4vw, 26px) clamp(12px, 1.6vw, 30px) 28px;
+        }
+        .wrap { width: 100%; max-width: none; margin: 0; }
+        .topbar { display: none !important; }
+        .dashboard-layout { display: block; width: 100%; min-width: 0; }
+        .dashboard-content { gap: clamp(16px, 1.5vw, 24px); }
+        .hero {
+          min-height: 230px;
+          padding: clamp(28px, 3vw, 44px) 22px clamp(26px, 2.5vw, 36px);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .avatar { width: clamp(78px, 6vw, 108px); height: clamp(78px, 6vw, 108px); }
+        .hero h1 {
+          font-size: clamp(28px, 2vw, 38px);
+          line-height: 1.2;
+          letter-spacing: .8px;
+          color: #fff;
+          text-shadow: 0 0 18px rgba(87, 209, 255, .12);
+        }
+        .ign { font-size: clamp(14px, 1vw, 18px); line-height: 1.45; }
+        .tag { font-size: 13px; padding: 8px 15px; }
+        .stats {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: clamp(10px, 1vw, 16px);
+        }
+        .stat {
+          min-height: 82px;
+          padding: clamp(14px, 1.25vw, 21px);
+          gap: 12px;
+          border-radius: 16px;
+        }
+        .stat span { font-size: clamp(22px, 1.6vw, 30px); }
+        .stat small {
+          font-size: clamp(12px, .85vw, 14px);
+          line-height: 1.35;
+          letter-spacing: .5px;
+          color: #cbd8ed;
+        }
+        .stat b {
+          display: inline-block;
+          font-size: clamp(22px, 1.65vw, 30px);
+          line-height: 1.25;
+          color: #f4fbff;
+        }
+        .earning-stat b { font-size: clamp(19px, 1.35vw, 25px); }
+        .career-section {
+          padding: clamp(18px, 1.8vw, 30px);
+          border-radius: 20px;
+        }
+        .career-header h3 {
+          font-size: clamp(18px, 1.25vw, 23px);
+          line-height: 1.35;
+          letter-spacing: 1.2px;
+        }
+        .career-header p {
+          font-size: clamp(13px, .9vw, 15px);
+          line-height: 1.5;
+          color: #c6d4e9;
+        }
+        .filter-buttons { gap: 10px; margin: 20px 0 18px; }
+        .filter-btn {
+          min-height: 44px;
+          padding: 11px 17px;
+          font-size: clamp(12px, .85vw, 14px);
+          font-weight: 900;
+          letter-spacing: .35px;
+          border-radius: 12px;
+        }
+        .custom-date-filter label { font-size: 13px; color: #d2dced; }
+        .custom-date-filter input { min-height: 44px; font-size: 15px; }
+        .clear-date-btn { min-height: 44px; font-size: 13px; }
+        .career-grid {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: clamp(9px, .9vw, 14px);
+        }
+        .career-stat {
+          min-height: clamp(104px, 8vw, 132px);
+          padding: clamp(13px, 1.2vw, 20px) 10px;
+          border-radius: 14px;
+        }
+        .career-stat span { font-size: clamp(23px, 1.65vw, 31px); margin-bottom: 9px; }
+        .career-stat small {
+          font-size: clamp(11px, .8vw, 13px);
+          line-height: 1.35;
+          letter-spacing: .55px;
+          color: #c9d6ea;
+        }
+        .career-stat strong {
+          margin-top: 7px;
+          font-size: clamp(22px, 1.6vw, 30px);
+          line-height: 1.25;
+          color: #f5fbff;
+        }
+        .performance-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: clamp(12px, 1vw, 18px);
+          margin-top: clamp(14px, 1.1vw, 20px);
+        }
+        .chart-card {
+          min-height: 350px;
+          padding: clamp(17px, 1.4vw, 24px);
+          border-radius: 17px;
+        }
+        .chart-heading h4 {
+          font-size: clamp(16px, 1.05vw, 20px);
+          line-height: 1.35;
+          letter-spacing: .7px;
+        }
+        .chart-heading p { font-size: clamp(13px, .85vw, 15px); line-height: 1.5; }
+        .chart-chip { font-size: 12px; padding: 7px 11px; }
+        .chart-legend { font-size: 13px; line-height: 1.5; }
+        .chart-axis-label { font-size: 13px; }
+        .chart-empty { font-size: 14px; line-height: 1.5; }
+        .card {
+          padding: clamp(18px, 1.8vw, 30px);
+          border-radius: 18px;
+        }
+        .card h3 {
+          font-size: clamp(17px, 1.15vw, 21px);
+          line-height: 1.35;
+          letter-spacing: .9px;
+          margin-bottom: 22px;
+        }
+        .grid { gap: clamp(18px, 1.5vw, 26px) 18px; }
+        .grid label {
+          font-size: clamp(12px, .85vw, 14px);
+          line-height: 1.45;
+          color: #c5d5e9;
+          margin-bottom: 5px;
+        }
+        .grid p {
+          font-size: clamp(15px, 1vw, 18px);
+          line-height: 1.55;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .exp label { font-size: clamp(13px, .9vw, 15px); }
+        .exp p { font-size: clamp(16px, 1.1vw, 19px); }
+        .weapon, .social { font-size: 14px; padding: 11px 15px; }
+        .empty { font-size: 14px; }
+
+        /* Neon tube logout: violet at left, electric blue through white, cyan at right */
+        .dashboard-bottom-actions {
+          justify-content: center;
+          margin-top: clamp(22px, 2.5vw, 38px);
+          padding: clamp(22px, 2.4vw, 36px) 0 18px;
+          border-top: 1px solid rgba(104, 146, 255, .24);
+        }
+        .logout.magic-logout {
+          isolation: isolate;
+          position: relative;
+          width: min(340px, 100%);
+          min-height: 68px;
+          padding: 0 28px;
+          gap: 20px;
+          border: 2px solid transparent;
+          border-radius: 999px;
+          color: #ffffff;
+          background:
+            linear-gradient(110deg, #080d24 0%, #10123b 48%, #081b2c 100%) padding-box,
+            linear-gradient(105deg, #bd59ff 0%, #7757ff 22%, #c8d8ff 43%, #ffffff 51%, #5deaff 70%, #3a92ff 88%, #b45dff 100%) border-box;
+          background-size: 100% 100%, 220% 220%;
+          box-shadow:
+            0 0 8px 2px rgba(178, 86, 255, .52),
+            0 0 20px 5px rgba(101, 100, 255, .35),
+            0 0 34px 8px rgba(58, 207, 255, .22),
+            inset 0 0 17px rgba(75, 91, 255, .20);
+          font-size: 15px;
+          font-weight: 950;
+          letter-spacing: 2.5px;
+          text-shadow: 0 0 9px rgba(255,255,255,.3);
+          animation: logout-spectrum 4s ease-in-out infinite alternate;
+        }
+        .logout.magic-logout::before {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset: 4px;
+          border-radius: inherit;
+          background:
+            radial-gradient(ellipse at 12% 50%, rgba(168, 70, 255, .23), transparent 40%),
+            radial-gradient(ellipse at 90% 50%, rgba(43, 222, 255, .20), transparent 43%),
+            linear-gradient(100deg, rgba(9, 12, 42, .9), rgba(11, 18, 49, .92));
+          box-shadow: inset 0 0 18px rgba(115, 127, 255, .2);
+          pointer-events: none;
+        }
+        .logout.magic-logout::after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset: -5px;
+          border-radius: inherit;
+          background: linear-gradient(105deg, #b94dff, #6174ff, #f5fdff, #48e7ff, #a451ff);
+          filter: blur(14px);
+          opacity: .45;
+          animation: logout-aura 3s ease-in-out infinite alternate;
+          pointer-events: none;
+        }
+        .logout-label, .logout-arrow { position: relative; z-index: 1; }
+        .logout-arrow {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          color: #10152b;
+          background: linear-gradient(135deg, #f9f5ff 0%, #c8c7ff 48%, #9df4ff 100%);
+          box-shadow: 0 0 13px rgba(191, 225, 255, .7);
+          font-size: 22px;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+        .logout.magic-logout:hover {
+          color: #ffffff;
+          transform: translateY(-2px) scale(1.015);
+          box-shadow:
+            0 0 12px 3px rgba(178, 86, 255, .65),
+            0 0 26px 7px rgba(101, 100, 255, .43),
+            0 0 44px 10px rgba(58, 207, 255, .32),
+            inset 0 0 20px rgba(75, 91, 255, .26);
+        }
+        .logout.magic-logout:focus-visible { outline: 3px solid #8feeff; outline-offset: 5px; }
+        @keyframes logout-spectrum {
+          0% { background-position: 0 0, 0% 50%; }
+          100% { background-position: 0 0, 100% 50%; }
+        }
+        @keyframes logout-aura {
+          from { opacity: .32; filter: blur(12px); }
+          to { opacity: .62; filter: blur(18px); }
+        }
+
+        @media (min-width: 1500px) {
+          .hero { min-height: 250px; }
+          .career-stat { min-height: 138px; }
+          .chart-card { min-height: 390px; }
+          .career-header h3 { font-size: 23px; }
+          .career-stat small { font-size: 13px; }
+          .career-stat strong { font-size: 29px; }
+          .stat small { font-size: 14px; }
+          .stat b { font-size: 30px; }
+        }
+        @media (max-width: 1100px) {
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .career-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); }
+          .career-stat { min-height: 112px; }
+          .chart-card { min-height: 320px; }
+          .grid label { font-size: 13px; }
+          .grid p { font-size: 15px; }
+        }
+        @media (max-width: 620px) {
+          .page { padding: 9px 8px 18px; }
+          .dashboard-content { gap: 12px; }
+          .hero { min-height: 205px; padding: 23px 12px 21px; }
+          .hero h1 { font-size: clamp(25px, 7vw, 32px); }
+          .ign { font-size: 14px; }
+          .tag { font-size: 12px; padding: 7px 12px; }
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .stat { min-height: 78px; padding: 12px 10px; gap: 8px; }
+          .stat span { font-size: 22px; }
+          .stat small { font-size: 11px; }
+          .stat b { font-size: 22px; }
+          .earning-stat b { font-size: 18px; }
+          .career-section { padding: 15px 10px; }
+          .career-header h3 { font-size: 17px; }
+          .career-header p { font-size: 13px; }
+          .filter-buttons { gap: 7px; margin: 15px 0; }
+          .filter-btn { flex: 1 1 calc(50% - 7px); min-height: 42px; padding: 10px 7px; font-size: 11px; }
+          .career-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .career-stat { min-height: 102px; padding: 11px 6px; }
+          .career-stat span { font-size: 22px; }
+          .career-stat small { font-size: 10px; }
+          .career-stat strong { font-size: 21px; }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+          .chart-card { min-height: 290px; padding: 14px 11px; }
+          .chart-heading h4 { font-size: 16px; }
+          .chart-heading p { font-size: 13px; }
+          .chart-chip { font-size: 11px; }
+          .chart-legend { font-size: 12px; }
+          .chart-axis-label { font-size: 12px; }
+          .chart-empty { font-size: 13px; }
+          .card { padding: 17px 12px; }
+          .card h3 { font-size: 16px; margin-bottom: 18px; }
+          .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px 10px; }
+          .grid label { font-size: 11px; }
+          .grid p { font-size: 13px; }
+          .exp label { font-size: 12px; }
+          .exp p { font-size: 14px; }
+          .weapon, .social { font-size: 12px; }
+          .dashboard-bottom-actions { padding-top: 18px; }
+          .logout.magic-logout { width: 100%; max-width: 320px; min-height: 64px; font-size: 14px; }
+          .logout-arrow { width: 31px; height: 31px; }
         }
         @media (prefers-reduced-motion: reduce) {
           .logout.magic-logout, .logout.magic-logout::after { animation: none !important; transition: none !important; }
