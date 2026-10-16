@@ -119,8 +119,8 @@ export default function AchievementGallery() {
 
       <div className="op-achieve__container">
         <header className="op-achieve__header">
-          <div className="op-achieve__eyebrow"><span className="op-achieve__dot" /> THE OFFICIAL VICTORY ARCHIVE <FiAward /></div>
-          <h2 id="op-achieve-title">HALL OF <span>GLORY.</span></h2>
+          <div className="op-achieve__eyebrow"><span className="op-achieve__dot" /> THE OFFICIAL VICTORY ARCHIVEMENT <FiAward /></div>
+          <h2 id="op-achieve-title">OUR GLORY <span>ACHIVEMENT.</span></h2>
           <p>Every result. Every clutch. Every unforgettable moment.</p>
           <div className="op-achieve__ornament" aria-hidden="true"><i /><span>✦</span><i /></div>
         </header>
