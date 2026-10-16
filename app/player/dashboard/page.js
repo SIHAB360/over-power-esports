@@ -1004,7 +1004,7 @@ const bestPlacement =
 
         <section className="card card-red player-info-card" id="player-information">
           <h3>PLAYER INFORMATION</h3>
-          <div className="grid">
+          <div className="grid profile-grid">
             <div>
               <label>FREE FIRE UID</label>
               <p>{val(player?.freefire_uid)}</p>
@@ -1035,7 +1035,7 @@ const bestPlacement =
         {/* Gaming Profile */}
         <section className="card card-purple" id="gaming-profile">
           <h3>GAMING PROFILE</h3>
-          <div className="grid">
+          <div className="grid profile-grid">
             <div>
               <label>PRIMARY ROLE</label>
               <p>{val(player?.primary_role)}</p>
@@ -1066,7 +1066,7 @@ const bestPlacement =
         {/* Experience */}
         <section className="card card-green" id="experience">
           <h3>EXPERIENCE</h3>
-          <div className="exp">
+          <div className="exp profile-exp">
             <div>
               <label>Game Experience</label>
               <p>{val(player?.game_experience)}</p>
@@ -3015,6 +3015,210 @@ const bestPlacement =
           .weapon, .social { font-size: 12px !important; padding: 10px 12px !important; }
           .empty { font-size: 14px !important; }
           .logout.magic-logout { font-size: 15px !important; min-height: 66px !important; }
+        }
+
+
+
+        /* PROFILE INFORMATION LAYOUT — aligned fields, readable values, distinct section accents */
+        #player-information,
+        #gaming-profile,
+        #experience {
+          border-radius: 18px !important;
+          padding: clamp(18px, 1.5vw, 30px) !important;
+        }
+        #player-information h3,
+        #gaming-profile h3,
+        #experience h3 {
+          display: flex !important;
+          align-items: center !important;
+          gap: 12px !important;
+          padding-bottom: 15px !important;
+          margin-bottom: 20px !important;
+          border-bottom: 1px solid rgba(221, 235, 255, .14) !important;
+        }
+        #player-information h3::before,
+        #gaming-profile h3::before,
+        #experience h3::before {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 auto;
+          min-width: 34px;
+          height: 30px;
+          border-radius: 9px;
+          font-size: 13px;
+          font-weight: 950;
+          letter-spacing: .4px;
+        }
+        #player-information h3::before {
+          content: "01";
+          color: #53e5ff;
+          border: 1px solid rgba(83, 229, 255, .38);
+          background: rgba(42, 190, 255, .12);
+        }
+        #gaming-profile h3::before {
+          content: "02";
+          color: #c49bff;
+          border: 1px solid rgba(196, 155, 255, .38);
+          background: rgba(150, 82, 255, .13);
+        }
+        #experience h3::before {
+          content: "03";
+          color: #62f0b4;
+          border: 1px solid rgba(98, 240, 180, .38);
+          background: rgba(31, 220, 145, .12);
+        }
+        .profile-grid {
+          display: grid !important;
+          grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          align-items: stretch !important;
+          gap: clamp(12px, 1vw, 20px) !important;
+        }
+        .profile-grid > div {
+          min-width: 0 !important;
+          min-height: 112px;
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          align-items: flex-start !important;
+          gap: 8px !important;
+          padding: clamp(14px, 1vw, 22px) !important;
+          border: 1px solid rgba(95, 151, 255, .27) !important;
+          border-left: 4px solid #43dfff !important;
+          border-radius: 13px !important;
+          background: linear-gradient(135deg, rgba(29, 46, 69, .78), rgba(16, 23, 39, .9)) !important;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.045) !important;
+          transition: border-color .2s ease, background .2s ease, transform .2s ease;
+        }
+        .profile-grid > div:nth-child(2) {
+          border-color: rgba(170, 124, 255, .28) !important;
+          border-left-color: #a77bff !important;
+          background: linear-gradient(135deg, rgba(49, 35, 78, .64), rgba(18, 21, 39, .92)) !important;
+        }
+        .profile-grid > div:nth-child(3) {
+          border-color: rgba(255, 112, 171, .26) !important;
+          border-left-color: #ff70ab !important;
+          background: linear-gradient(135deg, rgba(66, 34, 62, .55), rgba(18, 21, 39, .92)) !important;
+        }
+        .profile-grid > div:nth-child(4) {
+          border-color: rgba(52, 230, 177, .27) !important;
+          border-left-color: #34e6b1 !important;
+          background: linear-gradient(135deg, rgba(25, 60, 57, .58), rgba(16, 23, 39, .92)) !important;
+        }
+        .profile-grid > div:nth-child(5) {
+          border-color: rgba(255, 190, 95, .27) !important;
+          border-left-color: #ffbe5f !important;
+          background: linear-gradient(135deg, rgba(68, 48, 29, .57), rgba(18, 21, 39, .92)) !important;
+        }
+        .profile-grid > div:nth-child(6) {
+          border-color: rgba(98, 180, 255, .27) !important;
+          border-left-color: #62b4ff !important;
+          background: linear-gradient(135deg, rgba(27, 49, 77, .61), rgba(16, 23, 39, .92)) !important;
+        }
+        .profile-grid > div:hover {
+          transform: translateY(-2px);
+          border-color: rgba(205, 226, 255, .48) !important;
+        }
+        .profile-grid label {
+          display: block !important;
+          margin: 0 !important;
+          color: #a9c3e4 !important;
+          font-size: clamp(13px, .76vw, 17px) !important;
+          line-height: 1.4 !important;
+          font-weight: 900 !important;
+          letter-spacing: .55px !important;
+          overflow-wrap: anywhere;
+        }
+        .profile-grid > div:nth-child(1) label { color: #6ce8ff !important; }
+        .profile-grid > div:nth-child(2) label { color: #c4a4ff !important; }
+        .profile-grid > div:nth-child(3) label { color: #ff9bc3 !important; }
+        .profile-grid > div:nth-child(4) label { color: #75f1c0 !important; }
+        .profile-grid > div:nth-child(5) label { color: #ffd18b !important; }
+        .profile-grid > div:nth-child(6) label { color: #91caff !important; }
+        .profile-grid p {
+          width: 100%;
+          min-width: 0;
+          margin: 0 !important;
+          color: #ffffff !important;
+          font-size: clamp(18px, 1vw, 25px) !important;
+          font-weight: 850 !important;
+          line-height: 1.45 !important;
+          letter-spacing: .1px;
+          overflow-wrap: anywhere !important;
+          word-break: normal !important;
+        }
+        .profile-exp {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: clamp(12px, 1vw, 20px) !important;
+        }
+        .profile-exp > div {
+          min-width: 0;
+          min-height: 110px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 9px;
+          padding: clamp(15px, 1.1vw, 23px);
+          border: 1px solid rgba(52, 230, 177, .27);
+          border-left: 4px solid #34e6b1;
+          border-radius: 13px;
+          background: linear-gradient(135deg, rgba(25, 65, 56, .64), rgba(16, 23, 39, .93));
+        }
+        .profile-exp > div:nth-child(2) {
+          border-color: rgba(167, 123, 255, .3);
+          border-left-color: #a77bff;
+          background: linear-gradient(135deg, rgba(49, 35, 78, .65), rgba(18, 21, 39, .93));
+        }
+        .profile-exp label {
+          margin: 0 !important;
+          color: #79f0c2 !important;
+          font-size: clamp(14px, .8vw, 18px) !important;
+          line-height: 1.4 !important;
+          font-weight: 900 !important;
+          letter-spacing: .3px;
+        }
+        .profile-exp > div:nth-child(2) label { color: #c5a5ff !important; }
+        .profile-exp p {
+          margin: 0 !important;
+          color: #ffffff !important;
+          font-size: clamp(19px, 1.05vw, 26px) !important;
+          line-height: 1.45 !important;
+          font-weight: 850 !important;
+          overflow-wrap: anywhere;
+        }
+        @media (max-width: 900px) {
+          .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+          .profile-grid > div { min-height: 100px; }
+        }
+        @media (max-width: 620px) {
+          #player-information,
+          #gaming-profile,
+          #experience { padding: 16px 12px !important; }
+          #player-information h3,
+          #gaming-profile h3,
+          #experience h3 { font-size: 18px !important; gap: 9px !important; padding-bottom: 12px !important; }
+          #player-information h3::before,
+          #gaming-profile h3::before,
+          #experience h3::before { min-width: 30px; height: 27px; font-size: 12px; }
+          .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+          .profile-grid > div { min-height: 92px; padding: 12px 10px !important; gap: 7px !important; border-left-width: 3px !important; }
+          .profile-grid label { font-size: 12px !important; letter-spacing: .25px !important; }
+          .profile-grid p { font-size: 15px !important; line-height: 1.4 !important; }
+          .profile-exp { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+          .profile-exp > div { min-height: 94px; padding: 12px 10px; gap: 7px; border-left-width: 3px; }
+          .profile-exp label { font-size: 12px !important; }
+          .profile-exp p { font-size: 15px !important; line-height: 1.4 !important; }
+        }
+        @media (max-width: 390px) {
+          .profile-grid,
+          .profile-exp { grid-template-columns: minmax(0, 1fr) !important; }
+          .profile-grid > div,
+          .profile-exp > div { min-height: 78px; padding: 13px 14px !important; }
+          .profile-grid label,
+          .profile-exp label { font-size: 13px !important; }
+          .profile-grid p,
+          .profile-exp p { font-size: 16px !important; }
         }
 
       `}</style>
