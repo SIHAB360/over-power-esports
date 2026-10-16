@@ -106,7 +106,7 @@ return(
 <div className="games-header">
 
 <h2>
-OP Believe in Domination
+OP BELIEVE IN DOMINATION
 </h2>
 
 
