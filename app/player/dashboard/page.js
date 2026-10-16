@@ -14,7 +14,6 @@ const [filterType, setFilterType] = useState("all");
 const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
 const [adminView, setAdminView] = useState(false);
-const [adminTargetId, setAdminTargetId] = useState("");
 
 useEffect(() => {
   checkUser();
@@ -100,7 +99,6 @@ useEffect(() => {
       const requestedAdminPlayerId = new URLSearchParams(window.location.search).get("adminPlayerId");
       const isAdminPreview = Boolean(requestedAdminPlayerId);
       setAdminView(isAdminPreview);
-      setAdminTargetId(requestedAdminPlayerId || "");
 
       const {
         data: { user },
