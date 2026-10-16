@@ -30,6 +30,10 @@ export default function AdminAchievementsPage() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [category, setCategory] = useState("result");
+  const [teams, setTeams] = useState([]);
+  const [selectedTeamId, setSelectedTeamId] = useState("");
+  const [teamsLoading, setTeamsLoading] = useState(false);
+  const [teamsError, setTeamsError] = useState("");
   const [publishNow, setPublishNow] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState("");
@@ -38,7 +42,9 @@ export default function AdminAchievementsPage() {
   const [error, setError] = useState("");
   const [lightbox, setLightbox] = useState(null);
   const [editing, setEditing] = useState(null);
-  const [draft, setDraft] = useState({ title: "", category: "result", sort_order: 0 });
+  const [draft, setDraft] = useState({
+    title: "", category: "result", sort_order: 0, team_id: ""
+  });
 
   useEffect(() => {
     let active = true;
@@ -63,7 +69,10 @@ export default function AdminAchievementsPage() {
   }, [router]);
 
   useEffect(() => {
-    if (phase === "ready") fetchGallery(false);
+    if (phase === "ready") {
+      fetchGallery(false);
+      loadTeams();
+    }
     // Initial fetch only after admin authorization.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
@@ -74,13 +83,34 @@ export default function AdminAchievementsPage() {
     return () => urls.forEach((url) => URL.revokeObjectURL(url));
   }, [selectedFiles]);
 
+  // The dropdown is powered by the existing teams table, never a fixed list.
+  async function loadTeams() {
+    setTeamsLoading(true);
+    setTeamsError("");
+    const { data, error: teamQueryError } = await supabase
+      .from("teams")
+      .select("id,team_name")
+      .order("team_name", { ascending: true });
+    if (teamQueryError) {
+      setTeamsError(`Could not load teams: ${teamQueryError.message}`);
+    } else {
+      setTeams(data || []);
+    }
+    setTeamsLoading(false);
+  }
+
+  function teamName(teamId) {
+    if (!teamId) return "UNASSIGNED TEAM";
+    return teams.find((team) => team.id === teamId)?.team_name || "TEAM NOT FOUND";
+  }
+
   async function fetchGallery(append = false) {
     setLoadingItems(true);
     setError("");
     const offset = append ? items.length : 0;
     const { data, error: queryError } = await supabase
       .from("achievement_gallery")
-      .select("id,file_path,title,category,sort_order,is_published,created_at")
+      .select("id,file_path,title,category,team_id,sort_order,is_published,created_at")
       .order("sort_order", { ascending: true })
       .order("created_at", { ascending: false })
       .range(offset, offset + PAGE_SIZE - 1);
@@ -109,6 +139,10 @@ export default function AdminAchievementsPage() {
 
   async function uploadFiles() {
     if (!userId || uploading || !selectedFiles.length) return;
+    if (!selectedTeamId || !teams.some((team) => team.id === selectedTeamId)) {
+      setError("Select a valid team before uploading screenshots.");
+      return;
+    }
     setUploading(true);
     setError("");
     setMessage("");
@@ -131,6 +165,7 @@ export default function AdminAchievementsPage() {
         file_path: path,
         title,
         category,
+        team_id: selectedTeamId,
         sort_order: 0,
         is_published: publishNow,
         created_by: userId,
@@ -165,8 +200,11 @@ export default function AdminAchievementsPage() {
 
   function beginEdit(item) {
     setEditing(item.id);
-    setDraft({ title: item.title || "", category: item.category,
-      sort_order: Number(item.sort_order) || 0 });
+    setDraft({
+      title: item.title || "", category: item.category,
+      sort_order: Number(item.sort_order) || 0,
+      team_id: item.team_id || ""
+    });
   }
 
   async function saveEdit(item) {
@@ -176,6 +214,7 @@ export default function AdminAchievementsPage() {
     const updates = {
       title: draft.title.trim().slice(0, 130),
       category: draft.category,
+      team_id: draft.team_id || null,
       sort_order: Math.trunc(Number(draft.sort_order) || 0),
     };
     const { error: saveError } = await supabase
@@ -230,8 +269,8 @@ export default function AdminAchievementsPage() {
           <p>Upload and manage tournament results and in-game screenshots. Published images will appear in the public gallery once the gallery page is connected.</p>
         </header>
 
-        {(message || error) && <div role="status" className={`aa-notice ${error ? "aa-error" : ""}`}>
-          {error || message}
+        {(message || error || teamsError) && <div role="status" className={`aa-notice ${error || teamsError ? "aa-error" : ""}`}>
+          {error || teamsError || message}
           <button type="button" onClick={() => { setMessage(""); setError(""); }} aria-label="Dismiss"><FiX /></button>
         </div>}
 
@@ -257,6 +296,20 @@ export default function AdminAchievementsPage() {
             ))}
           </div>}
           <div className="aa-controls">
+            <label className="aa-team-control">TEAM / SQUAD
+              <select
+                value={selectedTeamId}
+                onChange={(event) => setSelectedTeamId(event.target.value)}
+                disabled={uploading || teamsLoading || teams.length === 0}
+                aria-label="Select team for new achievements"
+                required
+              >
+                <option value="">{teamsLoading ? "Loading teams..." : "Choose a team"}</option>
+                {teams.map((team) => (
+                  <option value={team.id} key={team.id}>{team.team_name}</option>
+                ))}
+              </select>
+            </label>
             <label>IMAGE CATEGORY
               <select value={category} onChange={(event) => setCategory(event.target.value)} disabled={uploading}>
                 <option value="result">Tournament Result</option>
@@ -267,11 +320,17 @@ export default function AdminAchievementsPage() {
               <input type="checkbox" checked={publishNow} onChange={(event) => setPublishNow(event.target.checked)} disabled={uploading} />
               <span>Publish immediately</span>
             </label>
-            <button type="button" className="aa-primary" disabled={uploading || !selectedFiles.length} onClick={uploadFiles}>
+            <button type="button" className="aa-primary" disabled={uploading || !selectedFiles.length || !selectedTeamId || teamsLoading} onClick={uploadFiles}>
               {uploading ? <><FiRefreshCw className="aa-spin" /> {progress || "Uploading..."}</>
                 : <><FiPlus /> UPLOAD {selectedFiles.length || ""} SCREENSHOT{selectedFiles.length === 1 ? "" : "S"}</>}
             </button>
           </div>
+          <p className="aa-team-hint">
+            New screenshots are linked to the selected team. Existing screenshots can be assigned via EDIT.
+            <button type="button" onClick={loadTeams} disabled={teamsLoading || uploading}>
+              <FiRefreshCw className={teamsLoading ? "aa-spin" : ""} /> Refresh teams
+            </button>
+          </p>
         </section>
 
         <section className="aa-gallery-panel" aria-label="Manage achievement screenshots">
@@ -299,8 +358,20 @@ export default function AdminAchievementsPage() {
                     <span className={item.is_published ? "aa-live" : "aa-draft"}>{item.is_published ? "PUBLISHED" : "HIDDEN"}</span>
                     <span>{item.category === "ingame" ? "IN-GAME" : "RESULT"}</span>
                   </div>
+                  <div className={`aa-team-tag ${item.team_id ? "aa-team-tag--linked" : ""}`} title={teamName(item.team_id)}>
+                    <FiShield aria-hidden="true" /> {teamName(item.team_id)}
+                  </div>
                   {editing === item.id ? <div className="aa-edit-form">
                     <input aria-label="Title" value={draft.title} maxLength={130} onChange={(event) => setDraft({ ...draft, title: event.target.value })} />
+                    <label className="aa-team-edit-label">TEAM / SQUAD
+                      <select aria-label="Team" value={draft.team_id}
+                        onChange={(event) => setDraft({ ...draft, team_id: event.target.value })}>
+                        <option value="">Unassigned (legacy screenshot)</option>
+                        {teams.map((team) => (
+                          <option value={team.id} key={team.id}>{team.team_name}</option>
+                        ))}
+                      </select>
+                    </label>
                     <div className="aa-edit-row">
                       <select aria-label="Category" value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value })}>
                         <option value="result">Result</option><option value="ingame">In-Game</option>
@@ -363,7 +434,13 @@ export default function AdminAchievementsPage() {
         .aa-previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px;margin-top:18px}
         .aa-preview{min-width:0;overflow:hidden;border:1px solid rgba(136,184,218,.21);padding:5px;background:#111729;border-radius:12px}
         .aa-preview img{width:100%;height:90px;object-fit:cover;border-radius:8px}.aa-preview small{display:block;padding:8px 4px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#b8c5d9;font-size:11px}
-        .aa-controls{display:flex;align-items:end;gap:18px;flex-wrap:wrap;margin-top:25px}.aa-controls>label:first-child{display:flex;flex-direction:column;gap:9px;font-size:11px;letter-spacing:1px;color:#c2d4e3;font-weight:800}
+        .aa-controls{display:flex;align-items:end;gap:18px;flex-wrap:wrap;margin-top:25px}
+        .aa-controls>label:first-child,.aa-controls>label:nth-child(2){display:flex;flex-direction:column;gap:9px;font-size:11px;letter-spacing:1px;color:#c2d4e3;font-weight:800}
+        .aa-team-control{flex:1 1 215px;min-width:0}
+        .aa-team-control select{width:100%;min-width:0;max-width:340px;cursor:pointer;border-color:rgba(107,242,223,.55)!important;box-shadow:0 0 20px rgba(80,224,204,.08)}
+        .aa-team-hint{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:15px 0 0!important;font-size:12px;line-height:1.6;color:#9db7c6}
+        .aa-team-hint button{display:inline-flex;align-items:center;gap:6px;min-height:31px;padding:4px 10px;border-radius:9px;border:1px solid rgba(127,240,225,.32);background:rgba(77,224,205,.08);color:#a7fff0;cursor:pointer}
+        .aa-team-hint button:disabled{opacity:.55;cursor:wait}
         .aa-controls select,.aa-edit-form select,.aa-edit-form input{min-height:46px;padding:10px 14px;border-radius:12px;border:1px solid rgba(132,211,229,.33);background:#10182a;color:#fff;outline:none}
         .aa-publish{display:flex;align-items:center;gap:9px;min-height:45px;color:#d8e4ef;font-size:13px;cursor:pointer}.aa-publish input{width:17px;height:17px;accent-color:#57e5d2}
         .aa-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:47px;padding:13px 22px;border:0;border-radius:13px;cursor:pointer;font-size:12px;font-weight:950;letter-spacing:.7px;background:linear-gradient(100deg,#7af5e3,#bca4ff);color:#08101b;box-shadow:0 0 27px rgba(103,225,216,.25)}
@@ -372,7 +449,11 @@ export default function AdminAchievementsPage() {
         .aa-empty{padding:55px 15px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;text-align:center;color:#adbbd0}.aa-empty strong{color:white;letter-spacing:1.4px}.aa-empty svg{color:#91e7eb}
         .aa-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.aa-card{min-width:0;overflow:hidden;border-radius:18px;border:1px solid rgba(159,170,232,.25);background:rgba(9,15,31,.9);transition:.25s}.aa-card:hover{border-color:rgba(117,233,218,.56);box-shadow:0 12px 40px rgba(55,217,226,.09)}
         .aa-card-image{position:relative;display:block;width:100%;height:210px;overflow:hidden;border:0;padding:0;background:#111527;cursor:zoom-in}.aa-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s}.aa-card-image:hover img{transform:scale(1.05)}.aa-image-zoom{position:absolute;bottom:12px;right:12px;display:flex;align-items:center;gap:5px;padding:6px 9px;border-radius:9px;background:rgba(4,9,19,.82);font-size:11px;color:#fff}
-        .aa-card-body{padding:16px}.aa-card-meta{display:flex;gap:10px;justify-content:space-between;font-size:10px;font-weight:900;color:#d5a9ff;letter-spacing:.5px}.aa-live{color:#6bf2ce}.aa-draft{color:#ffcf92}
+        .aa-card-body{padding:16px}
+        .aa-team-tag{display:flex;align-items:center;gap:7px;margin-top:12px;padding:9px 10px;border:1px solid rgba(255,181,116,.21);border-radius:9px;color:#ffdbb5;background:rgba(255,181,116,.05);font-size:11px;font-weight:800;overflow-wrap:anywhere}
+        .aa-team-tag--linked{border-color:rgba(95,232,208,.25);color:#97f3df;background:rgba(95,232,208,.06)}
+        .aa-team-edit-label{display:flex;flex-direction:column;gap:7px;color:#a9e8e6;font-size:11px;font-weight:800;letter-spacing:.4px}
+        .aa-card-meta{display:flex;gap:10px;justify-content:space-between;font-size:10px;font-weight:900;color:#d5a9ff;letter-spacing:.5px}.aa-live{color:#6bf2ce}.aa-draft{color:#ffcf92}
         .aa-card h3{margin:14px 0;color:#f9f7ff;font-size:15px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.aa-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
         .aa-actions button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:7px 10px;border:1px solid rgba(123,221,231,.28);border-radius:9px;background:rgba(57,142,165,.09);color:#ddf2f9;cursor:pointer;font-size:10px;font-weight:900}.aa-actions button:hover{border-color:#84eedf}.aa-actions button:disabled{opacity:.45;cursor:not-allowed}.aa-actions .aa-danger{border-color:rgba(255,105,138,.3);color:#ffc0d2}
         .aa-edit-form{display:flex;flex-direction:column;gap:9px;margin-top:14px}.aa-edit-form input,.aa-edit-form select{min-width:0;width:100%}.aa-edit-row{display:grid;grid-template-columns:1fr 90px;gap:10px}
@@ -381,7 +462,7 @@ export default function AdminAchievementsPage() {
         .achievement-admin-gate{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:20px;flex-direction:column;background:#070913;color:#c4ffff;font-weight:800;text-align:center;padding:20px}
         .achievement-admin-gate a{color:#ffdca0!important}
         @media(max-width:1000px){.aa-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.aa-container{padding:36px 20px 55px}}
-        @media(max-width:640px){.aa-container{padding:25px 13px 40px}.aa-upload-panel,.aa-gallery-panel{padding:17px 13px;border-radius:18px}.aa-header h1{font-size:clamp(31px,8vw,46px)}.aa-header p{font-size:13px}.aa-grid{grid-template-columns:1fr;gap:14px}.aa-card-image{height:210px}.aa-controls{align-items:stretch;flex-direction:column;gap:12px}.aa-controls>label:first-child,.aa-primary{width:100%}.aa-controls select{width:100%}.aa-previews{grid-template-columns:repeat(3,minmax(0,1fr))}.aa-dropzone{min-height:170px}.aa-panel-heading h2{font-size:21px}}
+        @media(max-width:640px){.aa-container{padding:25px 13px 40px}.aa-upload-panel,.aa-gallery-panel{padding:17px 13px;border-radius:18px}.aa-header h1{font-size:clamp(31px,8vw,46px)}.aa-header p{font-size:13px}.aa-grid{grid-template-columns:1fr;gap:14px}.aa-card-image{height:210px}.aa-controls{align-items:stretch;flex-direction:column;gap:12px}.aa-controls>label:first-child,.aa-controls>label:nth-child(2),.aa-team-control,.aa-primary{width:100%;flex-basis:100%}.aa-controls select{width:100%}.aa-previews{grid-template-columns:repeat(3,minmax(0,1fr))}.aa-dropzone{min-height:170px}.aa-panel-heading h2{font-size:21px}}
         @media(prefers-reduced-motion:reduce){.achievement-admin *{animation:none!important;transition:none!important}}
       `}</style>
     </main>
