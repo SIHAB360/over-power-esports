@@ -330,6 +330,7 @@
 }
 .cardActions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: auto;
 }
@@ -361,6 +362,15 @@
   border-color: rgba(47, 211, 160, .28);
   background: linear-gradient(110deg, rgba(47, 211, 160, .18), rgba(66, 216, 233, .08));
   color: #75e9c2;
+}
+.dashboardButton {
+  border-color: rgba(170, 112, 255, .52);
+  background: linear-gradient(110deg, rgba(112, 83, 255, .27), rgba(213, 72, 255, .16), rgba(66, 216, 233, .12));
+  color: #e7d9ff;
+}
+.dashboardButton:hover:not(:disabled) {
+  border-color: rgba(205, 155, 255, .88);
+  background: linear-gradient(110deg, rgba(112, 83, 255, .42), rgba(213, 72, 255, .28), rgba(66, 216, 233, .2));
 }
 .button:disabled {
   opacity: .55;
