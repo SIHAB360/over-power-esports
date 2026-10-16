@@ -23,7 +23,7 @@ const leadershipMembers = [
 
 export default function Leadership() {
   return (
-    <section className="leadership-section">
+    <section id="leadership" className="leadership-section" style={{ scrollMarginTop: "104px" }}>
       <div className="leadership-header">
         <span className="leadership-kicker">♛ PREMIUM LEADERSHIP</span>
         <h2>♛ TEAM LEADERSHIP ♛</h2>
