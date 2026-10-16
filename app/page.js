@@ -79,15 +79,6 @@ export default function Home() {
           <Games />
         </section>
 
-        <section
-          id="join"
-          className="contact premium-contact"
-          style={{ scrollMarginTop: "90px" }}
-        >
-          <h2>READY TO JOIN?</h2>
-          <p>Become part of Over Power Esports</p>
-          <Link href="/join-team">JOIN TEAM</Link>
-        </section>
           <AchievementGallery />
 
         <FloatingContact />
