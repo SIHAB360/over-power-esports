@@ -3221,6 +3221,208 @@ const bestPlacement =
           .profile-exp p { font-size: 16px !important; }
         }
 
+
+
+        /* CAREER STATISTICS — centered layout and high-contrast category colors */
+        #performance .career-header {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+          width: 100% !important;
+          margin: 0 auto 20px !important;
+        }
+        #performance .career-header > div {
+          width: 100% !important;
+          text-align: center !important;
+        }
+        #performance .career-header h3 {
+          display: block !important;
+          width: 100% !important;
+          margin: 0 auto 10px !important;
+          text-align: center !important;
+          color: #f8fbff !important;
+          background: linear-gradient(90deg, #55e8ff 0%, #c3a4ff 48%, #ff9cc7 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 0 22px rgba(91, 214, 255, .12);
+          letter-spacing: 1.2px !important;
+        }
+        #performance .career-header p {
+          width: 100% !important;
+          margin: 0 auto !important;
+          text-align: center !important;
+          color: #e8efff !important;
+        }
+        #performance .filter-buttons {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          flex-wrap: wrap !important;
+          width: 100% !important;
+          margin: 22px auto !important;
+          gap: 12px !important;
+        }
+        #performance .filter-btn {
+          flex: 0 0 auto !important;
+          text-align: center !important;
+          border: 1px solid rgba(145, 202, 255, .48) !important;
+          color: #f8fbff !important;
+          background: linear-gradient(135deg, rgba(35, 65, 104, .95), rgba(41, 35, 81, .95)) !important;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 5px 16px rgba(0,0,0,.18) !important;
+        }
+        #performance .filter-btn:nth-child(2) {
+          border-color: rgba(184, 132, 255, .65) !important;
+          background: linear-gradient(135deg, #6139b9, #913ee0) !important;
+        }
+        #performance .filter-btn:nth-child(3) {
+          border-color: rgba(255, 129, 190, .68) !important;
+          background: linear-gradient(135deg, #b62f7b, #e84891) !important;
+        }
+        #performance .filter-btn:nth-child(4) {
+          border-color: rgba(255, 194, 107, .72) !important;
+          background: linear-gradient(135deg, #b95c22, #ed8b31) !important;
+        }
+        #performance .filter-btn.active {
+          color: #091421 !important;
+          border-color: #f4fbff !important;
+          background: linear-gradient(110deg, #6cecff 0%, #b7a0ff 52%, #ffacd2 100%) !important;
+          box-shadow: 0 0 0 2px rgba(255,255,255,.12), 0 0 20px rgba(94, 224, 255, .24) !important;
+        }
+        #performance .custom-date-filter {
+          justify-content: center !important;
+          align-items: end !important;
+          text-align: center !important;
+        }
+        #performance .custom-date-filter > div {
+          text-align: center !important;
+        }
+        #performance .custom-date-filter label {
+          color: #91eaff !important;
+          font-weight: 900 !important;
+          text-align: center !important;
+        }
+        #performance .career-grid {
+          width: 100% !important;
+          justify-items: stretch !important;
+          align-items: stretch !important;
+        }
+        #performance .career-stat {
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          align-items: center !important;
+          text-align: center !important;
+          min-width: 0 !important;
+          gap: 7px !important;
+          border: 1px solid rgba(92, 187, 255, .5) !important;
+          border-top: 3px solid #53e4ff !important;
+          border-radius: 15px !important;
+          background: linear-gradient(145deg, rgba(24, 47, 76, .98), rgba(17, 22, 43, .98)) !important;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 22px rgba(0,0,0,.18) !important;
+          padding: 20px 12px !important;
+        }
+        #performance .career-stat:nth-child(5n + 2) {
+          border-color: rgba(185, 132, 255, .52) !important;
+          border-top-color: #b58aff !important;
+          background: linear-gradient(145deg, rgba(55, 34, 87, .97), rgba(20, 20, 43, .98)) !important;
+        }
+        #performance .career-stat:nth-child(5n + 3) {
+          border-color: rgba(255, 113, 165, .5) !important;
+          border-top-color: #ff76b1 !important;
+          background: linear-gradient(145deg, rgba(73, 30, 61, .97), rgba(23, 19, 39, .98)) !important;
+        }
+        #performance .career-stat:nth-child(5n + 4) {
+          border-color: rgba(255, 194, 103, .5) !important;
+          border-top-color: #ffc267 !important;
+          background: linear-gradient(145deg, rgba(73, 49, 27, .97), rgba(23, 22, 40, .98)) !important;
+        }
+        #performance .career-stat:nth-child(5n + 5) {
+          border-color: rgba(77, 235, 177, .48) !important;
+          border-top-color: #4debb1 !important;
+          background: linear-gradient(145deg, rgba(23, 63, 58, .97), rgba(17, 23, 42, .98)) !important;
+        }
+        #performance .career-stat span {
+          display: block !important;
+          margin: 0 auto 5px !important;
+          text-align: center !important;
+          line-height: 1.15 !important;
+          filter: drop-shadow(0 2px 8px rgba(100, 218, 255, .18));
+        }
+        #performance .career-stat small {
+          display: block !important;
+          width: 100% !important;
+          margin: 0 auto !important;
+          text-align: center !important;
+          color: #eaf3ff !important;
+          font-size: clamp(15px, .9vw, 22px) !important;
+          font-weight: 950 !important;
+          letter-spacing: .65px !important;
+          line-height: 1.35 !important;
+          overflow-wrap: anywhere !important;
+          text-shadow: 0 1px 9px rgba(0,0,0,.5);
+        }
+        #performance .career-stat:nth-child(5n + 1) small { color: #8beeff !important; }
+        #performance .career-stat:nth-child(5n + 2) small { color: #d0b5ff !important; }
+        #performance .career-stat:nth-child(5n + 3) small { color: #ffb0d0 !important; }
+        #performance .career-stat:nth-child(5n + 4) small { color: #ffd79c !important; }
+        #performance .career-stat:nth-child(5n + 5) small { color: #8cf4c7 !important; }
+        #performance .career-stat strong {
+          display: block !important;
+          width: 100% !important;
+          margin: 2px auto 0 !important;
+          text-align: center !important;
+          color: #ffffff !important;
+          font-size: clamp(30px, 1.55vw, 46px) !important;
+          font-weight: 1000 !important;
+          line-height: 1.2 !important;
+          text-shadow: 0 2px 12px rgba(0,0,0,.5), 0 0 12px rgba(112, 213, 255, .16);
+          overflow-wrap: anywhere !important;
+        }
+        #performance .chart-heading {
+          justify-content: center !important;
+          text-align: center !important;
+          position: relative !important;
+        }
+        #performance .chart-heading > div {
+          width: 100% !important;
+          text-align: center !important;
+        }
+        #performance .chart-heading h4,
+        #performance .chart-heading p {
+          width: 100% !important;
+          text-align: center !important;
+        }
+        #performance .chart-chip {
+          position: absolute !important;
+          top: 0 !important;
+          right: 0 !important;
+          color: #eaf6ff !important;
+          border-color: rgba(113, 207, 255, .5) !important;
+          background: rgba(36, 73, 110, .72) !important;
+        }
+        #performance .chart-legend {
+          justify-content: center !important;
+          text-align: center !important;
+        }
+        @media (max-width: 620px) {
+          #performance .career-header { margin-bottom: 16px !important; }
+          #performance .career-header h3 { font-size: 22px !important; letter-spacing: .5px !important; }
+          #performance .career-header p { font-size: 14px !important; }
+          #performance .filter-buttons { gap: 9px !important; margin: 18px auto !important; }
+          #performance .filter-btn { flex: 1 1 calc(50% - 9px) !important; font-size: 13px !important; }
+          #performance .career-stat { min-height: 116px !important; padding: 15px 8px !important; }
+          #performance .career-stat span { font-size: 26px !important; }
+          #performance .career-stat small { font-size: 13px !important; letter-spacing: .3px !important; }
+          #performance .career-stat strong { font-size: 25px !important; }
+          #performance .chart-heading { padding-top: 28px !important; }
+          #performance .chart-chip { top: 0 !important; right: 50% !important; transform: translateX(50%) !important; }
+          #performance .chart-heading h4 { font-size: 18px !important; }
+          #performance .chart-heading p { font-size: 13px !important; }
+          #performance .chart-legend { font-size: 13px !important; }
+        }
+
       `}</style>
     </main>
   );
