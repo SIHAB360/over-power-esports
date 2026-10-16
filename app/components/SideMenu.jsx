@@ -29,37 +29,19 @@ export default function SideMenu({ open, close }) {
           ×
         </button>
 
-        <div className="op-menu-topline">
-          <span className="op-menu-live"><i /> NAVIGATION SYSTEM</span>
-          <span className="op-menu-index">OP / 07</span>
-        </div>
-
         <div className="op-side-logo">
           <span className="op-brand-main">OVER POWER</span>
           <span className="op-brand-accent">ESPORTS</span>
           <div className="logo-line"></div>
         </div>
 
-        <p className="op-menu-caption">CHOOSE YOUR DESTINATION</p>
-
         <nav className="op-menu-links" aria-label="Section links">
           {menus.map((item) => (
             <Link href={item.href} key={item.href} onClick={close}>
-              <span className="op-link-number">{item.number}</span>
-              <span className="op-link-copy">
-                <strong>{item.name === "LOGIN" ? "MEMBER LOGIN" : item.name}</strong>
-                <small>{item.detail}</small>
-              </span>
-              <span className="op-link-arrow" aria-hidden="true">↗</span>
+              <span>{item.name === "LOGIN" ? "MEMBER LOGIN" : item.name}</span>
             </Link>
           ))}
         </nav>
-
-        <div className="op-side-footer">
-          OVER POWER ESPORTS
-          <br />
-          PLAY WITH DISCIPLINE
-        </div>
 
         <style jsx>{`
           * {
@@ -435,6 +417,163 @@ export default function SideMenu({ open, close }) {
 
           @media (prefers-reduced-motion: reduce) {
             .op-side-menu, .op-side-menu * { animation: none !important; transition: none !important; }
+          }
+
+
+          /* Clean, title-only navigation with premium animated neon borders */
+          .op-side-menu {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 65, 112, .55) transparent;
+          }
+
+          .op-side-logo {
+            flex: 0 0 auto;
+            margin-top: 30px;
+            margin-bottom: 24px;
+          }
+
+          .op-menu-links {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+            width: 100%;
+            margin-top: 0;
+            padding: 2px 2px 12px;
+          }
+
+          .op-menu-links a {
+            position: relative;
+            isolation: isolate;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            width: 100%;
+            min-width: 0;
+            height: 54px;
+            min-height: 54px;
+            flex: 0 0 54px;
+            padding: 0 18px;
+            border: 1px solid rgba(255, 71, 117, .48);
+            border-radius: 13px;
+            overflow: hidden;
+            color: #fff !important;
+            text-decoration: none !important;
+            text-align: left;
+            background:
+              linear-gradient(100deg, rgba(255, 43, 91, .13), rgba(255,255,255,.025) 60%, rgba(85, 110, 255, .055));
+            box-shadow:
+              0 0 13px rgba(255, 40, 91, .16),
+              inset 0 0 13px rgba(255, 40, 91, .045);
+            animation: opMenuBorderPulse 2.7s ease-in-out infinite;
+            transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+          }
+
+          .op-menu-links a:nth-child(2) { animation-delay: .25s; }
+          .op-menu-links a:nth-child(3) { animation-delay: .5s; }
+          .op-menu-links a:nth-child(4) { animation-delay: .75s; }
+          .op-menu-links a:nth-child(5) { animation-delay: 1s; }
+          .op-menu-links a:nth-child(6) { animation-delay: 1.25s; }
+          .op-menu-links a:nth-child(7) { animation-delay: 1.5s; }
+
+          .op-menu-links a::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            opacity: .25;
+            pointer-events: none;
+            background: linear-gradient(105deg, rgba(255, 40, 91, .3), transparent 65%, rgba(100, 210, 255, .12));
+            transition: opacity .22s ease;
+          }
+
+          .op-menu-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 17%;
+            bottom: 17%;
+            width: 2px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #ffb4c8, #ff315f, #79e7ff);
+            box-shadow: 0 0 12px rgba(255, 49, 95, .8);
+            pointer-events: none;
+          }
+
+          .op-menu-links a > span {
+            position: relative;
+            z-index: 1;
+            display: block;
+            width: 100%;
+            color: #fff4f8;
+            font-size: 13px;
+            line-height: 1.2;
+            font-weight: 950;
+            letter-spacing: 2.1px;
+            text-shadow: 0 0 10px rgba(255, 73, 119, .42);
+            transition: color .22s ease, text-shadow .22s ease, letter-spacing .22s ease;
+          }
+
+          .op-menu-links a:hover,
+          .op-menu-links a:focus-visible {
+            transform: translateX(5px);
+            border-color: rgba(255, 168, 192, .98);
+            background:
+              linear-gradient(100deg, rgba(255, 38, 91, .29), rgba(255,255,255,.055) 62%, rgba(97, 218, 255, .11));
+            box-shadow:
+              0 0 25px rgba(255, 42, 95, .38),
+              0 0 8px rgba(105, 225, 255, .13),
+              inset 0 0 18px rgba(255, 42, 95, .11);
+            outline: none;
+            animation-play-state: paused;
+          }
+
+          .op-menu-links a:hover::before,
+          .op-menu-links a:focus-visible::before { opacity: .8; }
+
+          .op-menu-links a:hover > span,
+          .op-menu-links a:focus-visible > span {
+            color: #fff;
+            letter-spacing: 2.5px;
+            text-shadow: 0 0 8px #ff6c96, 0 0 20px rgba(255, 49, 95, .85);
+          }
+
+          @keyframes opMenuBorderPulse {
+            0%, 100% {
+              border-color: rgba(255, 65, 112, .42);
+              box-shadow: 0 0 10px rgba(255, 40, 91, .13), inset 0 0 10px rgba(255, 40, 91, .035);
+            }
+            50% {
+              border-color: rgba(255, 151, 181, .88);
+              box-shadow: 0 0 22px rgba(255, 40, 91, .3), inset 0 0 15px rgba(255, 40, 91, .08);
+            }
+          }
+
+          @media (max-width: 600px) {
+            .op-side-menu {
+              padding: 24px 18px 24px;
+              height: calc(100dvh - 24px);
+            }
+            .op-side-menu.open { left: 12px; }
+            .op-side-logo { margin-top: 26px; margin-bottom: 22px; }
+            .op-menu-links { gap: 11px; }
+            .op-menu-links a { height: 51px; min-height: 51px; flex-basis: 51px; }
+            .op-menu-links a > span { font-size: 12px; }
+          }
+
+          @media (max-height: 650px) {
+            .op-side-menu { padding-top: 18px; padding-bottom: 15px; }
+            .op-side-logo { margin-top: 17px; margin-bottom: 16px; }
+            .op-menu-links { gap: 7px; }
+            .op-menu-links a { height: 44px; min-height: 44px; flex-basis: 44px; }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .op-menu-links a { animation: none !important; }
           }
 
         `}</style>
