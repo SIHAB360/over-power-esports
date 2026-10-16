@@ -88,6 +88,7 @@ export default function Home() {
           <p>Become part of Over Power Esports</p>
           <Link href="/join-team">JOIN TEAM</Link>
         </section>
+          <AchievementGallery />
 
         <FloatingContact />
       </main>
