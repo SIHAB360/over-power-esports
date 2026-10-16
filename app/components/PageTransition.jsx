@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import logo from "../assets/logo.png";
 
-const TRANSITION_DURATION = 2400;
+const TRANSITION_DURATION = 2300;
 const RAY_COUNT = 32;
 const RAY_PATH =
   "M 500 500 C 550 420, 590 580, 650 500 S 760 420, 820 500 S 910 580, 1000 500";
@@ -224,7 +224,7 @@ export default function PageTransition() {
         .energy-ray {
           opacity: 0;
           filter: hue-rotate(var(--hue));
-          animation: rayFade 2.2s ease var(--delay) both;
+          animation: rayFade 2.1s ease var(--delay) both;
         }
 
         .ray-halo,
@@ -233,7 +233,7 @@ export default function PageTransition() {
           stroke-linecap: round;
           stroke-dasharray: 1;
           stroke-dashoffset: 1;
-          animation: rayDraw 2.2s cubic-bezier(0.16, 0.72, 0.25, 1) var(--delay) both;
+          animation: rayDraw 2.1s cubic-bezier(0.16, 0.72, 0.25, 1) var(--delay) both;
         }
 
         .ray-halo {
@@ -333,12 +333,12 @@ export default function PageTransition() {
         }
 
         .reverse .energy-ray {
-          animation: rayFadeBack 2.2s ease both;
+          animation: rayFadeBack 2.1s ease both;
         }
 
         .reverse .ray-halo,
         .reverse .ray-core {
-          animation: rayRetract 2.2s cubic-bezier(0.55, 0, 0.8, 0.35) both;
+          animation: rayRetract 2.1s cubic-bezier(0.55, 0, 0.8, 0.35) both;
         }
 
         .reverse .orb {
