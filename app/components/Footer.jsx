@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../assets/logo.png";
+import { FaFacebookF, FaWhatsapp, FaDiscord } from "react-icons/fa";
 
 const exploreLinks = [
   { name: "Home", href: "/#home" },
@@ -14,6 +15,38 @@ const exploreLinks = [
 const communityLinks = [
   { name: "Join the Team", href: "/join-team" },
   { name: "Member Login", href: "/login" },
+];
+
+// Official community links. WhatsApp chat and WhatsApp group are separate.
+const socialLinks = [
+  {
+    name: "Facebook Page",
+    shortName: "FACEBOOK",
+    href: "https://www.facebook.com/profile.php?id=61590595667810",
+    styleName: "facebook",
+    Icon: FaFacebookF,
+  },
+  {
+    name: "WhatsApp Direct Chat",
+    shortName: "WHATSAPP",
+    href: "https://wa.me/8801715393876",
+    styleName: "whatsapp",
+    Icon: FaWhatsapp,
+  },
+  {
+    name: "WhatsApp Community Group",
+    shortName: "WA GROUP",
+    href: "https://chat.whatsapp.com/JUQ9j32a73VJby7nucgzWo",
+    styleName: "group",
+    Icon: FaWhatsapp,
+  },
+  {
+    name: "Discord Server",
+    shortName: "DISCORD",
+    href: "https://discord.gg/PqVUHpGMa",
+    styleName: "discord",
+    Icon: FaDiscord,
+  },
 ];
 
 export default function Footer() {
@@ -56,6 +89,31 @@ export default function Footer() {
               <span>JOIN THE TEAM</span><span className="op-royal-footer__join-icon" aria-hidden="true">↗</span>
             </Link>
             <p className="op-royal-footer__micro">✧ THE NEXT GENERATION OF CHAMPIONS</p>
+
+            <div className="op-royal-footer__social-area">
+              <h3 className="op-royal-footer__social-heading">
+                <span aria-hidden="true">✦</span> CONNECT WITH THE POWER
+              </h3>
+              <div className="op-royal-footer__socials" aria-label="Official social media and community links">
+                {socialLinks.map(({ name, shortName, href, styleName, Icon }) => (
+                  <a
+                    key={styleName}
+                    href={href}
+                    className={`op-royal-footer__social op-royal-footer__social--${styleName}`}
+                    aria-label={name}
+                    title={name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="op-royal-footer__social-icon"><Icon aria-hidden="true" /></span>
+                    <span className="op-royal-footer__social-name">{shortName}</span>
+                  </a>
+                ))}
+              </div>
+              <a className="op-royal-footer__phone" href="tel:+8801715393876">
+                <span aria-hidden="true">✦</span> CALL: +880 1715-393876
+              </a>
+            </div>
           </section>
 
           <nav className="op-royal-footer__nav" aria-label="Footer navigation">
@@ -199,6 +257,66 @@ export default function Footer() {
           margin:23px 0 0!important;color:#dfc7d1;font-size:10px;
           letter-spacing:1.4px;font-weight:800;
         }
+        /* Glowing, real social links; scoped to the footer only. */
+        .op-royal-footer__social-area{
+          width:100%;margin-top:29px;padding-top:23px;
+          border-top:1px solid rgba(255,255,255,.12);
+        }
+        .op-royal-footer__social-heading{
+          display:flex;align-items:center;gap:9px;
+          margin:0 0 15px!important;color:#ffe0af!important;
+          font-size:12px;font-weight:950;letter-spacing:1.6px;line-height:1.4;
+          text-shadow:0 0 17px rgba(255,202,142,.40);
+        }
+        .op-royal-footer__social-heading span{color:#9cecff;filter:drop-shadow(0 0 8px #91eafe)}
+        .op-royal-footer__socials{
+          display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;
+          width:100%;max-width:400px;
+        }
+        .op-royal-footer__social{
+          --glow:rgba(255,111,147,.28);
+          position:relative;isolation:isolate;display:flex;flex-direction:column;
+          align-items:center;justify-content:center;gap:8px;
+          min-width:0;min-height:89px;padding:11px 5px;
+          color:#fff!important;text-decoration:none!important;
+          border:1px solid rgba(255,255,255,.20);border-radius:16px;
+          background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(10,10,25,.92));
+          box-shadow:0 5px 20px rgba(0,0,0,.19),0 0 18px var(--glow);
+          overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+        }
+        .op-royal-footer__social:before{
+          content:"";position:absolute;z-index:-1;inset:-25%;pointer-events:none;
+          background:radial-gradient(circle at 50% 26%,var(--glow),transparent 56%);
+          animation:opRoyalSocialAura 3.3s ease-in-out infinite alternate;
+        }
+        .op-royal-footer__social:after{
+          content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+          border-top:1px solid rgba(255,255,255,.25);
+        }
+        .op-royal-footer__social--facebook{--glow:rgba(24,119,242,.62)}
+        .op-royal-footer__social--whatsapp{--glow:rgba(37,211,102,.56)}
+        .op-royal-footer__social--group{--glow:rgba(21,209,185,.55)}
+        .op-royal-footer__social--discord{--glow:rgba(100,111,255,.63)}
+        .op-royal-footer__social-icon{
+          display:grid;place-items:center;width:34px;height:34px;
+          color:#fff;font-size:22px;filter:drop-shadow(0 0 11px var(--glow));
+        }
+        .op-royal-footer__social-name{
+          font-size:9px;line-height:1.3;font-weight:900;letter-spacing:.45px;
+          text-align:center;color:#fff;overflow-wrap:break-word;
+        }
+        .op-royal-footer__social:hover{
+          transform:translateY(-5px);border-color:rgba(255,255,255,.65);
+          box-shadow:0 12px 35px var(--glow),inset 0 0 25px rgba(255,255,255,.055);
+        }
+        .op-royal-footer__phone{
+          display:inline-flex;align-items:center;gap:7px;margin-top:15px;
+          font-size:12px;font-weight:800;letter-spacing:.7px;
+          color:#bcecf7!important;text-decoration:none!important;
+          text-shadow:0 0 13px rgba(91,223,252,.18);
+        }
+        .op-royal-footer__phone span{color:#ffdb9c}
+        .op-royal-footer__phone:hover{color:#fff!important}
         .op-royal-footer__nav{
           display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
           gap:20px;padding:18px 0;
@@ -238,6 +356,8 @@ export default function Footer() {
           color:#fff;font-weight:950;letter-spacing:-.7px;line-height:1.08;
           text-shadow:0 0 20px rgba(255,255,255,.20);
         }
+        .op-royal-footer__panel h2{animation:opRoyalHeadingGlow 4.5s ease-in-out infinite alternate}
+        .op-royal-footer__wordmark b{background-size:230% 100%;animation:opRoyalGradientFlow 7s linear infinite alternate}
         .op-royal-footer__panel h2 span{
           background:linear-gradient(92deg,#ffc18a,#ff638d,#8febff);
           color:transparent;background-clip:text;-webkit-background-clip:text;
@@ -285,6 +405,12 @@ export default function Footer() {
           .op-royal-footer__layout{display:flex;flex-direction:column;align-items:center;gap:28px;padding:42px 0}
           .op-royal-footer__brand,.op-royal-footer__nav,.op-royal-footer__panel-shell{width:100%;max-width:670px;min-width:0}
           .op-royal-footer__brand{text-align:center;display:flex;flex-direction:column;align-items:center}
+          .op-royal-footer__social-area{max-width:520px;text-align:center;margin-top:24px}
+          .op-royal-footer__social-heading{justify-content:center}
+          .op-royal-footer__socials{max-width:490px;margin:0 auto;gap:12px}
+          .op-royal-footer__social{min-height:102px}
+          .op-royal-footer__social-name{font-size:11px}
+          .op-royal-footer__phone{justify-content:center}
           .op-royal-footer__identity{justify-content:center;max-width:100%}
           .op-royal-footer__description{margin:21px auto 19px!important;text-align:center}
           .op-royal-footer__micro{text-align:center;margin-top:21px!important}
@@ -316,6 +442,12 @@ export default function Footer() {
           .op-royal-footer__wordmark b{font-size:clamp(18px,5vw,24px);letter-spacing:3px}
           .op-royal-footer__description{font-size:14px;margin:18px auto!important;line-height:1.65}
           .op-royal-footer__join{min-height:50px}
+          .op-royal-footer__social-area{padding-top:22px;margin-top:24px}
+          .op-royal-footer__socials{gap:10px}
+          .op-royal-footer__social{min-height:91px;padding:10px 3px;border-radius:15px}
+          .op-royal-footer__social-icon{font-size:23px}
+          .op-royal-footer__social-name{font-size:10px;letter-spacing:.1px}
+          .op-royal-footer__social-heading{font-size:11px;letter-spacing:1.15px}
           .op-royal-footer__nav{gap:13px;padding:22px 15px}
           .op-royal-footer__nav-group h3{font-size:12px;letter-spacing:1px}
           .op-royal-footer__nav-group a{font-size:13px;min-height:43px;gap:5px}
@@ -333,10 +465,16 @@ export default function Footer() {
           .op-royal-footer__wordmark strong{font-size:16px}
           .op-royal-footer__wordmark b{font-size:16px;letter-spacing:2px}
           .op-royal-footer__nav{padding:17px 10px;gap:8px}
+          .op-royal-footer__socials{grid-template-columns:repeat(2,minmax(0,1fr));max-width:285px}
+          .op-royal-footer__social{min-height:82px}
+          .op-royal-footer__social-name{font-size:11px}
           .op-royal-footer__nav-group h3{font-size:11px;letter-spacing:.4px}
           .op-royal-footer__nav-group a{font-size:12px;gap:4px}
           .op-royal-footer__slogan{gap:6px;font-size:9px}
         }
+        @keyframes opRoyalSocialAura{0%{opacity:.55;transform:scale(.83)}100%{opacity:1;transform:scale(1.18)}}
+        @keyframes opRoyalHeadingGlow{to{text-shadow:0 0 28px rgba(255,255,255,.32),0 0 35px rgba(255,106,144,.18)}}
+        @keyframes opRoyalGradientFlow{to{background-position:100% 0}}
         @keyframes opRoyalBreath{to{opacity:.65;transform:scale(1.13) translateY(13px)}}
         @keyframes opRoyalPulse{50%{opacity:.45;box-shadow:0 0 24px #70f3d9}}
         @keyframes opRoyalSpin{to{transform:rotate(360deg)}}
