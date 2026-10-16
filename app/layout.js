@@ -1,89 +1,47 @@
+
 import "./globals.css";
 
 import { Orbitron, Rajdhani } from "next/font/google";
 import PreLoader from "./components/PreLoader";
 import PageTransition from "./components/PageTransition";
 
-const orbitron = Orbitron({
-
-  subsets:["latin"],
-
-  weight:[
-    "400",
-    "500",
-    "700",
-    "800",
-    "900"
-  ],
-
-  variable:"--font-orbitron",
-
-});
-
-
-
-const rajdhani = Rajdhani({
-
-  subsets:["latin"],
-
-  weight:[
-    "400",
-    "500",
-    "600",
-    "700"
-  ],
-
-  variable:"--font-rajdhani",
-
-});
-
-
-
-
-export const metadata = {
-
-  title: "Over Power Esports",
-
-  description: "Victory is our Mission",
-
+// Mobile viewport configuration
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "800", "900"],
+  variable: "--font-orbitron",
+});
 
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-rajdhani",
+});
 
+export const metadata = {
+  title: "Over Power Esports",
+  description: "Victory is our Mission",
+};
 
 export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+      </head>
 
-
-return (
-
-<html lang="en">
-
-
-<head>
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-/>
-
-</head>
-
-
-
-
-<body className={`${orbitron.variable} ${rajdhani.variable}`}>
-  
-<PageTransition />
-
-{children}
-
-</body>
-
-
-
-
-</html>
-
-);
-
+      <body className={`${orbitron.variable} ${rajdhani.variable}`}>
+        <PageTransition />
+        {children}
+      </body>
+    </html>
+  );
 }
