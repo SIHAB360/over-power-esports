@@ -257,7 +257,7 @@ OUR TEAMS
         key={`${team.name}-${index}`}
       >
 
-        <h3>
+        <h3 className={team.name.includes("ELITE") ? "team-name team-name-elite" : "team-name team-name-main"}>
           {team.name}
         </h3>
 
