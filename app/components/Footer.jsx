@@ -39,11 +39,6 @@ export default function Footer() {
       <div className="opx-scanline" aria-hidden="true" />
 
       <div className="opx-shell">
-        <div className="opx-topbar">
-          <span className="opx-live"><i aria-hidden="true" /> THE POWER CONTINUES</span>
-          <span className="opx-top-motto">OFFICIAL OVER POWER ESPORTS <b>✦</b> DIGITAL HOME</span>
-        </div>
-
         <div className="opx-hero">
           <div className="opx-story">
             <Link href="/#home" className="opx-identity" aria-label="Over Power Esports Home">
@@ -54,25 +49,10 @@ export default function Footer() {
               </span>
               <span className="opx-brandname"><strong>OVER POWER</strong><b>ESPORTS</b></span>
             </Link>
-
-            <div className="opx-eyebrow"><span /> UNSTOPPABLE SPIRIT · ONE COMMUNITY</div>
-            <h2 className="opx-statement">MORE THAN<br /><span>A GAME.</span></h2>
-            <p className="opx-intro">Victory is our mission. Built on discipline, driven by passion, united by the game.</p>
-            <div className="opx-signature"><span>POWER</span><i>✦</i><span>UNITY</span><i>✦</i><span>DOMINATION</span></div>
-          </div>
-
-          <div className="opx-feature-frame">
-            <div className="opx-feature">
-              <div className="opx-feature-head"><span>✦ THE OVER POWER MINDSET</span><span>OP / 01</span></div>
-              <div className="opx-feature-inner">
-                <span className="opx-feature-kicker">YOUR NEXT CHAPTER STARTS HERE</span>
-                <h3>RISE<br /><em>TO VICTORY.</em></h3>
-                <p>Build your skills. Earn your place. Make every match count with Over Power Esports.</p>
-                <Link href="/join-team" className="opx-join"><span>JOIN THE ROSTER</span><b aria-hidden="true">↗</b></Link>
-              </div>
-              <div className="opx-feature-foot"><span>CRAFTED FOR CHAMPIONS</span><span>✧ ✧ ✧</span></div>
-              <span className="opx-feature-watermark" aria-hidden="true">OP</span>
-            </div>
+            <Link href="/join-team" className="opx-join" aria-label="Join the Over Power Esports roster">
+              <span>JOIN THE ROSTER</span>
+              <b aria-hidden="true">↗</b>
+            </Link>
           </div>
         </div>
 
@@ -111,7 +91,6 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <a className="opx-hotline" href="tel:+8801715393876"><span aria-hidden="true">✦</span> DIRECT LINE <b>+880 1715-393876</b><span aria-hidden="true">↗</span></a>
           </section>
         </div>
 
@@ -556,6 +535,36 @@ export default function Footer() {
         @keyframes opxVipButton{0%,20%,100%{left:-120%}45%,68%{left:140%}}
 
         @media(prefers-reduced-motion:reduce){.opx-footer *,.opx-footer *:before,.opx-footer *:after{animation:none!important;transition:none!important}}
+
+        /* ===== CLEAN CENTRED BRAND HERO ===== */
+        .opx-topbar { display:none !important; }
+        .opx-hero { display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; gap:0 !important; padding:clamp(38px,5.4vw,68px) 0 clamp(34px,4.4vw,56px) !important; }
+        .opx-story { display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; width:100% !important; min-width:0; gap:0 !important; text-align:center !important; }
+        .opx-identity { display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; gap:19px !important; margin:0 auto !important; text-align:center !important; }
+        .opx-logo-ring { width:clamp(92px,9vw,124px) !important; height:clamp(92px,9vw,124px) !important; flex:0 0 auto !important; filter:drop-shadow(0 0 20px rgba(255,99,149,.30)); }
+        .opx-logo-core { width:calc(100% - 10px) !important; height:calc(100% - 10px) !important; }
+        .opx-brandname { display:flex !important; flex-direction:column !important; align-items:center !important; justify-content:center !important; gap:7px !important; text-align:center !important; line-height:1.05 !important; }
+        .opx-brandname strong { font-size:clamp(28px,3.2vw,43px) !important; letter-spacing:clamp(1px,.22vw,3px) !important; white-space:nowrap; text-shadow:0 0 22px rgba(255,255,255,.20),0 0 38px rgba(255,117,167,.12); }
+        .opx-brandname b { font-size:clamp(27px,3.4vw,45px) !important; letter-spacing:clamp(3px,.55vw,7px) !important; text-align:center; filter:drop-shadow(0 0 15px rgba(255,112,160,.25)); }
+        .opx-join { align-self:center !important; display:flex !important; align-items:center !important; justify-content:center !important; position:relative; isolation:isolate; width:min(100%,350px) !important; min-height:62px !important; margin:30px auto 0 !important; padding:7px 8px 7px 18px !important; border:1px solid rgba(255,255,255,.88) !important; border-radius:18px !important; background:linear-gradient(105deg,#ffb8d1 0%,#ffe0bd 30%,#d9c3ff 66%,#a8f0ff 100%) !important; color:#24152d !important; font-size:13px !important; font-weight:1000 !important; letter-spacing:1.8px !important; text-transform:uppercase; box-shadow:0 12px 32px rgba(255,111,163,.22),0 0 30px rgba(168,240,255,.15),inset 0 1px 0 rgba(255,255,255,.85) !important; transition:transform .25s ease,filter .25s ease,box-shadow .25s ease; }
+        .opx-join span { display:block; flex:1 1 auto; text-align:center; color:#24152d !important; text-shadow:0 1px 0 rgba(255,255,255,.38); white-space:nowrap; }
+        .opx-join b { display:grid !important; place-items:center !important; width:46px !important; height:46px !important; flex:0 0 46px !important; margin-left:10px; border-radius:13px !important; background:linear-gradient(135deg,#fff9e8 0%,#f7e4ff 52%,#dffaff 100%) !important; color:#28162f !important; font-size:26px !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 18px rgba(255,255,255,.25); }
+        .opx-join:hover { transform:translateY(-3px); filter:brightness(1.055) saturate(1.04); box-shadow:0 16px 38px rgba(255,111,163,.31),0 0 34px rgba(168,240,255,.22),inset 0 1px 0 rgba(255,255,255,.9) !important; }
+        @media(max-width:620px) {
+          .opx-hero { padding:36px 0 39px !important; }
+          .opx-identity { gap:16px !important; }
+          .opx-logo-ring { width:94px !important;height:94px !important; }
+          .opx-brandname strong { font-size:clamp(25px,7.5vw,34px) !important;letter-spacing:1.1px !important; }
+          .opx-brandname b { font-size:clamp(25px,7.7vw,35px) !important;letter-spacing:4px !important; }
+          .opx-join { width:min(100%,330px) !important;min-height:56px !important;margin-top:25px !important;font-size:12px !important;letter-spacing:1.35px !important; }
+          .opx-join b { width:42px !important;height:42px !important;flex-basis:42px !important; }
+        }
+        @media(max-width:350px) {
+          .opx-brandname strong { font-size:23px !important;letter-spacing:.7px !important; }
+          .opx-brandname b { font-size:24px !important;letter-spacing:3px !important; }
+          .opx-join { font-size:11px !important;letter-spacing:1px !important;padding-left:10px !important; }
+        }
+
       `}</style>
     </footer>
   );
