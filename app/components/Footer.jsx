@@ -124,9 +124,9 @@ export default function Footer() {
         </div>
 
         <div className="op-vip-footer__slogan" aria-label="Power. Unity. Domination.">
-          <span>POWER</span>
+          <span>WE</span>
           <span className="op-vip-footer__slogan-dot">✦</span>
-          <span>UNITY</span>
+          <span>BELIEVE IN</span>
           <span className="op-vip-footer__slogan-dot">✦</span>
           <span>DOMINATION</span>
         </div>
