@@ -291,6 +291,17 @@ export default function Footer() {
         @keyframes opxColor{to{background-position:100% 0}}
 
         /* ===== FIXED FOOTER CTA LAYOUT + SOFT MULTICOLOR BUTTON ===== */
+        /* Remove accumulated bottom gaps from the homepage content wrapper */
+        .home-animation {
+          padding-bottom: 0 !important;
+          margin-bottom: 0 !important;
+        }
+        .home-animation > .op-achieve {
+          margin-bottom: 0 !important;
+        }
+        .opx-footer {
+          margin-top: 0 !important;
+        }
         .opx-footer {
           margin-top: 0 !important;
           clear: both;
