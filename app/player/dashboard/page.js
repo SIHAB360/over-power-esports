@@ -973,12 +973,12 @@ const bestPlacement =
       <svg className="performance-chart" viewBox="0 0 600 215" role="img" aria-label="Bar chart showing kills and assists for recent matches">
         <defs>
           <linearGradient id="opKillsGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ffe2a6" />
-            <stop offset="100%" stopColor="#b9854d" />
+            <stop offset="0%" stopColor="#35e6ff" />
+            <stop offset="100%" stopColor="#1676e8" />
           </linearGradient>
           <linearGradient id="opAssistsGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#d7c2ff" />
-            <stop offset="100%" stopColor="#7963b6" />
+            <stop offset="0%" stopColor="#e2a7ff" />
+            <stop offset="100%" stopColor="#8b3dff" />
           </linearGradient>
         </defs>
         {[55, 90, 125, 160].map((y) => (
@@ -1011,8 +1011,8 @@ const bestPlacement =
       <svg className="performance-chart" viewBox="0 0 600 215" role="img" aria-label="Line chart showing damage output for recent matches">
         <defs>
           <linearGradient id="opDamageArea" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#f4c77f" stopOpacity=".30" />
-            <stop offset="100%" stopColor="#f4c77f" stopOpacity="0" />
+            <stop offset="0%" stopColor="#34e6b1" stopOpacity=".25" />
+            <stop offset="100%" stopColor="#34e6b1" stopOpacity="0" />
           </linearGradient>
         </defs>
         {[55, 90, 125, 160].map((y) => (
@@ -1020,7 +1020,7 @@ const bestPlacement =
         ))}
         {damagePoints.length > 0 && <path d={damageAreaPath} fill="url(#opDamageArea)" />}
         {damagePoints.length > 0 && (
-          <polyline points={damageLinePoints} fill="none" stroke="#f4c77f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="damage-line" />
+          <polyline points={damageLinePoints} fill="none" stroke="#34e6b1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="damage-line" />
         )}
         {damagePoints.map((point, index) => (
           <g key={point.index + "-" + index}>
@@ -2038,6 +2038,343 @@ const bestPlacement =
         @media (prefers-reduced-motion: reduce) {
           .light, .damage-line { animation: none !important; }
           .sidebar-link, .logout, .social { transition: none !important; }
+        }
+
+
+
+        /* FINAL CONTRAST PASS — vivid esports colors, clear type, no glow */
+        .page {
+          color: #f4f7ff;
+          background:
+            radial-gradient(ellipse at 0% 0%, rgba(17, 126, 167, .16), transparent 45%),
+            radial-gradient(ellipse at 100% 4%, rgba(119, 57, 190, .15), transparent 43%),
+            linear-gradient(135deg, #070b14 0%, #0c1220 52%, #080d18 100%);
+        }
+        .topbar {
+          background: linear-gradient(105deg, #111b2b 0%, #141626 58%, #171326 100%);
+          border-color: #34445f;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, .22);
+        }
+        .logo {
+          color: #08111c;
+          background: linear-gradient(135deg, #4be7f5 0%, #4e9dff 48%, #c08bff 100%);
+          box-shadow: none;
+        }
+        .logo-area b { color: #ffffff; font-size: 13px; }
+        .logo-area small { color: #b8c6dc; font-size: 10px; }
+        .logout {
+          min-height: 38px;
+          color: #f7fbff;
+          background: linear-gradient(115deg, #2456d8, #7538d4);
+          border: 1px solid #6da5ff;
+          font-size: 11px;
+          font-weight: 900;
+          box-shadow: none;
+        }
+        .logout:hover {
+          color: #ffffff;
+          background: linear-gradient(115deg, #3278f6, #984af0);
+          box-shadow: none;
+        }
+        .sidebar {
+          background: linear-gradient(160deg, #111a2a 0%, #101523 58%, #171326 100%);
+          border-color: #33445f;
+          box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+        }
+        .sidebar-heading { border-bottom-color: #2b3b55; }
+        .sidebar-mark {
+          color: #08111c;
+          background: linear-gradient(135deg, #45e4f3, #508aff 55%, #b98cff);
+          box-shadow: none;
+        }
+        .sidebar-heading strong { color: #ffffff; font-size: 12px; }
+        .sidebar-heading small { color: #b8c6dc; font-size: 9px; }
+        .sidebar-caption { color: #a8b7ce; font-size: 10px; }
+        .sidebar-link {
+          color: #d8e2f3;
+          font-size: 13px;
+          font-weight: 700;
+          border-color: transparent;
+        }
+        .nav-symbol { color: #46d9f1; text-shadow: none; }
+        .sidebar-link:hover, .sidebar-link.active {
+          color: #ffffff;
+          background: linear-gradient(100deg, #153a58, #202344);
+          border-color: #338fca;
+          box-shadow: inset 3px 0 0 #39d9f0;
+        }
+        .sidebar-footer { border-top-color: #2b3b55; }
+        .sidebar-live { color: #58e4b4; font-size: 10px; }
+        .sidebar-live span { background: #58e4b4; box-shadow: none; }
+        .sidebar-footer small { color: #b7c4d9; font-size: 11px; }
+
+        .hero {
+          background: linear-gradient(120deg, #14243a 0%, #17192d 53%, #251735 100%);
+          border-color: #405a7d;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, .23);
+        }
+        .hero::before {
+          background: linear-gradient(90deg, #24d5e9, #477dff, #a66cff, #f45f9c);
+          opacity: .9;
+        }
+        .avatar {
+          background: linear-gradient(135deg, #35d9ef, #457dff 45%, #b75bff 72%, #ff648c);
+          box-shadow: none;
+        }
+        .hero h1 {
+          color: #ffffff;
+          font-size: clamp(25px, 2vw, 32px);
+          letter-spacing: 1.2px;
+          text-shadow: none;
+        }
+        .ign { color: #6fe6f4; font-size: 15px; text-shadow: none; }
+        .tag { font-size: 12px; font-weight: 800; }
+        .tag.red {
+          color: #07131c;
+          background: linear-gradient(120deg, #49e5f1, #6aa8ff);
+          box-shadow: none;
+        }
+        .tag.purple {
+          color: #ffffff;
+          border-color: #9868f3;
+          background: linear-gradient(120deg, #6f3bd1, #a044d8);
+        }
+
+        .stats { gap: 12px; }
+        .stat {
+          background: linear-gradient(145deg, #151e2e, #111522);
+          border-color: #34445f;
+          border-radius: 15px;
+          box-shadow: none;
+        }
+        .stat:nth-child(1) { border-top: 3px solid #28d7ec; }
+        .stat:nth-child(2) { border-top: 3px solid #a98aff; }
+        .stat:nth-child(3) { border-top: 3px solid #ff668e; }
+        .stat:nth-child(4) { border-top: 3px solid #f7bd4b; }
+        .stat span { filter: none; font-size: 22px; }
+        .stat small { color: #c1cde0; font-size: 11px; letter-spacing: .7px; font-weight: 800; }
+        .stat b {
+          color: #ffffff;
+          font-size: clamp(21px, 1.7vw, 26px);
+          text-shadow: none;
+          line-height: 1.3;
+        }
+        .earning-stat b { color: #ffd166; font-size: clamp(18px, 1.4vw, 23px); }
+
+        .career-section {
+          border-color: #364965;
+          background: linear-gradient(135deg, #111b2b 0%, #101522 58%, #17162a 100%);
+          box-shadow: 0 10px 26px rgba(0, 0, 0, .22);
+        }
+        .career-section::before {
+          height: 2px;
+          background: linear-gradient(90deg, #27d9ed, #487cff, #b76aff, #f45c9a);
+        }
+        .career-header h3 {
+          color: #ffffff;
+          font-size: 15px;
+          letter-spacing: 1.2px;
+          text-shadow: none;
+        }
+        .career-header p { color: #c1cde0; font-size: 12px; }
+        .filter-buttons { gap: 10px; margin: 19px 0 18px; }
+        .filter-btn {
+          min-height: 39px;
+          padding: 10px 15px;
+          border-radius: 10px;
+          color: #ffffff;
+          border: 1px solid transparent;
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: .25px;
+          box-shadow: none;
+          transition: background .18s ease, border-color .18s ease, transform .18s ease;
+        }
+        .filter-btn:nth-child(1) { background: linear-gradient(120deg, #20cfe5, #367ff4); border-color: #59e6f5; color: #061321; }
+        .filter-btn:nth-child(2) { background: linear-gradient(120deg, #7148e8, #9a4df2); border-color: #b8a0ff; }
+        .filter-btn:nth-child(3) { background: linear-gradient(120deg, #df3977, #f05c9c); border-color: #ff91bc; }
+        .filter-btn:nth-child(4) { background: linear-gradient(120deg, #f0a923, #f06a32); border-color: #ffd16a; color: #211406; }
+        .filter-btn:hover { transform: translateY(-1px); filter: brightness(1.09); box-shadow: none; }
+        .filter-btn.active {
+          outline: 2px solid #ffffff;
+          outline-offset: 2px;
+          border-color: #ffffff;
+          filter: brightness(1.08);
+          box-shadow: none;
+        }
+        .custom-date-filter {
+          background: #101827;
+          border-color: #3a4d6b;
+        }
+        .custom-date-filter label { color: #d0dced; font-size: 11px; }
+        .custom-date-filter input {
+          color: #ffffff;
+          border-color: #3d5273;
+          background: #090f1b;
+          font-size: 13px;
+          accent-color: #25d7eb;
+        }
+        .clear-date-btn {
+          min-height: 38px;
+          color: #ffffff;
+          border-color: #f0789e;
+          background: linear-gradient(120deg, #b72e67, #e54c84);
+          font-weight: 900;
+          box-shadow: none;
+        }
+
+        .career-grid { gap: 10px; }
+        .career-stat {
+          min-height: 104px;
+          padding: 14px 10px;
+          background: linear-gradient(145deg, #172033, #111522);
+          border-color: #35445f;
+          border-radius: 13px;
+          box-shadow: none;
+        }
+        .career-stat:nth-child(5n + 1) { border-top: 3px solid #24d7eb; }
+        .career-stat:nth-child(5n + 2) { border-top: 3px solid #a88bff; }
+        .career-stat:nth-child(5n + 3) { border-top: 3px solid #ff668e; }
+        .career-stat:nth-child(5n + 4) { border-top: 3px solid #f8bf4d; }
+        .career-stat:nth-child(5n) { border-top: 3px solid #39d9a7; }
+        .career-stat span { font-size: 23px; }
+        .career-stat small {
+          color: #c8d4e7;
+          font-size: 10.5px;
+          line-height: 1.35;
+          letter-spacing: .4px;
+          font-weight: 800;
+        }
+        .career-stat strong {
+          color: #ffffff;
+          font-size: 22px;
+          line-height: 1.35;
+          text-shadow: none;
+        }
+
+        .performance-grid { gap: 14px; margin-top: 22px; }
+        .chart-card {
+          background: linear-gradient(145deg, #121d2e, #101522 65%, #17162a);
+          border-color: #364a67;
+          border-radius: 16px;
+          box-shadow: none;
+        }
+        .chart-heading h4 { color: #ffffff; font-size: 14px; letter-spacing: .8px; }
+        .chart-heading p { color: #c3cfe2; font-size: 12px; }
+        .chart-chip {
+          color: #ffffff;
+          border-color: #4e6d98;
+          background: #1b2e48;
+          font-size: 10px;
+          padding: 7px 10px;
+        }
+        .chart-legend { color: #d2dced; font-size: 12px; }
+        .legend-kills { background: #2bd8ee; box-shadow: none; }
+        .legend-assists { background: #b47cff; box-shadow: none; }
+        .legend-damage { background: #39dfb1; box-shadow: none; }
+        .chart-grid-line { stroke: rgba(181, 203, 234, .22); stroke-width: 1; stroke-dasharray: 4 5; }
+        .chart-axis-label { fill: #d1dced; font-size: 12px; font-family: inherit; }
+        .damage-line { filter: none; }
+        .damage-point { fill: #39dfb1; stroke: #0e6d63; stroke-width: 2; filter: none; }
+        .chart-empty { color: #d0dced; font-size: 12px; }
+
+        .card {
+          background: linear-gradient(145deg, #141e2f, #101522 65%, #17162a);
+          border-radius: 16px;
+          box-shadow: none;
+          backdrop-filter: none;
+        }
+        .card h3 { font-size: 14px; letter-spacing: 1px; }
+        .grid { gap: 20px 16px; }
+        .grid label { color: #bdcce1; font-size: 11px; font-weight: 800; }
+        .grid p { color: #ffffff; font-size: 14px; font-weight: 650; line-height: 1.55; overflow-wrap: anywhere; }
+        .card-red { border-color: #ef527e; }
+        .card-red h3 { color: #ff789c; }
+        .card-red::before { background: linear-gradient(180deg, #ff477e, #f6a13c); box-shadow: none; }
+        .card-purple { border-color: #9365f5; }
+        .card-purple h3 { color: #bd9aff; }
+        .card-purple::before { background: #a78bfa; box-shadow: none; }
+        .card-green { border-color: #26cfa0; }
+        .card-green h3, .exp label { color: #4ce2b3; }
+        .card-green::before { background: #34d399; box-shadow: none; }
+        .exp p { color: #ffffff; font-size: 15px; }
+        .card-orange { border-color: #f5a936; }
+        .card-orange h3 { color: #ffc45d; }
+        .card-orange::before { background: #fbbf24; box-shadow: none; }
+
+        .weapon {
+          color: #ffffff;
+          background: linear-gradient(120deg, #6337cb, #a13fc8);
+          border: 1px solid #bb9bff;
+          box-shadow: none;
+          font-size: 12px;
+        }
+        .social {
+          color: #ffffff;
+          border-color: #43618b;
+          background: #1a2940;
+          font-size: 12px;
+          font-weight: 800;
+        }
+        .social:nth-child(1) { background: #1d61bb; border-color: #438ee9; }
+        .social:nth-child(2) { background: #9d285f; border-color: #e45b9b; }
+        .social:nth-child(3) { background: #273248; border-color: #7185a8; }
+        .social:nth-child(4) { background: #a82f39; border-color: #f06a73; }
+        .social:hover { color: #ffffff; filter: brightness(1.12); box-shadow: none; }
+        .empty { color: #c2cfe2; font-size: 12px; }
+
+        @media (max-width: 1100px) {
+          .sidebar-link { font-size: 12px; }
+          .stat small { font-size: 10px; }
+          .career-stat small { font-size: 10px; }
+          .grid label { font-size: 11px; }
+        }
+        @media (max-width: 850px) {
+          .sidebar-link { font-size: 12px; }
+          .sidebar-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .career-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); }
+        }
+        @media (max-width: 620px) {
+          .page { padding: 10px 9px 28px; }
+          .topbar { padding: 11px 12px; }
+          .logo-area b { font-size: 12px; }
+          .logo-area small { font-size: 9px; }
+          .logout { min-height: 36px; font-size: 11px; }
+          .sidebar-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .sidebar-link { justify-content: flex-start; min-height: 42px; font-size: 12px; }
+          .hero h1 { font-size: clamp(23px, 6.4vw, 29px); }
+          .ign { font-size: 14px; }
+          .stat { padding: 13px 10px; }
+          .stat small { font-size: 10px; }
+          .stat b { font-size: 21px; }
+          .earning-stat b { font-size: 17px; }
+          .career-header h3 { font-size: 13px; }
+          .career-header p { font-size: 11px; }
+          .filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+          .filter-btn { flex: 1 1 calc(50% - 8px); min-height: 40px; padding: 10px 8px; font-size: 10px; }
+          .career-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .career-stat { min-height: 94px; padding: 11px 8px; }
+          .career-stat span { font-size: 21px; }
+          .career-stat small { font-size: 10px; }
+          .career-stat strong { font-size: 21px; }
+          .chart-card { padding: 15px 11px 12px; }
+          .chart-heading h4 { font-size: 12px; }
+          .chart-heading p { font-size: 11px; }
+          .chart-chip { font-size: 9px; }
+          .chart-legend { font-size: 11px; }
+          .chart-axis-label { font-size: 11px; }
+          .player-info-card, .card { padding: 17px 13px; }
+          .card h3 { font-size: 13px; }
+          .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; }
+          .grid label { font-size: 10px; }
+          .grid p { font-size: 13px; }
+          .exp label { font-size: 11px; }
+          .exp p { font-size: 14px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sidebar-link, .logout, .social, .filter-btn { transition: none !important; }
         }
 
       `}</style>
