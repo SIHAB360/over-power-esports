@@ -14,6 +14,7 @@ import Leadership from "./components/Leadership";
 import PreLoader from "./components/PreLoader";
 import BestPlayers from "./components/BestPlayers";
 import Footer from "./components/Footer";
+import AchievementGallery from "./components/AchievementGallery";
 
 export default function Home() {
   return (
