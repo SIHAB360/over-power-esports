@@ -65,7 +65,7 @@ export default function Footer() {
             <div className="opx-feature">
               <div className="opx-feature-head"><span>✦ THE OVER POWER MINDSET</span><span>OP / 01</span></div>
               <div className="opx-feature-inner">
-                <span className="opx-feature-kicker">THIS IS YOUR MOMENT</span>
+                <span className="opx-feature-kicker">YOUR LEGACY STARTS HERE</span>
                 <h3>BEYOND<br /><em>THE GAME.</em></h3>
                 <p>Every second matters. Every victory is earned. Be part of what comes next.</p>
                 <Link href="/join-team" className="opx-join"><span>JOIN THE TEAM</span><b aria-hidden="true">↗</b></Link>
@@ -98,12 +98,13 @@ export default function Footer() {
 
           <section className="opx-connect" id="opx-connect" aria-label="Connect with Over Power Esports">
             <div className="opx-connect-heading">
-              <div><div className="opx-section-title"><i /> THE COMMUNITY AWAITS</div><h3>STAY <span>CONNECTED.</span></h3></div>
-              <span className="opx-connect-decor">04 / OFFICIAL CHANNELS</span>
+              <div><div className="opx-section-title"><i /> YOUR SQUAD. YOUR COMMUNITY.</div><h3>STAY <span>CONNECTED.</span></h3></div>
+              <span className="opx-connect-decor">04 / OFFICIAL CHANNELS · LIVE CONNECTIONS</span>
             </div>
             <div className="opx-social-grid">
               {social.map(({ name, detail, href, color, Icon }) => (
                 <a key={color} className={`opx-social opx-social--${color}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={name + " — " + detail}>
+                  <span className="opx-social-light" aria-hidden="true" />
                   <span className="opx-social-orb"><Icon aria-hidden="true" /></span>
                   <strong>{name}</strong><small>{detail}</small>
                   <span className="opx-social-arrow" aria-hidden="true">↗</span>
@@ -117,7 +118,7 @@ export default function Footer() {
         <div className="opx-bigword" aria-hidden="true">OVER POWER</div>
         <div className="opx-bottom">
           <small>© {new Date().getFullYear()} OVER POWER ESPORTS. ALL RIGHTS RESERVED.</small>
-          <span>VICTORY IS OUR MISSION <b>✦</b></span>
+          <span>BUILT FOR CHAMPIONS <b>✦</b></span>
           <button type="button" onClick={backToTop}>BACK TO TOP <span aria-hidden="true">↑</span></button>
         </div>
       </div>
@@ -288,6 +289,156 @@ export default function Footer() {
         @keyframes opxPulse{50%{opacity:.35;box-shadow:0 0 0 9px rgba(98,234,204,.045),0 0 12px #62eacc}}
         @keyframes opxScan{to{left:110%}}
         @keyframes opxColor{to{background-position:100% 0}}
+
+        /* ===== OVER POWER | CINEMATIC VIP FINISH ===== */
+        .opx-footer {
+          --opx-gold:#ffda99;--opx-frost:#98f0ff;--opx-rose:#ff6a96;
+          background:radial-gradient(ellipse 52% 48% at 5% 6%,rgba(111,17,49,.30),transparent 100%),radial-gradient(ellipse 50% 58% at 96% 77%,rgba(8,81,98,.22),transparent 100%),#06070e;
+          box-shadow:inset 0 35px 90px rgba(0,0,0,.24);
+        }
+        .opx-footer:after {
+          content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+          background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.07) 0 1px,transparent 2px);
+          background-size:58px 58px;opacity:.14;
+          -webkit-mask-image:linear-gradient(#000,transparent 85%);mask-image:linear-gradient(#000,transparent 85%);
+        }
+        .opx-light--red {background:rgba(255,31,90,.27)}
+        .opx-light--violet {background:rgba(119,68,245,.21)}
+        .opx-light--blue {background:rgba(15,203,227,.20)}
+        .opx-topbar {border-bottom:1px solid rgba(255,226,187,.15)}
+        .opx-live {text-shadow:0 0 14px rgba(255,255,255,.18)}
+        .opx-logo-ring {filter:drop-shadow(0 0 18px rgba(255,99,149,.26))}
+        .opx-eyebrow {color:#ffe6c3}
+        .opx-statement {
+          font-size:clamp(48px,5.4vw,90px);
+          text-shadow:0 4px 30px rgba(255,255,255,.16),0 10px 50px rgba(255,91,139,.12);
+        }
+        .opx-statement span{filter:drop-shadow(0 0 19px rgba(255,113,167,.29))}
+        .opx-feature-frame {
+          background:linear-gradient(125deg,rgba(255,221,166,.92),rgba(255,97,145,.72) 33%,rgba(145,112,251,.76) 67%,rgba(128,231,255,.89));
+          box-shadow:0 30px 90px rgba(0,0,0,.36),0 0 46px rgba(155,91,255,.25),inset 0 0 18px rgba(255,255,255,.18);
+        }
+        .opx-feature {min-height:385px;background:radial-gradient(ellipse at 86% 4%,rgba(147,83,255,.34),transparent 60%),radial-gradient(ellipse at 3% 100%,rgba(240,45,97,.10),transparent 62%),linear-gradient(150deg,#24172e,#090c18 80%)}
+        .opx-feature:before {
+          content:"";position:absolute;z-index:0;left:-60%;top:-50%;width:65%;height:200%;
+          background:linear-gradient(100deg,transparent,rgba(255,255,255,.045),rgba(255,226,174,.06),transparent);
+          transform:rotate(19deg);animation:opxVipSweep 9s linear infinite;pointer-events:none;
+        }
+        .opx-feature h3{filter:drop-shadow(0 0 13px rgba(255,215,232,.17))}
+        .opx-feature h3 em{filter:drop-shadow(0 0 15px rgba(255,111,158,.18))}
+        .opx-join {overflow:hidden;isolation:isolate;box-shadow:0 9px 36px rgba(255,60,121,.33),0 0 20px rgba(255,215,145,.14)}
+        .opx-join:after {
+          content:"";position:absolute;z-index:-1;top:0;left:-120%;width:90%;height:100%;
+          background:linear-gradient(100deg,transparent,rgba(255,255,255,.26),transparent);
+          transform:skewX(-20deg);animation:opxVipButton 7s ease-in-out infinite;
+        }
+        .opx-content {border-top:1px solid rgba(255,221,189,.15);gap:clamp(38px,5vw,86px)}
+        .opx-section-title {color:#ffe4b7;text-shadow:0 0 18px rgba(255,200,116,.20)}
+        .opx-nav-grid {gap:clamp(16px,2vw,34px)}
+        .opx-nav-column a {min-height:40px;padding:3px 9px;border-radius:9px;transition:transform .2s ease,color .2s ease,background .2s ease}
+        .opx-nav-column a:hover {background:rgba(255,255,255,.055)}
+        .opx-connect-heading {margin-bottom:21px}
+        .opx-connect-heading h3 {font-size:clamp(23px,2.4vw,34px);letter-spacing:-.6px}
+        .opx-connect-heading h3 span{filter:drop-shadow(0 0 13px rgba(255,116,153,.24))}
+        .opx-social-grid {gap:14px}
+        .opx-social {
+          min-height:156px;padding:20px 10px 16px;border:1px solid rgba(255,255,255,.16);
+          border-radius:22px;background:linear-gradient(155deg,rgba(255,255,255,.10),rgba(12,12,24,.95) 77%);
+          box-shadow:0 14px 38px rgba(0,0,0,.20),inset 0 1px rgba(255,255,255,.11);
+          gap:8px;
+        }
+        .opx-social:after {
+          content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+          border-top:1px solid rgba(255,255,255,.16);
+          background:linear-gradient(145deg,rgba(255,255,255,.065),transparent 55%);
+        }
+        .opx-social:before {opacity:.77;background:radial-gradient(ellipse at 50% 29%,var(--opx-aura) 0%,transparent 74%)}
+        .opx-social-light {
+          position:absolute;pointer-events:none;width:75px;height:75px;top:13px;left:calc(50% - 37.5px);
+          border-radius:50%;background:var(--opx-aura);filter:blur(25px);opacity:.90;
+          animation:opxVipOrb 4.5s ease-in-out infinite alternate;
+        }
+        .opx-social:nth-child(2) .opx-social-light{animation-delay:-1.1s}
+        .opx-social:nth-child(3) .opx-social-light{animation-delay:-2.2s}
+        .opx-social:nth-child(4) .opx-social-light{animation-delay:-3.3s}
+        .opx-social-orb {
+          width:61px;height:61px;font-size:29px;z-index:1;
+          border-radius:19px;border:1px solid var(--opx-accent);
+          background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(8,9,19,.62));
+          box-shadow:0 0 28px var(--opx-aura),inset 0 0 14px rgba(255,255,255,.05);
+        }
+        .opx-social strong {position:relative;z-index:1;font-size:14px;font-weight:900;color:#fff;text-shadow:0 0 16px rgba(255,255,255,.20)}
+        .opx-social small {position:relative;z-index:1;color:#d2cbdb;letter-spacing:.85px;font-size:10px}
+        .opx-social-arrow {color:var(--opx-accent);opacity:.8}
+        .opx-social:hover {transform:translateY(-6px);border-color:var(--opx-accent);box-shadow:0 17px 45px rgba(0,0,0,.43),0 0 35px var(--opx-aura)}
+        .opx-social:hover .opx-social-orb {transform:scale(1.08) rotate(-4deg)}
+        .opx-hotline {padding:10px 14px;border:1px solid rgba(143,237,255,.18);border-radius:999px;background:rgba(113,223,245,.035)}
+        .opx-hotline b {color:#a4f3ff}
+        .opx-bigword {font-size:clamp(57px,10.2vw,157px);letter-spacing:-.06em;-webkit-text-stroke:1px rgba(255,226,244,.13);text-shadow:0 0 60px rgba(144,116,245,.1)}
+        .opx-bottom {color:#bcb3c7}
+
+        /* Laptop / mobile browsers requesting a desktop-width viewport */
+        @media(max-width:1180px){
+          .opx-hero{display:flex;flex-direction:column;align-items:center;gap:29px;padding:45px 0 40px}
+          .opx-story{width:100%;align-items:center;text-align:center}
+          .opx-eyebrow,.opx-signature{justify-content:center}
+          .opx-intro{text-align:center}
+          .opx-feature-frame{width:min(100%,650px)}
+          .opx-feature{min-height:310px}
+          .opx-content{grid-template-columns:1fr;gap:31px;padding:36px 0 39px}
+          .opx-nav,.opx-connect{width:min(100%,730px);margin:0 auto}
+          .opx-nav,.opx-connect{text-align:center}
+          .opx-section-title,.opx-connect .opx-section-title{justify-content:center}
+          .opx-nav-grid{max-width:600px;margin:20px auto 0}
+          .opx-nav-column{align-items:center;text-align:center}
+          .opx-connect-heading{align-items:center;justify-content:center;flex-direction:column;text-align:center}
+          .opx-social-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;max-width:650px;margin:auto}
+          .opx-social{min-height:145px}
+          .opx-hotline{justify-content:center;margin-top:20px}
+          .opx-bottom{display:flex;flex-direction:column;gap:13px;justify-content:center;text-align:center;padding:21px 0 28px}
+        }
+        @media(max-width:620px){
+          .opx-shell{padding:0 18px}
+          .opx-topbar{min-height:70px;padding:16px 0;gap:8px}
+          .opx-hero{padding:25px 0 28px;gap:24px}
+          .opx-eyebrow{margin-top:23px;font-size:9px}
+          .opx-statement{font-size:clamp(40px,11vw,62px);margin:14px 0 13px!important}
+          .opx-intro{font-size:13px;line-height:1.65;max-width:360px}
+          .opx-signature{margin-top:20px}
+          .opx-feature{min-height:295px;padding:22px 20px}
+          .opx-feature h3{font-size:clamp(34px,9vw,44px)}
+          .opx-feature-inner{padding:16px 0}
+          .opx-feature-head,.opx-feature-foot{font-size:8px}
+          .opx-feature-kicker{font-size:10px}
+          .opx-join{min-height:51px}
+          .opx-content{gap:26px;padding:29px 0 31px}
+          .opx-nav-grid{margin-top:16px;gap:12px}
+          .opx-nav-column h3{margin-bottom:8px!important}
+          .opx-nav-column a{min-height:37px;font-size:13px;justify-content:center;padding:2px 4px}
+          .opx-connect-heading{margin-bottom:17px}
+          .opx-connect-heading h3{font-size:clamp(20px,5.8vw,27px)}
+          .opx-connect-decor{font-size:9px}
+          .opx-social-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+          .opx-social{min-height:126px;padding:13px 6px;gap:6px;border-radius:18px}
+          .opx-social-orb{width:52px;height:52px;font-size:25px;border-radius:15px}
+          .opx-social strong{font-size:13px}
+          .opx-social small{font-size:8px;letter-spacing:.65px}
+          .opx-hotline{font-size:10px;margin-top:16px}
+          .opx-bigword{font-size:clamp(35px,10vw,65px);letter-spacing:-.05em;padding:12px 0}
+          .opx-bottom{padding:19px 0 25px}
+        }
+        @media(max-width:350px){
+          .opx-shell{padding:0 13px}
+          .opx-social-grid{gap:9px}
+          .opx-social{min-height:124px}
+          .opx-social-orb{width:47px;height:47px;font-size:23px}
+          .opx-nav-grid{gap:7px}
+          .opx-nav-column a{font-size:12px}
+        }
+        @keyframes opxVipOrb{to{opacity:.47;transform:scale(1.25)}}
+        @keyframes opxVipSweep{to{left:160%}}
+        @keyframes opxVipButton{0%,20%,100%{left:-120%}45%,68%{left:140%}}
+
         @media(prefers-reduced-motion:reduce){.opx-footer *,.opx-footer *:before,.opx-footer *:after{animation:none!important;transition:none!important}}
       `}</style>
     </footer>
