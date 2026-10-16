@@ -13,6 +13,8 @@ const [allStats, setAllStats] = useState([]);
 const [filterType, setFilterType] = useState("all");
 const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
+const [adminView, setAdminView] = useState(false);
+const [adminTargetId, setAdminTargetId] = useState("");
 
 useEffect(() => {
   checkUser();
@@ -94,13 +96,19 @@ useEffect(() => {
 }, [player?.id, player?.user_id]);
   const checkUser = async () => {
     try {
+      // Admin preview is enabled only by an authenticated admin account.
+      const requestedAdminPlayerId = new URLSearchParams(window.location.search).get("adminPlayerId");
+      const isAdminPreview = Boolean(requestedAdminPlayerId);
+      setAdminView(isAdminPreview);
+      setAdminTargetId(requestedAdminPlayerId || "");
+
       const {
         data: { user },
         error: userError,
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        router.push("/login");
+        router.replace("/login");
         return;
       }
 
@@ -110,8 +118,20 @@ useEffect(() => {
         .eq("id", user.id)
         .single();
 
-      if (profileError || profile?.role?.toLowerCase() !== "player") {
-        router.push("/");
+      const role = profile?.role?.toLowerCase();
+
+      if (isAdminPreview) {
+        if (profileError || role !== "admin") {
+          router.replace("/");
+          return;
+        }
+
+        await loadPlayer(requestedAdminPlayerId, true);
+        return;
+      }
+
+      if (profileError || role !== "player") {
+        router.replace("/");
         return;
       }
 
@@ -122,8 +142,8 @@ useEffect(() => {
       setLoading(false);
     }
   };
- const loadPlayer = async (userId) => {
-  console.log("LOAD PLAYER START", userId);
+ const loadPlayer = async (identifier, lookupByPlayerId = false) => {
+  console.log("LOAD PLAYER START", identifier, lookupByPlayerId ? "by player id" : "by user id");
 
   /*
     STEP 1
@@ -133,7 +153,7 @@ useEffect(() => {
   const { data, error } = await supabase
     .from("players")
     .select("*")
-    .eq("user_id", userId)
+    .eq(lookupByPlayerId ? "id" : "user_id", identifier)
     .maybeSingle();
 
   if (error || !data) {
@@ -343,7 +363,7 @@ useEffect(() => {
     return (
       <div className="loading">
         <p>{errorMessage}</p>
-        <button onClick={() => router.push("/login")}>Go to Login</button>
+        <button onClick={() => router.push(adminView ? "/admin/players" : "/login")}>{adminView ? "Back to Player Management" : "Go to Login"}</button>
       </div>
     );
   }
@@ -611,6 +631,23 @@ const bestPlacement =
       <div className="light light-3"></div>
 
       <div className="wrap">
+        {adminView && (
+          <section className="admin-view-banner" aria-label="Administrator read-only player dashboard preview">
+            <div className="admin-view-copy">
+              <span className="admin-view-dot" />
+              <div>
+                <strong>ADMIN LIVE VIEW</strong>
+                <span className="admin-view-subtitle">
+                  Read-only preview · {player?.ign || player?.full_name || "Player dashboard"}
+                </span>
+              </div>
+              <span className="admin-view-badge">READ ONLY</span>
+            </div>
+            <button type="button" className="admin-view-back" onClick={() => router.push("/admin/players")}>
+              <span aria-hidden="true">←</span> BACK TO PLAYER MANAGEMENT
+            </button>
+          </section>
+        )}
         <div className="dashboard-layout">
 
           <div className="dashboard-content">
@@ -1148,12 +1185,14 @@ const bestPlacement =
         </section>
           </div>
         </div>
-        <div className="dashboard-bottom-actions">
-          <button className="logout magic-logout" onClick={handleLogout} aria-label="Log out of player dashboard">
-            <span className="logout-label">LOG OUT</span>
-            <span className="logout-arrow" aria-hidden="true">↗</span>
-          </button>
-        </div>
+        {!adminView && (
+          <div className="dashboard-bottom-actions">
+            <button className="logout magic-logout" onClick={handleLogout} aria-label="Log out of player dashboard">
+              <span className="logout-label">LOG OUT</span>
+              <span className="logout-arrow" aria-hidden="true">↗</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <style jsx>{`
@@ -3553,6 +3592,93 @@ const bestPlacement =
           #experience .profile-exp p { font-size: 15px !important; }
         }
 
+
+        /* Admin-only read-only preview banner */
+        .admin-view-banner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 18px;
+          margin: 0 0 18px;
+          padding: 15px 18px;
+          border: 1px solid rgba(66, 216, 233, .38);
+          border-radius: 16px;
+          background: linear-gradient(110deg, rgba(10, 47, 64, .96), rgba(29, 20, 58, .96));
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 12px 30px rgba(0,0,0,.22);
+        }
+        .admin-view-copy {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 11px;
+          min-width: 0;
+        }
+        .admin-view-dot {
+          width: 10px;
+          height: 10px;
+          flex: 0 0 10px;
+          border-radius: 50%;
+          background: #42d8e9;
+          box-shadow: 0 0 14px rgba(66,216,233,.72);
+        }
+        .admin-view-copy strong {
+          display: block;
+          color: #f4fbff;
+          font-size: 12px;
+          font-weight: 950;
+          letter-spacing: .12em;
+        }
+        .admin-view-subtitle {
+          display: block;
+          margin-top: 4px;
+          color: #b8c9e8;
+          font-size: 11px;
+          line-height: 1.4;
+        }
+        .admin-view-badge {
+          padding: 6px 9px;
+          border: 1px solid rgba(66,216,233,.32);
+          border-radius: 8px;
+          background: rgba(66,216,233,.1);
+          color: #7ceaf4;
+          font-size: 9px;
+          font-weight: 950;
+          letter-spacing: .1em;
+          white-space: nowrap;
+        }
+        .admin-view-back {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 42px;
+          flex: 0 0 auto;
+          padding: 0 14px;
+          border: 1px solid rgba(66,216,233,.4);
+          border-radius: 11px;
+          background: linear-gradient(110deg, rgba(66,216,233,.18), rgba(124,58,237,.18));
+          color: #f2fbff;
+          font: inherit;
+          font-size: 10px;
+          font-weight: 950;
+          letter-spacing: .04em;
+          cursor: pointer;
+          transition: transform .18s ease, border-color .18s ease, background .18s ease;
+        }
+        .admin-view-back:hover {
+          transform: translateY(-1px);
+          border-color: rgba(66,216,233,.78);
+          background: linear-gradient(110deg, rgba(66,216,233,.27), rgba(124,58,237,.25));
+        }
+        @media (max-width: 620px) {
+          .admin-view-banner { align-items: stretch; flex-direction: column; padding: 14px; }
+          .admin-view-copy { align-items: flex-start; }
+          .admin-view-back { width: 100%; min-height: 44px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .admin-view-back { transition: none; }
+          .admin-view-back:hover { transform: none; }
+        }
       `}</style>
     </main>
   );
