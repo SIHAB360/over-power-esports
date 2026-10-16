@@ -44,6 +44,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      window.localStorage.setItem("op-remember-session", rememberMe ? "true" : "false");
+      if (!rememberMe) window.localStorage.removeItem(REMEMBER_EMAIL_KEY);
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password
