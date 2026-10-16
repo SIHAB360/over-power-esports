@@ -68,7 +68,7 @@ export default function Footer() {
                 <span className="opx-feature-kicker">YOUR LEGACY STARTS HERE</span>
                 <h3>BEYOND<br /><em>THE GAME.</em></h3>
                 <p>Every second matters. Every victory is earned. Be part of what comes next.</p>
-                <Link href="/join-team" className="opx-join"><span>JOIN THE TEAM</span><b aria-hidden="true">↗</b></Link>
+                <Link href="/join-team" className="opx-join"><span>START YOUR JOURNEY</span><b aria-hidden="true">↗</b></Link>
               </div>
               <div className="opx-feature-foot"><span>CRAFTED FOR CHAMPIONS</span><span>✧ ✧ ✧</span></div>
               <span className="opx-feature-watermark" aria-hidden="true">OP</span>
