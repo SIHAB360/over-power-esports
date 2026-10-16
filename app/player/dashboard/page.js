@@ -3423,6 +3423,136 @@ const bestPlacement =
           #performance .chart-legend { font-size: 13px !important; }
         }
 
+
+
+        /* PROFILE FIELD ALIGNMENT — label left, value right, high-contrast text */
+        #player-information .profile-grid,
+        #gaming-profile .profile-grid {
+          align-items: stretch !important;
+        }
+        #player-information .profile-grid > div,
+        #gaming-profile .profile-grid > div {
+          display: grid !important;
+          grid-template-columns: minmax(105px, .78fr) minmax(0, 1.22fr) !important;
+          align-items: center !important;
+          justify-content: stretch !important;
+          column-gap: 16px !important;
+          row-gap: 0 !important;
+          min-height: 86px !important;
+          padding: 18px 20px !important;
+          background-color: #101827 !important;
+        }
+        #player-information .profile-grid label,
+        #gaming-profile .profile-grid label {
+          align-self: center !important;
+          width: 100% !important;
+          color: #f0f5ff !important;
+          font-size: clamp(14px, .82vw, 18px) !important;
+          font-weight: 950 !important;
+          line-height: 1.4 !important;
+          letter-spacing: .35px !important;
+          text-align: left !important;
+          text-shadow: 0 1px 3px rgba(0,0,0,.85) !important;
+          overflow-wrap: anywhere !important;
+        }
+        #player-information .profile-grid p,
+        #gaming-profile .profile-grid p {
+          align-self: center !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          color: #ffffff !important;
+          font-size: clamp(17px, 1vw, 23px) !important;
+          font-weight: 950 !important;
+          line-height: 1.4 !important;
+          text-align: right !important;
+          text-shadow: 0 2px 5px rgba(0,0,0,.95) !important;
+          overflow-wrap: anywhere !important;
+          word-break: normal !important;
+        }
+        #player-information .profile-grid > div:nth-child(1) label { color: #baf4ff !important; }
+        #player-information .profile-grid > div:nth-child(2) label { color: #e1d0ff !important; }
+        #player-information .profile-grid > div:nth-child(3) label { color: #ffd0e3 !important; }
+        #player-information .profile-grid > div:nth-child(4) label { color: #bdffe7 !important; }
+        #player-information .profile-grid > div:nth-child(5) label { color: #ffe2b5 !important; }
+        #player-information .profile-grid > div:nth-child(6) label { color: #cbe5ff !important; }
+        #gaming-profile .profile-grid > div:nth-child(1) label { color: #baf4ff !important; }
+        #gaming-profile .profile-grid > div:nth-child(2) label { color: #e1d0ff !important; }
+        #gaming-profile .profile-grid > div:nth-child(3) label { color: #ffd0e3 !important; }
+        #gaming-profile .profile-grid > div:nth-child(4) label { color: #bdffe7 !important; }
+        #gaming-profile .profile-grid > div:nth-child(5) label { color: #ffe2b5 !important; }
+        #gaming-profile .profile-grid > div:nth-child(6) label { color: #cbe5ff !important; }
+
+        #experience .profile-exp > div {
+          display: grid !important;
+          grid-template-columns: minmax(120px, .8fr) minmax(0, 1.2fr) !important;
+          align-items: center !important;
+          column-gap: 18px !important;
+          row-gap: 0 !important;
+          min-height: 86px !important;
+          padding: 18px 20px !important;
+        }
+        #experience .profile-exp label {
+          color: #c8ffeb !important;
+          font-size: clamp(14px, .82vw, 18px) !important;
+          font-weight: 950 !important;
+          line-height: 1.4 !important;
+          text-shadow: 0 1px 3px rgba(0,0,0,.85) !important;
+          text-align: left !important;
+        }
+        #experience .profile-exp > div:nth-child(2) label { color: #e0d0ff !important; }
+        #experience .profile-exp p {
+          min-width: 0 !important;
+          width: 100% !important;
+          color: #ffffff !important;
+          font-size: clamp(18px, 1vw, 24px) !important;
+          font-weight: 950 !important;
+          line-height: 1.4 !important;
+          text-align: right !important;
+          text-shadow: 0 2px 5px rgba(0,0,0,.95) !important;
+          overflow-wrap: anywhere !important;
+        }
+        @media (max-width: 900px) {
+          #player-information .profile-grid,
+          #gaming-profile .profile-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+          #player-information .profile-grid > div,
+          #gaming-profile .profile-grid > div { grid-template-columns: minmax(92px, .8fr) minmax(0, 1.2fr) !important; column-gap: 12px !important; padding: 15px 14px !important; }
+          #experience .profile-exp > div { grid-template-columns: minmax(110px, .8fr) minmax(0, 1.2fr) !important; column-gap: 12px !important; padding: 15px 14px !important; }
+        }
+        @media (max-width: 620px) {
+          #player-information .profile-grid,
+          #gaming-profile .profile-grid,
+          #experience .profile-exp { grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; }
+          #player-information .profile-grid > div,
+          #gaming-profile .profile-grid > div,
+          #experience .profile-exp > div {
+            grid-template-columns: minmax(115px, .78fr) minmax(0, 1.22fr) !important;
+            min-height: 72px !important;
+            padding: 14px 13px !important;
+            column-gap: 12px !important;
+          }
+          #player-information .profile-grid label,
+          #gaming-profile .profile-grid label,
+          #experience .profile-exp label { font-size: 13px !important; letter-spacing: .15px !important; }
+          #player-information .profile-grid p,
+          #gaming-profile .profile-grid p,
+          #experience .profile-exp p { font-size: 16px !important; line-height: 1.4 !important; }
+        }
+        @media (max-width: 360px) {
+          #player-information .profile-grid > div,
+          #gaming-profile .profile-grid > div,
+          #experience .profile-exp > div {
+            grid-template-columns: minmax(98px, .78fr) minmax(0, 1.22fr) !important;
+            padding: 12px 10px !important;
+            column-gap: 8px !important;
+          }
+          #player-information .profile-grid label,
+          #gaming-profile .profile-grid label,
+          #experience .profile-exp label { font-size: 12px !important; }
+          #player-information .profile-grid p,
+          #gaming-profile .profile-grid p,
+          #experience .profile-exp p { font-size: 15px !important; }
+        }
+
       `}</style>
     </main>
   );
