@@ -3,13 +3,13 @@ import Link from "next/link";
 
 export default function SideMenu({ open, close }) {
   const menus = [
-    { name: "HOME", href: "/#home", detail: "Return to base", number: "01" },
-    { name: "ROSTER", href: "/#players", detail: "Meet the squad", number: "02" },
-    { name: "LEADERSHIP", href: "/#leadership", detail: "The people behind OP", number: "03" },
-    { name: "SCHEDULE", href: "/#tournaments", detail: "Upcoming competition", number: "04" },
-    { name: "ACHIEVEMENTS", href: "/#achievements", detail: "Moments of glory", number: "05" },
-    { name: "CONTACT", href: "/#opx-connect", detail: "Connect with the team", number: "06" },
-    { name: "LOGIN", href: "/login", detail: "Enter the player portal", number: "07" },
+    { name: "HOME", href: "/#home", number: "01" },
+    { name: "ROSTER", href: "/#players", number: "02" },
+    { name: "LEADERSHIP", href: "/#leadership", number: "03" },
+    { name: "SCHEDULE", href: "/#tournaments", number: "04" },
+    { name: "ACHIEVEMENTS", href: "/#achievements", number: "05" },
+    { name: "CONTACT", href: "/#opx-connect", number: "06" },
+    { name: "LOGIN", href: "/login", number: "07" },
   ];
 
   return (
