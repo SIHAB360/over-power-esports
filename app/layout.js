@@ -2,14 +2,7 @@
 import "./globals.css";
 
 import { Orbitron, Rajdhani } from "next/font/google";
-import PreLoader from "./components/PreLoader";
 import PageTransition from "./components/PageTransition";
-
-// Mobile viewport configuration
-export const viewport = {
-  width: "device-width",
-  initialScale: 1,
-};
 
 const orbitron = Orbitron({
   subsets: ["latin"],
