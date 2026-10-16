@@ -3,12 +3,12 @@ import Link from "next/link";
 
 export default function SideMenu({ open, close }) {
   const menus = [
-    { name: "HOME", href: "/" },
-    { name: "PLAYERS", href: "/players" },
-    { name: "TEAMS", href: "/teams" },
-    { name: "TOURNAMENTS", href: "/tournaments" },
-    { name: "RANKINGS", href: "/rankings" },
-    { name: "JOIN TEAM", href: "/join-team" },
+    { name: "HOME", href: "/#home" },
+    { name: "ROSTER", href: "/#players" },
+    { name: "LEADERSHIP", href: "/#leadership" },
+    { name: "SCHEDULE", href: "/#tournaments" },
+    { name: "ACHIEVEMENTS", href: "/#achievements" },
+    { name: "CONTACT", href: "/#opx-connect" },
     { name: "LOGIN", href: "/login" },
   ];
 
