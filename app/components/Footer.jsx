@@ -65,10 +65,10 @@ export default function Footer() {
             <div className="opx-feature">
               <div className="opx-feature-head"><span>✦ THE OVER POWER MINDSET</span><span>OP / 01</span></div>
               <div className="opx-feature-inner">
-                <span className="opx-feature-kicker">YOUR LEGACY STARTS HERE</span>
-                <h3>BEYOND<br /><em>THE GAME.</em></h3>
-                <p>Every second matters. Every victory is earned. Be part of what comes next.</p>
-                <Link href="/join-team" className="opx-join"><span>START YOUR JOURNEY</span><b aria-hidden="true">↗</b></Link>
+                <span className="opx-feature-kicker">YOUR NEXT CHAPTER STARTS HERE</span>
+                <h3>RISE<br /><em>TO VICTORY.</em></h3>
+                <p>Build your skills. Earn your place. Make every match count with Over Power Esports.</p>
+                <Link href="/join-team" className="opx-join"><span>JOIN THE ROSTER</span><b aria-hidden="true">↗</b></Link>
               </div>
               <div className="opx-feature-foot"><span>CRAFTED FOR CHAMPIONS</span><span>✧ ✧ ✧</span></div>
               <span className="opx-feature-watermark" aria-hidden="true">OP</span>
@@ -125,7 +125,7 @@ export default function Footer() {
 
       <style jsx global>{`
         .opx-footer,.opx-footer *{box-sizing:border-box}
-        .opx-footer{position:relative;isolation:isolate;overflow:hidden;width:100%;margin:48px 0 0;color:#f9f8fd;background:radial-gradient(ellipse at 8% 5%,#200817 0%,transparent 40%),radial-gradient(ellipse at 100% 90%,#08222b 0%,transparent 40%),#06060c;font-family:Arial,Helvetica,sans-serif;border-top:1px solid rgba(255,194,148,.35);text-align:left}
+        .opx-footer{position:relative;isolation:isolate;overflow:hidden;clear:both;width:100%;margin:0!important;color:#f9f8fd;background:radial-gradient(ellipse at 8% 5%,#200817 0%,transparent 40%),radial-gradient(ellipse at 100% 90%,#08222b 0%,transparent 40%),#06060c;font-family:Arial,Helvetica,sans-serif;border-top:1px solid rgba(255,194,148,.35);text-align:left}
         .opx-footer:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.023) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.023) 1px,transparent 1px);background-size:79px 79px;mask-image:linear-gradient(180deg,#000,transparent 88%)}
         .opx-light{position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(85px);animation:opxBreathe 8s ease-in-out infinite alternate}
         .opx-light--red{width:530px;height:430px;background:rgba(247,35,91,.18);top:-230px;left:-130px}
@@ -289,6 +289,111 @@ export default function Footer() {
         @keyframes opxPulse{50%{opacity:.35;box-shadow:0 0 0 9px rgba(98,234,204,.045),0 0 12px #62eacc}}
         @keyframes opxScan{to{left:110%}}
         @keyframes opxColor{to{background-position:100% 0}}
+
+        /* ===== FIXED FOOTER CTA LAYOUT + SOFT MULTICOLOR BUTTON ===== */
+        .opx-footer {
+          margin-top: 0 !important;
+          clear: both;
+          position: relative;
+          isolation: isolate;
+        }
+        .opx-topbar {
+          position: relative;
+          z-index: 2;
+          display: flex !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          min-height: 62px;
+        }
+        .opx-topbar > * {
+          position: relative;
+          z-index: 1;
+          color: #eee7f7;
+        }
+        .opx-hero {
+          position: relative;
+          z-index: 1;
+          align-items: stretch;
+          padding: 42px 0 48px;
+        }
+        .opx-story,
+        .opx-feature-frame {
+          min-width: 0;
+        }
+        .opx-feature-frame {
+          align-self: stretch;
+          height: 100%;
+        }
+        .opx-feature {
+          display: flex;
+          flex-direction: column;
+          min-height: 420px;
+          height: 100%;
+        }
+        .opx-feature-head,
+        .opx-feature-foot {
+          flex: 0 0 auto;
+        }
+        .opx-feature-inner {
+          display: flex;
+          flex: 1 1 auto;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          margin: 0;
+          padding: 27px 0 25px;
+        }
+        .opx-feature-inner p {
+          margin: 0 !important;
+          max-width: 360px;
+        }
+        .opx-join {
+          align-self: flex-start;
+          flex: 0 0 auto;
+          margin-top: 23px;
+          border: 1px solid rgba(255,255,255,.8);
+          color: #27152a !important;
+          background: linear-gradient(105deg, #ffabc6 0%, #ffd0b0 34%, #d0b9ff 68%, #a9efff 100%);
+          box-shadow:
+            0 10px 30px rgba(255,130,173,.25),
+            0 0 25px rgba(169,239,255,.16),
+            inset 0 1px 0 rgba(255,255,255,.62);
+          transition: transform .25s ease, filter .25s ease, box-shadow .25s ease;
+        }
+        .opx-join span {
+          color: #27152a !important;
+          text-shadow: 0 1px 0 rgba(255,255,255,.25);
+        }
+        .opx-join b {
+          color: #2b1731;
+          background: linear-gradient(135deg, #fff5df 0%, #f7ddff 54%, #d9f8ff 100%);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 0 15px rgba(255,255,255,.2);
+        }
+        .opx-join:hover {
+          transform: translateY(-3px);
+          filter: brightness(1.045) saturate(1.05);
+          box-shadow:
+            0 13px 35px rgba(255,130,173,.34),
+            0 0 30px rgba(169,239,255,.23),
+            inset 0 1px 0 rgba(255,255,255,.75);
+        }
+        .opx-content {
+          position: relative;
+          z-index: 1;
+          clear: both;
+          margin-top: 0;
+        }
+        @media(max-width:1050px) {
+          .opx-hero { padding: 38px 0 42px; }
+          .opx-feature { min-height: 370px; }
+          .opx-feature-inner { padding: 22px 0; }
+        }
+        @media(max-width:620px) {
+          .opx-hero { padding: 30px 0 34px; }
+          .opx-feature { min-height: 350px; }
+          .opx-feature-inner { padding: 18px 0 20px; }
+          .opx-join { width: 100%; max-width: 330px; margin-top: 20px; }
+        }
 
         /* ===== OVER POWER | CINEMATIC VIP FINISH ===== */
         .opx-footer {
