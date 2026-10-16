@@ -620,35 +620,10 @@ const bestPlacement =
               <small>PLAYER DASHBOARD</small>
             </div>
           </div>
-          <button className="logout" onClick={handleLogout}>
-            LOGOUT
-          </button>
         </div>
 
         <div className="dashboard-layout">
-          <aside className="sidebar" aria-label="Player dashboard navigation">
-            <div className="sidebar-heading">
-              <div className="sidebar-mark">OP</div>
-              <div>
-                <strong>PLAYER SPACE</strong>
-                <small>PERFORMANCE HUB</small>
-              </div>
-            </div>
-            <p className="sidebar-caption">DASHBOARD</p>
-            <nav className="sidebar-nav">
-              <a href="#overview" className="sidebar-link active"><span className="nav-symbol">◈</span>Overview</a>
-              <a href="#performance" className="sidebar-link"><span className="nav-symbol">▥</span>Performance</a>
-              <a href="#player-information" className="sidebar-link"><span className="nav-symbol">◎</span>Player Info</a>
-              <a href="#gaming-profile" className="sidebar-link"><span className="nav-symbol">✦</span>Gaming Profile</a>
-              <a href="#experience" className="sidebar-link"><span className="nav-symbol">◇</span>Experience</a>
-              <a href="#expert-weapons" className="sidebar-link"><span className="nav-symbol">⌁</span>Expert Weapons</a>
-              <a href="#social-links" className="sidebar-link"><span className="nav-symbol">↗</span>Social Links</a>
-            </nav>
-            <div className="sidebar-footer">
-              <span className="sidebar-live"><span></span> PROFILE CONNECTED</span>
-              <small>Your match data stays in sync.</small>
-            </div>
-          </aside>
+
           <div className="dashboard-content">
         {/* Hero */}
         <section className="hero" id="overview">
@@ -1183,6 +1158,12 @@ const bestPlacement =
           </div>
         </section>
           </div>
+        </div>
+        <div className="dashboard-bottom-actions">
+          <button className="logout magic-logout" onClick={handleLogout} aria-label="Log out of player dashboard">
+            <span className="logout-label">LOG OUT</span>
+            <span className="logout-arrow" aria-hidden="true">↗</span>
+          </button>
         </div>
       </div>
 
@@ -2375,6 +2356,190 @@ const bestPlacement =
         }
         @media (prefers-reduced-motion: reduce) {
           .sidebar-link, .logout, .social, .filter-btn { transition: none !important; }
+        }
+
+
+
+        /* Full-width player dashboard and bottom neon logout action */
+        .page {
+          width: 100%;
+          min-height: 100vh;
+          box-sizing: border-box;
+          padding: clamp(12px, 1.7vw, 28px) clamp(12px, 2vw, 34px) 28px;
+          overflow-x: clip;
+        }
+        .wrap {
+          width: 100%;
+          max-width: none;
+          margin: 0;
+        }
+        .topbar {
+          width: 100%;
+          box-sizing: border-box;
+          margin-bottom: clamp(14px, 1.5vw, 22px);
+          padding: 13px clamp(13px, 1.5vw, 22px);
+        }
+        .dashboard-layout {
+          display: block;
+          width: 100%;
+          min-width: 0;
+          margin: 0;
+        }
+        .dashboard-content {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: clamp(13px, 1.35vw, 20px);
+          width: 100%;
+          min-width: 0;
+        }
+        .hero, .stats, .career-shell, .career-section, .card, .performance-grid {
+          width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+        }
+        .hero {
+          padding: clamp(26px, 3vw, 42px) 20px clamp(23px, 2.4vw, 32px);
+        }
+        .stats {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: clamp(9px, 1vw, 14px);
+          margin-bottom: 0;
+        }
+        .stat {
+          min-width: 0;
+          padding: clamp(13px, 1.2vw, 19px);
+        }
+        .career-section {
+          padding: clamp(18px, 2vw, 30px);
+          margin-bottom: 0;
+        }
+        .career-grid {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: clamp(8px, .8vw, 12px);
+        }
+        .performance-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: clamp(12px, 1vw, 16px);
+        }
+        .card {
+          margin-bottom: 0;
+          padding: clamp(17px, 1.6vw, 24px);
+        }
+        .dashboard-bottom-actions {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          width: 100%;
+          box-sizing: border-box;
+          margin-top: clamp(16px, 2vw, 28px);
+          padding: clamp(16px, 1.8vw, 24px) 0 6px;
+          border-top: 1px solid rgba(92, 177, 255, .22);
+        }
+        .logout.magic-logout {
+          position: relative;
+          isolation: isolate;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          width: min(270px, 100%);
+          min-height: 58px;
+          padding: 0 24px;
+          overflow: hidden;
+          border: 2px solid transparent;
+          border-radius: 999px;
+          color: #f7fbff;
+          background:
+            linear-gradient(110deg, #0c1328 0%, #11132b 48%, #101c30 100%) padding-box,
+            linear-gradient(115deg, #b45cff 0%, #4c8dff 30%, #42e6f4 57%, #a66cff 82%, #f08bdf 100%) border-box;
+          background-size: 100% 100%, 240% 240%;
+          box-shadow: 0 0 0 1px rgba(83, 196, 255, .10), 0 8px 22px rgba(0, 0, 0, .22);
+          font-size: 13px;
+          font-weight: 950;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: transform .2s ease, box-shadow .2s ease, background-position .8s ease;
+          animation: logout-spectrum 5s ease-in-out infinite alternate;
+        }
+        .logout.magic-logout::before {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset: 3px;
+          border-radius: inherit;
+          background: linear-gradient(110deg, rgba(72, 70, 170, .16), rgba(37, 205, 237, .12), rgba(177, 83, 245, .16));
+          pointer-events: none;
+        }
+        .logout.magic-logout::after {
+          content: "";
+          position: absolute;
+          z-index: -1;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, .10) 48%, transparent 72%);
+          background-size: 220% 100%;
+          background-position: 180% 0;
+          animation: logout-shimmer 4s ease-in-out infinite;
+          pointer-events: none;
+        }
+        .logout-label, .logout-arrow { position: relative; z-index: 1; }
+        .logout-arrow {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          color: #10152b;
+          background: linear-gradient(135deg, #f5c6ff, #9defff);
+          font-size: 19px;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+        .logout.magic-logout:hover {
+          color: #ffffff;
+          transform: translateY(-2px);
+          background-position: 0 0, 100% 100%;
+          box-shadow: 0 0 0 1px rgba(82, 224, 255, .18), 0 10px 26px rgba(50, 178, 255, .18);
+        }
+        .logout.magic-logout:focus-visible {
+          outline: 3px solid #8feeff;
+          outline-offset: 4px;
+        }
+        @keyframes logout-spectrum {
+          0% { background-position: 0 0, 0% 50%; }
+          100% { background-position: 0 0, 100% 50%; }
+        }
+        @keyframes logout-shimmer {
+          0%, 25% { background-position: 180% 0; }
+          65%, 100% { background-position: -180% 0; }
+        }
+        @media (max-width: 1100px) {
+          .page { padding-inline: 16px; }
+          .career-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 850px) {
+          .page { padding: 12px; }
+          .career-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); }
+          .dashboard-bottom-actions { justify-content: center; }
+        }
+        @media (max-width: 620px) {
+          .page { padding: 10px 9px 22px; }
+          .topbar { padding: 10px 12px; margin-bottom: 12px; }
+          .hero { padding: 24px 13px 21px; }
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .career-section { padding: 16px 11px; }
+          .career-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); }
+          .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .logout.magic-logout { width: 100%; max-width: 320px; min-height: 56px; }
+          .dashboard-bottom-actions { padding-top: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .logout.magic-logout, .logout.magic-logout::after { animation: none !important; transition: none !important; }
         }
 
       `}</style>
