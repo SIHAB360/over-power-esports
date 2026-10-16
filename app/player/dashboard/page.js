@@ -2989,32 +2989,32 @@ const bestPlacement =
           .tag { font-size: 13px !important; min-height: 34px !important; padding: 8px 12px !important; }
           .stat { min-height: 86px !important; padding: 13px 10px !important; gap: 5px !important; }
           .stat span { font-size: 24px !important; }
-          .stat small { font-size: 12px !important; }
-          .stat b { font-size: 25px !important; }
+          .stat small { font-size: 13px !important; }
+          .stat b { font-size: 27px !important; }
           .earning-stat b { font-size: 20px !important; }
-          .career-header h3 { font-size: 19px !important; }
-          .career-header p { font-size: 13px !important; }
-          .filter-btn { min-height: 44px !important; padding: 10px 8px !important; font-size: 11px !important; }
+          .career-header h3 { font-size: 20px !important; }
+          .career-header p { font-size: 14px !important; }
+          .filter-btn { min-height: 46px !important; padding: 10px 8px !important; font-size: 12px !important; }
           .career-stat { min-height: 112px !important; padding: 13px 6px !important; }
           .career-stat span { font-size: 24px !important; }
-          .career-stat small { font-size: 11px !important; }
-          .career-stat strong { font-size: 24px !important; }
+          .career-stat small { font-size: 13px !important; }
+          .career-stat strong { font-size: 26px !important; }
           .chart-card { min-height: 300px !important; padding: 15px 11px !important; }
-          .chart-heading h4 { font-size: 17px !important; }
-          .chart-heading p { font-size: 13px !important; }
-          .chart-chip { font-size: 11px !important; }
-          .chart-legend { font-size: 12px !important; }
-          .chart-axis-label { font-size: 12px !important; }
-          .chart-empty { font-size: 13px !important; }
+          .chart-heading h4 { font-size: 18px !important; }
+          .chart-heading p { font-size: 14px !important; }
+          .chart-chip { font-size: 12px !important; }
+          .chart-legend { font-size: 13px !important; }
+          .chart-axis-label { font-size: 13px !important; }
+          .chart-empty { font-size: 14px !important; }
           .card { padding: 17px 12px !important; }
-          .card h3 { font-size: 17px !important; margin-bottom: 18px !important; }
+          .card h3 { font-size: 18px !important; margin-bottom: 18px !important; }
           .grid { gap: 18px 10px !important; }
-          .grid label, .exp label { font-size: 12px !important; }
-          .grid p, .exp p { font-size: 15px !important; }
+          .grid label, .exp label { font-size: 13px !important; }
+          .grid p, .exp p { font-size: 16px !important; }
           .exp { gap: 18px !important; }
           .weapon, .social { font-size: 12px !important; padding: 10px 12px !important; }
-          .empty { font-size: 13px !important; }
-          .logout.magic-logout { font-size: 14px !important; min-height: 64px !important; }
+          .empty { font-size: 14px !important; }
+          .logout.magic-logout { font-size: 15px !important; min-height: 66px !important; }
         }
 
       `}</style>
