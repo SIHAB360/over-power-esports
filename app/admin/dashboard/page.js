@@ -110,6 +110,13 @@ const user = session.user;
     icon: "🔐",
     title: "VERIFICATION",
     desc: "Generate access codes"
+  },
+    {
+    num: "08",
+    icon: "🏅",
+    title: "ACHIEVEMENTS",
+    desc: "Manage screenshots and tournament results",
+    href: "/admin/achievements"
   }
 ];
 
