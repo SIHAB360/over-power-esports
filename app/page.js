@@ -11,6 +11,7 @@ import Teams from "./components/Teams";
 import Leadership from "./components/Leadership";
 import PreLoader from "./components/PreLoader";
 import BestPlayers from "./components/BestPlayers";
+import Footer from "./components/Footer";
 
 
 export default function Home() {
