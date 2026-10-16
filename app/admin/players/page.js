@@ -225,6 +225,15 @@ export default function PlayersPage() {
                   VIEW PROFILE <span aria-hidden="true">↗</span>
                 </button>
 
+                <button
+                  type="button"
+                  className={[styles.button, styles.dashboardButton].join(" ")}
+                  onClick={() => window.location.assign(`/player/dashboard?adminPlayerId=${encodeURIComponent(player.id)}`)}
+                  aria-label={`Open read-only dashboard for ${player.ign || player.full_name || "player"}`}
+                >
+                  DASHBOARD <span aria-hidden="true">▦</span>
+                </button>
+
                 {!isApproved && (
                   <button
                     type="button"
