@@ -236,7 +236,7 @@ export default function PlayerProfilePage() {
   const initial = String(displayName).trim().charAt(0).toUpperCase() || "P";
 
   return (
-    <main className="page">
+    <main className="admin-player-record-page">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
@@ -252,7 +252,7 @@ export default function PlayerProfilePage() {
           <div className="admin-label"><span className="live-dot" /> ADMIN VIEW · PLAYER RECORD</div>
         </header>
 
-        <section className="hero">
+        <section className="admin-record-hero">
           <div className="avatar-shell">
             {avatar ? (
               <img src={avatar} alt={displayName} />
@@ -325,7 +325,7 @@ export default function PlayerProfilePage() {
             </div>
           </section>
 
-          <section className="detail-card game-card">
+          <section className="detail-card admin-record-game-card">
             <div className="card-heading">
               <span className="card-icon">⌘</span>
               <div><h3>GAME PROFILE</h3><p>Competitive setup and experience</p></div>
@@ -389,7 +389,7 @@ export default function PlayerProfilePage() {
       </div>
 
       <style jsx>{`
-        .page {
+        .admin-player-record-page {
           --bg: #080b14;
           --panel: rgba(17, 24, 40, .88);
           --line: rgba(147, 166, 210, .16);
@@ -455,7 +455,7 @@ export default function PlayerProfilePage() {
           text-align: right;
         }
         .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #63dfb6; box-shadow: 0 0 12px rgba(99, 223, 182, .7); }
-        .hero {
+        .admin-record-hero {
           display: grid;
           grid-template-columns: 116px minmax(0, 1fr) auto;
           align-items: center;
@@ -469,7 +469,7 @@ export default function PlayerProfilePage() {
           position: relative;
           overflow: hidden;
         }
-        .hero::before {
+        .admin-record-hero::before {
           content: "";
           position: absolute;
           top: 0;
@@ -567,6 +567,23 @@ export default function PlayerProfilePage() {
         .read-only span { width: 6px; height: 6px; border-radius: 50%; background: #7e8eae; }
         .details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
         .detail-card { min-width: 0; padding: 21px; border: 1px solid var(--line); border-radius: 19px; background: rgba(16, 22, 37, .84); box-shadow: 0 16px 36px rgba(0, 0, 0, .13); }
+        .admin-record-game-card {
+          border-color: rgba(163, 107, 255, .32);
+          background: linear-gradient(145deg, rgba(22, 23, 48, .96), rgba(13, 17, 33, .96));
+        }
+        .admin-record-game-card .card-heading h3 {
+          color: #c9b0ff;
+          font-size: 12px;
+          line-height: 1.35;
+          text-shadow: none;
+          filter: none;
+          animation: none;
+        }
+        .admin-record-game-card .card-icon {
+          border-color: rgba(163, 107, 255, .32);
+          background: rgba(163, 107, 255, .12);
+          color: #d0b5ff;
+        }
         .card-heading { display: flex; align-items: center; gap: 12px; padding-bottom: 18px; margin-bottom: 16px; border-bottom: 1px solid rgba(147, 166, 210, .11); }
         .card-icon { display: grid; place-items: center; width: 41px; height: 41px; flex: 0 0 41px; border: 1px solid rgba(106, 145, 255, .2); border-radius: 13px; background: rgba(106, 145, 255, .1); color: #a7bdff; font-size: 20px; }
         .personal-card .card-icon { border-color: rgba(255, 84, 119, .2); background: rgba(255, 84, 119, .09); color: #ff9bb0; }
@@ -587,7 +604,7 @@ export default function PlayerProfilePage() {
         .page-footer { display: flex; justify-content: space-between; gap: 14px; margin-top: 27px; padding: 17px 2px 0; border-top: 1px solid rgba(147, 166, 210, .1); color: #657493; font-size: 9px; font-weight: 900; letter-spacing: .11em; }
         .footer-divider { padding: 0 5px; color: #ff6e8c; }
         @media (max-width: 1000px) {
-          .hero { grid-template-columns: 94px minmax(0, 1fr); gap: 20px; }
+          .admin-record-hero { grid-template-columns: 94px minmax(0, 1fr); gap: 20px; }
           .avatar-shell { width: 94px; height: 94px; border-radius: 22px; }
           .avatar-shell img, .avatar-fallback { border-radius: 21px; }
           .avatar-fallback { font-size: 34px; }
@@ -596,11 +613,11 @@ export default function PlayerProfilePage() {
           .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (max-width: 700px) {
-          .page { padding: 17px 13px 27px; }
+          .admin-player-record-page { padding: 17px 13px 27px; }
           .topbar { align-items: flex-start; }
           .admin-label { max-width: 145px; justify-content: flex-end; font-size: 8px; line-height: 1.5; }
           .back-button { min-height: 39px; padding: 0 11px; font-size: 9px; }
-          .hero { grid-template-columns: 1fr; justify-items: center; gap: 15px; padding: 24px 17px; border-radius: 20px; text-align: center; }
+          .admin-record-hero { grid-template-columns: 1fr; justify-items: center; gap: 15px; padding: 24px 17px; border-radius: 20px; text-align: center; }
           .avatar-shell { width: 91px; height: 91px; }
           .hero-content { width: 100%; }
           .brand-label { font-size: 9px; letter-spacing: .17em; }
@@ -636,15 +653,76 @@ export default function PlayerProfilePage() {
           .back-button:hover, .stat-card:hover, .social-link:hover { transform: none; }
         }
       `}</style>
+      <style jsx global>{`
+        .admin-player-record-page .record-field {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: flex-start;
+          gap: 8px;
+          min-width: 0;
+          min-height: 82px;
+          padding: 14px;
+          border: 1px solid rgba(132, 154, 215, .18);
+          border-radius: 13px;
+          background: linear-gradient(145deg, rgba(22, 29, 49, .88), rgba(10, 15, 29, .86));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .025);
+        }
+        .admin-player-record-page .record-field-label {
+          display: block;
+          width: 100%;
+          margin: 0;
+          color: #9fadd0;
+          font-size: 10px;
+          font-weight: 900;
+          line-height: 1.35;
+          letter-spacing: .075em;
+          text-transform: uppercase;
+          overflow-wrap: anywhere;
+        }
+        .admin-player-record-page .record-field-value {
+          display: block;
+          width: 100%;
+          margin: 0;
+          color: #f5f7ff;
+          font-size: 14px;
+          font-weight: 750;
+          line-height: 1.55;
+          overflow-wrap: anywhere;
+          word-break: normal;
+        }
+        .admin-player-record-page .personal-card .record-field-label { color: #8ddcf3; }
+        .admin-player-record-page .admin-record-game-card .record-field-label { color: #c8a9ff; }
+        .admin-player-record-page .team-card .record-field-label { color: #7ce8c4; }
+        .admin-player-record-page .social-card .record-field-label { color: #ffd58b; }
+        @media (max-width: 700px) {
+          .admin-player-record-page .record-field {
+            min-height: 76px;
+            padding: 12px;
+            gap: 7px;
+          }
+          .admin-player-record-page .record-field-label {
+            font-size: 9px;
+            letter-spacing: .055em;
+          }
+          .admin-player-record-page .record-field-value {
+            font-size: 13px;
+          }
+        }
+        @media (max-width: 380px) {
+          .admin-player-record-page .record-field-value { font-size: 13px; }
+        }
+      `}</style>
+
     </main>
   );
 }
 
 function Field({ label, value, className = "" }) {
   return (
-    <div className={`field ${className}`}>
-      <span className="field-label">{label}</span>
-      <span className="field-value">{value}</span>
+    <div className={`record-field ${className}`}>
+      <span className="record-field-label">{label}</span>
+      <span className="record-field-value">{value}</span>
     </div>
   );
 }
