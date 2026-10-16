@@ -2837,6 +2837,98 @@ const bestPlacement =
           .logout.magic-logout, .logout.magic-logout::after { animation: none !important; transition: none !important; }
         }
 
+
+
+        /* ACCESSIBILITY READABILITY FIX — deliberately larger type throughout */
+        .page { font-size: 18px !important; }
+        .hero h1 { font-size: clamp(34px, 2.4vw, 44px) !important; line-height: 1.2 !important; font-weight: 950 !important; }
+        .ign { font-size: 18px !important; line-height: 1.5 !important; font-weight: 850 !important; }
+        .tag { font-size: 14px !important; min-height: 36px !important; padding: 9px 16px !important; font-weight: 900 !important; }
+        .stat { min-height: 92px !important; padding: 18px !important; }
+        .stat span { font-size: 28px !important; }
+        .stat small { font-size: 15px !important; line-height: 1.4 !important; letter-spacing: .45px !important; font-weight: 850 !important; color: #e1ebff !important; }
+        .stat b { font-size: 30px !important; line-height: 1.25 !important; font-weight: 950 !important; color: #fff !important; }
+        .earning-stat b { font-size: 25px !important; }
+        .career-header h3 { font-size: 23px !important; line-height: 1.35 !important; font-weight: 950 !important; }
+        .career-header p { font-size: 15px !important; line-height: 1.55 !important; color: #e0eaff !important; }
+        .filter-btn { min-height: 48px !important; padding: 12px 18px !important; font-size: 14px !important; font-weight: 950 !important; letter-spacing: .4px !important; }
+        .custom-date-filter label { font-size: 15px !important; }
+        .custom-date-filter input { font-size: 16px !important; min-height: 46px !important; }
+        .clear-date-btn { font-size: 14px !important; min-height: 46px !important; }
+        .career-stat { min-height: 126px !important; padding: 18px 12px !important; }
+        .career-stat span { font-size: 30px !important; margin-bottom: 10px !important; }
+        .career-stat small { font-size: 13px !important; line-height: 1.45 !important; letter-spacing: .5px !important; font-weight: 900 !important; color: #e1ebff !important; }
+        .career-stat strong { font-size: 30px !important; line-height: 1.25 !important; margin-top: 8px !important; font-weight: 950 !important; color: #fff !important; }
+        .chart-card { min-height: 380px !important; padding: 22px !important; }
+        .chart-heading h4 { font-size: 20px !important; line-height: 1.4 !important; font-weight: 950 !important; }
+        .chart-heading p { font-size: 15px !important; line-height: 1.55 !important; color: #e0eaff !important; }
+        .chart-chip { font-size: 13px !important; padding: 8px 12px !important; font-weight: 900 !important; }
+        .chart-legend { font-size: 15px !important; line-height: 1.6 !important; color: #f0f5ff !important; }
+        .chart-axis-label { font-size: 14px !important; }
+        .chart-empty { font-size: 15px !important; line-height: 1.6 !important; color: #e2ecff !important; }
+        .card h3 { font-size: 21px !important; line-height: 1.4 !important; font-weight: 950 !important; margin-bottom: 22px !important; }
+        .grid { gap: 24px 22px !important; }
+        .grid label { font-size: 15px !important; line-height: 1.5 !important; font-weight: 850 !important; color: #dce8ff !important; }
+        .grid p { font-size: 18px !important; line-height: 1.6 !important; font-weight: 750 !important; color: #fff !important; }
+        .exp label { font-size: 15px !important; }
+        .exp p { font-size: 18px !important; }
+        .weapon, .social { font-size: 15px !important; padding: 12px 16px !important; font-weight: 900 !important; }
+        .empty { font-size: 15px !important; line-height: 1.6 !important; }
+        .logout.magic-logout { font-size: 16px !important; min-height: 70px !important; }
+
+        @media (min-width: 1500px) {
+          .stat small { font-size: 16px !important; }
+          .career-stat small { font-size: 14px !important; }
+          .chart-axis-label { font-size: 15px !important; }
+          .grid label { font-size: 16px !important; }
+          .grid p { font-size: 19px !important; }
+        }
+        @media (max-width: 1100px) {
+          .stat small { font-size: 14px !important; }
+          .stat b { font-size: 28px !important; }
+          .career-stat small { font-size: 13px !important; }
+          .career-stat strong { font-size: 27px !important; }
+          .grid label { font-size: 14px !important; }
+          .grid p { font-size: 16px !important; }
+          .chart-heading h4 { font-size: 19px !important; }
+          .chart-heading p, .chart-legend, .chart-empty { font-size: 14px !important; }
+        }
+        @media (max-width: 620px) {
+          .page { font-size: 16px !important; padding: 9px 8px 18px !important; }
+          .hero h1 { font-size: clamp(27px, 7.2vw, 34px) !important; }
+          .ign { font-size: 15px !important; }
+          .tag { font-size: 12px !important; min-height: 32px !important; padding: 7px 12px !important; }
+          .stat { min-height: 80px !important; padding: 12px 10px !important; }
+          .stat span { font-size: 23px !important; }
+          .stat small { font-size: 12px !important; }
+          .stat b { font-size: 24px !important; }
+          .earning-stat b { font-size: 19px !important; }
+          .career-header h3 { font-size: 18px !important; }
+          .career-header p { font-size: 13px !important; }
+          .filter-btn { min-height: 43px !important; padding: 10px 7px !important; font-size: 11px !important; }
+          .career-stat { min-height: 106px !important; padding: 12px 6px !important; }
+          .career-stat span { font-size: 24px !important; }
+          .career-stat small { font-size: 11px !important; }
+          .career-stat strong { font-size: 23px !important; }
+          .chart-card { min-height: 300px !important; padding: 15px 11px !important; }
+          .chart-heading h4 { font-size: 17px !important; }
+          .chart-heading p { font-size: 13px !important; }
+          .chart-chip { font-size: 11px !important; }
+          .chart-legend { font-size: 12px !important; }
+          .chart-axis-label { font-size: 12px !important; }
+          .chart-empty { font-size: 13px !important; }
+          .card { padding: 17px 12px !important; }
+          .card h3 { font-size: 17px !important; margin-bottom: 18px !important; }
+          .grid { gap: 18px 10px !important; }
+          .grid label { font-size: 12px !important; }
+          .grid p { font-size: 14px !important; }
+          .exp label { font-size: 12px !important; }
+          .exp p { font-size: 15px !important; }
+          .weapon, .social { font-size: 12px !important; padding: 10px 12px !important; }
+          .empty { font-size: 13px !important; }
+          .logout.magic-logout { font-size: 14px !important; min-height: 64px !important; }
+        }
+
       `}</style>
     </main>
   );
