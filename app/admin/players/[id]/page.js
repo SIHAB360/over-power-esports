@@ -640,9 +640,9 @@ export default function PlayerProfilePage() {
   );
 }
 
-function Field({ label, value }) {
+function Field({ label, value, className = "" }) {
   return (
-    <div className="field">
+    <div className={`field ${className}`}>
       <span className="field-label">{label}</span>
       <span className="field-value">{value}</span>
     </div>
