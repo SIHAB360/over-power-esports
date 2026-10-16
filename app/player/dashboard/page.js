@@ -549,6 +549,60 @@ const bestPlacement =
       )
     : 0;
 
+
+  /* Chart series are derived from the same filtered match records as the career stats. */
+  const performanceSeries = filteredStats
+    .map((stat, index) => {
+      const matchData = Array.isArray(stat.matches) ? stat.matches[0] : stat.matches;
+      const rawDate = matchData?.match_date || matchData?.created_at;
+      const parsedDate = rawDate ? new Date(rawDate) : null;
+      const date = parsedDate && !Number.isNaN(parsedDate.getTime()) ? parsedDate : null;
+      return {
+        index,
+        date,
+        kills: Number(stat.kills || 0),
+        assists: Number(stat.assists || 0),
+        damage: Number(stat.damage || 0),
+      };
+    })
+    .sort((a, b) => {
+      if (a.date && b.date) return a.date.getTime() - b.date.getTime();
+      if (a.date) return -1;
+      if (b.date) return 1;
+      return a.index - b.index;
+    })
+    .slice(-8);
+
+  const maxMatchOutput = Math.max(
+    1,
+    ...performanceSeries.flatMap((item) => [item.kills, item.assists])
+  );
+  const maxMatchDamage = Math.max(1, ...performanceSeries.map((item) => item.damage));
+  const barStep = 520 / Math.max(performanceSeries.length, 1);
+  const performanceBars = performanceSeries.map((item, index) => ({
+    ...item,
+    x: 30 + index * barStep,
+    killsHeight: Math.max(3, (item.kills / maxMatchOutput) * 108),
+    assistsHeight: Math.max(3, (item.assists / maxMatchOutput) * 108),
+    label: item.date
+      ? item.date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" })
+      : "M" + (index + 1),
+  }));
+  const damagePoints = performanceSeries.map((item, index) => ({
+    ...item,
+    x: 32 + index * (536 / Math.max(performanceSeries.length - 1, 1)),
+    y: 150 - (item.damage / maxMatchDamage) * 100,
+    label: item.date
+      ? item.date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" })
+      : "M" + (index + 1),
+  }));
+  const damageLinePoints = damagePoints.map((point) => point.x + "," + point.y).join(" ");
+  const damageAreaPath = damagePoints.length
+    ? "M " + damagePoints[0].x + " 166 L " +
+      damagePoints.map((point) => point.x + " " + point.y).join(" L ") +
+      " L " + damagePoints[damagePoints.length - 1].x + " 166 Z"
+    : "";
+
   return (
     <main className="page">
       {/* Animated Background Lights */}
@@ -571,8 +625,33 @@ const bestPlacement =
           </button>
         </div>
 
+        <div className="dashboard-layout">
+          <aside className="sidebar" aria-label="Player dashboard navigation">
+            <div className="sidebar-heading">
+              <div className="sidebar-mark">OP</div>
+              <div>
+                <strong>PLAYER SPACE</strong>
+                <small>PERFORMANCE HUB</small>
+              </div>
+            </div>
+            <p className="sidebar-caption">DASHBOARD</p>
+            <nav className="sidebar-nav">
+              <a href="#overview" className="sidebar-link active"><span className="nav-symbol">◈</span>Overview</a>
+              <a href="#performance" className="sidebar-link"><span className="nav-symbol">▥</span>Performance</a>
+              <a href="#player-information" className="sidebar-link"><span className="nav-symbol">◎</span>Player Info</a>
+              <a href="#gaming-profile" className="sidebar-link"><span className="nav-symbol">✦</span>Gaming Profile</a>
+              <a href="#experience" className="sidebar-link"><span className="nav-symbol">◇</span>Experience</a>
+              <a href="#expert-weapons" className="sidebar-link"><span className="nav-symbol">⌁</span>Expert Weapons</a>
+              <a href="#social-links" className="sidebar-link"><span className="nav-symbol">↗</span>Social Links</a>
+            </nav>
+            <div className="sidebar-footer">
+              <span className="sidebar-live"><span></span> PROFILE CONNECTED</span>
+              <small>Your match data stays in sync.</small>
+            </div>
+          </aside>
+          <div className="dashboard-content">
         {/* Hero */}
-        <section className="hero">
+        <section className="hero" id="overview">
           <div className="avatar">
             {player?.profile_image ? (
               <img src={player.profile_image} alt="avatar" />
@@ -638,10 +717,10 @@ const bestPlacement =
   </div>
 </div>
 
-        {/* Player Info */}
-        <section className="card card-red">
+        {/* Performance */}
+        <section className="career-shell">
 {/* Career Statistics Filter */}
-<section className="career-section">
+<section className="career-section" id="performance">
 
   <div className="career-header">
 
@@ -877,8 +956,89 @@ const bestPlacement =
 
   </div>
 
+
+  <div className="performance-grid">
+    <article className="chart-card">
+      <div className="chart-heading">
+        <div>
+          <h4>MATCH PERFORMANCE</h4>
+          <p>Kills and assists across recent matches</p>
+        </div>
+        <span className="chart-chip">LAST {performanceSeries.length}</span>
+      </div>
+      <div className="chart-legend">
+        <span><i className="legend-kills"></i>Kills</span>
+        <span><i className="legend-assists"></i>Assists</span>
+      </div>
+      <svg className="performance-chart" viewBox="0 0 600 215" role="img" aria-label="Bar chart showing kills and assists for recent matches">
+        <defs>
+          <linearGradient id="opKillsGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#ffe2a6" />
+            <stop offset="100%" stopColor="#b9854d" />
+          </linearGradient>
+          <linearGradient id="opAssistsGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#d7c2ff" />
+            <stop offset="100%" stopColor="#7963b6" />
+          </linearGradient>
+        </defs>
+        {[55, 90, 125, 160].map((y) => (
+          <line key={y} x1="20" y1={y} x2="580" y2={y} className="chart-grid-line" />
+        ))}
+        {performanceBars.map((item, index) => (
+          <g key={item.index + "-" + index}>
+            <rect x={item.x + 7} y={165 - item.killsHeight} width="15" height={item.killsHeight} rx="4" fill="url(#opKillsGradient)" />
+            <rect x={item.x + 28} y={165 - item.assistsHeight} width="15" height={item.assistsHeight} rx="4" fill="url(#opAssistsGradient)" />
+            <text x={item.x + 25} y="191" textAnchor="middle" className="chart-axis-label">{item.label}</text>
+          </g>
+        ))}
+      </svg>
+      {performanceSeries.length === 0 && (
+        <p className="chart-empty">Match data will appear here after your first recorded match.</p>
+      )}
+    </article>
+
+    <article className="chart-card">
+      <div className="chart-heading">
+        <div>
+          <h4>DAMAGE TREND</h4>
+          <p>Damage output by match</p>
+        </div>
+        <span className="chart-chip">LIVE DATA</span>
+      </div>
+      <div className="chart-legend">
+        <span><i className="legend-damage"></i>Damage</span>
+      </div>
+      <svg className="performance-chart" viewBox="0 0 600 215" role="img" aria-label="Line chart showing damage output for recent matches">
+        <defs>
+          <linearGradient id="opDamageArea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#f4c77f" stopOpacity=".30" />
+            <stop offset="100%" stopColor="#f4c77f" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {[55, 90, 125, 160].map((y) => (
+          <line key={y} x1="20" y1={y} x2="580" y2={y} className="chart-grid-line" />
+        ))}
+        {damagePoints.length > 0 && <path d={damageAreaPath} fill="url(#opDamageArea)" />}
+        {damagePoints.length > 0 && (
+          <polyline points={damageLinePoints} fill="none" stroke="#f4c77f" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="damage-line" />
+        )}
+        {damagePoints.map((point, index) => (
+          <g key={point.index + "-" + index}>
+            <circle cx={point.x} cy={point.y} r="4.5" className="damage-point" />
+            <text x={point.x} y="191" textAnchor="middle" className="chart-axis-label">{point.label}</text>
+          </g>
+        ))}
+      </svg>
+      {performanceSeries.length === 0 && (
+        <p className="chart-empty">Your damage trend will appear when match results are recorded.</p>
+      )}
+    </article>
+  </div>
+
 </section>
-          
+        </section>
+
+        <section className="card card-red player-info-card" id="player-information">
           <h3>PLAYER INFORMATION</h3>
           <div className="grid">
             <div>
@@ -909,7 +1069,7 @@ const bestPlacement =
         </section>
 
         {/* Gaming Profile */}
-        <section className="card card-purple">
+        <section className="card card-purple" id="gaming-profile">
           <h3>GAMING PROFILE</h3>
           <div className="grid">
             <div>
@@ -940,7 +1100,7 @@ const bestPlacement =
         </section>
 
         {/* Experience */}
-        <section className="card card-green">
+        <section className="card card-green" id="experience">
           <h3>EXPERIENCE</h3>
           <div className="exp">
             <div>
@@ -955,7 +1115,7 @@ const bestPlacement =
         </section>
 
         {/* Expert Weapons */}
-        <section className="card card-red">
+        <section className="card card-red" id="expert-weapons">
           <h3>EXPERT WEAPONS</h3>
           <div className="weapons">
             {weapons.length > 0 ? (
@@ -971,7 +1131,7 @@ const bestPlacement =
         </section>
 
         {/* Social Links */}
-        <section className="card card-orange">
+        <section className="card card-orange" id="social-links">
           <h3>SOCIAL LINKS</h3>
           <div className="socials">
             {player?.facebook_link && (
@@ -1022,6 +1182,8 @@ const bestPlacement =
               )}
           </div>
         </section>
+          </div>
+        </div>
       </div>
 
       <style jsx>{`
@@ -1601,6 +1763,283 @@ const bestPlacement =
             padding: 18px 16px;
           }
         }
+
+
+        /* =====================================================
+           OVER POWER PLAYER DASHBOARD — WARM GLASS REDESIGN
+           Existing profile data and actions preserved
+        ===================================================== */
+        .page {
+          padding: clamp(12px, 2vw, 30px);
+          background:
+            radial-gradient(ellipse 44% 38% at 3% 0%, rgba(229, 171, 95, .22), transparent 100%),
+            radial-gradient(ellipse 42% 36% at 98% 4%, rgba(151, 111, 202, .19), transparent 100%),
+            radial-gradient(ellipse 42% 38% at 90% 90%, rgba(201, 142, 91, .12), transparent 100%),
+            linear-gradient(135deg, #17120f 0%, #100e13 48%, #090b12 100%);
+          color: #f7f0e5;
+        }
+        .light-1 { background: #e5ad65; opacity: .12; }
+        .light-2 { background: #a78ad8; opacity: .10; }
+        .light-3 { background: #f3c78b; opacity: .07; }
+        .wrap { width: 100%; max-width: 1560px; margin: 0 auto; }
+        .topbar {
+          margin-bottom: 18px;
+          padding: 13px 18px;
+          border: 1px solid rgba(255, 218, 166, .23);
+          border-radius: 17px;
+          background: linear-gradient(110deg, rgba(53, 39, 31, .91), rgba(23, 20, 30, .92) 55%, rgba(21, 19, 29, .94));
+          box-shadow: 0 14px 38px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .07);
+          backdrop-filter: blur(18px);
+        }
+        .logo {
+          color: #21151a;
+          background: linear-gradient(135deg, #ffe2a6 0%, #f2bd87 35%, #c7a6ef 72%, #f5c4b1 100%);
+          box-shadow: 0 0 22px rgba(240, 190, 123, .24);
+        }
+        .logo-area b { color: #fff6e9; letter-spacing: .4px; }
+        .logo-area small { color: #b8a99b; }
+        .logout {
+          border-color: rgba(244, 202, 139, .45);
+          background: linear-gradient(110deg, rgba(243, 194, 120, .14), rgba(195, 157, 231, .10));
+          color: #ffe4b3;
+        }
+        .logout:hover {
+          color: #21151a;
+          background: linear-gradient(110deg, #ffe1a5, #eac0b7, #cbb6f3);
+          box-shadow: 0 0 24px rgba(240, 190, 123, .30);
+        }
+        .dashboard-layout { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 20px; align-items: start; }
+        .sidebar {
+          position: sticky;
+          top: 18px;
+          display: flex;
+          flex-direction: column;
+          min-height: min(760px, calc(100vh - 36px));
+          padding: 22px 15px 18px;
+          border: 1px solid rgba(255, 218, 166, .20);
+          border-radius: 21px;
+          background:
+            radial-gradient(ellipse at 0% 0%, rgba(230, 177, 105, .12), transparent 54%),
+            radial-gradient(ellipse at 100% 100%, rgba(160, 128, 218, .11), transparent 52%),
+            linear-gradient(165deg, rgba(38, 29, 28, .94), rgba(15, 15, 23, .96) 68%, rgba(13, 15, 23, .97));
+          box-shadow: 0 18px 42px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .06);
+          backdrop-filter: blur(18px);
+        }
+        .sidebar-heading { display: flex; align-items: center; gap: 10px; padding: 2px 5px 21px; border-bottom: 1px solid rgba(255, 222, 177, .13); }
+        .sidebar-mark {
+          width: 37px; height: 37px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 12px;
+          color: #251923; font-size: 12px; font-weight: 1000;
+          background: linear-gradient(135deg, #ffe0a0, #e7b9b6 48%, #b7a5e9);
+          box-shadow: 0 0 20px rgba(231, 186, 135, .20);
+        }
+        .sidebar-heading strong, .sidebar-heading small { display: block; }
+        .sidebar-heading strong { color: #fff4e4; font-size: 11px; letter-spacing: 1px; }
+        .sidebar-heading small { margin-top: 4px; color: #a99d9c; font-size: 8px; letter-spacing: 1.2px; }
+        .sidebar-caption { margin: 23px 8px 10px; color: #9f938d; font-size: 9px; font-weight: 900; letter-spacing: 1.8px; }
+        .sidebar-nav { display: grid; gap: 6px; }
+        .sidebar-link {
+          display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 10px 11px;
+          border: 1px solid transparent; border-radius: 11px; color: #c8bcb2; font-size: 12px; font-weight: 650;
+          text-decoration: none; transition: color .22s ease, background .22s ease, border-color .22s ease, box-shadow .22s ease;
+        }
+        .nav-symbol { width: 20px; color: #e9c48e; font-size: 16px; text-align: center; text-shadow: 0 0 12px rgba(233, 196, 142, .24); }
+        .sidebar-link:hover, .sidebar-link.active {
+          color: #fff3db; border-color: rgba(243, 202, 143, .22);
+          background: linear-gradient(100deg, rgba(236, 187, 115, .16), rgba(197, 164, 235, .09));
+          box-shadow: inset 2px 0 0 #edc58b, 0 5px 18px rgba(0, 0, 0, .12);
+        }
+        .sidebar-footer { margin-top: auto; padding: 18px 8px 0; border-top: 1px solid rgba(255, 222, 177, .12); }
+        .sidebar-live { display: flex; align-items: center; gap: 7px; color: #f2d5a7; font-size: 8px; font-weight: 900; letter-spacing: 1px; }
+        .sidebar-live span { width: 6px; height: 6px; border-radius: 50%; background: #b6d8ae; box-shadow: 0 0 9px rgba(182, 216, 174, .65); }
+        .sidebar-footer small { display: block; margin-top: 8px; color: #918780; font-size: 10px; line-height: 1.5; }
+        .dashboard-content { display: grid; gap: 16px; min-width: 0; }
+        .hero {
+          margin-bottom: 0; padding: clamp(24px, 3vw, 38px) 20px 27px; border-color: rgba(255, 218, 166, .30);
+          background:
+            radial-gradient(ellipse at 15% 0%, rgba(237, 189, 121, .14), transparent 48%),
+            radial-gradient(ellipse at 100% 100%, rgba(172, 142, 221, .14), transparent 48%),
+            linear-gradient(120deg, rgba(47, 35, 32, .92), rgba(21, 20, 29, .95) 62%, rgba(18, 19, 29, .96));
+          box-shadow: 0 18px 42px rgba(0, 0, 0, .24), 0 0 28px rgba(221, 179, 122, .055), inset 0 1px 0 rgba(255, 255, 255, .08);
+        }
+        .hero::before { background: linear-gradient(90deg, transparent, #f2d39c, #d6b8ed, #e7b39e, transparent); opacity: .85; }
+        .avatar { background: linear-gradient(135deg, #ffe1a1, #e7b2a8, #c2a5f1, #9fdfe0); box-shadow: 0 0 24px rgba(231, 184, 123, .22), 0 0 34px rgba(170, 142, 221, .12); }
+        .avatar img, .fallback { border-color: #19151b; }
+        .fallback { color: #f5d6a2; background: #17141b; }
+        .hero h1 { color: #fff6e9; letter-spacing: clamp(.5px, .2vw, 2px); text-shadow: 0 0 20px rgba(240, 202, 145, .12); }
+        .ign { color: #e8c8ff; text-shadow: 0 0 13px rgba(203, 164, 244, .22); }
+        .tag.red { color: #2b1a19; background: linear-gradient(110deg, #ffe0a1, #efc09b); box-shadow: 0 0 17px rgba(240, 192, 127, .18); }
+        .tag.purple { color: #e4d5ff; border-color: rgba(198, 166, 240, .38); background: linear-gradient(110deg, rgba(170, 132, 222, .17), rgba(235, 190, 156, .09)); }
+        .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 0; }
+        .stat {
+          min-width: 0; padding: 16px 14px; border-color: rgba(255, 218, 166, .19); border-radius: 16px;
+          background: radial-gradient(ellipse at 0% 0%, rgba(231, 182, 117, .11), transparent 65%), linear-gradient(145deg, rgba(43, 33, 31, .88), rgba(19, 19, 28, .94));
+          box-shadow: 0 10px 26px rgba(0, 0, 0, .17), inset 0 1px 0 rgba(255, 255, 255, .045);
+        }
+        .stat span { filter: saturate(.72); }
+        .stat small { color: #b2a69d; font-size: 9px; letter-spacing: .65px; }
+        .stat b { color: #f6d59b; font-size: clamp(17px, 1.5vw, 22px); text-shadow: 0 0 12px rgba(246, 213, 155, .17); overflow-wrap: anywhere; }
+        .earning-stat b { font-size: clamp(14px, 1.25vw, 19px); }
+        .career-shell { margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; overflow: visible; }
+        .career-section {
+          position: relative; overflow: hidden; margin: 0; padding: clamp(17px, 2.2vw, 27px);
+          border: 1px solid rgba(255, 218, 166, .23); border-radius: 20px;
+          background:
+            radial-gradient(ellipse at 0% 0%, rgba(232, 183, 115, .12), transparent 55%),
+            radial-gradient(ellipse at 100% 100%, rgba(163, 135, 218, .10), transparent 55%),
+            linear-gradient(140deg, rgba(37, 29, 28, .94), rgba(17, 17, 25, .97));
+          box-shadow: 0 17px 40px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .055);
+        }
+        .career-section::before {
+          content: ""; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255, 223, 171, .42), rgba(201, 174, 239, .35), transparent);
+          pointer-events: none;
+        }
+        .career-header h3 { color: #f3d09a; font-size: 13px; letter-spacing: 1.3px; text-shadow: 0 0 15px rgba(243, 208, 154, .12); }
+        .career-header p { color: #b3a8a0; font-size: 11px; }
+        .filter-buttons { gap: 8px; margin: 18px 0 17px; }
+        .filter-btn { color: #c9bdb2; border-color: rgba(244, 206, 151, .23); background: linear-gradient(110deg, rgba(240, 192, 128, .055), rgba(179, 148, 219, .055)); }
+        .filter-btn:hover { color: #fff2d8; border-color: rgba(244, 206, 151, .55); box-shadow: 0 0 15px rgba(239, 196, 131, .10); }
+        .filter-btn.active { color: #26191b; border-color: #f0cd91; background: linear-gradient(110deg, #ffe0a2, #efc5a9 55%, #d5baf0); box-shadow: 0 0 19px rgba(240, 198, 135, .18); }
+        .custom-date-filter { background: rgba(255, 255, 255, .025); border-color: rgba(255, 218, 166, .13); }
+        .custom-date-filter label { color: #b7a99e; }
+        .custom-date-filter input { border-color: rgba(255, 218, 166, .18); background: rgba(13, 13, 20, .88); accent-color: #e9c28b; }
+        .clear-date-btn { color: #f2d5a6; border-color: rgba(240, 198, 135, .32); background: rgba(240, 198, 135, .08); }
+        .career-grid { gap: 10px; }
+        .career-stat {
+          min-width: 0; min-height: 100px; padding: 14px 10px; border-color: rgba(255, 218, 166, .15);
+          background: radial-gradient(ellipse at 50% 0%, rgba(232, 185, 119, .09), transparent 65%), linear-gradient(145deg, rgba(43, 34, 32, .86), rgba(20, 19, 27, .92));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+        }
+        .career-stat small { color: #b5a99f; }
+        .career-stat strong { color: #e9d3a6; text-shadow: 0 0 12px rgba(233, 211, 166, .13); }
+        .performance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 22px; }
+        .chart-card {
+          min-width: 0; padding: 19px 17px 14px; border: 1px solid rgba(255, 218, 166, .16); border-radius: 17px;
+          background: radial-gradient(ellipse at 100% 0%, rgba(170, 142, 220, .10), transparent 55%), linear-gradient(145deg, rgba(35, 29, 30, .91), rgba(17, 18, 26, .96));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
+        }
+        .chart-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+        .chart-heading h4 { margin: 0; color: #fff0d7; font-size: 12px; font-weight: 900; letter-spacing: 1px; }
+        .chart-heading p { margin: 6px 0 0; color: #a99f9a; font-size: 10px; line-height: 1.5; }
+        .chart-chip { flex: 0 0 auto; padding: 6px 8px; border: 1px solid rgba(239, 204, 153, .20); border-radius: 999px; color: #e7cda4; background: rgba(240, 199, 139, .07); font-size: 8px; font-weight: 900; letter-spacing: .5px; }
+        .chart-legend { display: flex; align-items: center; gap: 15px; margin: 16px 0 3px; color: #bfb3a9; font-size: 10px; }
+        .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+        .chart-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 3px; }
+        .legend-kills, .legend-damage { background: #f0cd8f; box-shadow: 0 0 8px rgba(240, 205, 143, .25); }
+        .legend-assists { background: #bca6eb; box-shadow: 0 0 8px rgba(188, 166, 235, .22); }
+        .performance-chart { display: block; width: 100%; height: auto; overflow: visible; }
+        .chart-grid-line { stroke: rgba(255, 225, 184, .10); stroke-width: 1; stroke-dasharray: 3 6; }
+        .chart-axis-label { fill: #a99d94; font-size: 10px; font-family: inherit; }
+        .damage-line { filter: drop-shadow(0 0 5px rgba(244, 199, 127, .22)); }
+        .damage-point { fill: #ffe1a4; stroke: #6d543c; stroke-width: 2; filter: drop-shadow(0 0 5px rgba(244, 199, 127, .4)); }
+        .chart-empty { margin: 0 0 5px; color: #a99d94; text-align: center; font-size: 11px; line-height: 1.6; }
+        .player-info-card { margin: 0; }
+        .card {
+          border-radius: 18px;
+          background: radial-gradient(ellipse at 0% 0%, rgba(231, 183, 118, .09), transparent 55%), linear-gradient(145deg, rgba(36, 29, 29, .91), rgba(17, 18, 26, .96));
+          box-shadow: 0 13px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .04);
+          backdrop-filter: blur(16px);
+        }
+        .card h3 { font-size: 12px; letter-spacing: 1.2px; }
+        .grid { gap: 18px 16px; }
+        .grid label { color: #b4a89d; letter-spacing: .3px; }
+        .grid p { color: #f4ede2; line-height: 1.5; }
+        .card-red { border-color: rgba(240, 198, 135, .25); box-shadow: 0 13px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .04); }
+        .card-red h3 { color: #f0cd92; }
+        .card-red::before { background: linear-gradient(180deg, #ffe1a5, #e4b48e, #bca6e8); box-shadow: 0 0 12px rgba(239, 199, 139, .30); }
+        .card-purple { border-color: rgba(189, 165, 234, .28); box-shadow: 0 13px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .04); }
+        .card-purple h3 { color: #d5c0f4; }
+        .card-purple::before { background: linear-gradient(180deg, #e3d0ff, #b59ce8); box-shadow: 0 0 12px rgba(189, 165, 234, .25); }
+        .card-green { border-color: rgba(211, 204, 152, .25); box-shadow: 0 13px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .04); }
+        .card-green h3, .exp label { color: #e8d3a0; }
+        .card-green::before { background: linear-gradient(180deg, #f6dda2, #b8d2b0); box-shadow: 0 0 12px rgba(221, 208, 156, .22); }
+        .exp p { color: #fff0d7; }
+        .card-orange { border-color: rgba(222, 177, 140, .26); box-shadow: 0 13px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .04); }
+        .card-orange h3 { color: #edc4a5; }
+        .card-orange::before { background: linear-gradient(180deg, #f6d49a, #d7b5e8); box-shadow: 0 0 12px rgba(221, 177, 140, .22); }
+        .weapon { color: #2a1d20; background: linear-gradient(110deg, #f6d99f, #e9c0ac 55%, #c9b4ed); box-shadow: 0 0 15px rgba(240, 198, 135, .15); }
+        .social { color: #ecd7b2; border-color: rgba(239, 204, 153, .28); background: linear-gradient(110deg, rgba(240, 199, 139, .08), rgba(190, 164, 231, .08)); }
+        .social:hover { color: #241a1c; background: linear-gradient(110deg, #f5d59a, #e7c0b5, #c8b3ed); box-shadow: 0 0 18px rgba(240, 198, 135, .22); }
+        .empty { color: #a99d94; }
+        [id] { scroll-margin-top: 20px; }
+        @media (max-width: 1100px) {
+          .dashboard-layout { grid-template-columns: 195px minmax(0, 1fr); gap: 14px; }
+          .sidebar { padding: 18px 11px 15px; }
+          .sidebar-link { padding: 9px; font-size: 11px; }
+          .stats { gap: 8px; }
+          .stat { padding: 13px 10px; gap: 7px; }
+          .stat span { font-size: 18px; }
+          .career-grid { gap: 8px; }
+          .career-stat { padding: 12px 7px; }
+        }
+        @media (max-width: 850px) {
+          .dashboard-layout { grid-template-columns: minmax(0, 1fr); }
+          .sidebar { position: relative; top: auto; min-height: 0; padding: 15px; }
+          .sidebar-heading { padding-bottom: 13px; }
+          .sidebar-caption { margin: 14px 5px 8px; }
+          .sidebar-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+          .sidebar-link { justify-content: center; min-height: 39px; padding: 8px 7px; font-size: 10px; }
+          .nav-symbol { width: auto; }
+          .sidebar-footer { display: none; }
+          .dashboard-content { gap: 13px; }
+          .performance-grid { gap: 11px; }
+        }
+        @media (max-width: 620px) {
+          .page { padding: 10px 9px 28px; }
+          .topbar { padding: 10px 11px; margin-bottom: 12px; border-radius: 14px; }
+          .logo { width: 34px; height: 34px; }
+          .logo-area { gap: 8px; }
+          .logo-area b { font-size: 11px; }
+          .logo-area small { font-size: 8px; letter-spacing: .7px; }
+          .logout { height: 33px; padding: 0 11px; font-size: 10px; }
+          .sidebar { padding: 12px 10px; border-radius: 16px; }
+          .sidebar-mark { width: 32px; height: 32px; }
+          .sidebar-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .sidebar-link { justify-content: flex-start; min-height: 38px; font-size: 10px; }
+          .dashboard-content { gap: 11px; }
+          .hero { padding: 24px 13px 21px; border-radius: 18px; }
+          .avatar { width: 82px; height: 82px; margin-bottom: 12px; }
+          .hero h1 { font-size: clamp(21px, 6vw, 27px); overflow-wrap: anywhere; }
+          .ign { font-size: 12px; }
+          .tag { padding: 6px 11px; font-size: 10px; }
+          .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .stat { min-height: 75px; padding: 11px 9px; border-radius: 13px; }
+          .stat span { font-size: 17px; }
+          .stat small { font-size: 8px; line-height: 1.4; }
+          .stat b { font-size: 17px; }
+          .earning-stat b { font-size: 14px; }
+          .career-section { padding: 17px 12px; border-radius: 16px; }
+          .career-header h3 { font-size: 11px; }
+          .career-header p { font-size: 10px; line-height: 1.5; }
+          .filter-buttons { gap: 6px; margin: 14px 0; }
+          .filter-btn { padding: 8px 9px; font-size: 9px; border-radius: 9px; }
+          .career-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+          .career-stat { min-height: 88px; padding: 10px 7px; }
+          .career-stat span { font-size: 17px; }
+          .career-stat small { font-size: 8px; }
+          .career-stat strong { font-size: 17px; }
+          .performance-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 15px; }
+          .chart-card { padding: 15px 10px 12px; border-radius: 14px; }
+          .chart-heading h4 { font-size: 10px; }
+          .chart-heading p { font-size: 9px; }
+          .chart-chip { font-size: 7px; padding: 5px 6px; }
+          .chart-axis-label { font-size: 9px; }
+          .player-info-card, .card { padding: 16px 13px; border-radius: 15px; }
+          .card h3 { font-size: 11px; margin-bottom: 14px; }
+          .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px 10px; }
+          .grid label { font-size: 9px; }
+          .grid p { font-size: 12px; }
+          .exp { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+          .exp label { font-size: 10px; }
+          .exp p { font-size: 13px; }
+          .custom-date-filter { grid-template-columns: minmax(0, 1fr); padding: 10px; }
+          .clear-date-btn { width: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .light, .damage-line { animation: none !important; }
+          .sidebar-link, .logout, .social { transition: none !important; }
+        }
+
       `}</style>
     </main>
   );
