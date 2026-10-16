@@ -114,7 +114,7 @@ export default function PlayersPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <div>
+        <div className={styles.headerCopy}>
           <div className={styles.eyebrow}><span className={styles.dot} /> OVER POWER ESPORTS · ADMIN</div>
           <h1 className={styles.title}>PLAYER <span className={styles.titleAccent}>MANAGEMENT</span></h1>
           <p className={styles.subtitle}>Review registrations, player details, teams and approval status from one place.</p>
