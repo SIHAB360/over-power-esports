@@ -4487,3 +4487,291 @@ a {
     font-size:27px !important;
   }
 }
+
+
+/* =========================================================
+   OVER POWER ESPORTS — UNIFIED PREMIUM HOMEPAGE THEME
+   Full-bleed sections, continuous color flow, refined accents
+========================================================= */
+html,
+body {
+  background: #05070d !important;
+}
+
+html body main.home-animation {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 68% 28% at 5% 2%, rgba(255, 83, 139, .15), transparent 74%),
+    radial-gradient(ellipse 58% 34% at 94% 17%, rgba(132, 100, 255, .14), transparent 76%),
+    radial-gradient(ellipse 60% 32% at 46% 47%, rgba(73, 184, 221, .075), transparent 78%),
+    radial-gradient(ellipse 48% 32% at 88% 82%, rgba(255, 197, 143, .065), transparent 78%),
+    linear-gradient(180deg, #070710 0%, #090a14 27%, #080913 55%, #060811 82%, #05070d 100%) !important;
+}
+
+/* Every homepage section shares the same full-width canvas. */
+html body main.home-animation > section,
+html body main.home-animation > #leadership {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box;
+  background-color: transparent !important;
+}
+
+/* Remove the inset outer panels; keep comfortable padding inside each section. */
+html body main.home-animation > section#home,
+html body main.home-animation > section#best-players,
+html body main.home-animation > section#teams,
+html body main.home-animation > section#tournaments,
+html body main.home-animation > section#games,
+html body main.home-animation > section#leadership,
+html body main.home-animation > #leadership {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html body main.home-animation .hero,
+html body main.home-animation .best-players,
+html body main.home-animation .teams,
+html body main.home-animation .leadership-section,
+html body main.home-animation .tournaments,
+html body main.home-animation .games,
+html body main.home-animation .op-achieve {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  background-color: transparent !important;
+}
+
+/* Gentle section-to-section color blooms; no hard color breaks. */
+html body main.home-animation .hero {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 119, 164, .055), transparent 65%) !important;
+}
+
+html body main.home-animation .best-players {
+  background:
+    radial-gradient(ellipse at 13% 18%, rgba(255, 121, 166, .055), transparent 52%),
+    radial-gradient(ellipse at 88% 82%, rgba(151, 124, 255, .05), transparent 55%) !important;
+}
+
+html body main.home-animation .teams {
+  background:
+    radial-gradient(ellipse at 85% 18%, rgba(109, 187, 255, .055), transparent 55%),
+    radial-gradient(ellipse at 15% 88%, rgba(255, 153, 187, .04), transparent 55%) !important;
+}
+
+html body main.home-animation .leadership-section {
+  background:
+    radial-gradient(ellipse at 8% 16%, rgba(255, 102, 153, .065), transparent 38%),
+    radial-gradient(ellipse at 92% 78%, rgba(119, 111, 255, .07), transparent 42%),
+    linear-gradient(180deg, transparent 0%, rgba(13, 15, 31, .18) 50%, transparent 100%) !important;
+}
+
+html body main.home-animation .leadership-section::before {
+  background:
+    linear-gradient(90deg, transparent, rgba(173, 158, 255, .035), transparent),
+    linear-gradient(180deg, transparent, rgba(119, 220, 246, .025), transparent) !important;
+}
+
+html body main.home-animation .tournaments {
+  background:
+    radial-gradient(ellipse at 48% 4%, rgba(255, 135, 176, .055), transparent 56%),
+    radial-gradient(ellipse at 95% 76%, rgba(130, 111, 255, .045), transparent 48%) !important;
+}
+
+html body main.home-animation .games {
+  background:
+    radial-gradient(ellipse at 50% 7%, rgba(145, 115, 255, .08), transparent 42%),
+    radial-gradient(ellipse at 10% 58%, rgba(91, 220, 244, .045), transparent 34%),
+    radial-gradient(ellipse at 90% 58%, rgba(255, 109, 162, .05), transparent 34%),
+    linear-gradient(180deg, transparent 0%, rgba(9, 10, 23, .12) 55%, transparent 100%) !important;
+}
+
+html body main.home-animation .games::after {
+  background:
+    conic-gradient(from 0deg,
+      transparent 0deg,
+      rgba(255, 126, 177, .075) 65deg,
+      transparent 125deg,
+      rgba(147, 131, 255, .085) 205deg,
+      transparent 245deg,
+      rgba(116, 226, 246, .065) 305deg,
+      transparent 360deg) !important;
+}
+
+html body main.home-animation .op-achieve {
+  margin: 0 !important;
+  padding-top: clamp(54px, 7vw, 96px);
+  border: 0 !important;
+  border-top: 1px solid rgba(173, 185, 255, .12) !important;
+  border-bottom: 1px solid rgba(173, 185, 255, .10) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background:
+    radial-gradient(ellipse at 8% 7%, rgba(91, 216, 235, .055), transparent 45%),
+    radial-gradient(ellipse at 92% 84%, rgba(150, 105, 255, .07), transparent 48%),
+    linear-gradient(180deg, transparent 0%, rgba(7, 10, 22, .12) 52%, transparent 100%) !important;
+}
+
+html body main.home-animation .op-achieve::before {
+  background-image:
+    linear-gradient(rgba(180, 207, 255, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 207, 255, .025) 1px, transparent 1px) !important;
+}
+
+html body main.home-animation .op-achieve__aura--mint {
+  background: rgba(103, 220, 239, .12) !important;
+}
+
+html body main.home-animation .op-achieve__aura--violet {
+  background: rgba(150, 106, 255, .14) !important;
+}
+
+/* One coordinated pastel spectrum across section titles and accent lines. */
+html body main.home-animation .best-players .section-title h2,
+html body main.home-animation .teams-title h2,
+html body main.home-animation .tournament-header h2,
+html body main.home-animation .tournaments > h2,
+html body main.home-animation .leadership-header h2 {
+  background: linear-gradient(100deg, #fff1e0 0%, #ffacc9 28%, #c1b0ff 57%, #91e8f5 79%, #ffe0b1 100%) !important;
+  background-size: 220% 100%;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  text-shadow: 0 0 24px rgba(178, 149, 255, .14) !important;
+}
+
+html body main.home-animation .teams-title h2 {
+  animation: none !important;
+}
+
+html body main.home-animation .best-players .section-title h3,
+html body main.home-animation .teams-title p,
+html body main.home-animation .tournament-header p,
+html body main.home-animation .games-header p,
+html body main.home-animation .leadership-header p {
+  color: #c6c9dc !important;
+}
+
+html body main.home-animation .teams-title .title-line {
+  background: linear-gradient(90deg, transparent, #ff9fbd, #c0adff, #8ce7f6, transparent) !important;
+  box-shadow: 0 0 20px rgba(181, 151, 255, .18) !important;
+}
+
+html body main.home-animation .team-block h3 {
+  color: #ffb6d0 !important;
+  text-shadow: 0 0 18px rgba(255, 116, 166, .20) !important;
+}
+
+/* Dark glass cards: matching borders and soft, controlled glow. */
+html body main.home-animation .vip-card,
+html body main.home-animation .player-card,
+html body main.home-animation .leadership-frame,
+html body main.home-animation .tournament-card,
+html body main.home-animation .game-card {
+  background:
+    linear-gradient(145deg, rgba(26, 26, 47, .91) 0%, rgba(13, 15, 30, .96) 56%, rgba(9, 12, 22, .98) 100%) !important;
+  border-color: rgba(174, 163, 255, .26) !important;
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, .30),
+    0 0 28px rgba(135, 111, 255, .075),
+    inset 0 1px 0 rgba(255, 255, 255, .045) !important;
+}
+
+html body main.home-animation .vip-card:hover,
+html body main.home-animation .player-card:hover,
+html body main.home-animation .leadership-frame:hover,
+html body main.home-animation .tournament-card:hover,
+html body main.home-animation .game-card:hover {
+  box-shadow:
+    0 22px 48px rgba(0, 0, 0, .34),
+    0 0 34px rgba(255, 126, 178, .13),
+    0 0 26px rgba(117, 211, 245, .075),
+    inset 0 1px 0 rgba(255, 255, 255, .07) !important;
+}
+
+html body main.home-animation .leadership-frame::before {
+  background: linear-gradient(135deg, #ffc7a5, #ff8fb8, #b6a5ff, #8be8f5, #ffc7a5) !important;
+}
+
+html body main.home-animation .leadership-frame::after {
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .045), rgba(197, 177, 255, .09), transparent) !important;
+}
+
+html body main.home-animation .leadership-image-wrap {
+  background: linear-gradient(135deg, #ffd5b3, #ff8fb8, #b6a5ff, #8be8f5, #ffd5b3) !important;
+  box-shadow: 0 0 24px rgba(175, 143, 255, .15), 0 0 26px rgba(255, 127, 175, .10) !important;
+}
+
+html body main.home-animation .leadership-kicker {
+  color: #e8dfff !important;
+  border-color: rgba(188, 170, 255, .28) !important;
+  background: linear-gradient(110deg, rgba(255, 151, 190, .075), rgba(157, 139, 255, .09), rgba(115, 223, 244, .06)) !important;
+  box-shadow: 0 0 18px rgba(151, 126, 255, .08) !important;
+}
+
+html body main.home-animation .tournament-info {
+  background: rgba(255, 255, 255, .035) !important;
+  border: 1px solid rgba(180, 174, 255, .12);
+}
+
+html body main.home-animation .status {
+  color: #23172c !important;
+  background: linear-gradient(100deg, #ffb2ca, #d4bcff, #a6edfa) !important;
+  box-shadow: 0 0 16px rgba(184, 150, 255, .14);
+}
+
+html body main.home-animation .live-dot {
+  background: #8de8f4 !important;
+  box-shadow: 0 0 13px rgba(141, 232, 244, .7) !important;
+}
+
+/* Make the achievement gallery flow straight into the footer. */
+html body footer.opx-footer {
+  clear: both;
+  width: 100%;
+  margin: 0 !important;
+  border-top: 1px solid rgba(173, 185, 255, .12) !important;
+  background:
+    radial-gradient(ellipse 60% 45% at 7% 0%, rgba(255, 83, 139, .105), transparent 100%),
+    radial-gradient(ellipse 58% 60% at 96% 88%, rgba(87, 191, 229, .075), transparent 100%),
+    radial-gradient(ellipse 50% 48% at 73% 28%, rgba(130, 92, 255, .075), transparent 100%),
+    linear-gradient(180deg, #05070d 0%, #080711 45%, #06070e 100%) !important;
+}
+
+@media (max-width: 768px) {
+  html body main.home-animation {
+    background:
+      radial-gradient(ellipse 90% 20% at 0% 0%, rgba(255, 83, 139, .13), transparent 76%),
+      radial-gradient(ellipse 85% 24% at 100% 26%, rgba(132, 100, 255, .12), transparent 78%),
+      radial-gradient(ellipse 80% 24% at 50% 70%, rgba(73, 184, 221, .06), transparent 80%),
+      linear-gradient(180deg, #070710 0%, #090a14 35%, #070913 72%, #05070d 100%) !important;
+  }
+
+  html body main.home-animation .op-achieve {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body main.home-animation .teams-title h2,
+  html body main.home-animation .leadership-header h2 {
+    animation: none !important;
+  }
+}
