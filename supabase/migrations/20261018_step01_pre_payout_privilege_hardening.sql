@@ -169,4 +169,52 @@ CREATE TRIGGER op_prevent_financial_match_rewrites
   FOR EACH ROW
   EXECUTE FUNCTION public.op_prevent_financial_match_rewrites();
 
+
+-- Protect already-attributed earnings once a player has entered the payout
+-- lifecycle. UPDATE is permitted when no financial/ownership value changes.
+-- NOTE: any financial correction after payout requires an audited adjustment,
+-- not silent historical earned-money rewrites.
+CREATE OR REPLACE FUNCTION public.op_guard_earning_after_withdrawal()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path=''
+AS $op$
+DECLARE
+  v_financial_change boolean := false;
+BEGIN
+  IF TG_OP='DELETE' THEN
+    v_financial_change := true;
+  ELSE
+    v_financial_change := (
+      NEW.player_id IS DISTINCT FROM OLD.player_id OR
+      NEW.match_id IS DISTINCT FROM OLD.match_id OR
+      NEW.amount IS DISTINCT FROM OLD.amount OR
+      NEW.percentage IS DISTINCT FROM OLD.percentage
+    );
+  END IF;
+
+  IF v_financial_change AND EXISTS (
+    SELECT 1 FROM public.withdrawal_requests w
+    WHERE w.player_id=OLD.player_id
+      AND w.status IN ('pending','approved','paid')
+  ) THEN
+    RAISE EXCEPTION 'Player earnings are locked after a withdrawal request. Use audited reconciliation.'
+      USING errcode='42501';
+  END IF;
+
+  IF TG_OP='DELETE' THEN RETURN OLD; END IF;
+  RETURN NEW;
+END;
+$op$;
+
+REVOKE ALL ON FUNCTION public.op_guard_earning_after_withdrawal()
+  FROM public,anon,authenticated;
+
+DROP TRIGGER IF EXISTS op_guard_earning_after_withdrawal ON public.player_earnings;
+CREATE TRIGGER op_guard_earning_after_withdrawal
+  BEFORE UPDATE OR DELETE ON public.player_earnings
+  FOR EACH ROW
+  EXECUTE FUNCTION public.op_guard_earning_after_withdrawal();
+
 COMMIT;
