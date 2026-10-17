@@ -98,7 +98,7 @@ GitHub Actions Run #7: https://github.com/SIHAB360/over-power-esports/actions/ru
 
 ### Security blocker (DO NOT go live yet)
 
-Public GitHub main still tracks .env.local. Step 01 branch contains deletion plus .gitignore; merging does not remove historical secrets. Rotate all exposed service role keys and any other sensitive database tokens/credentials, reconcile Vercel variables and coordinate Git history remediation before activating money movement.
+Public GitHub main tracks .env.local, and Step 01 branch stages its removal and a new .gitignore. A keys-only review of the current file and both historical versions found ONLY NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY (both intentionally client-visible); NO SUPABASE_SERVICE_ROLE_KEY or database-password field in those file versions. Do not falsely claim service-role exposure from this file. Continue repository-wide secret/history review as appropriate. Independently, a database password candidate was previously posted in chat; rotate it IF it remains active and update the existing GitHub Actions backup secret. Production finance release still requires authenticated E2E/explicit approval.
 
 ### Remaining release gates
 
@@ -106,7 +106,7 @@ Public GitHub main still tracks .env.local. Step 01 branch contains deletion plu
 - [x] Isolated public schema/data restore in PostgreSQL 17.
 - [x] SQL migration and wallet/admin/Paid test lifecycle passed in isolated clone.
 - [x] Hardened registration, privilege escalation, fake earnings and wallet source write rules staged in Step 01.
-- [ ] Rotate leaked secrets and remove sensitive Git history exposure; verify Vercel production environment.
+- [ ] Confirm any password previously disclosed in chat is no longer active; verify Vercel/GitHub secrets and review repository history for any actual privileged exposure (not established for .env.local).
 - [ ] Authenticated desktop/mobile browser walkthrough with authorized player/admin account.
 - [ ] Explicit approval to apply migrations on production with controlled financial smoke testing.
 - [ ] Real bKash/Nagad manual transfer receipt/reconciliation process documented and tested.
