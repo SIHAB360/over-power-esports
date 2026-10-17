@@ -171,20 +171,9 @@ export default function LoginPage() {
           </h2>
 
           <div className={styles.brandRule} aria-hidden="true" />
-          <p className={styles.brandDescription}>
-            Enter the arena. Own your game.
-            <span className={styles.brandDescriptionSecondary}>One team. One ambition.</span>
-          </p>
-
-          <div className={styles.brandFooter}>
-            <span className={styles.brandMark}>
-              <Image src={logo} alt="" width={46} height={46} className={styles.brandMarkImage} />
-            </span>
-            <span className={styles.brandFooterCopy}>
-              <strong>BUILT FOR CHAMPIONS</strong>
-              <small>PLAY • COMPETE • RISE</small>
-            </span>
-          </div>
+          <p className={styles.brandDescription}>Victory is our Mission.</p>
+          <p className={styles.brandDescriptionSecondary}>EVERY SECOND MATTERS.</p>
+          <div className={styles.brandFooter}>PLAY <span aria-hidden="true">•</span> COMPETE <span aria-hidden="true">•</span> WIN</div>
         </section>
 
         <section className={styles.card} aria-labelledby="login-title">
