@@ -160,3 +160,76 @@ BEGIN
   RAISE NOTICE 'PASS: isolated wallet reservation, rejection, admin authorization, manual payout, fee, duplicate guards and audit';
 END;
 $tests$;
+
+
+-- Exercise actual RLS and column grants as non-privileged roles.
+-- This is a disposable copy; all writes below run inside ROLLBACK.
+BEGIN;
+SELECT set_config(
+  'request.jwt.claim.sub',
+  (SELECT p.user_id::text FROM public.players p
+   JOIN public.player_earnings pe ON pe.player_id=p.id
+   JOIN public.profiles pf ON pf.id=p.user_id
+   WHERE pf.role='player' AND p.user_id IS NOT NULL LIMIT 1),
+  true
+);
+SET LOCAL ROLE authenticated;
+
+DO $rls$
+DECLARE
+  denied boolean;
+BEGIN
+  IF auth.uid() IS NULL THEN
+    RAISE EXCEPTION 'RLS fixture user is missing';
+  END IF;
+
+  denied:=false;
+  BEGIN
+    UPDATE public.profiles SET role='admin' WHERE id=auth.uid();
+  EXCEPTION WHEN OTHERS THEN denied:=true;
+  END;
+  IF NOT denied THEN
+    RAISE EXCEPTION 'Authenticated player was able to elevate profile role';
+  END IF;
+
+  denied:=false;
+  BEGIN
+    UPDATE public.players SET status='pending'
+    WHERE user_id=auth.uid() AND status='approved';
+  EXCEPTION WHEN OTHERS THEN denied:=true;
+  END;
+  IF NOT denied THEN
+    RAISE EXCEPTION 'Authenticated player was able to change own approval';
+  END IF;
+
+  denied:=false;
+  BEGIN
+    UPDATE public.player_earnings SET amount=amount+100
+    WHERE player_id IN (SELECT id FROM public.players WHERE user_id=auth.uid());
+  EXCEPTION WHEN OTHERS THEN denied:=true;
+  END;
+  IF NOT denied THEN
+    RAISE EXCEPTION 'Authenticated player modified earned money directly';
+  END IF;
+  RAISE NOTICE 'PASS: authenticated player role/approval/earnings mutation denied';
+END;
+$rls$;
+ROLLBACK;
+
+BEGIN;
+SET LOCAL ROLE anon;
+DO $rls$
+DECLARE
+  denied boolean:=false;
+BEGIN
+  BEGIN
+    INSERT INTO public.matches DEFAULT VALUES;
+  EXCEPTION WHEN OTHERS THEN denied:=true;
+  END;
+  IF NOT denied THEN
+    RAISE EXCEPTION 'Anonymous actor inserted fake match';
+  END IF;
+  RAISE NOTICE 'PASS: anonymous match insertion denied';
+END;
+$rls$;
+ROLLBACK;
