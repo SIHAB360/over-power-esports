@@ -17,43 +17,49 @@ jobs:
     name: PostgreSQL 17 encrypted backup
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    env:
-      # Store the Supabase Session Pooler connection URL in GitHub Actions
-      # repository secrets. NEVER place credentials in workflow source or logs.
-      SUPABASE_SESSION_POOLER_URL: ${{ secrets.SUPABASE_SESSION_POOLER_URL }}
+    # No database passwords in source, build arguments or URLs.
+    # The password is scoped only to the steps that actually need it.
     steps:
       - name: Check out public encryption certificate only
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: Validate Supabase Session Pooler URI (redacted errors)
+      - name: Validate password-only backup configuration
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         shell: bash
         run: |
           set -euo pipefail
-          # Validate URI type, username, port, host, and password placeholder.
-          # The checker prints ONLY error instructions, never the secret.
-          python3 ops/backup/validate_session_pooler.py
+          if [[ -z "${PGPASSWORD:-}" ]]; then
+            echo "::error::Missing SUPABASE_DB_PASSWORD repository secret. Add your actual database password in GitHub Settings > Secrets and variables > Actions. Never share it in chat."
+            exit 1
+          fi
+          if [[ "$PGPASSWORD" == *"[YOUR-PASSWORD]"* ]]; then
+            echo "::error::Replace the placeholder with the actual database password."
+            exit 1
+          fi
           test -s ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem
           openssl x509 -in ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem -noout -checkend 86400
 
       - name: Dump, fully parse archive, and encrypt BEFORE upload
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGHOST: aws-0-ap-northeast-1.pooler.supabase.com
+          PGPORT: "5432"
+          PGUSER: postgres.siiftefxumacaitjmuxj
+          PGDATABASE: postgres
+          PGSSLMODE: require
         shell: bash
         run: |
           set -euo pipefail
-          # Require TLS even when Supabase Connect omits the sslmode parameter.
-          db_url="$SUPABASE_SESSION_POOLER_URL"
-          if [[ "$db_url" != *"sslmode="* ]]; then
-            if [[ "$db_url" == *"?"* ]]; then
-              db_url="${db_url}&sslmode=require"
-            else
-              db_url="${db_url}?sslmode=require"
-            fi
+          # Password travels via environment (not URI or command arguments).
+          # Session pooler values match the user's confirmed Supabase Connect
+          # screen for project siiftefxumacaitjmuxj.
+          if [[ -z "${PGPASSWORD:-}" ]]; then
+            echo "::error::SUPABASE_DB_PASSWORD is not set. No backup was created."
+            exit 1
           fi
-          # Never echo/trace the connection URL.
-          unset SUPABASE_SESSION_POOLER_URL
-          export DATABASE_URL="$db_url"
-          unset db_url
 
           plaintext="$RUNNER_TEMP/op-esports-supabase.dump"
           timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
@@ -63,12 +69,13 @@ jobs:
           # PostgreSQL v17 utilities match the Supabase project's server major.
           # UID/GID mapping keeps output readable by the Actions runner.
           docker run --rm --user "$(id -u):$(id -g)" \
-            -e DATABASE_URL \
+            -e PGPASSWORD -e PGHOST -e PGPORT -e PGUSER -e PGDATABASE -e PGSSLMODE \
             -v "$RUNNER_TEMP:/backup" \
             postgres:17 \
-            sh -ec 'pg_dump --dbname="$DATABASE_URL" --format=custom --no-owner --no-acl --file=/backup/op-esports-supabase.dump'
+            pg_dump --format=custom --no-owner --no-acl --file=/backup/op-esports-supabase.dump
 
           test -s "$plaintext"
+          echo "PostgreSQL login and database dump succeeded." >> "$GITHUB_STEP_SUMMARY"
 
           # pg_restore must decode the ENTIRE archive without actually
           # running database mutations. This is NOT a full restore test.
