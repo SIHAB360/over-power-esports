@@ -278,3 +278,137 @@
 @media (prefers-reduced-motion:reduce) {
   .dashboard *, .dashboard *::before,.dashboard *::after {animation:none!important;transition:none!important}
 }
+
+
+/* Admin layout refinement: prevent globals.css generic main{background:red}
+   from leaking into the dashboard, enlarge unreadable type and preserve
+   the original editable management pages inside the central workspace. */
+.dashboard {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.dashboard .main {
+  background: transparent;
+  min-height: 100vh;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+  padding: 27px clamp(22px,3vw,54px) 54px;
+}
+.dashboard .mainInner { width:100%; max-width: 1600px; }
+.dashboard .sidebar { width:100%; }
+.dashboard .brandTitle { font-size:14px; }
+.dashboard .brandSub { font-size:11px; letter-spacing:.11em; }
+.dashboard .menuTitle { font-size:12px; letter-spacing:.11em; }
+.dashboard .navItem { min-height:49px; font-size:14px; padding:13px 13px; }
+.dashboard .navCount { min-width:26px;height:23px;font-size:12px; }
+.dashboard .sidebarAdmin { font-size:12px; }
+.dashboard .logout { font-size:13px;min-height:46px; }
+.dashboard .header { min-height:154px;align-items:start;margin-bottom:19px; }
+.dashboard .headerCenter {max-width:100%;}
+.dashboard .eyebrow { font-size:12px; letter-spacing:.13em; }
+.dashboard .pageTitle {font-size:clamp(30px,2.8vw,45px);line-height:1.18;}
+.dashboard .pageSubtitle {font-size:14px;letter-spacing:.045em;margin-top:12px;}
+.dashboard .headerEmail {font-size:12px;}
+.dashboard .themeSwitch span {font-size:13px;}
+.dashboard .stats {gap:17px;margin-bottom:30px;}
+.dashboard .stat {padding:21px;}
+.dashboard .statLabel {font-size:12px;letter-spacing:.065em;}
+.dashboard .statValue {font-size:clamp(25px,2.35vw,35px);}
+.dashboard .statHint {font-size:12px;}
+.dashboard .sectionHeading {margin:23px 0 19px;}
+.dashboard .sectionHeading h2 {font-size:22px;}
+.dashboard .sectionHeading p {font-size:14px;}
+.dashboard .sectionAction {font-size:13px;min-height:40px;}
+.dashboard .contentGrid {gap:18px;}
+.dashboard .panel {padding:clamp(20px,2.1vw,27px);}
+.dashboard .panelHeading {font-size:17px;}
+.dashboard .panelDesc {font-size:13px;}
+.dashboard .legend {font-size:12px;}
+.dashboard .chartAxis {font-size:12px;}
+.dashboard .legendItem {font-size:13px;}
+.dashboard .donutCenter small {font-size:12px;}
+.dashboard .progressItemHead {font-size:13px;}
+.dashboard .activityText strong {font-size:14px;}
+.dashboard .activityText span {font-size:12px;}
+.dashboard .dataTable {font-size:14px;}
+.dashboard .dataTable th {font-size:12px;}
+.dashboard .status {font-size:12px;}
+.dashboard .search input {font-size:14px;}
+.dashboard .miniCardLabel {font-size:12px;}
+.dashboard .miniCardValue {font-size:28px;}
+.dashboard .empty,.dashboard .notice,.dashboard .infoStrip {font-size:14px;}
+.dashboard .actionTile span {font-size:14px;}
+.dashboard .actionTile small {font-size:12px;}
+/* Existing pages are imported as components, NOT recreated.  Their original
+   form fields, data fetches, Supabase writes, validation and history remain. */
+.managerWorkspace {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #090f20;
+  color: #f5f6ff;
+  box-shadow: var(--shadow);
+}
+.managerWorkspace > :global(main) {
+  background: transparent !important;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0 !important;
+  margin: 0;
+  padding: 20px clamp(13px,2vw,29px) 52px !important;
+  overflow: visible;
+}
+.managerWorkspace :global(.op-match-page .shell) { max-width: 100%; }
+.managerWorkspace :global(.op-match-page .topbar h1) { font-size:clamp(27px,3vw,42px); }
+.managerWorkspace :global(.op-match-page input),
+.managerWorkspace :global(.op-match-page select),
+.managerWorkspace :global(.op-match-page textarea) { font-size: max(14px,1em); }
+.managerWorkspace :global(.op-match-page .panel) { max-width: 100%; }
+@media (max-width:1180px) {
+  .dashboard .main {padding:23px 19px 45px;}
+  .dashboard .stats {gap:12px;}
+  .dashboard .stat {padding:17px;}
+  .dashboard .pageTitle {font-size:clamp(27px,3.2vw,40px);}
+  .dashboard .header {min-height:150px;}
+  .dashboard .contentGrid {grid-template-columns:minmax(0,1.25fr) minmax(265px,1fr);}
+}
+@media (max-width:930px) {
+  .dashboard .sidebar {width:265px;}
+  .dashboard .main {padding:19px 18px 38px;}
+  .dashboard .contentGrid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .dashboard .panelWide {grid-column:1/-1;}
+  .dashboard .header {min-height:145px;}
+}
+@media (max-width:670px) {
+  .dashboard .main {padding:14px 12px 33px;overflow:visible;}
+  .dashboard .header {min-height:130px;gap:7px;margin-bottom:17px;}
+  .dashboard .pageTitle {font-size:clamp(18px,4.7vw,27px);overflow-wrap:anywhere;}
+  .dashboard .pageSubtitle {font-size:11px;letter-spacing:0;}
+  .dashboard .eyebrow {font-size:9px;letter-spacing:.04em;}
+  .dashboard .stats {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .dashboard .stat {padding:14px;}
+  .dashboard .statLabel {font-size:10px;}
+  .dashboard .statValue {font-size:25px;}
+  .dashboard .statHint {font-size:11px;}
+  .dashboard .sectionHeading h2 {font-size:19px;}
+  .dashboard .sectionHeading p {font-size:12px;}
+  .dashboard .sectionAction {font-size:12px;}
+  .dashboard .contentGrid {grid-template-columns:1fr;}
+  .dashboard .panel,.dashboard .panelWide,.dashboard .panelFull {grid-column:1;padding:17px;}
+  .dashboard .panelHeading {font-size:16px;}
+  .dashboard .panelDesc {font-size:12px;}
+  .dashboard .dataTable {font-size:12px;}
+  .dashboard .dataTable th {font-size:11px;}
+  .dashboard .overviewGrid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .dashboard .themeSwitch {width:44px;height:44px;padding:10px;}
+  .dashboard .themeSwitch span {display:none;}
+  .managerWorkspace {border-radius:14px;}
+  .managerWorkspace > :global(main) {padding:16px 10px 30px!important;}
+  .managerWorkspace :global(.op-match-page .topbar h1) {font-size:clamp(23px,5.6vw,34px);}
+}
