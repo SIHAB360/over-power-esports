@@ -1,4 +1,6 @@
 import "./globals.css";
+// Match page styles are scoped to .op-match-page, preserving the rest of the site.
+import "./admin/matches/match-premium.css";
 import PageTransition from "./components/PageTransition";
 
 export const metadata = {
