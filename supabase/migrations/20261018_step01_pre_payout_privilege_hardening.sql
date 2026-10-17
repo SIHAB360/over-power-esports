@@ -127,16 +127,21 @@ SET search_path=''
 AS $op$
 DECLARE
   v_has_financial_withdrawal boolean;
+  v_financial_change boolean := false;
 BEGIN
-  -- Only a completed match that has earned players with pending/approved/
-  -- paid withdrawals requires immutable financial source data.
-  IF OLD.status='completed'
-    AND (
-      TG_OP='DELETE'
-      OR NEW.status IS DISTINCT FROM OLD.status
+  -- Never dereference NEW for a DELETE trigger event.
+  IF TG_OP='DELETE' THEN
+    v_financial_change := true;
+  ELSE
+    v_financial_change := (
+      NEW.status IS DISTINCT FROM OLD.status
       OR NEW.prize_money IS DISTINCT FROM OLD.prize_money
       OR NEW.entry_fee IS DISTINCT FROM OLD.entry_fee
-    )
+    );
+  END IF;
+  -- Only a completed match that has earned players with pending/approved/
+  -- paid withdrawals requires immutable financial source data.
+  IF OLD.status='completed' AND v_financial_change
   THEN
     SELECT EXISTS (
       SELECT 1 FROM public.player_earnings pe
