@@ -258,10 +258,14 @@ export default function MatchHistoryPage() {
         </div>
 
         <header className={styles.hero}>
-          <div>
+          <div className={styles.heroText}>
             <p className={styles.eyebrow}><FiActivity aria-hidden="true" /> OVER POWER ESPORTS · RECORDS CENTER</p>
             <h1>Match <span>History</span></h1>
-            <p>All saved matches from your existing database, ordered newest first. Check lobby, earnings, losses, match date and time in one place.</p>
+            <p>All saved matches in one organized archive. Review entry fees, prize money, profits, losses and schedules without losing any records.</p>
+            <div className={styles.heroHints}>
+              <span><FiCheckCircle aria-hidden="true" /> Synced with Supabase</span>
+              <span><FiClock aria-hidden="true" /> Newest matches first</span>
+            </div>
           </div>
           <div className={styles.heroCount}>
             <span>MATCHES FOUND</span>
@@ -272,8 +276,13 @@ export default function MatchHistoryPage() {
 
         <section className={styles.stats} aria-label="Match history summary">
           <div className={styles.stat}><span><FiFileText /> MATCH RECORDS</span><strong>{total.toLocaleString("en-BD")}</strong><small>All matching entries</small></div>
-          <div className={styles.stat}><span><FiTrendingUp /> PAGE PROFIT</span><strong className={styles.positive}>{format(totals.profit)}</strong><small>Sum of profit on this page</small></div>
-          <div className={styles.stat}><span><FiTrendingDown /> PAGE LOSS</span><strong className={styles.negative}>{format(totals.loss)}</strong><small>Sum of losses on this page</small></div>
+          <div className={styles.stat}><span><FiTrendingUp /> PAGE PROFIT</span><strong className={styles.positive}>{format(totals.profit)}</strong><small>Total gains on this page</small></div>
+          <div className={styles.stat}><span><FiTrendingDown /> PAGE LOSS</span><strong className={styles.negative}>{format(totals.loss)}</strong><small>Total losses on this page</small></div>
+          <div className={styles.stat}><span><FiDollarSign /> PAGE NET RESULT</span>
+            <strong className={totals.profit >= totals.loss ? styles.positive : styles.negative}>
+              {totals.profit - totals.loss < 0 ? "−" : totals.profit - totals.loss > 0 ? "+" : ""}{format(Math.abs(totals.profit - totals.loss))}
+            </strong><small>Profit minus loss on this page</small>
+          </div>
         </section>
 
         <section className={styles.archive}>
@@ -372,6 +381,53 @@ export default function MatchHistoryPage() {
               </table>
             </div>
           ) : null}
+
+          {!loading && matches.length > 0 && (
+            <div className={styles.mobileList} aria-label="Match history mobile cards">
+              {matches.map((match, index) => {
+                const outcome = moneyOutcome(match);
+                const when = dateTime(match.match_date || match.created_at);
+                const lobby = match.tournament_id
+                  ? tournamentNames[String(match.tournament_id)] || "Tournament / Lobby"
+                  : "Independent Match";
+                const yourTeam = teamNames[String(match.team1_id)] || "Your Team";
+                const opponent = match.team2_id
+                  ? ` vs ${teamNames[String(match.team2_id)] || "Opponent"}` : "";
+                return (
+                  <article className={styles.mobileCard} key={match.id}>
+                    <div className={styles.mobileCardTop}>
+                      <span className={styles.mobileSerial}>#{String(fromIndex + index + 1).padStart(2, "0")}</span>
+                      <span className={[styles.status, styles[match.status] || ""].join(" ")}>
+                        {match.status === "completed" && <FiCheckCircle aria-hidden="true" />}
+                        {match.status || "Unknown"}
+                      </span>
+                    </div>
+                    <div className={styles.mobileMatchInfo}>
+                      <h3>{lobby}</h3>
+                      <p>{yourTeam}{opponent}</p>
+                    </div>
+                    <div className={styles.mobileMeta}>
+                      <span className={styles.typePill}>{matchTypeName(match.match_type)}</span>
+                      <span><FiCalendar aria-hidden="true" /> {when.date}</span>
+                      <span><FiClock aria-hidden="true" /> {when.time}</span>
+                    </div>
+                    <div className={styles.mobileFinances}>
+                      <div><small>ENTRY FEE</small><strong>{match.entry_fee == null ? "—" : format(match.entry_fee)}</strong></div>
+                      <div><small>PRIZE MONEY</small><strong>{match.prize_money == null ? "—" : format(match.prize_money)}</strong></div>
+                    </div>
+                    <div className={[styles.mobileOutcome, styles[outcome.kind]].join(" ")}>
+                      <div><span>FINAL RESULT</span><small>{outcome.label}</small></div>
+                      <strong>{outcome.value}</strong>
+                    </div>
+                    {canDelete && (
+                      <button type="button" className={styles.deleteButton} onClick={() => openDelete(match)}
+                        aria-label={`Delete match ${lobby}`}><FiTrash2 aria-hidden="true" /> Delete this match</button>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
 
           <div className={styles.footer}>
             <p>{total ? `Showing ${fromIndex + 1}–${Math.min(fromIndex + PAGE_SIZE, total)} of ${total.toLocaleString("en-BD")} matches` : "No matching match records"}</p>

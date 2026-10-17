@@ -265,3 +265,372 @@
   .dialogActions{display:grid;grid-template-columns:1fr;gap:9px;}
   .dialogActions button{width:100%;}
 }
+
+
+/* ---------------------------------------------------------------
+   HISTORY V2 — Truly full-width desktop and dedicated mobile UI
+   Scoped to the Match History CSS module only. Existing data
+   queries, filters, pagination and Delete confirmation are intact.
+   --------------------------------------------------------------- */
+.page{
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin:0;
+  padding:clamp(17px,1.55vw,31px) clamp(16px,1.65vw,39px) 64px;
+  overflow-x:clip;
+}
+.container{
+  width:100%;
+  max-width:none;
+  min-width:0;
+  margin-inline:auto;
+}
+.topNav{margin-bottom:19px;}
+.backLink{font-size:15px;min-height:47px;padding:11px 17px;border-radius:12px;}
+.accessLabel{font-size:13px;letter-spacing:.075em;}
+.hero{
+  min-width:0;
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:24px;
+  padding:clamp(26px,2.45vw,42px);
+  border-radius:22px;
+  margin:0;
+  min-height:210px;
+}
+.heroText{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  min-width:0;
+  text-align:left;
+}
+.eyebrow{
+  margin:0 0 11px;
+  font-size:13px;
+  letter-spacing:.085em;
+}
+.heroText h1{
+  display:block;
+  margin:0;
+  padding:0;
+  width:auto;
+  text-align:left;
+  font-size:clamp(35px,3.2vw,56px);
+  letter-spacing:-.045em;
+  line-height:1.1;
+}
+.heroText h1 span{display:inline;}
+.heroText > p:last-of-type{
+  margin:13px 0 0;
+  max-width:850px;
+  font-size:16px;
+  line-height:1.7;
+  text-align:left;
+  letter-spacing:0;
+}
+.heroHints{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:19px;}
+.heroHints span{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 11px;border-radius:10px;
+  border:1px solid rgba(97,204,227,.27);
+  background:rgba(35,183,208,.095);
+  color:#bbdfed;
+  font-size:12px;font-weight:800;
+}
+.heroHints span:first-child{border-color:rgba(81,228,173,.29);color:#8fe9d1;}
+.heroCount{
+  display:flex;flex-direction:column;justify-content:center;
+  width:190px;min-width:190px;min-height:137px;
+  padding:19px 21px;border-radius:17px;
+  text-align:left;
+  background:linear-gradient(140deg,rgba(21,58,79,.8),rgba(14,32,56,.9));
+  border:1px solid rgba(95,211,231,.47);
+}
+.heroCount span{font-size:12px;letter-spacing:.065em;}
+.heroCount strong{font-size:clamp(36px,2.7vw,48px);margin:2px 0;line-height:1.16;}
+.heroCount small{font-size:13px;line-height:1.35;}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  width:100%;
+  gap:15px;
+  margin:18px 0 20px;
+}
+.stat{
+  min-width:0;
+  min-height:145px;
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding:22px clamp(17px,1.6vw,28px);
+  border-radius:18px;
+  background:linear-gradient(133deg,rgba(34,158,183,.12),transparent 63%),#14263a;
+  border:1px solid rgba(113,194,226,.31);
+}
+.stat:nth-child(2){background:linear-gradient(135deg,rgba(48,194,156,.11),transparent 65%),#142638;}
+.stat:nth-child(3){background:linear-gradient(135deg,rgba(239,144,103,.10),transparent 65%),#142638;}
+.stat:nth-child(4){background:linear-gradient(135deg,rgba(116,120,229,.13),transparent 65%),#142638;}
+.stat span{
+  gap:9px;min-height:20px;
+  font-size:12px;letter-spacing:.07em;
+  color:#c4dfef;line-height:1.4;
+}
+.stat strong{
+  font-size:clamp(27px,2.2vw,39px);
+  line-height:1.12;
+  margin:15px 0 8px;
+  overflow-wrap:anywhere;
+}
+.stat small{font-size:13px;line-height:1.45;color:#b9d0de;}
+.archive{width:100%;min-width:0;border-radius:20px;}
+.toolbar{width:100%;padding:22px clamp(20px,1.6vw,31px);gap:16px;align-items:center;}
+.toolbar h2{font-size:clamp(21px,1.6vw,27px);}
+.toolbar p{font-size:14px;}
+.controls{flex-wrap:wrap;justify-content:flex-end;gap:10px;}
+.filter{min-height:47px;padding:0 12px;}
+.filter select{font-size:15px;max-width:260px;}
+.refresh{min-height:47px;padding-inline:18px;font-size:14px;}
+.tableScroller{
+  width:100%;min-width:0;
+  max-width:100%;overflow-x:auto;
+}
+.historyTable{
+  table-layout:fixed;
+  width:100%;
+  min-width:1170px;
+  border-spacing:0;
+}
+.historyTable th{
+  font-size:12.5px;
+  line-height:1.35;
+  letter-spacing:.045em;
+  padding:17px clamp(10px,.9vw,19px);
+  vertical-align:middle;
+}
+.historyTable td{
+  padding:20px clamp(10px,.9vw,19px);
+  font-size:15px;
+  line-height:1.5;
+}
+.historyTable th:nth-child(1){width:5%;}
+.historyTable th:nth-child(2){width:19%;}
+.historyTable th:nth-child(3){width:13%;}
+.historyTable th:nth-child(4){width:9%;}
+.historyTable th:nth-child(5){width:9%;}
+.historyTable th:nth-child(6){width:13%;}
+.historyTable th:nth-child(7){width:14%;}
+.historyTable th:nth-child(8){width:10%;}
+.historyTable th:nth-child(9){width:8%;}
+.historyTable th:last-child:nth-child(8){width:10%;}
+.historyTable tr{width:100%;}
+.matchInfo{min-width:0;}
+.matchInfo strong{font-size:16px;line-height:1.4;}
+.matchInfo small{font-size:13px;}
+.typePill{font-size:13px;white-space:normal;line-height:1.4;}
+.outcome strong{font-size:19px;}
+.outcome small{font-size:12px;}
+.date{white-space:normal;}
+.date span,.date small{font-size:13px;}
+.status{font-size:12px;padding:8px 10px;max-width:100%;white-space:normal;}
+.deleteButton{font-size:13px;min-height:45px;padding:9px 12px;}
+.footer{padding:20px clamp(20px,1.6vw,31px);}
+.footer p{font-size:14px;}
+.pagination button{min-height:45px;font-size:14px;}
+.disclaimer{font-size:13px;margin-top:19px;padding-inline:4px;}
+/* Separate mobile card markup is not shown at desktop widths. */
+.mobileList{display:none;}
+
+/* 901–1200px: retain desktop table with a horizontal overflow affordance. */
+@media (max-width:1200px){
+  .hero{padding:26px;min-height:195px;}
+  .stats{gap:11px;}
+  .stat{padding:19px;}
+  .stat strong{font-size:clamp(24px,2.4vw,33px);}
+  .historyTable{min-width:1135px;}
+  .toolbar{padding:21px;}
+}
+/* Tablets: two-column dedicated cards, no squeezed table. */
+@media (max-width:900px){
+  .page{
+    padding:18px 15px 46px;
+  }
+  .hero{grid-template-columns:minmax(0,1fr);gap:20px;}
+  .heroCount{
+    min-width:0;width:100%;min-height:0;padding:14px 18px;
+    display:grid;grid-template-columns:1fr auto;align-items:center;
+    text-align:left;
+  }
+  .heroCount span{grid-column:1;grid-row:1;}
+  .heroCount strong{grid-column:2;grid-row:1 / 3;font-size:32px;}
+  .heroCount small{grid-column:1;grid-row:2;}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .stat{min-height:125px;}
+  .tableScroller{display:none;}
+  .mobileList{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:15px;
+    padding:15px;
+    border-top:1px solid var(--stroke);
+    background:#102137;
+  }
+  .mobileCard{
+    display:flex;flex-direction:column;gap:14px;min-width:0;
+    padding:19px;
+    border-radius:17px;
+    border:1px solid rgba(111,192,227,.32);
+    background:linear-gradient(145deg,#1a3045,#142739);
+    box-shadow:0 8px 26px rgba(0,5,18,.16);
+  }
+  .mobileCardTop{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;
+  }
+  .mobileSerial{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:46px;min-height:38px;padding:7px 11px;
+    color:#8ef3ef;background:rgba(53,193,208,.13);
+    border:1px solid rgba(80,214,225,.4);
+    border-radius:10px;font-size:14px;font-weight:950;
+  }
+  .mobileCard .status{
+    display:inline-flex;
+    width:auto;padding:8px 13px;
+    font-size:12px;
+  }
+  .mobileMatchInfo{min-width:0;}
+  .mobileMatchInfo h3{
+    font-size:20px;font-weight:950;line-height:1.3;
+    color:#f5fbff;margin:0;overflow-wrap:anywhere;
+  }
+  .mobileMatchInfo p{
+    margin:5px 0 0;font-size:14px;line-height:1.5;color:#bad3e7;
+  }
+  .mobileMeta{
+    display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+    margin:0;
+  }
+  .mobileMeta>span:not(.typePill){
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13px;color:#c4d7e5;
+  }
+  .mobileMeta .typePill{
+    font-size:12px;padding:6px 10px;
+  }
+  .mobileFinances{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+  }
+  .mobileFinances>div{
+    min-width:0;display:flex;flex-direction:column;gap:4px;
+    background:#0f2237;border:1px solid rgba(119,186,227,.23);
+    border-radius:12px;padding:12px 14px;
+  }
+  .mobileFinances small{
+    font-size:11px;color:#b9d0e0;font-weight:900;
+    letter-spacing:.07em;
+  }
+  .mobileFinances strong{
+    color:#f5fbff;font-size:20px;font-weight:900;
+    font-variant-numeric:tabular-nums;
+    overflow-wrap:anywhere;
+  }
+  .mobileOutcome{
+    display:flex;justify-content:space-between;align-items:center;
+    min-width:0;gap:15px;
+    padding:14px 16px;border-radius:12px;
+    background:rgba(38,145,151,.13);
+    border:1px solid rgba(123,195,227,.25);
+  }
+  .mobileOutcome>div{
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .mobileOutcome span{
+    font-size:11px;font-weight:950;color:#bddeea;
+    letter-spacing:.07em;
+  }
+  .mobileOutcome small{font-size:13px;font-weight:850;}
+  .mobileOutcome>strong{
+    font-size:24px;font-weight:950;line-height:1.1;
+    font-variant-numeric:tabular-nums;overflow-wrap:anywhere;text-align:right;
+  }
+  .mobileOutcome.profit{border-color:rgba(90,224,170,.36);}
+  .mobileOutcome.loss{border-color:rgba(255,169,122,.35);}
+  .mobileCard .deleteButton{
+    display:flex;justify-content:center;gap:9px;width:100%;
+    min-height:47px;margin-top:auto;font-size:14px;
+  }
+}
+/* Phones: truly single-column, no horizontal scrolling, readable actions. */
+@media(max-width:640px){
+  .page{padding:10px 10px 38px;overflow-x:clip;}
+  .container{width:100%;min-width:0;}
+  .topNav{gap:10px;align-items:flex-start;padding:3px 2px 0;margin-bottom:13px;}
+  .backLink{min-height:44px;font-size:12px;padding:10px 12px;gap:7px;}
+  .accessLabel{font-size:10px;letter-spacing:.08em;}
+  .hero{padding:23px 18px;gap:19px;border-radius:17px;}
+  .eyebrow{font-size:11px;line-height:1.6;letter-spacing:.07em;}
+  .heroText h1{font-size:clamp(30px,8vw,41px);text-align:left;}
+  .heroText>p:last-of-type{font-size:14px;line-height:1.65;margin-top:10px;}
+  .heroHints{margin-top:14px;gap:7px;}
+  .heroHints span{font-size:11px;padding:6px 9px;}
+  .heroCount{border-radius:12px;padding:12px 14px;}
+  .heroCount span{font-size:10px;}
+  .heroCount strong{font-size:29px;}
+  .heroCount small{font-size:11px;}
+  .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+    margin:12px 0 15px;
+  }
+  .stat:first-child{grid-column:auto;}
+  .stat{
+    min-height:117px;padding:16px 13px;
+    border-radius:13px;
+  }
+  .stat span{font-size:10.5px;letter-spacing:.02em;gap:6px;}
+  .stat span svg{font-size:17px;}
+  .stat strong{font-size:clamp(20px,5.6vw,29px);margin:10px 0 5px;line-height:1.12;}
+  .stat small{font-size:11px;}
+  .archive{border-radius:16px;}
+  .toolbar{padding:18px 14px;align-items:flex-start;gap:12px;}
+  .toolbar h2{font-size:21px;line-height:1.35;}
+  .toolbar p{font-size:12px;line-height:1.5;}
+  .controls{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    width:100%;gap:9px;
+  }
+  .filter{min-width:0;padding:0 9px;min-height:48px;}
+  .filter select{font-size:13px;min-width:0;width:100%;max-width:none;padding:10px 0;}
+  .refresh{grid-column:1/-1;min-height:45px;font-size:14px;}
+  .mobileList{grid-template-columns:1fr;padding:11px;gap:11px;}
+  .mobileCard{padding:17px 15px;gap:13px;border-radius:14px;}
+  .mobileMatchInfo h3{font-size:19px;}
+  .mobileMatchInfo p{font-size:13px;}
+  .mobileMeta{gap:9px 11px;}
+  .mobileMeta>span:not(.typePill){font-size:12px;}
+  .mobileFinances strong{font-size:19px;}
+  .mobileFinances>div{padding:12px;}
+  .mobileOutcome{padding:14px;gap:9px;}
+  .mobileOutcome>strong{font-size:clamp(19px,5vw,24px);}
+  .footer{padding:16px 13px;}
+  .footer p{font-size:12px;}
+  .pagination{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:7px;}
+  .pagination button{min-height:44px;font-size:12px;padding:8px 9px;justify-content:center;}
+  .pagination span{font-size:12px;}
+  .disclaimer{padding:0 3px;font-size:12px;line-height:1.6;}
+  .deleteDialog{max-height:calc(100dvh - 28px);overflow-y:auto;}
+}
+/* Very small phones */
+@media(max-width:360px){
+  .controls{grid-template-columns:minmax(0,1fr);}
+  .refresh{grid-column:auto;}
+  .stats{gap:7px;}
+  .stat{padding:13px 10px;}
+  .stat span{font-size:10px;}
+  .stat strong{font-size:19px;}
+  .mobileFinances strong{font-size:17px;}
+  .pagination{grid-template-columns:1fr 1fr;}
+  .pagination span{grid-column:1/-1;grid-row:1;text-align:center;}
+}
