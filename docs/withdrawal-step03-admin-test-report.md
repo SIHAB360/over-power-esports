@@ -1,0 +1,52 @@
+# OVER POWER ESPORTS — Step 03 Admin Withdrawal Control Center
+
+**Status: CODE + VERCEL PREVIEW ONLY. No production merge. No live payment functions activated.**
+
+## Implemented UI / backend integration
+
+- Replaced the original Admin Dashboard Salary placeholder UI with premium **Withdrawals** management component. Internal navigation key `salary` remains unchanged to preserve existing bookmarks (e.g. `/admin/dashboard?section=salary`).
+- Kept the other existing Admin Dashboard operations, management screens, registered players, match earnings, profit, teams, tournaments, registration and all existing data untouched.
+- Existing verified admin auth gate and authenticated bearer token reused; API independently verifies admin `profiles.role` on every request.
+- All-status metrics from PostgreSQL head/count queries, paged 25-rows list, status filters, search current visible page only, refresh, player lookup, masked number in list, full destination only inside admin detail.
+- Select a request to view player, team, requested gross amount, status, recipient, dates and payment evidence.
+- **Approve** Pending: distinct confirmation; still not Paid and no funds transferred.
+- **Reject** Pending or Approved: mandatory reason; reserved amount released by existing wallet rules.
+- **Record manual Paid** only for Approved: admin must manually transfer money via bKash/Nagad first, enter actual player-borne fee, provider reference, optional note, and attest transfer was completed and receipt verified. Preview actual net sent = gross − fee. No payout API, no PIN, no OTP, no automated transfer.
+- Post/refresh after successful decision; server-side atomic wallet/RPC guards in Step 01 remain authoritative; front-end submit lock and button disabled state reduce duplicate clicks.
+- Isolated CSS modules: desktop split list/detail, tablet/mobile one column, keyboard focus and readable dark premium cyan-blue-purple lighting.
+- Detailed status and authenticated player identity displayed without exposing a full receiver number in the list.
+
+## Financial invariants
+
+1. No minimum gross withdrawal configured.
+2. One Pending/Approved request per player, enforced by partial DB index once migration applies.
+3. Player pays **actual** transfer fee entered at payment confirmation. Fee must be >= 0 and strictly smaller than gross amount; Net = Gross − Fee; Paid gross is deducted from player's wallet.
+4. No real bKash/Nagad automatic payout is attempted. Personal account remains a manual process.
+5. Approve and Paid are distinct state transitions. A transaction ID entered by admin is an attestation, **not proof verified by provider APIs**.
+6. A real payment receipt should be reconciled independently outside this dashboard.
+
+## Security and release blockers
+
+- Supabase Free encrypted logical backup Run #5 passed checksum, offline decryption and `PGDMP` validation. **Isolated actual database restore remains unverified**.
+- Financial withdrawal SQL migration is still **not applied**. Read-only initial snapshot: 9 players, 76 player_earnings records, 0 withdrawal requests. No live data modified by Step 03.
+- Step 01 PR #12 is a DRAFT on `main`, Step 02 PR #16 is a DRAFT on Step 01 branch, and this Step 03 implementation stays stacked as a **DRAFT PR** on Step 02 branch.
+- When DB migration has not applied, admin endpoint fails closed with "not ready" message and no action buttons; no invented payout records.
+- Before Production: complete disposable-restore trial, audit SQL triggers/RLS/functions/legacy grants, test requests/reject/approve/paid/duplicate/transfers/accounting, authenticated desktop+mobile walkthrough, then merge PR #12 → #16 → this PR only after explicit approval. **Do not automatically merge.**
+
+## Test matrix
+
+| Test | Status |
+|---|---|
+| GitHub branch / Step 03 file diff verified | PASS |
+| Vercel Preview Next.js build for combined Step 01/02/03 code | PASS |
+| Admin navigation retains existing salary key/bookmarks | PASS (source review) |
+| Backend separates paid, reject, approve and counts requests | PASS (source review; DB untested) |
+| Personal accounts cannot auto-transfer from website | PASS (code review) |
+| Other existing admin manager screens preserved | PASS (isolated file diff) |
+| Full Supabase restore into disposable instance | NOT YET RUN |
+| Migrated wallet / RLS / financial contract tests | NOT YET RUN |
+| Manual transaction confirmation integration test | NOT YET RUN |
+| Authenticated admin and player E2E live browser test | NOT YET RUN |
+| Production merge / finance activation | BLOCKED BY SAFETY GATES |
+
+Production status: **unchanged** until a safe database restoration and end-to-end payment workflow is verified.
