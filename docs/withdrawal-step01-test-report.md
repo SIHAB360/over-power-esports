@@ -10,16 +10,20 @@ This change prepares server-only authenticated wallet/withdrawal endpoints and a
 - Maximum concurrent active withdrawals: one per player (pending OR approved), enforced by DB unique partial index.
 - All amounts numeric, up to two decimal places. Neither charge percentage nor minimum amount was invented.
 
-## Mandatory BACKUP gate — still open
+## Backup verification — encrypted archive RECOVERABLE, full restore outstanding
 
-Connected Supabase tools expose project, schema and SQL functions but **do not expose the Supabase managed Backup/PITR inventory or restore test**. The project is ACTIVE_HEALTHY; that does not prove a restorable backup exists. Thus migration is NOT APPLIED in production and no production withdrawal feature should be deployed yet.
+The Supabase project remains on Free Plan; managed scheduled backup / PITR is not provided. GitHub Actions [Manual encrypted Supabase backup Run #5](https://github.com/SIHAB360/over-power-esports/actions/runs/39060404560) completed successfully on 2026-10-17 at approximately 18:59 UTC.
 
-Owner needs to verify in Supabase Dashboard > Database > Backups:
-- A recent restorable snapshot or active PITR restore window.
-- Restore point/time and database recovery access.
-- Prefer a safe restore test before processing real money.
+Verification of the specific archived artifact `op-esports-encrypted-db-39060404560`:
+- GitHub workflow: PostgreSQL 17 `pg_dump` succeeded, complete archive parsed by `pg_restore --file=/dev/null`, AES-256-GCM CMS encryption succeeded, encrypted artifact uploaded.
+- GitHub Artifact ID: `12111450390`; ZIP reports approximately 491,664 bytes; GitHub scheduled expiration 2026-10-31 18:59 UTC.
+- Independently downloaded encrypted ZIP and verified embedded SHA-256 checksum: **PASS**.
+- Independently decrypted encrypted dump with matching locally mounted offline RSA private key and public certificate: **PASS**.
+- Verified decrypted payload begins with `PGDMP` custom PostgreSQL dump magic and size 490,354 bytes: **PASS**.
+- Immediately deleted temporary decrypted dump from model working environment after verification. Do not store plaintext in the public repository.
+- **ACTUAL RESTORE INTO A DISPOSABLE COMPATIBLE DATABASE: NOT YET TESTED**. A successful decrypt and archive parse is not proof of a working Supabase restore. PostgreSQL client/server extensions, roles and storage objects need special treatment.
 
-Do not put personal payout information or plaintext database dumps in a public GitHub repository.
+Consequently, production money-related migrations and API deployment remain **on hold** pending isolated restore rehearsal and financial regression tests. Retain a private offline copy of both the encrypted archive and corresponding recovery private key; never upload the private key to GitHub.
 
 ## Current live read-only inspection
 
@@ -74,7 +78,8 @@ Do NOT drop financial tables or columns after real transactions. A rollback afte
 
 - [x] Read-only schema, RLS, function and existing row count inspection
 - [x] Migration and backend drafted in isolated GitHub branch
-- [ ] Restorable backup/PITR confirmed
+- [x] Encrypted full logical backup created, downloaded, checksum-verified and decrypted independently
+- [ ] Restore verified in a disposable compatible PostgreSQL/Supabase environment (managed PITR not available on Free Plan)
 - [ ] Migration applied after backup verification
 - [ ] Disposable test-user financial and concurrency tests
 - [ ] Production merge/deploy after successful test
