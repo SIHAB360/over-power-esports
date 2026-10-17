@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+// Initialize only when a registration request arrives, not during Next.js build.
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Registration service is not configured");
+  return createClient(url, key);
+}
 
-async function uploadFile(file, bucket) {
+async function uploadFile(supabase, file, bucket) {
   if (!file || file.size === 0) return null;
 
   const ext = file.name.split(".").pop();
@@ -35,17 +38,20 @@ async function uploadFile(file, bucket) {
 
 export async function POST(request) {
   try {
+    const supabase = getSupabase();
     const formData = await request.formData();
 
     const profileImage = formData.get("profile_image");
     const gameScreenshot = formData.get("game_id_screenshot");
 
     const profileImageUrl = await uploadFile(
+      supabase,
       profileImage,
       "player-images"
     );
 
     const screenshotUrl = await uploadFile(
+      supabase,
       gameScreenshot,
       "game-screenshots"
     );

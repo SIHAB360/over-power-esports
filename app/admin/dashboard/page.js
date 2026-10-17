@@ -14,6 +14,7 @@ import {
 import { supabase } from "../../lib/supabase";
 import logo from "../../assets/logo.png";
 import styles from "./dashboard.module.css";
+import VerificationPanel from "./VerificationPanel";
 
 // Reuse each existing FULL management page inside the new command center.
 // This preserves every existing form, field, validation, database write and record view.
@@ -266,6 +267,7 @@ export default function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState({});
   const [sourceErrors, setSourceErrors] = useState({});
+  const [verificationRefreshVersion, setVerificationRefreshVersion] = useState(0);
 
   const refresh = useCallback(async () => {
     setLoadingData(true);
@@ -554,7 +556,10 @@ export default function AdminDashboard() {
               </div>
               <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
                 {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
-                <button type="button" className={styles.sectionAction} onClick={refresh} disabled={loadingData}>
+                <button type="button" className={styles.sectionAction} onClick={() => {
+                    refresh();
+                    if (active === "verification") setVerificationRefreshVersion((value) => value + 1);
+                  }} disabled={loadingData}>
                   <FiRefreshCw aria-hidden="true"/> {loadingData ? "Refreshing…" : "Refresh data"}
                 </button>
               </div>
@@ -619,14 +624,14 @@ export default function AdminDashboard() {
               <section className={styles.managerWorkspace} aria-label={activeNav.name + " management workspace"}>
                 <ActiveManager key={active} />
               </section>
-            ) : active === "salary" || active === "verification" ? (
+            ) : active === "verification" ? (
+              <VerificationPanel refreshVersion={verificationRefreshVersion} />
+            ) : active === "salary" ? (
               <div className={styles.sectionView}>
                 <div className={styles.notice}>
-                  <strong>{active === "salary" ? "Salary & payouts" : "Verification & access codes"}</strong>
+                  <strong>Salary & payouts</strong>
                   <p style={{margin:"8px 0 0"}}>
-                    {active === "salary"
-                      ? "A dedicated salary management route is not connected yet. The existing Profit module stores match player allocations, not individual salary payments."
-                      : "The existing dashboard had a Verification tile without a working destination. Access-code management is not connected to this panel yet."}
+                    A dedicated salary management route is not connected yet. The existing Profit module stores match player allocations, not individual salary payments.
                   </p>
                 </div>
                 <div className={styles.actionTiles}>
