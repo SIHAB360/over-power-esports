@@ -1,0 +1,165 @@
+/* Premium holographic contact orb — scoped to the homepage widget */
+.widget {
+  position: fixed;
+  right: 23px;
+  bottom: 24px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 94px;
+  isolation: isolate;
+}
+.mainButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 87, 92, .67);
+  background:
+    radial-gradient(circle at 35% 25%, #471018 0%, #170609 47%, #070408 100%);
+  box-shadow:
+    0 0 0 5px rgba(241, 22, 47, .055),
+    0 6px 24px rgba(0, 0, 0, .58),
+    0 0 25px rgba(245, 15, 39, .36),
+    0 0 60px rgba(238, 9, 29, .13);
+  cursor: pointer;
+  outline-offset: 6px;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.mainButton::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -11px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(251, 22, 44, .16), transparent 70%);
+  pointer-events: none;
+}
+.mainButton::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, .22);
+}
+.mainButton:focus-visible {
+  outline: 3px solid #fff;
+}
+.mainButton:hover,
+.expanded .mainButton {
+  transform: translateY(-3px) scale(1.055);
+  border-color: rgba(255, 138, 128, .9);
+  box-shadow:
+    0 0 0 6px rgba(252, 35, 58, .08),
+    0 12px 29px rgba(0, 0, 0, .65),
+    0 0 33px rgba(255, 19, 43, .55),
+    0 0 77px rgba(244, 18, 43, .2);
+}
+.orbit {
+  position: absolute;
+  inset: -5px;
+  border: 1px solid rgba(255, 88, 99, .45);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 11px rgba(255, 36, 55, .2);
+  animation: softPulse 4s ease-in-out infinite;
+}
+.mascot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  user-select: none;
+  pointer-events: none;
+  filter: saturate(1.08) contrast(1.03);
+}
+.onlineDot {
+  position: absolute;
+  right: 1px;
+  bottom: 6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #160b12;
+  border-radius: 50%;
+  background: #51ecae;
+  box-shadow: 0 0 10px rgba(77, 239, 171, .72);
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 16px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(13px) scale(.93);
+  transition: transform .25s ease, opacity .25s ease, visibility .25s;
+}
+.expanded .links {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+.link {
+  display: grid;
+  place-items: center;
+  width: 49px;
+  height: 49px;
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .19);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .32);
+  transition: transform .2s ease, filter .2s ease;
+}
+.link:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.13);
+}
+.link:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.whatsapp { background: linear-gradient(145deg, #39e785, #0b9c58); }
+.discord { background: linear-gradient(145deg, #8591ff, #4b53b5); }
+.tooltip {
+  position: absolute;
+  right: 105px;
+  bottom: 28px;
+  white-space: nowrap;
+  border: 1px solid rgba(254, 91, 99, .29);
+  border-radius: 9px;
+  padding: 7px 11px;
+  background: rgba(22, 11, 20, .95);
+  color: #fff3f3;
+  font: 700 11px/1.4 "Rajdhani", sans-serif;
+  letter-spacing: 1.2px;
+  opacity: 0;
+  transform: translateX(5px);
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.widget:hover .tooltip,
+.expanded .tooltip { opacity: 1; transform: translateX(0); }
+@keyframes softPulse {
+  0%, 100% { opacity: .65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.045); }
+}
+@media (max-width: 700px) {
+  .widget { right: 12px; bottom: max(15px, env(safe-area-inset-bottom)); width: 78px; }
+  .mainButton { width: 70px; height: 70px; }
+  .link { width: 48px; height: 48px; }
+  .tooltip { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit { animation: none; }
+  .mainButton, .links, .link, .tooltip { transition: none; }
+  .mainButton:hover { transform: none; }
+}

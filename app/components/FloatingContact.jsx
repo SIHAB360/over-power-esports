@@ -1,124 +1,91 @@
 "use client";
 
-import { useState } from "react";
-import headset from "../assets/headset.png";
-
-
-export default function FloatingContact() {
-
-
-const [open, setOpen] = useState(false);
-
-
-  
+import { useEffect, useId, useRef, useState } from "react";
+import styles from "./FloatingContact.module.css";
 
 const links = [
-
-{
-name:"WhatsApp",
-icon:"fa-brands fa-whatsapp",
-url:"https://chat.whatsapp.com/KyKkUE0g17X5w7PJXtfM3E",
-className:"whatsapp"
-},
-
-{
-name:"Discord",
-icon:"fa-brands fa-discord",
-url:"https://discord.gg/4HrJ5zRCh",
-className:"discord"
-}
-
+  {
+    name: "WhatsApp",
+    icon: "fa-brands fa-whatsapp",
+    url: "https://chat.whatsapp.com/KyKkUE0g17X5w7PJXtfM3E",
+    className: "whatsapp",
+  },
+  {
+    name: "Discord",
+    icon: "fa-brands fa-discord",
+    url: "https://discord.gg/4HrJ5zRCh",
+    className: "discord",
+  },
 ];
 
+export default function FloatingContact() {
+  const [open, setOpen] = useState(false);
+  const widgetRef = useRef(null);
+  const menuId = useId();
 
+  useEffect(() => {
+    function closeOnEscape(event) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    function closeOutside(event) {
+      if (!widgetRef.current?.contains(event.target)) setOpen(false);
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOutside);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOutside);
+    };
+  }, []);
 
-return (
+  return (
+    <div
+      ref={widgetRef}
+      className={[styles.widget, open ? styles.expanded : ""].join(" ")}
+      onMouseEnter={() => {
+        // Touch devices use the click toggle; do not synthesize hover open.
+        if (window.matchMedia("(hover: hover)").matches) setOpen(true);
+      }}
+      onMouseLeave={() => setOpen(false)}
+      aria-label="Contact Over Power Esports"
+    >
+      <div className={styles.links} id={menuId} aria-hidden={!open}>
+        {links.map((link) => (
+          <a
+            key={link.name}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={"Contact on " + link.name}
+            title={link.name}
+            tabIndex={open ? 0 : -1}
+            className={[styles.link, styles[link.className]].join(" ")}
+          >
+            <i className={link.icon} aria-hidden="true" />
+          </a>
+        ))}
+      </div>
 
-<div
-
-className={`floating-contact ${open ? "is-open" : ""}`}
-
-onMouseEnter={()=>setOpen(true)}
-
-onMouseLeave={()=>setOpen(false)}
-
->
-
-
-<div className="floating-links">
-
-
-{
-
-links.map((link)=>(
-
-
-<a
-
-key={link.name}
-
-href={link.url}
-
-target="_blank"
-
-rel="noopener noreferrer"
-
-className={`floating-link ${link.className}`}
-
-aria-label={link.name}
-
->
-
-
-<i className={link.icon}></i>
-
-
-</a>
-
-
-))
-
-}
-
-
-</div>
-
-
-
-
-
-<button
-
-type="button"
-
-className="floating-main-button"
-
-onClick={()=>setOpen(!open)}
-
-aria-label="Contact Menu"
-
->
-
-
-<img
-
-src={headset.src}
-
-alt="Contact"
-
-className="contact-icon"
-
-/>
-
-
-</button>
-
-
-
-</div>
-
-
-);
-
-
+      <button
+        type="button"
+        className={styles.mainButton}
+        aria-label={open ? "Close contact menu" : "Open contact menu"}
+        aria-expanded={open}
+        aria-controls={menuId}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <span className={styles.orbit} aria-hidden="true" />
+        <img
+          src="/contact-mascot.webp"
+          alt=""
+          width="160"
+          height="160"
+          className={styles.mascot}
+          draggable="false"
+        />
+        <span className={styles.onlineDot} aria-hidden="true" />
+      </button>
+      <span className={styles.tooltip} aria-hidden="true">CONTACT US</span>
+    </div>
+  );
 }
