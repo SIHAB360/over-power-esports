@@ -5148,3 +5148,54 @@ html body .teams .team-block > p {
   }
 }
 
+
+
+/* =============================================================
+   OVER POWER ESPORTS — RED CINEMATIC HOMEPAGE CONTINUITY (2026)
+   Scoped to the public homepage. NO admin, database, or other
+   route styles are modified by these selectors.
+   ============================================================= */
+html body main.home-animation {
+  /* A SINGLE underlying canvas instead of separately painted panels. */
+  background:
+    radial-gradient(ellipse 53% 13% at 1% 1%, rgba(130, 11, 28, .28), transparent 85%),
+    radial-gradient(ellipse 51% 17% at 98% 8%, rgba(121, 11, 33, .17), transparent 84%),
+    radial-gradient(ellipse 60% 18% at 45% 29%, rgba(115, 14, 35, .065), transparent 84%),
+    radial-gradient(ellipse 60% 20% at 91% 64%, rgba(91, 13, 35, .05), transparent 89%),
+    linear-gradient(180deg, #08060b 0%, #09060c 23%, #09070d 54%, #08060b 80%, #060609 100%) !important;
+  background-color: #08060b !important;
+  border: 0 !important;
+}
+html body main.home-animation > section#home {
+  /* Older high-specificity 'display:block' home-section rules are
+     overridden so the new centered desktop hero actually lays out. */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+html body main.home-animation > section#best-players {
+  position: relative;
+  background: transparent !important;
+  border-top: 0 !important;
+  margin-top: 0 !important;
+}
+/* The transparent inner Hall section allows the exact same backdrop
+   to show through at the hero/Champions boundary. */
+html body main.home-animation > section#best-players > section {
+  background-color: transparent !important;
+}
+@media(max-width:768px) {
+  html body main.home-animation {
+    background:
+      radial-gradient(ellipse 90% 11% at 0% 1%, rgba(137, 9, 29, .20), transparent 90%),
+      radial-gradient(ellipse 90% 16% at 100% 17%, rgba(127, 12, 37, .13), transparent 90%),
+      linear-gradient(180deg,#08060a,#09060b 32%,#08070c 70%,#060609) !important;
+  }
+}
