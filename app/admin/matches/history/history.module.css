@@ -185,3 +185,83 @@
   .disclaimer{font-size:12px;}
 }
 @media(prefers-reduced-motion:reduce){.backLink,.refresh{transition:none;}}
+
+
+/* Admin-only destructive action, with deliberate two-stage confirmation */
+.deleteButton {
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:41px;padding:9px 13px;white-space:nowrap;
+  color:#ffb5ac;background:rgba(252,112,99,.10);
+  border:1px solid rgba(255,148,130,.36);border-radius:11px;
+  font-size:13px;font-weight:900;
+}
+.deleteButton:hover{background:rgba(250,126,110,.20);border-color:#ff9386;}
+.successNotice {
+  display:flex;align-items:center;gap:9px;
+  margin:13px 19px;padding:14px 17px;color:#7ff3bf;
+  background:rgba(37,195,136,.10);border:1px solid rgba(81,224,175,.38);
+  border-radius:11px;font-size:14px;font-weight:800;
+}
+.modalOverlay {
+  position:fixed;inset:0;z-index:1000;
+  display:grid;place-items:center;overflow-y:auto;
+  background:rgba(2,7,17,.82);backdrop-filter:blur(7px);
+  padding:18px;
+}
+.deleteDialog{
+  width:min(100%,540px);
+  margin:auto;padding:clamp(22px,3vw,30px);
+  color:#f5fbff;background:linear-gradient(142deg,#19263b,#101a2b);
+  border:1px solid rgba(255,139,130,.46);
+  border-radius:22px;
+  box-shadow:0 24px 80px rgba(0,0,0,.65);
+}
+.dialogTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.dangerIcon{
+  display:grid;place-items:center;width:51px;height:51px;border-radius:14px;
+  color:#ffb59d;background:rgba(239,98,85,.14);font-size:23px;
+}
+.closeDialog{
+  display:grid;place-items:center;width:40px;height:40px;
+  border:1px solid rgba(148,182,208,.3);border-radius:10px;
+  color:#c9dcf0;background:#23374b;font-size:20px;
+}
+.closeDialog:disabled{opacity:.4;cursor:not-allowed;}
+.deleteDialog h2{margin:19px 0 10px;font-size:clamp(22px,3vw,28px);line-height:1.2;font-weight:950;}
+.deleteDialog>p{margin:0;color:#c9d9e8;line-height:1.7;font-size:14px;}
+.targetMatch{
+  display:grid;gap:6px;margin:20px 0;
+  padding:17px;border:1px solid rgba(133,195,231,.27);
+  border-radius:13px;background:#101f31;
+}
+.targetMatch strong{font-size:17px;color:#f7fbff;}
+.targetMatch span{font-size:13px;color:#bad3e7;line-height:1.5;}
+.confirmLabel{display:block;margin-bottom:9px;font-size:14px;color:#ecf4fc;}
+.confirmLabel strong{color:#ffb2a1;font-family:ui-monospace,monospace;}
+.confirmInput{
+  width:100%;min-height:49px;padding:12px 14px;color:#fff;
+  font-size:16px;letter-spacing:.07em;
+  background:#0c1b2d;border:1px solid rgba(255,138,126,.43);border-radius:11px;
+}
+.confirmInput:focus{outline:2px solid #ffb0a3;outline-offset:2px;}
+.modalError{
+  margin:12px 0 0!important;padding:11px;border-radius:10px;
+  color:#ffada2!important;background:rgba(253,105,92,.13);
+  border:1px solid rgba(254,126,115,.25);font-size:13px!important;
+}
+.dialogActions{display:flex;justify-content:flex-end;gap:10px;margin-top:23px;}
+.dialogActions button{min-height:46px;padding:11px 15px;font-size:14px;font-weight:900;border-radius:11px;}
+.cancelButton{border:1px solid rgba(136,192,219,.36);background:#26394b;color:#eaf4ff;}
+.confirmButton{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  color:#fff;background:linear-gradient(105deg,#bf423e,#e76157);
+  border:1px solid rgba(255,153,140,.65);
+}
+.confirmButton:disabled{opacity:.4;cursor:not-allowed;}
+@media(max-width:680px){
+  .historyTable td:last-child{grid-column:1/-1;}
+  .deleteButton{width:100%;font-size:14px;min-height:44px;}
+  .deleteDialog{padding:21px 18px;}
+  .dialogActions{display:grid;grid-template-columns:1fr;gap:9px;}
+  .dialogActions button{width:100%;}
+}
