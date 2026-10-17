@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "../../lib/supabase";
 
 const MANAGEMENT_PERCENTAGE = 30;
@@ -941,32 +942,19 @@ export default function AdminMatchesPage() {
           </button>
         </form>
 
-        {/* RECENT MATCHES */}
+        {/* HISTORY ARCHIVE LINK — all saved records now live on a separate page. */}
         <section className="history">
-          <SectionTitle number="07" small="HISTORY" title="RECENT MATCHES" />
-
-          {recentMatches.length === 0 ? (
-            <div className="empty-state">No match history yet.</div>
-          ) : (
-            <div className="history-list">
-              {recentMatches.map((match) => (
-                <article key={match.id} className="history-card">
-                  <div className="history-main">
-                    <span>{tournamentName(match.tournament_id)}</span>
-                    <strong>{teamName(match.team1_id)}</strong>
-                    <small>{match.match_type || "Match"}</small>
-                  </div>
-
-                  <div className="history-money">
-                    <span>PROFIT</span>
-                    <strong>৳{money(match.profit)}</strong>
-                  </div>
-
-                  <div className="history-status">{match.status}</div>
-                </article>
-              ))}
+          <SectionTitle number="07" small="MATCH RECORDS" title="MATCH HISTORY" />
+          <div className="history-link-panel">
+            <div>
+              <span className="history-link-tag">COMPLETE MATCH ARCHIVE</span>
+              <h3>Every match, all in one place</h3>
+              <p>See all your recorded matches in serial order, including lobby, Scrim or Champion Rush, entry fee, prize, profit or loss, date and time.</p>
             </div>
-          )}
+            <Link href="/admin/matches/history" className="history-open-button">
+              VIEW MATCH HISTORY <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </section>
       </div>
 
