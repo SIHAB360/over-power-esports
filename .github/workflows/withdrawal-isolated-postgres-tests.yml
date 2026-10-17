@@ -68,7 +68,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          docker run --rm --network host -e PGPASSWORD=local-ephemeral-only postgres:17 \
+          # -i is mandatory: forward the SQL heredoc to the container.
+          docker run -i --rm --network host -e PGPASSWORD=local-ephemeral-only postgres:17 \
             psql -h 127.0.0.1 -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 <<'SQL'
           CREATE ROLE authenticated;
           CREATE ROLE anon;
