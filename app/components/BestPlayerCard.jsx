@@ -32,7 +32,7 @@ export default function BestPlayerCard({ data, index = 0 }) {
           <img src={player.image} alt={player.ign} className={styles.portrait} />
         </div>
         <div className={styles.identity}>
-          <p className={styles.identityKicker}>TEAM CHAMPION</p>
+          <p className={styles.identityKicker}>{team.name}</p>
           <h3 className={styles.playerName}>{player.ign}</h3>
           <p className={styles.teamName}>{team.name}</p>
           <p className={styles.role}>{player.role}</p>
