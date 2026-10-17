@@ -1,0 +1,123 @@
+name: Manual encrypted Supabase backup
+
+# Intentional: NO cron, push, pull_request, or untrusted-workflow triggers.
+# Only a repo member with Actions write permission can launch this on main.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: op-esports-database-backup
+  cancel-in-progress: false
+
+jobs:
+  encrypted-supabase-backup:
+    name: PostgreSQL 17 encrypted backup
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      # Store the Supabase Session Pooler connection URL in GitHub Actions
+      # repository secrets. NEVER place credentials in workflow source or logs.
+      SUPABASE_SESSION_POOLER_URL: ${{ secrets.SUPABASE_SESSION_POOLER_URL }}
+    steps:
+      - name: Check out public encryption certificate only
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate prerequisites without exposing credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${SUPABASE_SESSION_POOLER_URL:-}" ]]; then
+            echo "::error::Missing secret SUPABASE_SESSION_POOLER_URL. See docs/free-plan-database-backup.md"
+            exit 1
+          fi
+          case "$SUPABASE_SESSION_POOLER_URL" in
+            postgres://*|postgresql://*) ;;
+            *) echo "::error::Secret must be a PostgreSQL connection URL"; exit 1 ;;
+          esac
+          test -s ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem
+          openssl x509 -in ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem -noout -checkend 86400
+
+      - name: Dump, fully parse archive, and encrypt BEFORE upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Require TLS even when Supabase Connect omits the sslmode parameter.
+          db_url="$SUPABASE_SESSION_POOLER_URL"
+          if [[ "$db_url" != *"sslmode="* ]]; then
+            if [[ "$db_url" == *"?"* ]]; then
+              db_url="${db_url}&sslmode=require"
+            else
+              db_url="${db_url}?sslmode=require"
+            fi
+          fi
+          # Never echo/trace the connection URL.
+          unset SUPABASE_SESSION_POOLER_URL
+          export DATABASE_URL="$db_url"
+          unset db_url
+
+          plaintext="$RUNNER_TEMP/op-esports-supabase.dump"
+          timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          encrypted="$RUNNER_TEMP/op-esports-supabase-${timestamp}-run${GITHUB_RUN_ID}.dump.cms"
+          trap 'rm -f "$plaintext"' EXIT
+
+          # PostgreSQL v17 utilities match the Supabase project's server major.
+          # UID/GID mapping keeps output readable by the Actions runner.
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -e DATABASE_URL \
+            -v "$RUNNER_TEMP:/backup" \
+            postgres:17 \
+            sh -ec 'pg_dump --dbname="$DATABASE_URL" --format=custom --no-owner --no-acl --file=/backup/op-esports-supabase.dump'
+
+          test -s "$plaintext"
+
+          # pg_restore must decode the ENTIRE archive without actually
+          # running database mutations. This is NOT a full restore test.
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -v "$RUNNER_TEMP:/backup" \
+            postgres:17 \
+            pg_restore --file=/dev/null /backup/op-esports-supabase.dump
+
+          # CMS envelope uses authenticated AES-256-GCM; only an offline
+          # RSA private key can decrypt this file. No plaintext upload.
+          openssl cms -encrypt -binary -aes-256-gcm \
+            -in "$plaintext" \
+            -out "$encrypted" \
+            -outform DER \
+            -recip ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem
+          test -s "$encrypted"
+          openssl cms -cmsout -print -inform DER -in "$encrypted" > /dev/null
+          (
+            cd "$RUNNER_TEMP"
+            sha256sum "$(basename "$encrypted")" > "$(basename "$encrypted").sha256"
+          )
+
+          # Immediately delete plaintext; the runner is ephemeral.
+          rm -f "$plaintext"
+          trap - EXIT
+          echo "ENCRYPTED_BACKUP_FILE=$encrypted" >> "$GITHUB_ENV"
+          echo "Backup created and encrypted using public-key encryption." >> "$GITHUB_STEP_SUMMARY"
+          echo "This archive has not yet been restore-tested. Download both files and verify offline." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload ONLY encrypted archive and checksum
+        uses: actions/upload-artifact@v4
+        with:
+          name: op-esports-encrypted-db-${{ github.run_id }}
+          path: |
+            ${{ env.ENCRYPTED_BACKUP_FILE }}
+            ${{ env.ENCRYPTED_BACKUP_FILE }}.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
+      - name: Erase backup artifacts from temporary runner filesystem
+        if: always()
+        shell: bash
+        run: |
+          rm -f "$RUNNER_TEMP"/op-esports-supabase.dump
+          rm -f "$RUNNER_TEMP"/op-esports-supabase-*.dump.cms
+          rm -f "$RUNNER_TEMP"/op-esports-supabase-*.dump.cms.sha256
