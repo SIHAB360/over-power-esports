@@ -100,6 +100,11 @@
 .eyebrowDot { height:7px;width:7px;border-radius:50%;background:#72ddbd;box-shadow:0 0 12px rgba(114,221,189,.55); }
 .pageTitle { margin:0; color:var(--text);font-size:clamp(27px,2.6vw,43px);font-weight:950;letter-spacing:-.055em;line-height:1.17; }
 .pageTitle span {
+  display:block;
+  margin-top:3px;
+  font-size:.7em;
+  letter-spacing:.105em;
+  line-height:1.4;
   background:linear-gradient(110deg,#ddc0ff,#9589ff,#77c8ed);
   background-clip:text;-webkit-background-clip:text;color:transparent;
 }
