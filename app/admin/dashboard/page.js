@@ -1,679 +1,667 @@
 "use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  FiGrid, FiUsers, FiTarget, FiLayers, FiAward, FiDollarSign,
+  FiCreditCard, FiShield, FiImage, FiLogOut, FiMoon, FiSun,
+  FiMenu, FiX, FiRefreshCw, FiArrowUpRight, FiActivity,
+  FiCalendar, FiSearch, FiBarChart2, FiTrendingUp, FiLock,
+  FiClock, FiChevronRight, FiCheckCircle,
+} from "react-icons/fi";
 import { supabase } from "../../lib/supabase";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import logo from "../../assets/logo.png";
+import styles from "./dashboard.module.css";
+
+const THEME_KEY = "op-admin-dashboard-theme";
+const LIMIT = 500;
+
+// Existing management routes are kept intact; no fictitious routes.
+const NAV = [
+  { key: "overview", name: "Overview", Icon: FiGrid, description: "Esports operations at a glance" },
+  { key: "players", name: "Players", Icon: FiUsers, href: "/admin/players", description: "Player accounts and approvals" },
+  { key: "matches", name: "Matches", Icon: FiTarget, href: "/admin/matches", description: "Match history and management" },
+  { key: "teams", name: "Teams", Icon: FiLayers, href: "/admin/teams", description: "Team roster and team management" },
+  { key: "tournaments", name: "Tournaments", Icon: FiAward, href: "/admin/tournaments", description: "Tournaments and competitions" },
+  { key: "profit", name: "Profit", Icon: FiDollarSign, href: "/admin/profit", description: "Match finance and profit records" },
+  { key: "salary", name: "Salary", Icon: FiCreditCard, description: "Salary and payout management" },
+  { key: "verification", name: "Verification", Icon: FiShield, description: "Player verification and access control" },
+  { key: "achievements", name: "Achievements", Icon: FiImage, href: "/admin/achievements", description: "Esports achievements and gallery" },
+];
+
+const TABLES = [
+  ["players", "players"],
+  ["matches", "matches"],
+  ["teams", "teams"],
+  ["tournaments", "tournaments"],
+  ["profit", "match_finance"],
+  ["achievements", "achievement_gallery"],
+];
+
+const EMPTY_SOURCE = { rows: [], count: 0, error: null };
+
+function number(value) {
+  return Number(value || 0).toLocaleString("en-BD");
+}
+
+function taka(value) {
+  return "৳" + number(Math.round(Number(value) || 0));
+}
+
+function sumMoney(rows, field) {
+  return rows.reduce((total, row) => {
+    const value = Number(row[field] || 0);
+    return total + (Number.isFinite(value) ? value : 0);
+  }, 0);
+}
+
+function dateLabel(value) {
+  if (!value) return "—";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return String(value);
+  return parsed.toLocaleDateString("en-BD", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function clean(value) {
+  if (value === null || value === undefined || value === "") return "—";
+  return String(value);
+}
+
+function groupStatus(rows, status) {
+  return rows.filter((row) => String(row.status || "").toLowerCase() === status).length;
+}
+
+function StatCard({ label, value, subtitle, Icon }) {
+  return (
+    <article className={styles.stat}>
+      <div className={styles.statTop}>
+        <span className={styles.statLabel}>{label}</span>
+        <span className={styles.statIcon}><Icon aria-hidden="true" /></span>
+      </div>
+      <strong className={styles.statValue}>{value}</strong>
+      <small className={styles.statHint}>{subtitle}</small>
+    </article>
+  );
+}
+
+function Panel({ title, subtitle, children, className = "" }) {
+  return (
+    <section className={[styles.panel, className].filter(Boolean).join(" ")}>
+      <div className={styles.panelHeader}>
+        <div>
+          <h3 className={styles.panelHeading}>{title}</h3>
+          {subtitle && <p className={styles.panelDesc}>{subtitle}</p>}
+        </div>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function TrendChart({ players, matches }) {
+  const months = useMemo(() => {
+    const today = new Date();
+    return Array.from({ length: 6 }, (_, index) => {
+      const month = new Date(today.getFullYear(), today.getMonth() - 5 + index, 1);
+      return {
+        key: String(month.getFullYear()) + "-" + String(month.getMonth() + 1).padStart(2, "0"),
+        label: month.toLocaleDateString("en-US", { month: "short" }),
+      };
+    });
+  }, []);
+
+  const countFor = (rows, month) =>
+    rows.filter((row) => {
+      const value = row.created_at || row.match_date;
+      if (!value) return false;
+      const date = new Date(value);
+      return !Number.isNaN(date.getTime()) &&
+        String(date.getFullYear()) + "-" + String(date.getMonth() + 1).padStart(2, "0") === month;
+    }).length;
+
+  const playersData = months.map((m) => countFor(players, m.key));
+  const matchesData = months.map((m) => countFor(matches, m.key));
+  const max = Math.max(1, ...playersData, ...matchesData);
+  const makePoints = (values) => values.map((v, i) => {
+    const x = 18 + i * 60;
+    const y = 160 - (v / max) * 125;
+    return x + "," + y;
+  }).join(" ");
+  const hasData = playersData.some(Boolean) || matchesData.some(Boolean);
+
+  if (!hasData) {
+    return <div className={styles.empty}>No player or match activity recorded for the last 6 months.</div>;
+  }
+
+  return (
+    <div className={styles.chart}>
+      <svg viewBox="0 0 340 185" role="img" aria-label="Monthly player and match activity for the last six months">
+        {[36, 76, 116, 156].map((y) => (
+          <line key={y} x1="15" x2="325" y1={y} y2={y} stroke="currentColor" opacity=".075" />
+        ))}
+        <defs>
+          <linearGradient id="opAdminLinePlayers" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#936bf4" />
+            <stop offset="1" stopColor="#df91eb" />
+          </linearGradient>
+          <linearGradient id="opAdminLineMatches" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#60cbef" />
+            <stop offset="1" stopColor="#51e0ba" />
+          </linearGradient>
+        </defs>
+        <polyline points={makePoints(playersData)} stroke="url(#opAdminLinePlayers)" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" fill="none" />
+        <polyline points={makePoints(matchesData)} stroke="url(#opAdminLineMatches)" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" fill="none" />
+        {playersData.map((v, i) => <circle key={"p" + i} cx={18 + i * 60} cy={160 - (v / max) * 125} r="3.3" fill="#a784f7"><title>{months[i].label + ": " + v + " players"}</title></circle>)}
+        {matchesData.map((v, i) => <circle key={"m" + i} cx={18 + i * 60} cy={160 - (v / max) * 125} r="3.3" fill="#61cfea"><title>{months[i].label + ": " + v + " matches"}</title></circle>)}
+      </svg>
+      <div className={styles.chartAxis}>
+        {months.map((m) => <span key={m.key}>{m.label}</span>)}
+      </div>
+    </div>
+  );
+}
+
+function MatchDonut({ matches }) {
+  const completed = groupStatus(matches, "completed");
+  const ongoing = matches.filter((m) => ["ongoing", "active", "live", "in_progress"].includes(String(m.status || "").toLowerCase())).length;
+  const upcoming = matches.filter((m) => ["upcoming", "scheduled", "pending"].includes(String(m.status || "").toLowerCase())).length;
+  const other = Math.max(0, matches.length - completed - ongoing - upcoming);
+  const groups = [
+    { label: "Completed", count: completed, color: "#916df1" },
+    { label: "Ongoing", count: ongoing, color: "#60cdeb" },
+    { label: "Upcoming", count: upcoming, color: "#f4ae80" },
+    { label: "Other", count: other, color: "#7f8caf" },
+  ];
+  const total = matches.length;
+  let angle = 0;
+  const gradients = total
+    ? groups.map((group) => {
+        const start = angle;
+        angle += group.count / total * 360;
+        return group.color + " " + start + "deg " + angle + "deg";
+      }).join(",")
+    : "#627090 0deg 360deg";
+
+  return (
+    <div className={styles.donutWrap}>
+      <div className={styles.donut} style={{ background: "conic-gradient(" + gradients + ")" }}>
+        <div className={styles.donutCenter}>
+          <strong>{number(total)}</strong>
+          <small>MATCHES</small>
+        </div>
+      </div>
+      <div className={styles.donutLegend}>
+        {groups.map((group) => (
+          <div className={styles.legendItem} key={group.label}>
+            <span className={styles.colorSquare} style={{ background: group.color }} />
+            <span>{group.label}</span>
+            <b>{number(group.count)}</b>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProgressLine({ label, count, total }) {
+  const percent = total ? Math.max(0, Math.min(100, Math.round(count / total * 100))) : 0;
+  return (
+    <div className={styles.progressItem}>
+      <div className={styles.progressItemHead}>
+        <strong>{label}</strong>
+        <span>{number(count)} · {percent}%</span>
+      </div>
+      <div className={styles.progressRail}>
+        <div className={styles.progressFill} style={{ width: percent + "%" }} />
+      </div>
+    </div>
+  );
+}
+
+function Status({ value }) {
+  const text = String(value || "Not set");
+  const status = text.toLowerCase();
+  const colorClass = ["approved", "active", "completed", "published"].includes(status)
+    ? styles.greenDot
+    : ["pending", "upcoming"].includes(status)
+      ? styles.orangeDot
+      : ["ongoing", "live", "scheduled"].includes(status) ? styles.blueDot : "";
+  return (
+    <span className={styles.status}>
+      <i className={[styles.statusDot, colorClass].filter(Boolean).join(" ")} />
+      {text.replaceAll("_", " ")}
+    </span>
+  );
+}
+
+const COLUMNS = {
+  players: ["Player", "Team", "Status", "Joined"],
+  matches: ["Match", "Team", "Status", "Date"],
+  teams: ["Team", "Status", "Players", "Created"],
+  tournaments: ["Tournament", "Status", "Starts", "Prize pool"],
+  profit: ["Finance record", "Profit", "Management share", "Created"],
+  achievements: ["Achievement", "Category", "Status", "Created"],
+};
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
+  const [loadingData, setLoadingData] = useState(true);
   const [adminEmail, setAdminEmail] = useState("");
+  const [theme, setTheme] = useState("dark");
+  const [active, setActive] = useState("overview");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState({});
+  const [sourceErrors, setSourceErrors] = useState({});
 
-  useEffect(() => {
-    checkAdmin();
+  const refresh = useCallback(async () => {
+    setLoadingData(true);
+    try {
+      const responses = await Promise.all(TABLES.map(async ([key, table]) => {
+        let result = await supabase.from(table)
+          .select("*", { count: "exact" })
+          .order("created_at", { ascending: false })
+          .limit(LIMIT);
+
+        if (result.error) {
+          // Some tables may not expose created_at; don't lose the entire overview.
+          result = await supabase.from(table)
+            .select("*", { count: "exact" })
+            .limit(LIMIT);
+        }
+
+        return { key, rows: result.data || [], count: result.count, error: result.error?.message || null };
+      }));
+
+      const next = {};
+      const errors = {};
+      responses.forEach((response) => {
+        next[response.key] = {
+          rows: response.rows,
+          count: response.count === null ? response.rows.length : response.count,
+          error: response.error,
+        };
+        if (response.error) errors[response.key] = response.error;
+      });
+      setData(next);
+      setSourceErrors(errors);
+    } catch (error) {
+      setSourceErrors({ general: error?.message || "Unable to load dashboard data." });
+    } finally {
+      setLoadingData(false);
+    }
   }, []);
 
-  const checkAdmin = async () => {
-    const {
-data:{
-session
-}
-}= await supabase.auth.getSession();
+  useEffect(() => {
+    let mounted = true;
+    async function init() {
+      try {
+        const stored = window.localStorage.getItem(THEME_KEY);
+        if (stored === "dark" || stored === "light") setTheme(stored);
 
+        const { data: authData, error: authError } = await supabase.auth.getUser();
+        if (authError || !authData?.user) {
+          window.location.assign("/login");
+          return;
+        }
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("role,email")
+          .eq("id", authData.user.id)
+          .single();
 
-if(!session){
+        if (profileError || String(profile?.role || "").toLowerCase() !== "admin") {
+          window.location.assign("/login");
+          return;
+        }
 
-window.location.href="/login";
-return;
-
-}
-
-const user = session.user;
-
-    const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("role,email")
-      .eq("id", user.id)
-      .single();
-
-    if (error || profile?.role?.toLowerCase() !== "admin") {
-      window.location.href = "/login";
-      return;
+        if (!mounted) return;
+        setAdminEmail(profile.email || authData.user.email || "Administrator");
+        setLoading(false);
+        await refresh();
+      } catch {
+        if (mounted) window.location.assign("/login");
+      }
     }
+    init();
+    return () => { mounted = false; };
+  }, [refresh]);
 
-    setAdminEmail(profile.email);
-    setLoading(false);
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    window.localStorage.setItem(THEME_KEY, next);
   };
 
   const logout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/login";
+    window.location.assign("/login");
+  };
+
+  const goTo = (key) => {
+    setActive(key);
+    setSearch("");
+    setMobileOpen(false);
+  };
+
+  const source = (key) => data[key] || EMPTY_SOURCE;
+  const players = source("players").rows;
+  const matches = source("matches").rows;
+  const teams = source("teams").rows;
+  const tournaments = source("tournaments").rows;
+  const finances = source("profit").rows;
+  const achievementRows = source("achievements").rows;
+  const completeFinance = !sourceErrors.profit && source("profit").count === finances.length;
+  const totalProfit = sumMoney(finances, "profit");
+  const managementShare = sumMoney(finances, "management_amount");
+  const playerShare = sumMoney(finances, "player_amount");
+
+  const counts = {
+    players: source("players").count,
+    matches: source("matches").count,
+    teams: source("teams").count,
+    tournaments: source("tournaments").count,
+    profit: source("profit").count,
+    achievements: source("achievements").count,
+  };
+
+  const teamNameById = new Map(teams.map((team) => [String(team.id), team.team_name || "Team"]));
+  const tournamentNameById = new Map(tournaments.map((t) => [String(t.id), t.name || "Tournament"]));
+
+  const activeNav = NAV.find((item) => item.key === active) || NAV[0];
+  const rows = source(active).rows;
+  const filtered = rows.filter((item) => {
+    if (!search) return true;
+    return Object.values(item).filter((v) => ["string","number"].includes(typeof v))
+      .join(" ").toLowerCase().includes(search.trim().toLowerCase());
+  }).slice(0, 12);
+  const showLimited = source(active).count > source(active).rows.length;
+
+  const overviewActivity = [
+    ...players.map((p) => ({ type: "New player", title: p.ign || p.full_name || "Player", timestamp: p.created_at, icon: "player" })),
+    ...matches.map((m) => ({ type: "Match record", title: m.match_type || "Match", timestamp: m.created_at || m.match_date, icon: "match" })),
+    ...tournaments.map((t) => ({ type: "Tournament", title: t.name || "Tournament", timestamp: t.created_at, icon: "tournament" })),
+  ].filter((a) => a.timestamp && !Number.isNaN(new Date(a.timestamp).getTime()))
+    .sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp))
+    .slice(0,5);
+
+  const metrics = active === "players"
+    ? [["Approved", groupStatus(players,"approved")],["Pending",groupStatus(players,"pending")],["Registered",counts.players]]
+    : active === "matches"
+      ? [["Completed",groupStatus(matches,"completed")],["Live / ongoing",matches.filter(m=>["ongoing","active","live","in_progress"].includes(String(m.status||"").toLowerCase())).length],["Recorded",counts.matches]]
+      : active === "teams"
+        ? [["Active",groupStatus(teams,"active")],["Pending",groupStatus(teams,"pending")],["Created",counts.teams]]
+        : active === "tournaments"
+          ? [["Upcoming",groupStatus(tournaments,"upcoming")],["Ongoing",groupStatus(tournaments,"ongoing")],["All tournaments",counts.tournaments]]
+          : active === "profit"
+            ? [["Total profit",completeFinance?taka(totalProfit):"—"],["Player allocation",completeFinance?taka(playerShare):"—"],["Management share",completeFinance?taka(managementShare):"—"]]
+            : [["Gallery records",counts.achievements],["Listed here",Math.min(counts.achievements,12)],["Data source","Live"]];
+
+  const cellFor = (key, row) => {
+    switch (key) {
+      case "players":
+        return [
+          clean(row.ign || row.full_name),
+          clean(row.team_name),
+          <Status key="s" value={row.status} />,
+          dateLabel(row.created_at)
+        ];
+      case "matches":
+        return [
+          clean(row.match_type || tournamentNameById.get(String(row.tournament_id)) || "Match"),
+          clean(teamNameById.get(String(row.team1_id))),
+          <Status key="s" value={row.status} />,
+          dateLabel(row.match_date || row.created_at)
+        ];
+      case "teams":
+        return [
+          clean(row.team_name),
+          <Status key="s" value={row.status} />,
+          number(players.filter((p)=>p.team_name && p.team_name.toLowerCase() === String(row.team_name || "").toLowerCase()).length),
+          dateLabel(row.created_at)
+        ];
+      case "tournaments":
+        return [
+          clean(row.name),
+          <Status key="s" value={row.status} />,
+          dateLabel(row.start_date),
+          taka(row.prize_pool)
+        ];
+      case "profit":
+        return [
+          clean(row.match_id ? "Match " + String(row.match_id).slice(0, 8) : "Record " + String(row.id || "").slice(0,8)),
+          taka(row.profit),
+          taka(row.management_amount),
+          dateLabel(row.created_at)
+        ];
+      case "achievements":
+        return [
+          clean(row.title || row.name || "Gallery entry"),
+          clean(row.category || row.type),
+          <Status key="s" value={row.status} />,
+          dateLabel(row.created_at)
+        ];
+      default: return [];
+    }
   };
 
   if (loading) {
     return (
-      <div className="loading-screen">
-        <div className="loader"></div>
-        <p>INITIALIZING COMMAND CENTER</p>
-      </div>
+      <main className={styles.loading}>
+        <div><span className={styles.spinner}/><strong>AUTHENTICATING ADMIN ACCESS</strong></div>
+      </main>
     );
   }
-
-  const cards = [
-  {
-    num: "01",
-    icon: "🎮",
-    title: "PLAYERS",
-    desc: "Manage player accounts",
-    href: "/admin/players"
-  },
-
-  {
-    num: "02",
-    icon: "⚔️",
-    title: "MATCHES",
-    desc: "Create and control matches",
-    href: "/admin/matches"
-  },
-
-  {
-    num: "03",
-    icon: "🛡️",
-    title: "TEAMS",
-    desc: "Manage your esports teams",
-    href: "/admin/teams"
-  },
-
-  {
-    num: "04",
-    icon: "🏆",
-    title: "TOURNAMENTS",
-    desc: "Tournament management",
-    href: "/admin/tournaments"
-  },
-
-  {
-  num: "05",
-  icon: "💰",
-  title: "PROFIT",
-  desc: "Income calculation",
-  href: "/admin/profit"
-},
-
-  {
-    num: "06",
-    icon: "💳",
-    title: "SALARY",
-    desc: "Player salary control"
-  },
-
-  {
-    num: "07",
-    icon: "🔐",
-    title: "VERIFICATION",
-    desc: "Generate access codes"
-  },
-    {
-    num: "08",
-    icon: "🏅",
-    title: "ACHIEVEMENTS",
-    desc: "Manage screenshots and tournament results",
-    href: "/admin/achievements"
-  }
-];
 
   return (
-    <main className="admin-page">
-      {/* Background */}
-      <div className="bg-glow"></div>
-      <div className="bg-glow-2"></div>
-
-      <div className="container">
-        {/* Header */}
-        <header className="header">
-          <div className="brand">
-            <div className="top-label">
-              <span className="dot"></span>
-              ADMIN CONTROL CENTER
-            </div>
-            <h1>OVER POWER</h1>
-            <h2>ADMIN PANEL</h2>
-            <p className="tagline">ESPORTS COMMAND CENTER</p>
-          </div>
-
-          <div className="user-card">
-            <div className="avatar">A</div>
-            <div className="user-info">
-              <span className="email">{adminEmail}</span>
-              <button className="logout-btn" onClick={logout}>
-                LOGOUT
-              </button>
+    <div className={[styles.dashboard, theme === "dark" ? styles.dark : styles.light].join(" ")}>
+      <div className={styles.layout}>
+        {mobileOpen && <button type="button" className={styles.overlay} aria-label="Close menu" onClick={() => setMobileOpen(false)}/>}
+        <aside className={[styles.sidebar, mobileOpen ? styles.sidebarOpen : ""].join(" ")} aria-label="Admin navigation">
+          <div className={styles.sidebarTop}>
+            <Image className={styles.brandLogo} src={logo} alt="Over Power Esports" width={39} height={39} />
+            <div>
+              <p className={styles.brandTitle}>OVER POWER</p>
+              <p className={styles.brandSub}>ESPORTS ADMIN</p>
             </div>
           </div>
-        </header>
-  <section className="stats-grid">
+          <div className={styles.navScroll}>
+            <p className={styles.menuTitle}>WORKSPACE</p>
+            <nav className={styles.navGroup} aria-label="Dashboard sections">
+              {NAV.map(({ key,name,Icon }) => (
+                <button
+                  type="button"
+                  key={key}
+                  className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  onClick={() => goTo(key)}
+                  aria-current={active === key ? "page" : undefined}
+                >
+                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span className={styles.navText}>{name}</span>
+                  {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
+                    <span className={styles.navCount}>{number(counts[key])}</span>
+                  )}
+                </button>
+              ))}
+            </nav>
+            <div className={styles.navSeparator}/>
+            <p className={styles.menuTitle}>QUICK ACCESS</p>
+            <Link href="/" className={styles.navItem}>
+              <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
+              <span className={styles.navText}>View Website</span>
+            </Link>
+          </div>
+          <div className={styles.sidebarFoot}>
+            <p className={styles.sidebarAdmin} title={adminEmail}>{adminEmail}</p>
+            <button type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
+          </div>
+        </aside>
 
+        <main className={styles.main}>
+          <div className={styles.mainInner}>
+            <header className={styles.header}>
+              <div className={styles.mobileTop}>
+                <button type="button" className={styles.mobileMenuBtn} aria-label="Open admin menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)}>
+                  <FiMenu aria-hidden="true" />
+                </button>
+              </div>
+              <div className={styles.headerCenter}>
+                <p className={styles.eyebrow}><i className={styles.eyebrowDot}/> ADMIN CONTROL CENTER</p>
+                <h1 className={styles.pageTitle}>OVER POWER <span>ADMIN PANEL</span></h1>
+                <p className={styles.pageSubtitle}>ESPORTS COMMAND CENTER · LIVE OPERATIONS</p>
+              </div>
+              <div className={styles.headerRight}>
+                <div className={styles.headerAdmin}>
+                  <span className={styles.headerAvatar}>{adminEmail.slice(0,1).toUpperCase()}</span>
+                  <span className={styles.headerEmail} title={adminEmail}>{adminEmail}</span>
+                </div>
+                <button type="button" className={styles.themeSwitch} onClick={toggleTheme} aria-label={"Switch to " + (theme==="dark" ? "light" : "dark") + " theme"} aria-pressed={theme==="dark"}>
+                  {theme==="dark" ? <FiMoon size={15} aria-hidden="true"/> : <FiSun size={15} aria-hidden="true"/>}
+                  <span>{theme==="dark" ? "Dark" : "Light"}</span>
+                  <i className={styles.switchTrack}><i className={styles.switchKnob}/></i>
+                </button>
+              </div>
+            </header>
 
-<div className="stat-card">
+            <section className={styles.stats} aria-label="Live key performance indicators">
+              <StatCard label="TOTAL PLAYERS" Icon={FiUsers} value={loadingData ? "…" : sourceErrors.players ? "—" : number(counts.players)} subtitle="Registered players" />
+              <StatCard label="TOTAL MATCHES" Icon={FiTarget} value={loadingData ? "…" : sourceErrors.matches ? "—" : number(counts.matches)} subtitle="Recorded matches" />
+              <StatCard label="TOURNAMENTS" Icon={FiAward} value={loadingData ? "…" : sourceErrors.tournaments ? "—" : number(counts.tournaments)} subtitle="Tournament records" />
+              <StatCard label="TOTAL PROFIT" Icon={FiTrendingUp} value={loadingData ? "…" : !completeFinance ? "—" : taka(totalProfit)} subtitle="Recorded match finance" />
+            </section>
 
-<span>
-TOTAL PLAYERS
-</span>
+            <div className={styles.sectionHeading}>
+              <div>
+                <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
+                <p>{activeNav.description}</p>
+              </div>
+              <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+                {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
+                <button type="button" className={styles.sectionAction} onClick={refresh} disabled={loadingData}>
+                  <FiRefreshCw aria-hidden="true"/> {loadingData ? "Refreshing…" : "Refresh data"}
+                </button>
+              </div>
+            </div>
 
-<h2>
-120
-</h2>
+            {sourceErrors.general && <div className={styles.notice}>{sourceErrors.general}</div>}
 
-</div>
-
-
-
-<div className="stat-card">
-
-<span>
-ACTIVE MATCHES
-</span>
-
-<h2>
-08
-</h2>
-
-</div>
-
-
-
-<div className="stat-card">
-
-<span>
-TOURNAMENTS
-</span>
-
-<h2>
-05
-</h2>
-
-</div>
-
-
-
-<div className="stat-card">
-
-<span>
-REVENUE
-</span>
-
-<h2>
-৳45000
-</h2>
-
-</div>
-
-
-</section>
-
-       {/* Cards Grid */}
-<div className="cards-grid">
-  {cards.map((card) => (
-    <div key={card.num} className="card">
-      <div className="card-top">
-        <div className="icon-box">{card.icon}</div>
-        <span className="number">{card.num}</span>
+            {active === "overview" ? (
+              <div className={styles.contentGrid}>
+                <Panel title="Player & Match Activity" subtitle="Recent six months · actual database records" className={styles.panelWide}>
+                  <div className={styles.legend}><span><i/>Players</span><span><i className={styles.second}/>Matches</span></div>
+                  <TrendChart players={players} matches={matches} />
+                  {(sourceErrors.players || sourceErrors.matches) && <p className={styles.notice}>One or more data sources are unavailable. Graph may be incomplete.</p>}
+                </Panel>
+                <Panel title="Match Distribution" subtitle="Current recorded match statuses">
+                  <MatchDonut matches={matches} />
+                </Panel>
+                <Panel title="Recent Activity" subtitle="Latest entries from the connected database" className={styles.panelWide}>
+                  <div className={styles.cardList}>
+                    {!overviewActivity.length ? <div className={styles.empty}>No recent activity available.</div> :
+                      overviewActivity.map((item,index) => (
+                        <div className={styles.activity} key={item.type + item.title + index}>
+                          <span className={styles.activityIcon}>{item.icon==="player" ? <FiUsers/> : item.icon==="match" ? <FiTarget/> : <FiAward/>}</span>
+                          <span className={styles.activityText}><strong>{item.title}</strong><span>{item.type} · {dateLabel(item.timestamp)}</span></span>
+                          <FiChevronRight style={{color:"var(--soft)"}} aria-hidden="true"/>
+                        </div>
+                      ))}
+                  </div>
+                </Panel>
+                <Panel title="Tournament Progress" subtitle="Tournament status breakdown">
+                  {sourceErrors.tournaments ? <div className={styles.empty}>Tournament data unavailable.</div> :
+                    <div className={styles.progressList}>
+                      <ProgressLine label="Upcoming" count={groupStatus(tournaments,"upcoming")} total={tournaments.length} />
+                      <ProgressLine label="Ongoing" count={groupStatus(tournaments,"ongoing")} total={tournaments.length} />
+                      <ProgressLine label="Completed" count={groupStatus(tournaments,"completed")} total={tournaments.length} />
+                    </div>
+                  }
+                  {tournaments.length===0 && !sourceErrors.tournaments && <p className={styles.infoStrip}>No tournaments added yet.</p>}
+                </Panel>
+                <Panel title="Latest Matches" subtitle="Recently recorded matches" className={styles.panelFull}>
+                  <div className={styles.tableWrap}>
+                    {sourceErrors.matches ? <div className={styles.empty}>Match data unavailable.</div> :
+                      matches.length === 0 ? <div className={styles.empty}>No match records yet.</div> :
+                        <table className={styles.dataTable}>
+                          <thead><tr><th>Match</th><th>Team</th><th>Status</th><th>Date</th></tr></thead>
+                          <tbody>
+                            {matches.slice(0,6).map((match) => (
+                              <tr key={match.id}>
+                                <td>{clean(match.match_type || tournamentNameById.get(String(match.tournament_id)) || "Match")}</td>
+                                <td>{clean(teamNameById.get(String(match.team1_id)))}</td>
+                                <td><Status value={match.status}/></td>
+                                <td>{dateLabel(match.match_date || match.created_at)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                    }
+                  </div>
+                </Panel>
+              </div>
+            ) : active === "salary" || active === "verification" ? (
+              <div className={styles.sectionView}>
+                <div className={styles.notice}>
+                  <strong>{active === "salary" ? "Salary & payouts" : "Verification & access codes"}</strong>
+                  <p style={{margin:"8px 0 0"}}>
+                    {active === "salary"
+                      ? "A dedicated salary management route is not connected yet. The existing Profit module stores match player allocations, not individual salary payments."
+                      : "The existing dashboard had a Verification tile without a working destination. Access-code management is not connected to this panel yet."}
+                  </p>
+                </div>
+                <div className={styles.actionTiles}>
+                  <Link href="/admin/players" className={styles.actionTile}>
+                    <FiUsers/><div><span>Player Management</span><small>Review accounts and registration status</small></div>
+                  </Link>
+                  <Link href="/admin/profit" className={styles.actionTile}>
+                    <FiDollarSign/><div><span>Profit Management</span><small>View recorded match finances</small></div>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.sectionView}>
+                {sourceErrors[active] && <div className={styles.notice}>Unable to load {activeNav.name} data: {sourceErrors[active]}</div>}
+                <div className={styles.overviewGrid}>
+                  {metrics.map(([title,value]) => (
+                    <div className={styles.miniCard} key={title}>
+                      <span className={styles.miniCardLabel}>{title.toUpperCase()}</span>
+                      <strong className={styles.miniCardValue}>{loadingData ? "…" : sourceErrors[active] ? "—" : typeof value === "number" ? number(value) : value}</strong>
+                    </div>
+                  ))}
+                </div>
+                <Panel title={activeNav.name + " Records"} subtitle="Latest records from your connected database">
+                  <div className={styles.panelHeader} style={{marginBottom:12}}>
+                    <label className={styles.search}>
+                      <FiSearch aria-hidden="true"/>
+                      <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder={"Search " + activeNav.name.toLowerCase()} aria-label={"Search " + activeNav.name}/>
+                    </label>
+                  </div>
+                  <div className={styles.tableWrap}>
+                    {loadingData ? <div className={styles.empty}>Loading records…</div> :
+                      sourceErrors[active] ? <div className={styles.empty}>No records can be displayed until data is available.</div> :
+                      !filtered.length ? <div className={styles.empty}>{search ? "No records match your search." : "No records created yet."}</div> :
+                      <table className={styles.dataTable}>
+                        <thead><tr>{COLUMNS[active].map((column)=><th key={column}>{column}</th>)}</tr></thead>
+                        <tbody>
+                          {filtered.map((row,index) => (
+                            <tr key={row.id || index}>
+                              {cellFor(active,row).map((cell,col)=><td key={col}>{cell}</td>)}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    }
+                  </div>
+                  {showLimited && <p className={styles.infoStrip}>Showing recent {LIMIT} records for preview. Open the management panel for full records.</p>}
+                  <div className={styles.infoStrip}>
+                    {activeNav.href ? "Use Open full " + activeNav.name + " panel for creating, editing or managing records." : "This section is currently a dashboard preview."}
+                  </div>
+                </Panel>
+              </div>
+            )}
+          </div>
+        </main>
       </div>
-
-      <h3>{card.title}</h3>
-      <p>{card.desc}</p>
-
-      <button
-  className="action-btn"
-  onClick={() => {
-    window.location.href = card.href;
-  }}
->
-  OPEN PANEL
-  <span>→</span>
-</button>
     </div>
-    ))}
-</div>
-
-</div>
-
-<style jsx>{`
-        .admin-page {
-          min-height: 100vh;
-          background: #050505;
-          color: #fff;
-          position: relative;
-          overflow: hidden;
-          font-family: "Inter", system-ui, -apple-system, sans-serif;
-        }
-
-        .bg-glow {
-          position: fixed;
-          width: 700px;
-          height: 700px;
-          background: #ff1744;
-          filter: blur(180px);
-          opacity: 0.16;
-          top: -300px;
-          left: -200px;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .bg-glow-2 {
-          position: fixed;
-          width: 500px;
-          height: 500px;
-          background: #ff0040;
-          filter: blur(160px);
-          opacity: 0.1;
-          bottom: -150px;
-          right: -100px;
-          pointer-events: none;
-          z-index: 0;
-        }
-
-        .container {
-          position: relative;
-          z-index: 2;
-          max-width: 1280px;
-          margin: 0 auto;
-          padding: 50px 40px 80px;
-        }
-
-        /* Header */
-        .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 60px;
-        }
-
-        .brand {
-          max-width: 600px;
-        }
-
-        .top-label {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          font-size: 12px;
-          letter-spacing: 3px;
-          color: #ff4d6d;
-          font-weight: 600;
-          margin-bottom: 14px;
-        }
-
-        .top-label .dot {
-          width: 8px;
-          height: 8px;
-          background: #ff1744;
-          border-radius: 50%;
-          box-shadow: 0 0 12px #ff1744;
-        }
-
-        .brand h1 {
-          font-size: 56px;
-          font-weight: 900;
-          letter-spacing: 4px;
-          margin: 0;
-          line-height: 1.1;
-          background: linear-gradient(180deg, #ffffff 30%, #ff8a9b);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .brand h2 {
-          font-size: 28px;
-          font-weight: 700;
-          letter-spacing: 6px;
-          margin: 6px 0 0;
-          color: #ff1744;
-          text-shadow: 0 0 20px rgba(255, 23, 68, 0.6);
-        }
-
-        .tagline {
-          font-size: 13px;
-          color: #777;
-          letter-spacing: 3px;
-          margin-top: 12px;
-        }
-
-        /* User Card */
-        .user-card {
-          background: rgba(20, 5, 10, 0.7);
-          border: 1px solid rgba(255, 23, 68, 0.45);
-          border-radius: 20px;
-          padding: 16px 20px;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          backdrop-filter: blur(12px);
-          box-shadow: 0 0 30px rgba(255, 23, 68, 0.15);
-        }
-
-        .avatar {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #ff1744, #b30022);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 800;
-          font-size: 18px;
-          box-shadow: 0 0 16px rgba(255, 23, 68, 0.5);
-          flex-shrink: 0;
-        }
-
-        .user-info {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-
-        .email {
-          font-size: 12px;
-          color: #ccc;
-        }
-
-        .logout-btn {
-          background: linear-gradient(135deg, #ff1744, #c4002b);
-          border: none;
-          color: white;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          padding: 8px 18px;
-          border-radius: 20px;
-          cursor: pointer;
-          box-shadow: 0 0 18px rgba(255, 23, 68, 0.4);
-          transition: all 0.25s ease;
-        }
-
-        .logout-btn:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 0 26px rgba(255, 23, 68, 0.65);
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-        }
-
-        /* Card */
-        .card {
-          background: rgba(12, 3, 6, 0.85);
-          border: 1px solid rgba(255, 23, 68, 0.4);
-          border-radius: 22px;
-          padding: 28px 26px 24px;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 0 0 1px rgba(255, 23, 68, 0.1),
-            0 15px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .card::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          border-radius: 22px;
-          padding: 1px;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 23, 68, 0.6),
-            rgba(255, 23, 68, 0.05),
-            rgba(255, 23, 68, 0.4)
-          );
-          -webkit-mask: linear-gradient(#fff 0 0) content-box,
-            linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
-          pointer-events: none;
-        }
-
-        .card::after {
-          content: "";
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(
-            circle at center,
-            rgba(255, 23, 68, 0.08) 0%,
-            transparent 60%
-          );
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          pointer-events: none;
-        }
-
-        .card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(255, 23, 68, 0.75);
-          box-shadow: 0 0 45px rgba(255, 23, 68, 0.28),
-            0 18px 40px rgba(0, 0, 0, 0.55);
-        }
-
-        .card:hover::after {
-          opacity: 1;
-        }
-
-        .card-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        .icon-box {
-          width: 48px;
-          height: 48px;
-          background: rgba(255, 23, 68, 0.12);
-          border: 1px solid rgba(255, 23, 68, 0.3);
-          border-radius: 14px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-        }
-
-        .number {
-          font-size: 13px;
-          font-weight: 700;
-          letter-spacing: 2px;
-          color: #ff4d6d;
-        }
-
-        .card h3 {
-          font-size: 20px;
-          font-weight: 800;
-          letter-spacing: 1.5px;
-          margin: 0 0 8px;
-          color: #fff;
-        }
-
-        .card p {
-          font-size: 14px;
-          color: #999;
-          margin: 0 0 26px;
-          line-height: 1.4;
-        }
-
-        .action-btn {
-          width: 100%;
-          height: 46px;
-          background: rgba(255, 23, 68, 0.1);
-          border: 1px solid rgba(255, 23, 68, 0.45);
-          border-radius: 14px;
-          color: #fff;
-          font-size: 13px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .action-btn:hover {
-          background: linear-gradient(135deg, #ff1744, #c4002b);
-          border-color: #ff1744;
-          box-shadow: 0 0 28px rgba(255, 23, 68, 0.5);
-          transform: translateY(-1px);
-        }
-
-        .action-btn span {
-          font-size: 16px;
-          transition: transform 0.3s ease;
-        }
-
-        .action-btn:hover span {
-          transform: translateX(5px);
-        }
-
-        /* Loading */
-        .loading-screen {
-          min-height: 100vh;
-          background: #050505;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 20px;
-        }
-
-        .loader {
-          width: 52px;
-          height: 52px;
-          border: 3px solid rgba(255, 23, 68, 0.15);
-          border-top-color: #ff1744;
-          border-radius: 50%;
-          animation: spin 0.8s linear infinite;
-        }
-
-        .loading-screen p {
-          font-size: 12px;
-          letter-spacing: 3px;
-          color: #ff4d6d;
-          font-weight: 600;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-          .cards-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
-        @media (max-width: 640px) {
-  .container {
-    padding: 30px 16px 50px;
-  }
-
-  .header {
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .brand h1 {
-    font-size: 36px;
-  }
-
-  .brand h2 {
-    font-size: 20px;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* =========================
-   DASHBOARD STATS
-========================= */
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 50px;
-}
-
-.stat-card {
-  padding: 24px 20px;
-  border-radius: 20px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 20, 60, .12),
-      rgba(0, 0, 0, .75)
-    );
-
-  border: 1px solid rgba(255, 20, 60, .4);
-
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, .5),
-    inset 0 0 25px rgba(255, 20, 60, .05);
-
-  text-align: center;
-}
-
-.stat-card span {
-  font-size: 10px;
-  letter-spacing: 3px;
-  color: #888;
-}
-
-.stat-card h2 {
-  font-size: 30px;
-  margin: 12px 0 0;
-  color: #fff;
-}
-
-
-/* =========================
-   STATS RESPONSIVE
-========================= */
-
-@media (max-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    margin-bottom: 35px;
-  }
-
-  .stat-card {
-    padding: 20px 16px;
-  }
-
-  .stat-card h2 {
-    font-size: 26px;
-  }
-}
-      `}</style>
-    </main>
   );
 }
