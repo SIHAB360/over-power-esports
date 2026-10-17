@@ -8,6 +8,11 @@
 -- Apply together with 20261017_step01_secure_withdrawals.sql, in filename order.
 BEGIN;
 
+-- Verified no duplicate user_id across existing player accounts. A unique
+-- index prevents concurrent signup requests from duplicating one wallet owner.
+CREATE UNIQUE INDEX IF NOT EXISTS op_players_unique_auth_user
+  ON public.players(user_id) WHERE user_id IS NOT NULL;
+
 -- Profile roles are assigned by auth.users -> public.handle_new_user()
 -- (SECURITY DEFINER owned by postgres), never client-side.
 -- This also prevents self-deletion/reinsertion of a privileged role.
@@ -37,6 +42,23 @@ SECURITY DEFINER
 SET search_path=''
 AS $op$
 BEGIN
+  -- Reject self-approved records inserted directly from browser clients.
+  -- Existing service-role signup API also forces pending/false/0.
+  IF TG_OP='INSERT' THEN
+    IF auth.uid() IS NOT NULL
+      AND NOT public.is_admin_or_moderator()
+      AND (
+        coalesce(NEW.status,'pending') <> 'pending'
+        OR coalesce(NEW.verified,false)
+        OR coalesce(NEW.earning_percentage,0) <> 0
+      )
+    THEN
+      RAISE EXCEPTION 'Player registrations require staff approval'
+        USING errcode='42501';
+    END IF;
+    RETURN NEW;
+  END IF;
+
   IF auth.uid() IS NOT NULL
     AND NOT public.is_admin_or_moderator()
     AND (
@@ -58,7 +80,7 @@ REVOKE ALL ON FUNCTION public.op_guard_player_sensitive_fields()
 
 DROP TRIGGER IF EXISTS op_guard_player_sensitive_fields ON public.players;
 CREATE TRIGGER op_guard_player_sensitive_fields
-  BEFORE UPDATE ON public.players
+  BEFORE INSERT OR UPDATE ON public.players
   FOR EACH ROW
   EXECUTE FUNCTION public.op_guard_player_sensitive_fields();
 
