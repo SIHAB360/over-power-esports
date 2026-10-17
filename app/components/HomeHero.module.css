@@ -88,6 +88,10 @@
     0 0 20px rgba(252, 25, 44, .55),
     0 0 65px rgba(223, 0, 26, .21),
     inset 0 0 25px rgba(255, 44, 57, .09);
+  /* Always-on gentle floating and a tiny pendulum rotation. */
+  transform-origin: 50% 50%;
+  animation: logoFloat 5.6s ease-in-out infinite;
+  will-change: transform;
 }
 .logoFrame::before {
   content: "";
@@ -227,6 +231,10 @@
   0% { transform: scale(.86); opacity: .12; }
   100% { transform: scale(1.1); opacity: .22; }
 }
+@keyframes logoFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -11px, 0) rotate(2deg); }
+}
 @media (max-width: 1024px) {
   .hero { min-height: 790px; padding: 146px 22px 110px; }
   .headline { font-size: clamp(38px, 6.3vw, 70px); }
@@ -267,7 +275,8 @@
   .slogan {font-size: 15px;letter-spacing: 1.1px;}
 }
 @media (prefers-reduced-motion: reduce) {
-  .redAuraLeft,.redAuraRight { animation: none; }
+  .redAuraLeft,.redAuraRight,.logoFrame { animation: none; }
+  .logoFrame { will-change: auto; transform: none; }
   .primaryAction,.secondaryAction { transition: none; }
   .primaryAction:hover,.secondaryAction:hover { transform: none; }
 }
