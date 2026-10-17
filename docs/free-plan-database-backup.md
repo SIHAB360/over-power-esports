@@ -21,7 +21,8 @@ A9:EA:1D:44:30:F5:AC:20:42:D7:D5:7D:6E:B1:89:95:93:23:2B:65:26:70:DF:9F:3A:90:44
 ## 2. Configure the single GitHub Actions secret
 
 1. In the [Supabase Dashboard](https://supabase.com/dashboard), open the OVER POWER project and click **Connect**.
-2. Pick **Session pooler** (NOT Transaction pooler) and copy the PostgreSQL connection URI after inserting the correct database password. It should point to a session-pooler host, usually on port 5432. This is a **database connection**, not the Supabase anon/service-role API key. If the copied URL has `[YOUR-PASSWORD]`, replace that placeholder locally and URL-encode special characters as required. The workflow adds `sslmode=require` unless already present.
+2. **IMPORTANT: the default Supabase Connect screen may show Direct connection. Change Method to Session pooler first** (NOT Transaction pooler), then choose URI and Copy. A Direct URI like `postgresql://postgres:[YOUR-PASSWORD]@db.siiftefxumacaitjmuxj.supabase.co:5432/postgres` will not work reliably from GitHub Actions, even with a real password: it uses IPv6. Session pooler is accessible over IPv4.
+   The correct Session pooler URI has this **shape** (do not guess the host): `postgresql://postgres.siiftefxumacaitjmuxj:[YOUR-PASSWORD]@[EXACT-POOLER-HOST]:5432/postgres`. The exact pooler host must be copied from the Connect dialog: a region may have multiple pools. Replace only `[YOUR-PASSWORD]` with the real database password. Percent-encode reserved password characters; do not share the result in chat. The workflow adds `sslmode=require` unless already present.
 3. In [GitHub repository Settings](https://github.com/SIHAB360/over-power-esports/settings/secrets/actions) → Secrets and variables → Actions → **New repository secret**:
    - Name: `SUPABASE_SESSION_POOLER_URL`
    - Value: the **complete** PostgreSQL Session Pooler URI, including the password.
@@ -72,6 +73,10 @@ After testing, securely remove the decrypted local database dump. Keep only the 
 
 ## Troubleshooting
 
+- **Missing or wrong secret format**: the secret must contain the entire Session pooler URI, **not** a password alone. Confirm GitHub Actions Secret **name** is `SUPABASE_SESSION_POOLER_URL`. Use Update if a prior secret exists.
+- **GitHub annotation says Direct Connection**: you copied `db.siiftefxumacaitjmuxj.supabase.co`. Change the Supabase Connect method to **Session pooler**; it must use user `postgres.siiftefxumacaitjmuxj` and the pooler host on port 5432.
+- **GitHub annotation says password placeholder**: replace `[YOUR-PASSWORD]` with your real Database Password in GitHub Secret; never disclose it here.
+- **Node.js 20 deprecated warning**: an unrelated GitHub Action warning, not a database connection failure.
 - **Missing secret**: add `SUPABASE_SESSION_POOLER_URL` (not an API token).
 - **Connection refused / host not reachable**: pick Session Pooler; Direct DB often requires IPv6 not available on GitHub-hosted runners.
 - **Invalid password**: re-check secret, password URL-encoding; do not print secrets to logs.
