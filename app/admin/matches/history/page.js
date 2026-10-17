@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   FiActivity, FiArrowLeft, FiCalendar, FiCheckCircle, FiChevronLeft,
   FiChevronRight, FiClock, FiDollarSign, FiFileText, FiFilter,
-  FiRefreshCw, FiShield, FiTrendingDown, FiTrendingUp,
+  FiRefreshCw, FiShield, FiTrendingDown, FiTrendingUp, FiTrash2, FiAlertTriangle, FiX,
 } from "react-icons/fi";
 import { supabase } from "../../../lib/supabase";
 import styles from "./history.module.css";
@@ -69,6 +69,12 @@ export default function MatchHistoryPage() {
   const router = useRouter();
   const [access, setAccess] = useState("checking");
   const [accessError, setAccessError] = useState("");
+  const [canDelete, setCanDelete] = useState(false);
+  const [deleteMatch, setDeleteMatch] = useState(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [deleteSuccess, setDeleteSuccess] = useState("");
   const [matches, setMatches] = useState([]);
   const [tournamentNames, setTournamentNames] = useState({});
   const [teamNames, setTeamNames] = useState({});
@@ -116,6 +122,7 @@ export default function MatchHistoryPage() {
               (teamsResult.data || []).map((entry) => [String(entry.id), entry.team_name])
             ));
           }
+          setCanDelete(role === "admin");
           setAccess("granted");
         }
       } catch (error) {
@@ -178,6 +185,51 @@ export default function MatchHistoryPage() {
     }
     return { profit, loss };
   }, [matches]);
+
+  const openDelete = (match) => {
+    setDeleteMatch(match);
+    setDeleteConfirmation("");
+    setDeleteError("");
+    setDeleteSuccess("");
+  };
+
+  const cancelDelete = () => {
+    if (deleting) return;
+    setDeleteMatch(null);
+    setDeleteConfirmation("");
+    setDeleteError("");
+  };
+
+  async function confirmDelete() {
+    if (!canDelete || !deleteMatch || deleteConfirmation.trim() !== "DELETE" || deleting) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error || !data?.session?.access_token) throw new Error("Admin session expired. Please log in again.");
+      const response = await fetch("/api/admin/matches/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.session.access_token}`,
+        },
+        body: JSON.stringify({ matchId: String(deleteMatch.id) }),
+        cache: "no-store",
+      });
+      const result = await response.json();
+      if (!response.ok || !result?.deleted) {
+        throw new Error(result?.message || "Unable to delete match.");
+      }
+      setDeleteSuccess("Match permanently deleted. Related finance and player records were removed by Supabase.");
+      setDeleteMatch(null);
+      setDeleteConfirmation("");
+      setRefreshVersion((previous) => previous + 1);
+    } catch (error) {
+      setDeleteError(error?.message || "Deletion failed. No change confirmed.");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const fromIndex = (page - 1) * PAGE_SIZE;
@@ -251,6 +303,7 @@ export default function MatchHistoryPage() {
             </div>
           </div>
 
+          {deleteSuccess && <div className={styles.successNotice} role="status"><FiCheckCircle aria-hidden="true" /> {deleteSuccess}</div>}
           {loadError && <div className={styles.error} role="alert">Unable to read match records: {loadError}. Please try Refresh.</div>}
 
           {loading ? (
@@ -270,6 +323,7 @@ export default function MatchHistoryPage() {
                     <th scope="col">PROFIT / LOSS</th>
                     <th scope="col">DATE & TIME</th>
                     <th scope="col">STATUS</th>
+                    {canDelete && <th scope="col">ACTION</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -307,6 +361,10 @@ export default function MatchHistoryPage() {
                           {match.status === "completed" && <FiCheckCircle aria-hidden="true" />}
                           {match.status || "Unknown"}
                         </span></td>
+                        {canDelete && <td data-label="ACTION"><button type="button" className={styles.deleteButton}
+                          onClick={() => openDelete(match)} aria-label={`Delete match ${lobby}`}>
+                          <FiTrash2 aria-hidden="true" /> Delete
+                        </button></td>}
                       </tr>
                     );
                   })}
@@ -328,7 +386,49 @@ export default function MatchHistoryPage() {
             </div>
           </div>
         </section>
-        <p className={styles.disclaimer}><FiShield aria-hidden="true" /> Read-only history. No records are deleted or modified here. A profit or loss is shown only when stored in your match record.</p>
+        <p className={styles.disclaimer}><FiShield aria-hidden="true" /> {canDelete
+          ? "Only administrators can permanently delete matches. Deletion requires confirmation and updates Supabase; all related records must be removed in one transaction."
+          : "Match History is read-only for moderators. Only administrators can delete matches."}</p>
+        {canDelete && deleteMatch && (
+          <div className={styles.modalOverlay} role="presentation" onMouseDown={(event) => {
+            if (event.target === event.currentTarget) cancelDelete();
+          }}>
+            <div className={styles.deleteDialog} role="alertdialog" aria-modal="true"
+              aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-description">
+              <div className={styles.dialogTop}>
+                <span className={styles.dangerIcon}><FiAlertTriangle aria-hidden="true" /></span>
+                <button type="button" className={styles.closeDialog} disabled={deleting}
+                  onClick={cancelDelete} aria-label="Close deletion dialog"><FiX aria-hidden="true"/></button>
+              </div>
+              <h2 id="delete-dialog-title">Permanently delete this match?</h2>
+              <p id="delete-dialog-description">This action cannot be undone. It will remove the match from Supabase together with its connected match finance, player statistics and earnings. All screens will reflect the updated data on refresh.</p>
+              <div className={styles.targetMatch}>
+                <strong>{deleteMatch.tournament_id
+                  ? tournamentNames[String(deleteMatch.tournament_id)] || "Tournament / Lobby"
+                  : "Independent Match"}</strong>
+                <span>{matchTypeName(deleteMatch.match_type)} · {dateTime(deleteMatch.match_date || deleteMatch.created_at).date}</span>
+                <span>Entry: ৳{money(deleteMatch.entry_fee)} · Prize: ৳{money(deleteMatch.prize_money)} · {moneyOutcome(deleteMatch).label}: {moneyOutcome(deleteMatch).value}</span>
+              </div>
+              <label className={styles.confirmLabel} htmlFor="delete-match-confirmation">
+                Type <strong>DELETE</strong> to confirm permanent removal
+              </label>
+              <input id="delete-match-confirmation" type="text" value={deleteConfirmation}
+                onChange={(event) => setDeleteConfirmation(event.target.value)}
+                autoComplete="off" spellCheck={false} disabled={deleting}
+                placeholder="DELETE" className={styles.confirmInput}/>
+              {deleteError && <p role="alert" className={styles.modalError}>{deleteError}</p>}
+              <div className={styles.dialogActions}>
+                <button type="button" className={styles.cancelButton} disabled={deleting}
+                  onClick={cancelDelete}>Cancel</button>
+                <button type="button" className={styles.confirmButton}
+                  disabled={deleting || deleteConfirmation.trim() !== "DELETE"}
+                  onClick={confirmDelete}>
+                  <FiTrash2 aria-hidden="true" /> {deleting ? "Deleting securely…" : "Delete permanently"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
