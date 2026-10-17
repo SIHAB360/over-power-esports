@@ -485,9 +485,28 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className={styles.navScroll}>
-            <p className={styles.menuTitle}>WORKSPACE</p>
+            <p className={styles.menuTitle}>OPERATIONS</p>
             <nav className={styles.navGroup} aria-label="Dashboard sections">
-              {NAV.map(({ key,name,Icon }) => (
+              {NAV.slice(0, 5).map(({ key,name,Icon }) => (
+                <button
+                  type="button"
+                  key={key}
+                  className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  onClick={() => goTo(key)}
+                  aria-current={active === key ? "page" : undefined}
+                >
+                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span className={styles.navText}>{name}</span>
+                  {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
+                    <span className={styles.navCount}>{number(counts[key])}</span>
+                  )}
+                </button>
+              ))}
+            </nav>
+            <div className={styles.navSeparator}/>
+            <p className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
+            <nav className={styles.navGroup} aria-label="Management and access sections">
+              {NAV.slice(5).map(({ key,name,Icon }) => (
                 <button
                   type="button"
                   key={key}
@@ -511,6 +530,13 @@ export default function AdminDashboard() {
             </Link>
           </div>
           <div className={styles.sidebarFoot}>
+            <div className={styles.sidebarStatus}>
+              <span className={styles.sidebarStatusDot} aria-hidden="true" />
+              <div>
+                <strong>{loadingData ? "SYNCING DATA" : Object.values(sourceErrors).some(Boolean) ? "REVIEW DATA SOURCES" : "SYSTEM CONNECTED"}</strong>
+                <small>Over Power · Secure admin</small>
+              </div>
+            </div>
             <p className={styles.sidebarAdmin} title={adminEmail}>{adminEmail}</p>
             <button type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
           </div>
@@ -525,9 +551,16 @@ export default function AdminDashboard() {
                 </button>
               </div>
               <div className={styles.headerCenter}>
-                <p className={styles.eyebrow}><i className={styles.eyebrowDot}/> ADMIN CONTROL CENTER</p>
-                <h1 className={styles.pageTitle}>OVER POWER <span>ADMIN PANEL</span></h1>
-                <p className={styles.pageSubtitle}>ESPORTS COMMAND CENTER · LIVE OPERATIONS</p>
+                <p className={styles.eyebrow}><i className={styles.eyebrowDot}/> ADMIN OPERATIONS <span className={styles.heroSerial}>/ CONTROL ROOM 01</span></p>
+                <h1 className={styles.pageTitle}>OVER POWER <span>COMMAND CENTER</span></h1>
+                <p className={styles.pageSubtitle}>A single home for your players, squads, tournaments, results and finances.</p>
+                <div className={styles.heroMeta}>
+                  <span className={[styles.heroStatus, Object.values(sourceErrors).some(Boolean) ? styles.heroWarning : ""].join(" ")}>
+                    <FiActivity aria-hidden="true" />
+                    {loadingData ? "Syncing dashboard…" : Object.values(sourceErrors).some(Boolean) ? "Some data needs attention" : "Dashboard data synced"}
+                  </span>
+                  <span className={styles.heroSecure}><FiLock aria-hidden="true" /> ADMIN ACCESS</span>
+                </div>
               </div>
               <div className={styles.headerRight}>
                 <div className={styles.headerAdmin}>
@@ -549,8 +582,29 @@ export default function AdminDashboard() {
               <StatCard label="TOTAL PROFIT" Icon={FiTrendingUp} value={loadingData ? "…" : !completeFinance ? "—" : taka(totalProfit)} subtitle="Recorded match finance" />
             </section>
 
+            {active === "overview" && (
+              <section className={styles.commandActions} aria-label="Quick management shortcuts">
+                <button type="button" className={styles.commandAction} onClick={() => goTo("players")}>
+                  <span className={styles.commandActionIcon}><FiUsers aria-hidden="true"/></span>
+                  <span className={styles.commandActionBody}><strong>Player control</strong><small>Roster & approvals</small></span>
+                  <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
+                </button>
+                <button type="button" className={styles.commandAction} onClick={() => goTo("matches")}>
+                  <span className={styles.commandActionIcon}><FiTarget aria-hidden="true"/></span>
+                  <span className={styles.commandActionBody}><strong>Match operations</strong><small>Scores & schedules</small></span>
+                  <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
+                </button>
+                <button type="button" className={styles.commandAction} onClick={() => goTo("verification")}>
+                  <span className={styles.commandActionIcon}><FiShield aria-hidden="true"/></span>
+                  <span className={styles.commandActionBody}><strong>Verification hub</strong><small>Secure live access codes</small></span>
+                  <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
+                </button>
+              </section>
+            )}
+
             <div className={styles.sectionHeading}>
               <div>
+                <span className={styles.sectionOverline}>CONTROL ROOM / {active.toUpperCase()}</span>
                 <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
                 <p>{activeNav.description}</p>
               </div>
