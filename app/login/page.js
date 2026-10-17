@@ -182,11 +182,22 @@ export default function LoginPage() {
               <Image src={logo} alt="Over Power Esports logo" className={styles.logoImage} priority />
             </div>
             <div className={styles.eyebrow}>OVER POWER ESPORTS</div>
-            <h1 className={styles.title} id="login-title">{mode === "forgot" ? "FORGOT PASSWORD?" : "WELCOME BACK"}</h1>
+            <div className={styles.dashboardHeading}>
+              {mode === "login" && <span className={styles.dashboardSpark} aria-hidden="true" />}
+              <h1
+                className={[styles.title, mode === "login" ? styles.dashboardTitle : ""].join(" ")}
+                id="login-title"
+              >
+                {mode === "forgot" ? "FORGOT PASSWORD?" : "PLAYER DASHBOARD"}
+              </h1>
+              {mode === "login" && (
+                <span className={[styles.dashboardSpark, styles.dashboardSparkRight].join(" ")} aria-hidden="true" />
+              )}
+            </div>
             <p className={styles.subtitle}>
               {mode === "forgot"
                 ? "Enter the email linked to your account and we’ll send a secure reset link."
-                : "Sign in to continue to your player account."}
+                : "Sign in to view your stats, track progress, and manage your player journey."}
             </p>
           </header>
 
