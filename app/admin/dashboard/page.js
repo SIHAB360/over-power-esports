@@ -483,11 +483,14 @@ export default function AdminDashboard() {
         {mobileOpen && <button type="button" className={styles.overlay} aria-label="Close menu" onClick={() => setMobileOpen(false)}/>}
         <aside className={[styles.sidebar, mobileOpen ? styles.sidebarOpen : ""].join(" ")} aria-label="Admin navigation">
           <div className={styles.sidebarTop}>
-            <Image className={styles.brandLogo} src={logo} alt="Over Power Esports" width={39} height={39} />
-            <div>
+            <Image className={styles.brandLogo} src={logo} alt="Over Power Esports" width={54} height={54} />
+            <div className={styles.brandCopy}>
               <p className={styles.brandTitle}>OVER POWER</p>
               <p className={styles.brandSub}>ESPORTS ADMIN</p>
             </div>
+            <button type="button" className={styles.sidebarClose} aria-label="Close admin menu" onClick={() => setMobileOpen(false)}>
+              <FiX aria-hidden="true" />
+            </button>
           </div>
           <div className={styles.navScroll}>
             <p className={styles.menuTitle}>OPERATIONS</p>
@@ -613,7 +616,7 @@ export default function AdminDashboard() {
                 <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
                 <p>{activeNav.description}</p>
               </div>
-              <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+              <div className={styles.headingActions}>
                 {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
                 {active === "matches" && <Link className={styles.sectionAction} href="/admin/matches/history"><FiClock aria-hidden="true"/> Match History <FiArrowUpRight aria-hidden="true"/></Link>}
                 <button type="button" className={styles.sectionAction} onClick={() => {
@@ -688,11 +691,16 @@ export default function AdminDashboard() {
               <VerificationPanel refreshVersion={verificationRefreshVersion} />
             ) : active === "salary" ? (
               <div className={styles.sectionView}>
-                <div className={styles.notice}>
-                  <strong>Salary & payouts</strong>
-                  <p style={{margin:"8px 0 0"}}>
-                    A dedicated salary management route is not connected yet. The existing Profit module stores match player allocations, not individual salary payments.
-                  </p>
+                <div className={styles.salaryNotice} role="status">
+                  <span className={styles.salaryNoticeIcon}><FiCreditCard aria-hidden="true" /></span>
+                  <div className={styles.salaryNoticeContent}>
+                    <span className={styles.salaryNoticeKicker}>FINANCE WORKSPACE</span>
+                    <h3>Salary & Payouts</h3>
+                    <p>Individual salary payments are not connected yet. Your existing match earnings and player allocations are safely available in Profit Management.</p>
+                  </div>
+                  <Link href="/admin/profit" className={styles.salaryNoticeAction}>
+                    Open Profit <FiArrowUpRight aria-hidden="true" />
+                  </Link>
                 </div>
                 <div className={styles.actionTiles}>
                   <Link href="/admin/players" className={styles.actionTile}>
