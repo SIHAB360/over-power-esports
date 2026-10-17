@@ -58,7 +58,7 @@ BEGIN
     WHERE lower(role)='admin' LIMIT 1;
   IF v_admin IS NULL THEN RAISE EXCEPTION 'No admin fixture in restored DB'; END IF;
 
-  -- Choose a real approved player from the disposable copy with 2 BDT+
+  -- Choose an approved player with >0.20 BDT positive net from the local clone.
   -- computed earned balance; do not reveal PII/UUIDs in the CI logs.
   SELECT p.id,p.user_id,SUM(pe.amount)
     INTO v_player,v_user,v_total
@@ -66,7 +66,7 @@ BEGIN
   JOIN public.player_earnings pe ON pe.player_id=p.id
   JOIN public.matches m ON m.id=pe.match_id AND m.status='completed'
   WHERE p.user_id IS NOT NULL AND p.status='approved'
-  GROUP BY p.id,p.user_id HAVING SUM(pe.amount)>2
+  GROUP BY p.id,p.user_id HAVING SUM(pe.amount)>0.2
   ORDER BY SUM(pe.amount) DESC
   LIMIT 1;
   IF v_player IS NULL THEN
@@ -76,18 +76,18 @@ BEGIN
   PERFORM set_config('request.jwt.claim.sub',v_user::text,true);
   SELECT available_balance INTO v_available
     FROM public.get_player_wallet_balance(v_player);
-  IF v_available <= 2 THEN RAISE EXCEPTION 'Wallet has insufficient test balance'; END IF;
+  IF v_available <= 0.2 THEN RAISE EXCEPTION 'Wallet has insufficient test balance'; END IF;
 
-  v_request1 := public.request_player_withdrawal_v2(1,'bkash','01700000000');
+  v_request1 := public.request_player_withdrawal_v2(0.1,'bkash','01700000000');
   SELECT available_balance INTO v_after
     FROM public.get_player_wallet_balance(v_player);
-  IF v_after IS DISTINCT FROM v_available - 1 THEN
+  IF v_after IS DISTINCT FROM v_available - 0.1 THEN
     RAISE EXCEPTION 'Reservation did not debit available balance';
   END IF;
 
   v_denied := false;
   BEGIN
-    PERFORM public.request_player_withdrawal_v2(1,'nagad','01800000000');
+    PERFORM public.request_player_withdrawal_v2(0.1,'nagad','01800000000');
   EXCEPTION WHEN OTHERS THEN v_denied := true;
   END;
   IF NOT v_denied THEN RAISE EXCEPTION 'Duplicate active withdrawal was accepted'; END IF;
@@ -111,12 +111,12 @@ BEGIN
     RAISE EXCEPTION 'Rejected reservation did not release wallet funds';
   END IF;
 
-  v_request2 := public.request_player_withdrawal_v2(1,'nagad','01800000000');
+  v_request2 := public.request_player_withdrawal_v2(0.1,'nagad','01800000000');
   PERFORM set_config('request.jwt.claim.sub',v_admin::text,true);
 
   v_denied := false;
   BEGIN
-    PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.1,'LOCAL-TEST-ONLY');
+    PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.01,'LOCAL-TEST-ONLY');
   EXCEPTION WHEN OTHERS THEN v_denied := true;
   END;
   IF NOT v_denied THEN RAISE EXCEPTION 'Pending request was marked Paid without approval'; END IF;
@@ -124,21 +124,21 @@ BEGIN
   PERFORM public.admin_review_player_withdrawal(v_request2,'approved',null);
   v_denied := false;
   BEGIN
-    PERFORM public.admin_confirm_manual_withdrawal(v_request2,1,'LOCAL-TEST-ONLY');
+    PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.1,'LOCAL-TEST-ONLY');
   EXCEPTION WHEN OTHERS THEN v_denied := true;
   END;
   IF NOT v_denied THEN RAISE EXCEPTION 'Fee equal to requested amount was accepted'; END IF;
 
-  PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.1,'LOCAL-TEST-ONLY');
+  PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.01,'LOCAL-TEST-ONLY');
   SELECT status,transfer_fee,net_payout INTO v_status,v_fee,v_net
     FROM public.withdrawal_requests WHERE id=v_request2;
-  IF v_status <> 'paid' OR v_fee <> 0.1 OR v_net <> 0.9 THEN
+  IF v_status <> 'paid' OR v_fee <> 0.01 OR v_net <> 0.09 THEN
     RAISE EXCEPTION 'Manual payment net/gross accounting incorrect';
   END IF;
 
   v_denied := false;
   BEGIN
-    PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.1,'LOCAL-TEST-ONLY');
+    PERFORM public.admin_confirm_manual_withdrawal(v_request2,0.01,'LOCAL-TEST-ONLY');
   EXCEPTION WHEN OTHERS THEN v_denied := true;
   END;
   IF NOT v_denied THEN RAISE EXCEPTION 'Duplicate Paid confirmation accepted'; END IF;
@@ -152,7 +152,7 @@ BEGIN
   PERFORM set_config('request.jwt.claim.sub',v_user::text,true);
   SELECT available_balance INTO v_after
     FROM public.get_player_wallet_balance(v_player);
-  IF v_after IS DISTINCT FROM v_available - 1 THEN
+  IF v_after IS DISTINCT FROM v_available - 0.1 THEN
     RAISE EXCEPTION 'Paid transaction was not debited exactly once';
   END IF;
 
