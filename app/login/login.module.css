@@ -719,3 +719,295 @@
     transition: none;
   }
 }
+
+
+/* 2026 player portal branding refresh. Uses the site's loaded Orbitron
+   and Rajdhani typefaces, avoiding extra fonts or changes to auth UI logic. */
+.page {
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "Rajdhani", "Segoe UI", sans-serif;
+}
+.shell {
+  width: min(1190px, 100%);
+  grid-template-columns: minmax(0, .97fr) minmax(0, 1.03fr);
+  gap: clamp(22px, 4.6vw, 70px);
+  align-items: center;
+}
+.brandPanel {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  min-height: 540px;
+  padding: clamp(26px, 3.2vw, 44px);
+  overflow: hidden;
+  border: 1px solid rgba(176, 148, 242, .24);
+  border-radius: 31px;
+  color: #f8f7ff;
+  background:
+    radial-gradient(ellipse at 92% 5%, rgba(203, 100, 236, .14), transparent 42%),
+    radial-gradient(ellipse at 5% 94%, rgba(49, 187, 243, .13), transparent 48%),
+    linear-gradient(146deg, #141124 0%, #0d1023 52%, #090e1d 100%);
+  box-shadow:
+    0 27px 65px rgba(5, 7, 25, .23),
+    inset 0 1px rgba(255, 255, 255, .065);
+}
+.brandPanel::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 13px;
+  border: 1px solid rgba(213, 201, 255, .055);
+  border-radius: 22px;
+  pointer-events: none;
+}
+.brandPanel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  z-index: -1;
+  border-top: 2px solid rgba(236, 143, 212, .5);
+  border-right: 2px solid rgba(152, 117, 248, .5);
+  border-radius: 0 30px 0 0;
+  mask-image: linear-gradient(135deg, #000 0%, transparent 74%);
+  pointer-events: none;
+}
+.brandKicker {
+  gap: 12px;
+  color: #e4d4f9;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: .2em;
+}
+.kickerDot {
+  background: #63e2d4;
+  box-shadow: 0 0 0 5px rgba(67, 224, 205, .09),0 0 16px rgba(67,224,205,.6);
+}
+.brandWords {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  margin: clamp(23px,3vw,34px) 0 0;
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: inherit;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -.048em;
+  text-align: left;
+}
+.brandPrimary {
+  display: block;
+  max-width: 100%;
+  color: #fff;
+  font-size: clamp(22px, 2.85vw, 39px);
+  font-weight: 850;
+  line-height: 1.28;
+  letter-spacing: -.058em;
+  white-space: nowrap;
+  text-shadow: 0 0 24px rgba(195,175,247,.18);
+}
+.brandAccent {
+  display: block;
+  max-width: 100%;
+  margin-top: 9px;
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: clamp(42px, 4.25vw, 61px);
+  font-weight: 900;
+  line-height: 1.16;
+  letter-spacing: -.06em;
+  white-space: nowrap;
+  background: linear-gradient(105deg, #ff9ec5 2%, #d7a1f9 42%, #a49eff 69%, #70d9f3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 16px rgba(156,123,245,.16));
+}
+.brandRule {
+  width: 135px;
+  height: 3px;
+  margin-top: 25px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#fb92bd,#b19cf9,#63dcee);
+  box-shadow: 0 0 12px rgba(157,134,246,.21);
+}
+.brandDescription {
+  max-width: 410px;
+  margin: 24px 0 0;
+  color: #f0eafb;
+  font-family: "Rajdhani", sans-serif;
+  font-size: clamp(18px, 1.65vw, 23px);
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: .02em;
+  text-align: left;
+}
+.brandDescriptionSecondary {
+  display: block;
+  margin-top: 6px;
+  color: #aebbd7;
+  font-size: .9em;
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+.brandFooter {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 37px;
+  padding-top: 20px;
+  width: 100%;
+  border-top: 1px solid rgba(179,184,220,.15);
+  color: #d8deff;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.brandMark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  border: 1px solid rgba(211,171,255,.5);
+  border-radius: 50%;
+  background: #0c1020;
+  box-shadow: 0 0 21px rgba(140,106,241,.25);
+}
+.brandMarkImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.brandFooterCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.brandFooterCopy strong {
+  color: #e9e6ff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: .095em;
+}
+.brandFooterCopy small {
+  color: #aebbd7;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: .11em;
+}
+.card {
+  min-width: 0;
+  width: 100%;
+  max-width: 570px;
+  padding: clamp(29px, 3.5vw, 43px);
+}
+.title {
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: clamp(24px, 2.35vw, 33px);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+.eyebrow,
+.footer {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 800;
+}
+.subtitle { font-size: 16px; }
+.fieldLabel {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+}
+.input {
+  font-family: "Rajdhani", "Segoe UI", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+.primaryButton {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+}
+@media (max-width: 1040px) and (min-width: 761px) {
+  .shell { gap: 25px; }
+  .brandPanel {
+    min-height: 500px;
+    padding: 30px 25px;
+  }
+  .brandPrimary { font-size: clamp(20px, 2.7vw, 29px); }
+  .brandAccent { font-size: clamp(37px, 4.05vw, 44px); }
+  .brandDescription { font-size: 18px; }
+  .brandFooter { margin-top: 26px; }
+  .card { padding: 30px 24px; }
+}
+@media (max-width: 860px) {
+  .page {
+    padding: 84px 18px 38px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .shell {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    width: min(550px, 100%);
+    gap: 18px;
+  }
+  .brandPanel {
+    display: flex;
+    width: 100%;
+    min-height: 0;
+    padding: 29px 30px;
+    border-radius: 24px;
+  }
+  .brandWords { margin-top: 13px; }
+  .brandPrimary { font-size: clamp(23px, 4.1vw, 31px); }
+  .brandAccent { font-size: clamp(40px, 6vw, 50px); margin-top: 4px; }
+  .brandRule { margin-top: 13px; }
+  .brandDescription { margin-top: 13px; font-size: 19px; }
+  .brandDescriptionSecondary { margin-top: 3px; }
+  .brandFooter { display: none; }
+  .card { max-width: none; margin: 0; padding: 31px 28px; }
+}
+@media (max-width: 520px) {
+  .page { padding: 74px 12px 24px; }
+  .shell { gap: 14px; }
+  .brandPanel {
+    padding: 24px 22px;
+    border-radius: 20px;
+  }
+  .brandPanel::before { inset: 9px; border-radius: 14px; }
+  .brandKicker { font-size: 10px; letter-spacing: .15em; }
+  .brandWords { margin-top: 11px; }
+  .brandPrimary { font-size: clamp(20px, 6vw, 27px); }
+  .brandAccent { font-size: clamp(35px, 10.6vw, 45px); margin-top: 3px; }
+  .brandRule { width: 98px; height: 2px; margin-top: 12px; }
+  .brandDescription { font-size: 17px; margin-top: 12px; }
+  .card { padding: 28px 20px; }
+  .title { font-size: clamp(24px, 6.5vw, 30px); }
+}
+@media (max-width: 360px) {
+  .brandPanel { padding: 21px 15px; }
+  .brandPrimary { font-size: 19px; }
+  .brandAccent { font-size: 34px; }
+  .brandKicker { font-size: 9px; letter-spacing: .11em; }
+  .brandDescription { font-size: 16px; }
+  .card { padding: 24px 17px; }
+}
