@@ -97,9 +97,9 @@ export default function BestPlayers() {
         </div>
       )}
 
-      {!loading && bestPlayers.length === 0 && (
+      {!loading && !error && bestPlayers.length === 0 && (
         <div className={styles.pendingLoad}>
-          No active squads are available for the Hall of Champions yet.
+          No eligible squads are available for the Hall of Champions yet.
         </div>
       )}
 
@@ -142,7 +142,7 @@ export default function BestPlayers() {
       {updatedAt && (
         <p className={styles.liveNote} role="status">
           <span aria-hidden="true" className={styles.liveDot} />
-          Live match performance · Automatically updates when results change
+          Calculated from completed matches · Refreshes automatically
         </p>
       )}
     </section>
