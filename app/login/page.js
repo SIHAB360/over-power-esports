@@ -160,13 +160,30 @@ export default function LoginPage() {
 
       <div className={styles.shell}>
         <section className={styles.brandPanel} aria-label="Over Power Esports">
-          <div className={styles.brandKicker}><span className={styles.kickerDot} /> OFFICIAL PLAYER PORTAL</div>
-          <h2 className={styles.brandWords}>OVER POWER<span className={styles.brandAccent}>ESPORTS</span></h2>
-          <div className={styles.brandRule} />
-          <p className={styles.brandDescription}>Your next chapter starts here. Sign in, sharpen your skills, and compete with the Over Power community.</p>
+          <div className={styles.brandKicker}>
+            <span className={styles.kickerDot} aria-hidden="true" />
+            OFFICIAL PLAYER PORTAL
+          </div>
+
+          <h2 className={styles.brandWords}>
+            <span className={styles.brandPrimary}>OVER POWER</span>
+            <span className={styles.brandAccent}>ESPORTS</span>
+          </h2>
+
+          <div className={styles.brandRule} aria-hidden="true" />
+          <p className={styles.brandDescription}>
+            Enter the arena. Own your game.
+            <span className={styles.brandDescriptionSecondary}>One team. One ambition.</span>
+          </p>
+
           <div className={styles.brandFooter}>
-            <span className={styles.brandMark}>OP</span>
-            <span>PLAY. COMPETE. GROW TOGETHER.</span>
+            <span className={styles.brandMark}>
+              <Image src={logo} alt="" width={46} height={46} className={styles.brandMarkImage} />
+            </span>
+            <span className={styles.brandFooterCopy}>
+              <strong>BUILT FOR CHAMPIONS</strong>
+              <small>PLAY • COMPETE • RISE</small>
+            </span>
           </div>
         </section>
 
