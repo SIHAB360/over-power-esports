@@ -83,7 +83,10 @@ jobs:
           CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql STABLE AS
             $$ SELECT nullif(current_setting('request.jwt.claim.role',true),'') $$;
           CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
-            $$ SELECT '{}'::jsonb $$;
+            $ SELECT '{}'::jsonb $;
+          -- The dump contains the public schema definition; clear only the
+          -- blank local public schema, leaving auth stubs intact.
+          DROP SCHEMA public CASCADE;
           SQL
 
       - name: Restore PUBLIC schema and actual data in a separate container
@@ -99,8 +102,11 @@ jobs:
           # Run restore in segments, so auth.users FK stubs can be filled from
           # the copied public profiles and achievement author IDs before FKs.
           if ! local_pg pg_restore -h 127.0.0.1 -p 55432 -U postgres -d postgres \
-                 --schema=public --section=pre-data --clean --if-exists \
+                 --schema=public --section=pre-data \
                  --no-owner --no-acl --exit-on-error "$dump" >"$RUNNER_TEMP/restore.log" 2>&1; then
+            # Pre-data is schema DDL only; safe to show an error summary,
+            # but never display raw dump content or production row values.
+            grep -m 1 -E 'pg_restore: error:|ERROR:' "$RUNNER_TEMP/restore.log" | cut -c 1-280 || true
             echo "::error::Isolated PUBLIC pre-data restore failed; no live database changes."; exit 1
           fi
           if ! local_pg pg_restore -h 127.0.0.1 -p 55432 -U postgres -d postgres \
