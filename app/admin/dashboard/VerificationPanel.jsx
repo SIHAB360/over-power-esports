@@ -94,7 +94,20 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
   async function copyCode(item) {
     setCopyError("");
     try {
-      await navigator.clipboard.writeText(item.code);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(item.code);
+      } else {
+        // Fallback for browsers without the modern Clipboard API.
+        const field = document.createElement("textarea");
+        field.value = item.code;
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
+        const copiedSuccessfully = document.execCommand("copy");
+        field.remove();
+        if (!copiedSuccessfully) throw new Error("Clipboard permission denied");
+      }
       setCopied(item.id);
       window.setTimeout(() => {
         setCopied((previous) => previous === item.id ? null : previous);
