@@ -27,18 +27,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Validate prerequisites without exposing credentials
+      - name: Validate Supabase Session Pooler URI (redacted errors)
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -z "${SUPABASE_SESSION_POOLER_URL:-}" ]]; then
-            echo "::error::Missing secret SUPABASE_SESSION_POOLER_URL. See docs/free-plan-database-backup.md"
-            exit 1
-          fi
-          case "$SUPABASE_SESSION_POOLER_URL" in
-            postgres://*|postgresql://*) ;;
-            *) echo "::error::Secret must be a PostgreSQL connection URL"; exit 1 ;;
-          esac
+          # Validate URI type, username, port, host, and password placeholder.
+          # The checker prints ONLY error instructions, never the secret.
+          python3 ops/backup/validate_session_pooler.py
           test -s ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem
           openssl x509 -in ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem -noout -checkend 86400
 
