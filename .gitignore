@@ -1,0 +1,27 @@
+# Runtime secrets and local configuration
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+
+# Exported production data and recovery artifacts
+*.dump
+*.dump.*
+*.sql.gz
+*backup*.zip
+*recovery*.zip
+pgdata/
+backups/
+
+# Next.js / Vercel / Node
+node_modules/
+.next/
+.vercel/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+.DS_Store
