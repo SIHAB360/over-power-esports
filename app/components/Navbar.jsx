@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
 import Link from "next/link";
+import loginStyles from "./NavbarLogin.module.css";
 
 const navItems = [
   { name: "HOME", target: "home" },
@@ -101,8 +102,9 @@ export default function Navbar() {
         </div>
 
         <div className="op-actions">
-          <Link href="/login" className="op-login">
-            LOGIN
+          <Link href="/login" className={loginStyles.login} aria-label="Log in to Over Power Esports">
+            <span className={loginStyles.loginText}>LOGIN</span>
+            <span className={loginStyles.loginArrow} aria-hidden="true">→</span>
           </Link>
 
           <button
