@@ -77,3 +77,16 @@ Grant EXECUTE only to the authenticated role.
 The website code alone cannot prove schema-wide deletion while Supabase is not
 connected. Wait for a confirmed Supabase connection before running SQL or
 merging this feature.
+
+## Verified Supabase implementation (2026-10-17)
+
+Verified project `siiftefxumacaitjmuxj` using live schema inspection. All six foreign keys referencing `public.matches(id)` have **ON DELETE CASCADE**: `match_finance`, `match_player_stats`, `match_players`, `match_results`, `player_earnings`, and `team_earnings`. Existing `matches` update trigger does not handle deletes.
+
+Applied migration `secure_atomic_admin_match_delete` successfully:
+- `public.delete_esports_match(p_match_id text)` uses one parent DELETE inside one transaction; FK cascades perform complete cleanup.
+- It verifies `auth.uid()` and checks `profiles.role = admin` within the database.
+- Uses `SECURITY DEFINER SET search_path = ''`, and grants execution only to authenticated users, not anon.
+- Returns `{deleted:true,matchId:...}` only when a match row actually disappears.
+- Permission and function existence verified; authenticated role has EXECUTE, anon does not.
+
+No real match rows were deleted during setup. Future end-to-end authenticated deletion should be checked carefully with a disposable test match created by the administrator. The live feature is available only after explicit per-record confirmation.
