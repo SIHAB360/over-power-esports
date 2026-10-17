@@ -7,7 +7,7 @@ import logo from "../assets/logo.png";
 import styles from "./PageTransition.module.css";
 
 // Same image as the Home page. Each thread is a moving, straight rocket trail.
-const TRANSITION_MS = 2300;
+const TRANSITION_MS = 850;
 const ROCKET_COUNT = 30;
 const COLORS = [
   "#ff468e", "#b75bff", "#5a80ff", "#27d7ff", "#38f7cb",
