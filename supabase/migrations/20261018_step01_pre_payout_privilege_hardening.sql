@@ -183,9 +183,22 @@ AS $op$
 DECLARE
   v_financial_change boolean := false;
 BEGIN
-  IF TG_OP='DELETE' THEN
+  -- Lock the same player row used by request_player_withdrawal_v2.
+  -- This serializes concurrent earning changes with balance reservations,
+  -- and prevents an edit racing a Pending request at READ COMMITTED.
+  -- Acquire ID-order locks when moving earnings between two players.
+  IF TG_OP='INSERT' THEN
+    PERFORM 1 FROM public.players p
+      WHERE p.id=NEW.player_id FOR UPDATE;
+    RETURN NEW;
+  ELSIF TG_OP='DELETE' THEN
+    PERFORM 1 FROM public.players p
+      WHERE p.id=OLD.player_id FOR UPDATE;
     v_financial_change := true;
   ELSE
+    PERFORM 1 FROM public.players p
+      WHERE p.id IN (OLD.player_id,NEW.player_id)
+      ORDER BY p.id FOR UPDATE;
     v_financial_change := (
       NEW.player_id IS DISTINCT FROM OLD.player_id OR
       NEW.match_id IS DISTINCT FROM OLD.match_id OR
@@ -213,7 +226,7 @@ REVOKE ALL ON FUNCTION public.op_guard_earning_after_withdrawal()
 
 DROP TRIGGER IF EXISTS op_guard_earning_after_withdrawal ON public.player_earnings;
 CREATE TRIGGER op_guard_earning_after_withdrawal
-  BEFORE UPDATE OR DELETE ON public.player_earnings
+  BEFORE INSERT OR UPDATE OR DELETE ON public.player_earnings
   FOR EACH ROW
   EXECUTE FUNCTION public.op_guard_earning_after_withdrawal();
 
