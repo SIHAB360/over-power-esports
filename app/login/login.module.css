@@ -944,3 +944,97 @@
   .brandFooter { font-size: 9px; }
   .card { padding: 24px 17px; }
 }
+
+/* Player dashboard sign-in title: restrained neon, independent of auth logic. */
+.dashboardHeading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.2vw, 14px);
+  max-width: 100%;
+  margin-top: 14px;
+  text-align: center;
+}
+.dashboardHeading .title {
+  margin: 0;
+}
+.dashboardHeading:has(.dashboardTitle)::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: min(76%, 240px);
+  height: 2px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #ec8bce 25%, #a28bff 55%, #70e4ff 78%, transparent);
+  box-shadow: 0 0 12px rgba(160, 127, 255, .35);
+  animation: dashboardUnderline 3s ease-in-out infinite;
+}
+.dashboardHeading .dashboardTitle {
+  position: relative;
+  max-width: 100%;
+  color: #d9c4ff;
+  background: linear-gradient(110deg, #ffd7ef 0%, #fa91d8 26%, #b19bff 51%, #75dcff 76%, #f7d5ff 100%);
+  background-size: 180% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: clamp(20px, 2.18vw, 30px);
+  font-weight: 900;
+  letter-spacing: -.065em;
+  line-height: 1.4;
+  white-space: nowrap;
+  filter: drop-shadow(0 0 11px rgba(146, 114, 255, .24));
+  animation: dashboardTitleFlow 3.8s ease-in-out infinite alternate;
+}
+.dashboardSpark {
+  display: block;
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fca8eb;
+  box-shadow: 0 0 0 4px rgba(254, 155, 232, .09), 0 0 12px rgba(254, 155, 232, .9);
+  animation: dashboardBlink 2.3s ease-in-out infinite;
+}
+.dashboardSparkRight {
+  background: #80e5ff;
+  box-shadow: 0 0 0 4px rgba(128, 229, 255, .09), 0 0 12px rgba(128,229,255,.9);
+  animation-delay: -1.15s;
+}
+.dashboardHeading + .subtitle {
+  margin-top: 22px;
+  max-width: 380px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+@keyframes dashboardTitleFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes dashboardBlink {
+  0%, 100% { opacity: .47; transform: scale(.84); }
+  50% { opacity: 1; transform: scale(1.14); }
+}
+@keyframes dashboardUnderline {
+  0%, 100% { opacity: .44; }
+  50% { opacity: 1; }
+}
+@media (max-width: 520px) {
+  .dashboardHeading { gap: 7px; margin-top: 11px; }
+  .dashboardHeading .dashboardTitle { font-size: clamp(17px, 5vw, 24px); letter-spacing: -.065em; }
+  .dashboardSpark { flex-basis: 5px; width: 5px; height: 5px; }
+  .dashboardHeading + .subtitle { margin-top: 19px; font-size: 14px; }
+}
+@media (max-width: 360px) {
+  .dashboardHeading { gap: 5px; }
+  .dashboardHeading .dashboardTitle { font-size: 17px; letter-spacing: -.075em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dashboardHeading .dashboardTitle,
+  .dashboardSpark,
+  .dashboardHeading:has(.dashboardTitle)::after { animation: none; }
+}
