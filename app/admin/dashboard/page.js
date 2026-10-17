@@ -332,6 +332,11 @@ export default function AdminDashboard() {
 
         if (!mounted) return;
         setAdminEmail(profile.email || authData.user.email || "Administrator");
+        // Deep links from Match History return to the exact dashboard section.
+        const requestedSection = new URLSearchParams(window.location.search).get("section");
+        if (NAV.some((item) => item.key === requestedSection)) {
+          setActive(requestedSection);
+        }
         setLoading(false);
         await refresh();
       } catch {
@@ -610,6 +615,7 @@ export default function AdminDashboard() {
               </div>
               <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
                 {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
+                {active === "matches" && <Link className={styles.sectionAction} href="/admin/matches/history"><FiClock aria-hidden="true"/> Match History <FiArrowUpRight aria-hidden="true"/></Link>}
                 <button type="button" className={styles.sectionAction} onClick={() => {
                     refresh();
                     if (active === "verification") setVerificationRefreshVersion((value) => value + 1);
