@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   FiCheck, FiClock, FiCopy, FiDatabase, FiKey, FiLock,
-  FiRefreshCw, FiShield, FiWifiOff,
+  FiRefreshCw, FiShield, FiWifiOff, FiSearch,
 } from "react-icons/fi";
 import { supabase } from "../../lib/supabase";
 import styles from "./verification.module.css";
@@ -32,12 +32,14 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
   const [copyError, setCopyError] = useState("");
   const [copied, setCopied] = useState(null);
   const [checkedAt, setCheckedAt] = useState("");
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [now, setNow] = useState(() => Date.now());
   const requestNumber = useRef(0);
 
   const loadCodes = useCallback(async ({ quiet = false } = {}) => {
     const requestId = ++requestNumber.current;
     if (!quiet) setRefreshing(true);
-    setError("");
 
     try {
       const { data, error: sessionError } = await supabase.auth.getSession();
@@ -61,6 +63,8 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
       if (requestId !== requestNumber.current) return;
       setCodes(Array.isArray(result.codes) ? result.codes : []);
       setCheckedAt(result.checkedAt || new Date().toISOString());
+      setError("");
+      setNow(Date.now());
     } catch (err) {
       if (requestId === requestNumber.current) {
         setError(err?.message || "Failed to connect to the verification database.");
@@ -78,18 +82,24 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
     const timer = window.setInterval(() => {
       if (document.visibilityState === "visible") loadCodes({ quiet: true });
     }, 30000);
+    const clockTimer = window.setInterval(() => setNow(Date.now()), 15000);
     return () => {
       window.clearInterval(timer);
+      window.clearInterval(clockTimer);
       requestNumber.current += 1;
     };
   }, [loadCodes, refreshVersion]);
 
-  const now = Date.now();
   const activeCount = useMemo(
     () => codes.filter((code) => !isExpired(code, now)).length,
     [codes, now]
   );
   const expiredCount = codes.length - activeCount;
+  const visibleCodes = useMemo(() => codes.filter((item) => {
+    if (filter === "valid" && isExpired(item, now)) return false;
+    if (filter === "expired" && !isExpired(item, now)) return false;
+    return item.code.toLowerCase().includes(query.trim().toLowerCase());
+  }), [codes, filter, query, now]);
 
   async function copyCode(item) {
     setCopyError("");
@@ -131,7 +141,7 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
         <div className={styles.heroMeta}>
           <span className={[styles.connection, error ? styles.offline : ""].join(" ")}>
             {error ? <FiWifiOff /> : <span className={styles.connectionDot} />}
-            {error ? "Connection issue" : loading ? "Connecting…" : "Supabase connected"}
+            {error ? "Connection issue" : loading ? "Connecting…" : checkedAt ? "Supabase connected" : "Checking access…"}
           </span>
           <button type="button" className={styles.refreshButton}
             onClick={() => loadCodes()} disabled={refreshing} aria-label="Refresh verification codes">
@@ -162,10 +172,24 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
       <div className={styles.listPanel}>
         <div className={styles.listHeader}>
           <div>
-            <h4>Live access code list</h4>
-            <p><FiLock aria-hidden="true" /> Admin only · Automatically refreshes every 30 seconds</p>
+            <h4>Live registration access codes</h4>
+            <p><FiLock aria-hidden="true" /> Only administrators can view these codes · Auto-refresh every 30 seconds</p>
           </div>
-          {checkedAt && <small className={styles.lastSync}>Last sync: {dateText(checkedAt)}</small>}
+          {checkedAt && <small className={styles.lastSync}>Last sync: {dateText(checkedAt)}{error ? " · Last successful sync" : ""}</small>}
+        </div>
+        <div className={styles.toolbar}>
+          <label className={styles.searchBox}>
+            <FiSearch aria-hidden="true" />
+            <input type="search" value={query} onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search verification code" aria-label="Search registration codes"/>
+          </label>
+          <div className={styles.filters} role="group" aria-label="Filter codes by expiry status">
+            {[["all", "All codes"], ["valid", "Valid"], ["expired", "Expired"]].map(([key, label]) => (
+              <button key={key} type="button"
+                className={[styles.filterButton, filter === key ? styles.filterActive : ""].join(" ")}
+                onClick={() => setFilter(key)} aria-pressed={filter === key}>{label}</button>
+            ))}
+          </div>
         </div>
 
         {error && <div role="alert" className={styles.error}>{error}</div>}
@@ -173,16 +197,18 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
 
         {loading ? (
           <div className={styles.empty}>Loading verification codes from Supabase…</div>
-        ) : codes.length === 0 ? (
+        ) : visibleCodes.length === 0 ? (
           <div className={styles.empty}>
-            {error ? "Live codes are unavailable. Try refreshing." : "No registration codes found in Supabase."}
+            {error && !checkedAt ? "Live codes are unavailable. Try refreshing." :
+              codes.length === 0 ? "No registration codes found in Supabase." :
+              "No codes match your search or filter."}
           </div>
         ) : (
           <div className={styles.scrollArea}>
             <div className={[styles.codeRow, styles.columnHead].join(" ")}>
               <span>VERIFICATION CODE</span><span>STATUS</span><span>EXPIRATION</span><span>ACTION</span>
             </div>
-            {codes.map((item) => {
+            {visibleCodes.map((item) => {
               const expired = isExpired(item, now);
               return (
                 <div className={styles.codeRow} key={item.id}>
@@ -215,6 +241,10 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
             })}
           </div>
         )}
+        {!loading && codes.length > 0 &&
+          <p className={styles.resultsNote} aria-live="polite">
+            Showing {visibleCodes.length} of {codes.length} most recent registration codes
+          </p>}
       </div>
 
       <div className={styles.footNote}>
