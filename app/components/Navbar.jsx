@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import SideMenu from "./SideMenu";
+import Link from "next/link";
 
 const navItems = [
   { name: "HOME", target: "home" },
@@ -100,9 +101,9 @@ export default function Navbar() {
         </div>
 
         <div className="op-actions">
-          <a href="/login" className="op-login">
+          <Link href="/login" className="op-login">
             LOGIN
-          </a>
+          </Link>
 
           <button
             className="op-menu-btn"
