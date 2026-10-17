@@ -1228,3 +1228,115 @@
 @media (prefers-reduced-motion: reduce) {
   .card, .card::after { animation: none; }
 }
+
+
+/* CRITICAL: globals.css has a bare "form" selector applying a solid #111
+   background, padding and max-width to EVERY form. Prevent this login form
+   from becoming a black inner card: fields sit directly on the white glass. */
+.card .form {
+  display: grid;
+  flex-direction: initial;
+  grid-template-columns: minmax(0,1fr);
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 30px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  gap: 18px;
+}
+.card .field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+.card .fieldLabel {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #243353;
+  font-weight: 850;
+  text-shadow: none;
+}
+.card .formOptions {
+  margin: 1px 0 0;
+  padding: 0;
+  background: transparent;
+}
+.card .remember {
+  margin: 0;
+  color: #2e4062;
+}
+.card .remember span {
+  color: #2e4062;
+}
+.card .forgotLink {
+  margin: 0;
+  padding: 5px 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #2658b5;
+}
+.card .passwordToggle {
+  padding: 0;
+  background: transparent;
+  color: #617392;
+}
+.card .passwordToggle:hover {
+  background: rgba(114,134,186,.12);
+  color: #2c4277;
+}
+.card .primaryButton {
+  margin: 3px 0 0;
+  min-width: 0;
+  padding: 8px 58px 8px 22px;
+  font-size: 18px;
+}
+.card .notice {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.card .input {
+  width: 100%;
+  min-width: 0;
+  border-radius: 16px;
+  color: #1d2f52;
+  background: rgba(255,255,255,.53);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    0 5px 16px rgba(93,116,176,.075);
+}
+.card .input:focus {
+  background: rgba(255,255,255,.75);
+}
+.card {
+  /* Lighter transparent white glass rather than an opaque pastel slab. */
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.77) 0%,
+      rgba(246,249,255,.66) 49%,
+      rgba(232,243,255,.72) 100%
+    ) padding-box,
+    conic-gradient(from var(--op-glass-angle),
+      #fd51ac 0deg,#bc66ff 55deg,#58bfff 112deg,
+      #65f0e7 166deg,#ffda8e 223deg,#ff6e99 286deg,
+      #fd51ac 360deg
+    ) border-box;
+}
+@media (max-width: 520px) {
+  .card .form {
+    margin-top: 25px;
+    gap: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card .form { transition: none; }
+}
