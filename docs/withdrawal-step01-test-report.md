@@ -84,3 +84,31 @@ Do NOT drop financial tables or columns after real transactions. A rollback afte
 - [ ] Disposable test-user financial and concurrency tests
 - [ ] Production merge/deploy after successful test
 - [ ] Separate Step 02/03 approval with "d"
+
+## 2026-10-17 isolated PostgreSQL 17 integration result — PASS
+
+GitHub Actions Run #7: https://github.com/SIHAB360/over-power-esports/actions/runs/39064534632 — SUCCESS.
+
+- Fresh production PUBLIC schema/data pg_dump succeeded (read-only, no live writes).
+- Public schema, data, policies, indexes and FKs restored in disposable PostgreSQL 17 with minimal auth stubs. This does NOT prove recovery of Supabase Auth/Storage internals or a whole project.
+- Both proposed Step 01 SQL migrations applied successfully ONLY to the disposable clone.
+- SQL assertions passed: 9 players, 76 earnings, zero source withdrawals; no role self-escalation grants; unsafe match injection policies removed; protected earnings DML/TRUNCATE; one active request; wallet reservation; duplicate rejection; player prevented from admin approval; admin rejection released reserved balance; Pending -> Paid blocked; manual Paid with actual fee/net and reference; repeat Paid rejected; 5 audit events; balance debited exactly once.
+- All test transactions and simulated provider reference existed ONLY in disposable database, not Production. No real bKash or Nagad transfer.
+- Runner removed plaintext backup and test logs; no user data was uploaded as artifacts.
+
+### Security blocker (DO NOT go live yet)
+
+Public GitHub main still tracks .env.local. Step 01 branch contains deletion plus .gitignore; merging does not remove historical secrets. Rotate all exposed service role keys and any other sensitive database tokens/credentials, reconcile Vercel variables and coordinate Git history remediation before activating money movement.
+
+### Remaining release gates
+
+- [x] Encrypted backup #5 decrypted and archive validated.
+- [x] Isolated public schema/data restore in PostgreSQL 17.
+- [x] SQL migration and wallet/admin/Paid test lifecycle passed in isolated clone.
+- [x] Hardened registration, privilege escalation, fake earnings and wallet source write rules staged in Step 01.
+- [ ] Rotate leaked secrets and remove sensitive Git history exposure; verify Vercel production environment.
+- [ ] Authenticated desktop/mobile browser walkthrough with authorized player/admin account.
+- [ ] Explicit approval to apply migrations on production with controlled financial smoke testing.
+- [ ] Real bKash/Nagad manual transfer receipt/reconciliation process documented and tested.
+
+Release decision: BLOCKED. All withdrawal PRs remain draft; database migration NOT applied on live Supabase.
