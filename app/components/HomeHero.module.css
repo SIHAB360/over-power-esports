@@ -232,8 +232,8 @@
   100% { transform: scale(1.1); opacity: .22; }
 }
 @keyframes logoFloat {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
-  50% { transform: translate3d(0, -11px, 0) rotate(2deg); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -11px, 0); }
 }
 @media (max-width: 1024px) {
   .hero { min-height: 790px; padding: 146px 22px 110px; }
