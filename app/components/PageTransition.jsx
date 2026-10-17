@@ -29,9 +29,12 @@ export default function PageTransition() {
   const timer = useRef(null);
   const backNavigation = useRef(false);
   const initial = useRef(true);
+  const startedBeforeRouteChange = useRef(false);
+  const animationStartedAt = useRef(0);
 
   const play = useCallback((reverse = false) => {
     if (timer.current) window.clearTimeout(timer.current);
+    animationStartedAt.current = Date.now();
     setBackward(reverse);
     setVisible(true);
     timer.current = window.setTimeout(() => {
@@ -41,8 +44,57 @@ export default function PageTransition() {
   }, []);
 
   useEffect(() => {
+    // Next.js updates usePathname only AFTER route navigation resolves.
+    // Start on the original click, so the animation appears immediately.
+    const onInternalLinkClick = (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) return;
+
+      const element = event.target instanceof Element ? event.target : null;
+      const link = element?.closest("a[href]");
+      if (!link || link.hasAttribute("download")) return;
+      if (link.target && link.target !== "_self") return;
+
+      let url;
+      try {
+        url = new URL(link.href, window.location.href);
+      } catch {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+
+      // Don't block in-page anchors, scrolling, or the current page.
+      if (url.pathname === window.location.pathname &&
+          url.search === window.location.search) return;
+
+      startedBeforeRouteChange.current = true;
+      play(false);
+    };
+
+    // Custom event for pages that navigate through router.push() in buttons.
+    const onProgrammaticNavigation = () => {
+      startedBeforeRouteChange.current = true;
+      play(false);
+    };
+
+    document.addEventListener("click", onInternalLinkClick, true);
+    window.addEventListener("op:navigation-start", onProgrammaticNavigation);
+    return () => {
+      document.removeEventListener("click", onInternalLinkClick, true);
+      window.removeEventListener("op:navigation-start", onProgrammaticNavigation);
+    };
+  }, [play]);
+
+  useEffect(() => {
     function onPopState() {
       backNavigation.current = true;
+      startedBeforeRouteChange.current = false;
       play(true);
     }
     window.addEventListener("popstate", onPopState);
@@ -62,6 +114,13 @@ export default function PageTransition() {
       backNavigation.current = false;
       return;
     }
+    // Prevent a second (late) overlay when the route actually finishes.
+    if (startedBeforeRouteChange.current) {
+      startedBeforeRouteChange.current = false;
+      return;
+    }
+    // Avoid restarting an animation already visible.
+    if (Date.now() - animationStartedAt.current < TRANSITION_MS) return;
     play(false);
   }, [pathname, play]);
 
