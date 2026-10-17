@@ -1,85 +1,107 @@
-# OVER POWER ESPORTS — encrypted database backup on Supabase Free
+# OVER POWER ESPORTS — Secure Database Backup (Supabase Free Plan)
 
-## Why this exists
+**Status:** Setup ready, but **no successful backup yet**. Production Withdrawal Step 01 Draft PR #12 remains on hold until backup + recovery verification.
 
-Supabase Free does **not** include managed scheduled backups/PITR. This workflow takes a **manual PostgreSQL logical database dump** without modifying any live rows or schema. It encrypts the dump BEFORE uploading an Actions artifact.
+## Why the earlier GitHub Actions runs failed
 
-**Important:** A PostgreSQL logical dump is **not** equivalent to a Supabase managed restore point. It does not back up Storage bucket object files, project/dashboard settings, external authentication providers, payment credentials, service secrets or global database roles. Those require separate recovery plans. Restore testing is mandatory before changing production withdrawal tables.
+The detailed log for [Backup Run #4](https://github.com/SIHAB360/over-power-esports/actions/runs/39059556698) shows that connection validation succeeded, but PostgreSQL returned:
 
-This repository is PUBLIC. A GitHub Actions artifact may be available to people with repository read access. **Only encrypted artifacts must be uploaded.** Never put an unencrypted database dump, private key, personal data or connection string into GitHub.
+```
+FATAL: password authentication failed for user "postgres"
+```
 
-## 1. Keep your PRIVATE key safely outside the repository
+GitHub reached the correct Session Pooler, but the password in the original URL was incorrect or did not authenticate. The Node.js warning was unrelated.
 
-The project owner receives a private key file named OVER_POWER_BACKUP_PRIVATE_KEY.pem from the setup conversation. Keep the file offline, in at least two secure places, and do not commit, paste or send it to anyone. Do not store it in GitHub Actions secrets: the runner only needs the public certificate in ops/backup/OVER_POWER_BACKUP_PUBLIC_CERT.pem.
+The earlier user-shared password may have been exposed in chat. **Rotate that password** before using it for a production backup. Do not share actual passwords, URI, screenshots containing secrets, or API keys.
 
-**If the private key is lost, backups encrypted with its matching public certificate are permanently unrecoverable.**
+## Simple password-only configuration (new)
 
-Certificate SHA-256 fingerprint:
+You no longer need to copy or construct a connection string.
 
-A9:EA:1D:44:30:F5:AC:20:42:D7:D5:7D:6E:B1:89:95:93:23:2B:65:26:70:DF:9F:3A:90:44:5D:6D:F4:BD:E7
+The GitHub Actions workflow uses the **verified Session Pooler settings** for this project:
 
-## 2. Configure the single GitHub Actions secret
+- Host: `aws-0-ap-northeast-1.pooler.supabase.com`
+- Port: `5432`
+- Username: `postgres.siiftefxumacaitjmuxj`
+- Database: `postgres`
+- SSL: required
 
-1. In the [Supabase Dashboard](https://supabase.com/dashboard), open the OVER POWER project and click **Connect**.
-2. **IMPORTANT: the default Supabase Connect screen may show Direct connection. Change Method to Session pooler first** (NOT Transaction pooler), then choose URI and Copy. A Direct URI like `postgresql://postgres:[YOUR-PASSWORD]@db.siiftefxumacaitjmuxj.supabase.co:5432/postgres` will not work reliably from GitHub Actions, even with a real password: it uses IPv6. Session pooler is accessible over IPv4.
-   The correct Session pooler URI has this **shape** (do not guess the host): `postgresql://postgres.siiftefxumacaitjmuxj:[YOUR-PASSWORD]@[EXACT-POOLER-HOST]:5432/postgres`. The exact pooler host must be copied from the Connect dialog: a region may have multiple pools. Replace only `[YOUR-PASSWORD]` with the real database password. Percent-encode reserved password characters; do not share the result in chat. The workflow adds `sslmode=require` unless already present.
-3. In [GitHub repository Settings](https://github.com/SIHAB360/over-power-esports/settings/secrets/actions) → Secrets and variables → Actions → **New repository secret**:
-   - Name: `SUPABASE_SESSION_POOLER_URL`
-   - Value: the **complete** PostgreSQL Session Pooler URI, including the password.
-4. Save. Never paste the URL/password into an issue, PR, workflow file, ChatGPT message or screenshot.
+Only the real database password is stored as a GitHub Actions secret.
 
-Existing Vercel/Supabase web-app environment variables must not be changed. If the Supabase database password was lost, ask before resetting it; reset can interrupt existing integrations.
+### 1 — Reset your database password securely, if you don't know it or it was shared
 
-## 3. Manually run the workflow
+1. Open [Supabase Dashboard](https://supabase.com/dashboard/project/siiftefxumacaitjmuxj), choose **Connect → Session pooler**.
+2. Click **Reset database password** (or Project Settings → Database → Reset database password).
+3. Create a **long unique password** in your password manager. Save it somewhere safe.
+4. Existing applications using a *direct PostgreSQL connection string* might need their credentials updated. In the connected Vercel production app, only Supabase API-based environment-variable names were visible at inspection time; that does not prove every other client will be unaffected.
 
-1. Open [GitHub Actions](https://github.com/SIHAB360/over-power-esports/actions/workflows/manual-supabase-encrypted-backup.yml).
-2. Choose **Run workflow** on branch **main**.
-3. Wait for the job **PostgreSQL 17 encrypted backup** to succeed.
-4. Under the completed job's **Artifacts**, download `op-esports-encrypted-db-<run-id>`.
-5. Keep the encrypted `.dump.cms` file and matching `.sha256` checksum outside GitHub in another safe place.
-6. Artifact retention is only **14 days**. Keep your own copy.
+Never reset without checking other systems that might connect directly to Postgres.
 
-The workflow runs only via manual `workflow_dispatch`. It never runs on pull requests, push or cron. It never accepts private-key material. It uses PostgreSQL 17 `pg_dump -Fc`, checks that `pg_restore` can fully decode the archive, then encrypts with OpenSSL CMS authenticated **AES-256-GCM** using the committed PUBLIC certificate. The plaintext is removed before artifact upload. Note that archive decode is **not** the same thing as restoring into a functioning Supabase instance.
+### 2 — Add a single secret to GitHub
 
-## 4. Verify download and decrypt OFFLINE
+Open [Actions secrets](https://github.com/SIHAB360/over-power-esports/settings/secrets/actions).
 
-You need OpenSSL 3+, PostgreSQL client tools matching server major version 17, and your private-key file. Do this only on a secure computer; plaintext dumps contain sensitive account data. Example commands:
+1. Click **New repository secret**.
+2. Set Name to exactly `SUPABASE_DB_PASSWORD`.
+3. In Secret, paste **ONLY your actual database password**, without `postgresql://`, username, host, square brackets, or quotation marks.
+4. Click **Add secret**.
+
+The old `SUPABASE_SESSION_POOLER_URL` secret is **not used anymore**. After the new method succeeds, delete the obsolete secret so a potentially exposed password is not retained.
+
+This workflow does not print your password in output or pass it on the command line. The password is handed to the ephemeral PostgreSQL 17 Docker client via `PGPASSWORD`.
+
+### 3 — Create the backup
+
+Open [GitHub Backup Workflow](https://github.com/SIHAB360/over-power-esports/actions/workflows/manual-supabase-encrypted-backup.yml).
+
+1. Click **Run workflow**.
+2. Select `main`, then **Run workflow**. Do not re-run old runs as they use older code.
+3. Wait for **PostgreSQL 17 encrypted backup** to show a green success icon.
+4. Download the artifact **op-esports-encrypted-db-<run-id>**. It contains a `.dump.cms` ciphertext and a SHA-256 checksum. No plaintext database export is uploaded.
+5. Keep a copy outside GitHub. The GitHub artifact is retained for **14 days**.
+
+The workflow is manual-only; it never runs on a PR, push, or schedule.
+
+### 4 — Verify you can restore
+
+Your **offline backup private key** is required to decrypt backup artifacts. This key must remain **outside GitHub** and backed up securely. The public certificate in `ops/backup/` is safe to commit.
+
+Encrypted archive integrity is checked in the workflow, but a genuine restore into a disposable compatible PostgreSQL environment still needs verification before the sensitive Withdrawal migration.
+
+For secure local verification:
 
 ```bash
 sha256sum -c op-esports-supabase-YYYYMMDDTHHMMSSZ-runNNNN.dump.cms.sha256
-
 openssl cms -decrypt -binary -inform DER \
   -in op-esports-supabase-YYYYMMDDTHHMMSSZ-runNNNN.dump.cms \
   -inkey OVER_POWER_BACKUP_PRIVATE_KEY.pem \
   -recip OVER_POWER_BACKUP_PUBLIC_CERT.pem \
   -out op-esports-recovery.dump
-
 pg_restore --list op-esports-recovery.dump
 pg_restore --file=/dev/null op-esports-recovery.dump
 ```
 
-Replace names with those from the downloaded artifact. On Windows, use WSL/Linux shell or a compatible shell with OpenSSL/Postgres. Do NOT run a restore against production. Test actual recovery in an isolated, disposable PostgreSQL/Supabase-compatible environment before approving finance migration.
+Replace the example filename with the actual encrypted artifact filename. Never run an unreviewed restore against the live database. A logical `pg_dump` is **not** managed PITR, nor does it back up Storage object contents and Supabase external service/project settings.
 
-After testing, securely remove the decrypted local database dump. Keep only the encrypted archive and offline private key.
+## Safety gate for Player Withdrawals
 
-## 5. Finance Step 01 release gate
+- [x] GitHub password-only backup workflow designed for Supabase Free Plan.
+- [ ] Real database login succeeds and encrypted backup is produced.
+- [ ] Backup is downloaded and successfully decrypted using the offline private key.
+- [ ] Recovery verification in a disposable database succeeds.
+- [ ] Withdrawal Draft PR #12 financial migration reviewed, applied, and tested.
+- [ ] Separate user `d` approval before Step 02/03 UI.
 
-- Confirm backup workflow run succeeded.
-- Download encrypted artifact + checksum offline.
-- Decrypt successfully with offline PRIVATE key.
-- Independently verify schema/data or test a restore into a disposable compatible database.
-- Then the Step 01 withdrawal migration in PR #12 may be reviewed/applied with row-count preflight checks. **Do not merge PR #12 or expose Withdrawal UI earlier.**
-- Need separate `d` approval to begin Step 02/03.
+**Do not attempt withdrawal migration until backup/recovery checks are complete.**
 
 ## Troubleshooting
 
-- **Missing or wrong secret format**: the secret must contain the entire Session pooler URI, **not** a password alone. Confirm GitHub Actions Secret **name** is `SUPABASE_SESSION_POOLER_URL`. Use Update if a prior secret exists.
-- **GitHub annotation says Direct Connection**: you copied `db.siiftefxumacaitjmuxj.supabase.co`. Change the Supabase Connect method to **Session pooler**; it must use user `postgres.siiftefxumacaitjmuxj` and the pooler host on port 5432.
-- **GitHub annotation says password placeholder**: replace `[YOUR-PASSWORD]` with your real Database Password in GitHub Secret; never disclose it here.
-- **Node.js 20 deprecated warning**: an unrelated GitHub Action warning, not a database connection failure.
-- **Missing secret**: add `SUPABASE_SESSION_POOLER_URL` (not an API token).
-- **Connection refused / host not reachable**: pick Session Pooler; Direct DB often requires IPv6 not available on GitHub-hosted runners.
-- **Invalid password**: re-check secret, password URL-encoding; do not print secrets to logs.
-- **Permission denied on some schemas**: job fails closed. Do not use a partial archive for recovery.
-- **GitHub Actions disabled**: owner may need to enable Actions in GitHub Settings (no code changes required).
-- **Artifact unavailable**: job must succeed before upload; try again after checking logs without sharing sensitive values.
+| Error | Meaning |
+|---|---|
+| `Missing SUPABASE_DB_PASSWORD repository secret` | Add the new **password-only** secret described above |
+| `password authentication failed` | The password is incorrect or the database password changed; check/reset through Supabase Dashboard |
+| `could not connect / timeout` | Pooler or network availability issue; inspect workflow logs without posting secrets |
+| `pg_dump server version mismatch` | PostgreSQL client/server major-version mismatch; workflow currently uses PostgreSQL 17 |
+| `Node.js 20 deprecated` | Third-party GitHub Action warning, not a database authentication issue |
+
+The GitHub repository is public: only **encrypted** artifacts should be uploaded. The offline private key MUST remain private.
