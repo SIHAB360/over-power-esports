@@ -355,6 +355,9 @@ export default function AdminDashboard() {
     setActive(key);
     setSearch("");
     setMobileOpen(false);
+    // Refresh the top KPIs and overview whenever management sections change,
+    // so newly created matches / tournaments appear without a full reload.
+    refresh();
   };
 
   const source = (key) => data[key] || EMPTY_SOURCE;
