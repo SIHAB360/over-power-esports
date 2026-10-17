@@ -1,0 +1,133 @@
+
+/* Dedicated CSS module: styles stay attached to Next.js Link on every route. */
+.login {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  min-width: 112px;
+  height: 42px;
+  padding: 0 16px 0 19px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 181, 212, .58);
+  border-radius: 999px;
+  background: linear-gradient(118deg, #fa366b 0%, #d62d79 40%, #8735a3 77%, #5543ab 100%);
+  background-size: 180% 100%;
+  color: #ffffff !important;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .13em;
+  line-height: 1;
+  text-decoration: none !important;
+  text-shadow: 0 1px 4px rgba(51, 10, 44, .3);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .08) inset,
+    0 4px 15px rgba(239, 36, 100, .33),
+    0 0 26px rgba(191, 59, 177, .19);
+  cursor: pointer;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease,
+    background-position .3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.login::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 1px 2px auto 2px;
+  height: 45%;
+  border-radius: 100px 100px 50% 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,.23), transparent);
+  pointer-events: none;
+}
+.login::after {
+  content: "";
+  position: absolute;
+  top: -75%;
+  left: -75%;
+  width: 31%;
+  height: 250%;
+  transform: skewX(-25deg) translateX(0);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.43), transparent);
+  opacity: .55;
+  pointer-events: none;
+  animation: loginShimmer 4.6s ease-in-out infinite;
+}
+.loginText {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+.loginArrow {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255,255,255,.39);
+  border-radius: 50%;
+  background: rgba(255,255,255,.13);
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 0 10px rgba(255,255,255,.08);
+  transition: transform .2s ease, background .2s ease;
+}
+.login:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,238,250,.95);
+  background-position: 100% 50%;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.16) inset,
+    0 7px 23px rgba(255, 49, 124, .48),
+    0 0 32px rgba(183, 90, 255, .28);
+}
+.login:hover .loginArrow {
+  transform: translateX(2px);
+  background: rgba(255,255,255,.24);
+}
+.login:active { transform: scale(.97); }
+.login:focus-visible {
+  outline: 2px solid #83e8ff;
+  outline-offset: 4px;
+}
+@keyframes loginShimmer {
+  0%, 58% { transform: skewX(-25deg) translateX(0); opacity: 0; }
+  64% { opacity: .7; }
+  86%, 100% { transform: skewX(-25deg) translateX(700%); opacity: 0; }
+}
+@media(max-width:1180px) {
+  .login {
+    min-width: 103px;
+    padding: 0 13px 0 15px;
+    height: 40px;
+  }
+}
+@media(max-width:768px) {
+  .login {
+    min-width: 96px;
+    height: 37px;
+    padding: 0 10px 0 14px;
+    gap: 7px;
+    font-size: 10px;
+    letter-spacing: .09em;
+    box-shadow: 0 4px 14px rgba(239,36,100,.29),0 0 15px rgba(183,90,255,.16);
+  }
+  .loginArrow { flex-basis: 20px; width: 20px; height: 20px; font-size: 13px; }
+}
+@media(max-width:360px) {
+  .login { min-width: 84px; height: 34px; padding: 0 8px 0 11px; gap: 5px; font-size: 9px; }
+  .loginArrow { flex-basis: 18px; width: 18px; height: 18px; font-size: 12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .login,.loginArrow { transition:none; }
+  .login::after { animation:none; opacity:0; }
+}
