@@ -42,8 +42,9 @@ export default function FloatingContact() {
     <div
       ref={widgetRef}
       className={[styles.widget, open ? styles.expanded : ""].join(" ")}
-      onMouseEnter={(event) => {
-        if (event.pointerType !== "touch") setOpen(true);
+      onMouseEnter={() => {
+        // Touch devices use the click toggle; do not synthesize hover open.
+        if (window.matchMedia("(hover: hover)").matches) setOpen(true);
       }}
       onMouseLeave={() => setOpen(false)}
       aria-label="Contact Over Power Esports"
