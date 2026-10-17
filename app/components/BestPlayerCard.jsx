@@ -4,8 +4,8 @@ import styles from "./Champions.module.css";
 
 const metrics = [
   { key: "kills", label: "KILLS", icon: "⚔" },
-  { key: "damage", label: "DAMAGE", icon: "✦" },
   { key: "assists", label: "ASSISTS", icon: "◎" },
+  { key: "damage", label: "DAMAGE", icon: "✦" },
   { key: "mvp", label: "MVP", icon: "★" },
 ];
 
@@ -41,10 +41,10 @@ export default function BestPlayerCard({ data, index = 0 }) {
 
       <div className={styles.score}>
         <div>
-          <span className={styles.scoreLabel}>PERFORMANCE SCORE</span>
-          <span className={styles.scoreSub}>Top ranked in the team</span>
+          <span className={styles.scoreLabel}>WEIGHTED PERFORMANCE</span>
+          <span className={styles.scoreSub}>Kills 50% · Assists 30% · Damage 20%</span>
         </div>
-        <strong className={styles.scoreNumber}>{score}</strong>
+        <strong className={styles.scoreNumber}>{Number(score).toFixed(1)}<small>%</small></strong>
       </div>
 
       <div className={styles.metrics}>
@@ -60,7 +60,7 @@ export default function BestPlayerCard({ data, index = 0 }) {
       </div>
 
       <div className={styles.cardFooter}>
-        <span className={styles.footerMark}>★ #1 TEAM PLAYER</span>
+        <span className={styles.footerMark}>★ #1 TEAM PLAYER · {stats.matches} RECORDED MATCHES</span>
         <span className={styles.footerLine} aria-hidden="true" />
       </div>
     </article>

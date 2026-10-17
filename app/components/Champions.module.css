@@ -443,3 +443,112 @@
   .champion, .champion::after { transition: none; animation: none; }
   .champion:hover { transform: none; }
 }
+
+
+/* Weighted live Champions — percentages and data-truthful waiting states */
+.scoreNumber {
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  white-space:nowrap;
+  font-size:clamp(28px,3.3vw,43px);
+  font-variant-numeric:tabular-nums;
+}
+.scoreNumber small {
+  font-size:.55em;
+  font-weight:900;
+  letter-spacing:0;
+}
+.scoreSub {
+  font-size:11px;
+  line-height:1.5;
+  max-width:245px;
+  color:#c7d0e3;
+}
+.scoreLabel{font-size:11px;}
+.metricLabel{font-size:10px;}
+.heading .description {
+  max-width:640px;
+  font-size:clamp(12px,1.15vw,15px);
+  letter-spacing:.035em;
+  line-height:1.65;
+}
+.pendingLoad,.notice {
+  max-width:800px;
+  margin:0 auto 23px;
+  padding:20px 24px;
+  border-radius:15px;
+  border:1px solid rgba(126,173,229,.27);
+  color:#cbd9ec;
+  background:rgba(43,50,88,.37);
+  text-align:center;
+  font-size:14px;
+  line-height:1.6;
+}
+.notice{border-color:rgba(249,186,112,.35);color:#ffe3bb;}
+.awaiting{--accent:#e4c082;--accent-bright:#f7dfa7;min-height:440px;}
+.awaitingBody{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:23px 10px 35px;
+}
+.awaitingCrown {
+  display:grid;
+  place-items:center;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  color:var(--accent-bright);
+  font-size:48px;
+  border:1px dashed rgba(var(--accent-rgb),.45);
+  background:rgba(var(--accent-rgb),.08);
+  box-shadow:0 0 34px rgba(var(--accent-rgb),.12);
+  margin-bottom:22px;
+}
+.awaitingBody .identityKicker{font-size:11px;color:var(--accent);}
+.awaitingBody h3 {
+  margin:2px 0 11px;
+  color:#f6f5ff;
+  font-size:clamp(22px,2.3vw,29px);
+  line-height:1.3;
+  text-align:center;
+}
+.awaitingBody p:last-child {
+  margin:0;
+  max-width:350px;
+  color:#bdc7df;
+  font-size:13px;
+  line-height:1.75;
+}
+.liveNote {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:9px;
+  margin:23px auto 0;
+  color:#aab9d7;
+  font-size:12px;
+  font-weight:650;
+  letter-spacing:.035em;
+  text-align:center;
+}
+.liveDot{
+  width:8px;
+  height:8px;
+  background:#68e5b1;
+  border-radius:50%;
+  box-shadow:0 0 12px rgba(104,229,177,.7);
+  flex-shrink:0;
+}
+@media(max-width:680px) {
+  .scoreNumber{font-size:clamp(27px,8vw,39px);}
+  .scoreSub{font-size:10px;}
+  .awaiting{min-height:350px;}
+  .awaitingBody{padding:17px 8px 25px;}
+  .awaitingCrown{width:74px;height:74px;font-size:39px;}
+  .liveNote{font-size:11px;padding:0 15px;line-height:1.6;}
+}

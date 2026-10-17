@@ -1,144 +1,77 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import BestPlayerCard from "./BestPlayerCard";
 import styles from "./Champions.module.css";
 
+const REFRESH_INTERVAL = 30000;
+
 export default function BestPlayers() {
   const [bestPlayers, setBestPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [updatedAt, setUpdatedAt] = useState(null);
 
   useEffect(() => {
-    loadBestPlayers();
-  }, []);
+    let disposed = false;
+    let runningController = null;
 
-  async function loadBestPlayers() {
-    try {
-      // 1. GET ALL ACTIVE TEAMS
-      const { data: teams, error: teamError } = await supabase
-        .from("teams")
-        .select(`
-          id,
-          team_name,
-          logo
-        `)
-        .eq("status", "active");
+    async function loadBestPlayers() {
+      if (disposed) return;
+      runningController?.abort();
+      const controller = new AbortController();
+      runningController = controller;
 
-      if (teamError) throw teamError;
+      try {
+        const response = await fetch("/api/champions", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error("Champion rankings could not be loaded.");
+        const result = await response.json();
 
-      const result = [];
-
-      for (const team of teams) {
-        // 2. GET TEAM PLAYERS
-        const { data: players, error: playerError } = await supabase
-          .from("players")
-          .select(`
-            id,
-            ign,
-            full_name,
-            profile_image,
-            avatar_url,
-            primary_role
-          `)
-          .eq("team_id", team.id)
-          .eq("status", "approved");
-
-        if (playerError) continue;
-
-        let ranking = [];
-
-        // 3. GET PLAYER PERFORMANCE
-        for (const player of players) {
-          const { data: stats } = await supabase
-            .from("match_player_stats")
-            .select(`
-              kills,
-              damage,
-              assists,
-              mvp,
-              placement
-            `)
-            .eq("player_id", player.id);
-
-          let kills = 0;
-          let damage = 0;
-          let assists = 0;
-          let mvp = 0;
-          let wins = 0;
-          const totalMatches = (stats || []).length;
-
-          (stats || []).forEach((item) => {
-            kills += Number(item.kills || 0);
-            damage += Number(item.damage || 0);
-            assists += Number(item.assists || 0);
-            mvp += Number(item.mvp || 0);
-
-            if (Number(item.placement) === 1) {
-              wins++;
-            }
-          });
-
-          // Raw Total Score
-          const rawScore = kills + assists + mvp + damage;
-
-          ranking.push({
-            player: {
-              id: player.id,
-              ign: player.ign || player.full_name || "PLAYER",
-              image:
-                player.profile_image ||
-                player.avatar_url ||
-                "/players/default.png",
-              role: player.primary_role || "PLAYER",
-            },
-            stats: {
-              kills,
-              damage,
-              assists,
-              mvp,
-              wins,
-              matches: totalMatches,
-            },
-            rawScore,
-          });
-        }
-
-        // 4. Find the highest raw score in this team
-        const maxRawScore = Math.max(...ranking.map((p) => p.rawScore), 1);
-
-        // 5. Convert to 0-100 scale
-        ranking = ranking.map((item) => ({
-          ...item,
-          score: Number(((item.rawScore / maxRawScore) * 100).toFixed(1)),
-        }));
-
-        // 6. Sort by score
-        ranking.sort((a, b) => b.score - a.score);
-
-        if (ranking.length) {
-          result.push({
-            team: {
-              id: team.id,
-              name: team.team_name,
-              logo: team.logo,
-            },
-            bestPlayer: ranking[0],
-          });
-        }
+        if (disposed || controller.signal.aborted) return;
+        setBestPlayers(Array.isArray(result.champions) ? result.champions : []);
+        setUpdatedAt(result.updatedAt || null);
+        setError("");
+      } catch (err) {
+        if (disposed || controller.signal.aborted) return;
+        setError("Live rankings are temporarily unavailable. Retrying automatically.");
+      } finally {
+        if (!disposed && !controller.signal.aborted) setLoading(false);
       }
-
-      setBestPlayers(result);
-    } catch (error) {
-      console.log("BEST PLAYER ERROR", error);
-    } finally {
-      setLoading(false);
     }
-  }
 
-  if (loading) {
-    return null;
-  }
+    function refreshWhenVisible() {
+      if (document.visibilityState === "visible") loadBestPlayers();
+    }
 
+    loadBestPlayers();
+
+    // Automatic fallback even if database Realtime publication is disabled.
+    const timer = window.setInterval(refreshWhenVisible, REFRESH_INTERVAL);
+    document.addEventListener("visibilitychange", refreshWhenVisible);
+    window.addEventListener("focus", loadBestPlayers);
+
+    // Refresh immediately for completed-match changes when Realtime is enabled.
+    // The periodic timer above is the reliable fallback for every visitor.
+    const channel = supabase
+      .channel("hall-of-champions-public")
+      .on("postgres_changes", { event: "*", schema: "public", table: "match_player_stats" }, refreshWhenVisible)
+      .on("postgres_changes", { event: "*", schema: "public", table: "matches" }, refreshWhenVisible)
+      .on("postgres_changes", { event: "*", schema: "public", table: "players" }, refreshWhenVisible)
+      .subscribe();
+
+    return () => {
+      disposed = true;
+      runningController?.abort();
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", refreshWhenVisible);
+      window.removeEventListener("focus", loadBestPlayers);
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   return (
     <section className={styles.showcase} aria-labelledby="hall-of-champions-title">
@@ -150,19 +83,68 @@ export default function BestPlayers() {
         <h2 id="hall-of-champions-title" className={styles.title}>
           HALL OF CHAMPIONS
         </h2>
-        <p className={styles.description}>Top performers. One standard.</p>
+        <p className={styles.description}>
+          Auto-ranked from completed matches · Kills 50% · Assists 30% · Damage 20%
+        </p>
         <div className={styles.divider} aria-hidden="true" />
       </div>
 
-      <div className={styles.grid}>
-        {bestPlayers.map((item, index) => (
-          <BestPlayerCard
-            key={item.team.id || index}
-            data={item}
-            index={index}
-          />
-        ))}
-      </div>
+      {error && <p className={styles.notice} role="status">{error}</p>}
+
+      {loading && (
+        <div className={styles.pendingLoad} role="status" aria-live="polite">
+          Calculating champions from recorded match results…
+        </div>
+      )}
+
+      {!loading && !error && bestPlayers.length === 0 && (
+        <div className={styles.pendingLoad}>
+          No eligible squads are available for the Hall of Champions yet.
+        </div>
+      )}
+
+      {bestPlayers.length > 0 && (
+        <div className={styles.grid}>
+          {bestPlayers.map((item, index) =>
+            item.bestPlayer ? (
+              <BestPlayerCard
+                key={item.team.id}
+                data={item}
+                index={index}
+              />
+            ) : (
+              <article
+                key={item.team.id}
+                className={[styles.champion, styles.awaiting, index % 2 ? styles.ice : ""].join(" ")}
+                aria-label={item.team.name + ": waiting for recorded player performance"}
+              >
+                <span className={styles.cornerTop} aria-hidden="true" />
+                <span className={styles.cornerBottom} aria-hidden="true" />
+                <div className={styles.cardHeader}>
+                  <span className={styles.badge}>✦ AUTOMATIC CHAMPION SELECTION</span>
+                  <span className={styles.cardIndex}>PENDING</span>
+                </div>
+                <div className={styles.awaitingBody}>
+                  <span className={styles.awaitingCrown} aria-hidden="true">♛</span>
+                  <p className={styles.identityKicker}>{item.team.name}</p>
+                  <h3>Awaiting Match Stats</h3>
+                  <p>No completed-match Kill, Assist or Damage record is available for this squad yet. The leading player will appear here automatically after results are saved.</p>
+                </div>
+                <div className={styles.cardFooter}>
+                  <span className={styles.footerMark}>AUTOMATIC · NO MANUAL SELECTION</span>
+                  <span className={styles.footerLine} aria-hidden="true" />
+                </div>
+              </article>
+            )
+          )}
+        </div>
+      )}
+      {updatedAt && (
+        <p className={styles.liveNote} role="status">
+          <span aria-hidden="true" className={styles.liveDot} />
+          Calculated from completed matches · Refreshes automatically
+        </p>
+      )}
     </section>
   );
 }
