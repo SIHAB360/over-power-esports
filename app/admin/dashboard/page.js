@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   FiGrid, FiUsers, FiTarget, FiLayers, FiAward, FiDollarSign,
@@ -13,6 +14,17 @@ import {
 import { supabase } from "../../lib/supabase";
 import logo from "../../assets/logo.png";
 import styles from "./dashboard.module.css";
+
+// Reuse each existing FULL management page inside the new command center.
+// This preserves every existing form, field, validation, database write and record view.
+const ADMIN_MANAGERS = {
+  players: dynamic(() => import("../players/page"), { ssr: false }),
+  matches: dynamic(() => import("../matches/page"), { ssr: false }),
+  teams: dynamic(() => import("../teams/page"), { ssr: false }),
+  tournaments: dynamic(() => import("../tournaments/page"), { ssr: false }),
+  profit: dynamic(() => import("../profit/page"), { ssr: false }),
+  achievements: dynamic(() => import("../achievements/page"), { ssr: false }),
+};
 
 const THEME_KEY = "op-admin-dashboard-theme";
 const LIMIT = 500;
@@ -370,6 +382,7 @@ export default function AdminDashboard() {
   const tournamentNameById = new Map(tournaments.map((t) => [String(t.id), t.name || "Tournament"]));
 
   const activeNav = NAV.find((item) => item.key === active) || NAV[0];
+  const ActiveManager = ADMIN_MANAGERS[active] || null;
   const rows = source(active).rows;
   const filtered = rows.filter((item) => {
     if (!search) return true;
@@ -599,6 +612,10 @@ export default function AdminDashboard() {
                   </div>
                 </Panel>
               </div>
+            ) : ActiveManager ? (
+              <section className={styles.managerWorkspace} aria-label={activeNav.name + " management workspace"}>
+                <ActiveManager key={active} />
+              </section>
             ) : active === "salary" || active === "verification" ? (
               <div className={styles.sectionView}>
                 <div className={styles.notice}>
