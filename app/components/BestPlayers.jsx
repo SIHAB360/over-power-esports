@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import BestPlayerCard from "./BestPlayerCard";
+import styles from "./Champions.module.css";
 
 export default function BestPlayers() {
   const [bestPlayers, setBestPlayers] = useState([]);
@@ -138,113 +139,30 @@ export default function BestPlayers() {
     return null;
   }
 
+
   return (
-    <section className="best-players">
-      <div className="section-title">
-        <div className="trophy">🏆</div>
-        <h2>THE ELITE LEGENDS</h2>
-        <h3>
-          BEST PLAYERS OF
-          <br />
+    <section className={styles.showcase} aria-labelledby="hall-of-champions-title">
+      <div className={styles.heading}>
+        <p className={styles.headingEyebrow}>
+          <span className={styles.crown} aria-hidden="true">♛</span>
           OVER POWER ESPORTS
-        </h3>
-        <p>আমাদের (অরা) একটু বেশি</p>
+        </p>
+        <h2 id="hall-of-champions-title" className={styles.title}>
+          HALL OF CHAMPIONS
+        </h2>
+        <p className={styles.description}>Top performers. One standard.</p>
+        <div className={styles.divider} aria-hidden="true" />
       </div>
 
-      <div className="best-grid">
+      <div className={styles.grid}>
         {bestPlayers.map((item, index) => (
-          <BestPlayerCard key={item.team.id || index} data={item} />
+          <BestPlayerCard
+            key={item.team.id || index}
+            data={item}
+            index={index}
+          />
         ))}
       </div>
-
-      <style jsx>{`
-        .best-players {
-          padding: 80px 20px;
-          background: radial-gradient(
-            circle at top,
-            rgba(255, 215, 74, 0.12),
-            transparent 35%
-          );
-        }
-
-        .section-title {
-          text-align: center;
-          margin-bottom: 50px;
-        }
-
-        .trophy {
-          font-size: 48px;
-          filter: drop-shadow(0 0 25px #ffd54a);
-          animation: float 3s infinite ease-in-out;
-        }
-
-        .section-title h2 {
-          font-size: 36px;
-          font-weight: 900;
-          letter-spacing: 3px;
-          background: linear-gradient(90deg, #ffd54a, #ff1744, #ffd54a);
-          -webkit-background-clip: text;
-          color: transparent;
-          text-shadow: 0 0 40px rgba(255, 215, 74, 0.4);
-        }
-
-        .section-title h3 {
-          font-size: 16px;
-          color: white;
-          letter-spacing: 2px;
-          margin-top: 12px;
-        }
-
-        .section-title p {
-          color: #00f5ff;
-          letter-spacing: 2px;
-          font-size: 13px;
-        }
-
-        @keyframes float {
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        .best-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 24px;
-          max-width: 1400px;
-          margin: 0 auto;
-        }
-
-        /* Tablet */
-        @media (min-width: 640px) {
-          .best-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          .section-title h2 {
-            font-size: 42px;
-          }
-        }
-
-        /* Desktop */
-        @media (min-width: 1024px) {
-          .best-players {
-            padding: 100px 30px;
-          }
-          .best-grid {
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-          }
-          .section-title {
-            margin-bottom: 80px;
-          }
-          .section-title h2 {
-            font-size: 48px;
-          }
-          .section-title h3 {
-            font-size: 22px;
-          }
-        }
-      `}</style>
     </section>
   );
 }
