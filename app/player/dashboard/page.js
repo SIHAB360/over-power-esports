@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
+import PlayerWithdrawal from "./PlayerWithdrawal";
 
 export default function PlayerDashboard() {
   const router = useRouter();
@@ -1181,6 +1182,10 @@ const bestPlacement =
               )}
           </div>
         </section>
+
+        {/* Step 02: Secure wallet and manual withdrawal UI.
+            Admin's player preview deliberately does not load any other player's wallet. */}
+        {!adminView && <PlayerWithdrawal />}
           </div>
         </div>
         {!adminView && (
