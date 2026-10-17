@@ -188,7 +188,7 @@ export default function LoginPage() {
                 className={[styles.title, mode === "login" ? styles.dashboardTitle : ""].join(" ")}
                 id="login-title"
               >
-                {mode === "forgot" ? "FORGOT PASSWORD?" : "PLAYER DASHBOARD"}
+                {mode === "forgot" ? "FORGOT PASSWORD?" : "PLAYER LOGIN"}
               </h1>
               {mode === "login" && (
                 <span className={[styles.dashboardSpark, styles.dashboardSparkRight].join(" ")} aria-hidden="true" />
@@ -197,7 +197,7 @@ export default function LoginPage() {
             <p className={styles.subtitle}>
               {mode === "forgot"
                 ? "Enter the email linked to your account and we’ll send a secure reset link."
-                : "Sign in to view your stats, track progress, and manage your player journey."}
+                : "Sign in to your account to access your player dashboard."}
             </p>
           </header>
 
