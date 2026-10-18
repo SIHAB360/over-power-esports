@@ -239,6 +239,10 @@ async function run() {
     const {context,page,state}=await openRole(browser,"player");
     await page.goto(BASE+"/player/dashboard",{waitUntil:"domcontentloaded"});
     await waitForText(page,"EARNINGS &");
+    const quickWallet = page.getByRole("button",{name:/OPEN WITHDRAWAL WALLET/});
+    assert(await quickWallet.isVisible(),"Player must see Withdrawal shortcut directly after Hero");
+    await quickWallet.click();
+    await page.locator("#player-withdrawal").waitFor({state:"visible"});
     await waitForText(page,"AVAILABLE BALANCE");
     await waitForText(page,"৳9.00");
     assert(state.seenPlayerWalletToken,"Player API must carry authenticated token");
@@ -278,6 +282,16 @@ async function run() {
     const page=await context.newPage();
     await page.goto(BASE+"/admin/dashboard?section=salary",{waitUntil:"domcontentloaded"});
     await page.waitForURL(url=>url.pathname===LOGIN_PATH,{timeout:45000});
+    await context.close();
+  });
+  await check("Admin Overview has prominent Player Withdrawals shortcut",async()=>{
+    const {context,page,state}=await openRole(browser,"admin");
+    await page.goto(BASE+"/admin/dashboard",{waitUntil:"domcontentloaded"});
+    const quick=page.getByRole("button",{name:/Player Withdrawals.*bKash/i}).first();
+    await quick.waitFor({state:"visible",timeout:45000});
+    await quick.click();
+    await waitForText(page,"Withdrawal Control Center");
+    assert(state.seenAdminToken,"Shortcut must open admin-authenticated Withdrawal Center");
     await context.close();
   });
   await check("Admin can approve and confirm MANUAL (synthetic) payout",async()=>{
