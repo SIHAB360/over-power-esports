@@ -265,3 +265,26 @@
   .shell .metric {min-height:111px;}
   .shell .filter {flex:1 1 auto;}
 }
+
+
+/* Keep the Admin Withdrawal heading copy left-aligned and give it the
+   available horizontal space beside the single Refresh button.
+   Previously the subtitle's 860px cap left "money." orphaned/centered. */
+.shell .heading > div:first-child {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+}
+.shell .heading .subheading {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  text-wrap: pretty;
+}
+@media (max-width: 700px) {
+  .shell .heading > div:first-child { flex: 1 1 auto; }
+  .shell .heading .subheading { text-align: left; }
+}
