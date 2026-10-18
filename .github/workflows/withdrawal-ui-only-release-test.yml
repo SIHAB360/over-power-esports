@@ -1,0 +1,76 @@
+name: Withdrawal UI-only production release safety gate
+on:
+  push:
+    branches:
+      - feat/withdrawal-ui-only-live-20261018
+    paths:
+      - app/player/dashboard/page.js
+      - app/admin/dashboard/page.js
+      - app/admin/dashboard/dashboard.module.css
+      - tests/withdrawal/ui-only-launch.cjs
+      - .github/workflows/withdrawal-ui-only-release-test.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-only-qa:
+    name: 9 real Chromium desktop/mobile checks, NO financial API or live secrets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://op-ui-qa.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: synthetic-release-test-not-real
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify only approved non-financial files changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          echo "UI-only changes:"
+          git diff --name-only origin/main...HEAD
+          disallowed="$(git diff --name-only origin/main...HEAD | grep -Ev '^(app/player/dashboard/page\.js|app/admin/dashboard/page\.js|app/admin/dashboard/dashboard\.module\.css|tests/withdrawal/ui-only-launch\.cjs|\.github/workflows/withdrawal-ui-only-release-test\.yml)$' || true)"
+          if [[ -n "$disallowed" ]]; then
+            echo "::error::Unauthorized file changes for UI-only release"
+            exit 1
+          fi
+          test ! -e app/api/player/wallet/route.js
+          test ! -e app/api/player/withdrawals/route.js
+          test ! -e app/api/admin/withdrawals/confirm-payment/route.js
+          test ! -e supabase/migrations/20261017_step01_secure_withdrawals.sql
+          echo "UI-only diff guard PASS." >>"$GITHUB_STEP_SUMMARY"
+      - name: Install Next.js and Chromium
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install chromium --with-deps
+      - name: Verify Next.js production build
+        run: npm run build
+      - name: Launch local site using synthetic configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start -- --hostname 127.0.0.1 --port 3145 >"$RUNNER_TEMP/ui-only-next.log" 2>&1 &
+          echo $! >"$RUNNER_TEMP/ui-only-next.pid"
+          for i in $(seq 1 80); do
+            if curl -fsS --max-time 2 -o /dev/null http://127.0.0.1:3145/login; then exit 0; fi
+            sleep 2
+          done
+          echo "::error::UI-only local site startup timed out";exit 1
+      - name: Nine real Chromium tests of disabled player/admin finance controls
+        run: node tests/withdrawal/ui-only-launch.cjs
+      - name: Verify temporary server shutdown
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f "$RUNNER_TEMP/ui-only-next.pid" ]]; then
+            kill "$(cat "$RUNNER_TEMP/ui-only-next.pid")" || true
+          fi
+          rm -f "$RUNNER_TEMP/ui-only-next.log" "$RUNNER_TEMP/ui-only-next.pid"
+          echo "No live credentials, user data, wallet requests or money movements were used." >>"$GITHUB_STEP_SUMMARY"
