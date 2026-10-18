@@ -264,7 +264,7 @@ async function run() {
     await waitForText(page,"Withdrawal Control Center");
     await waitForText(page,"QA PLAYER");
     assert(state.seenAdminToken,"Admin request should include bearer token");
-    const record=page.getByRole("button",{name:/QA PLAYER.*৳2/}).first();
+    const record=page.getByRole("listitem").filter({hasText:"QA PLAYER"}).first();
     await record.click();
     await page.getByRole("button",{name:/^Approve$/}).click();
     await page.getByRole("button",{name:/Confirm Approval/}).click();
