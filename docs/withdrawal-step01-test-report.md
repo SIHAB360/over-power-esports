@@ -112,3 +112,24 @@ Public GitHub main tracks .env.local, and Step 01 branch stages its removal and 
 - [ ] Real bKash/Nagad manual transfer receipt/reconciliation process documented and tested.
 
 Release decision: BLOCKED. All withdrawal PRs remain draft; database migration NOT applied on live Supabase.
+
+## Final isolated RLS smoke test — GitHub Actions Run #9 SUCCESS
+
+Verified [GitHub Actions Run #9](https://github.com/SIHAB360/over-power-esports/actions/runs/39088863849) finished **success** on commit `60a5a9518d8d899e65651ebf61de53100022c618`. All pipeline jobs completed:
+
+- Production `public` data exported **read-only** to the ephemeral runner; encrypted backup from prior Run #5 remains separately available.
+- Isolated PostgreSQL 17 restored public schema, constraints, real 9 players and 76 earnings records.
+- Two proposed SQL migrations applied successfully **only in the disposable clone**.
+- Financial request/approval/reject/manual Paid lifecycle, duplicate and fee accounting, and audit assertions completed successfully.
+- Additional real-role impersonation testing using non-privileged `authenticated` and `anon` roles blocked profile admin escalation, player self-approval, direct earnings changes and forged anonymous match insertion. The disposable auth schema stubs used Supabase-equivalent grants.
+- Temporary dump and test logs removed; no player data or plaintext archive uploaded as artifact.
+
+### Before release
+
+- This validates the **public schema/financial SQL** in a disposable PostgreSQL 17 environment, not all Supabase infrastructure, storage and Auth internals.
+- Do not assume this verifies live authenticated browsers: desktop/mobile Player and Admin end-to-end tests remain pending.
+- Independently confirm that the database password disclosed earlier in chat is no longer active; do **not** post any credential here. Update GitHub secret if password rotated and verify Vercel configuration.
+- Obtain **explicit new approval** before applying production migration or merging Draft PRs #12 → #16 → #17.
+- At verification time, live database still had 9 players, 76 earnings and 0 withdrawals; both migrations were unapplied.
+
+**Go-live state: NOT DEPLOYED**.
