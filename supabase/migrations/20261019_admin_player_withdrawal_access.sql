@@ -194,7 +194,7 @@ begin
 
   return v_request;
 end;
-$function$
+$function$;
 
 revoke all on function public.request_player_withdrawal_v2(numeric,text,text)
   from public,anon,authenticated;
