@@ -407,3 +407,100 @@
   .shell .feeNotice strong {font-size:13px;}
   .shell .feeNotice p {font-size:13px;line-height:1.7;}
 }
+
+
+/* Pink OP ESPORTS payout gateway. This is a request interface, NOT
+   bKash/Nagad's official payment login or PIN/OTP collection page. */
+.gateway.shell{
+  margin:0;
+  padding:clamp(18px,2.1vw,32px);
+  border:0;
+  border-radius:0;
+  overflow:visible;
+  isolation:auto;
+  color:#55132f;
+  box-shadow:none;
+  background:linear-gradient(160deg,#fff8fb 0%,#ffe7f0 55%,#f8d5e5 100%);
+}
+.gateway .topGlow{height:0;display:none}
+.gateway .header{margin-bottom:22px;align-items:center}
+.gateway .overline{color:#b71853;font-size:12px;letter-spacing:.08em}
+.gateway .led{background:#e72176;box-shadow:0 0 9px #ef2a78}
+.gateway .header h2{color:#911141;font-size:clamp(25px,2.8vw,37px)}
+.gateway .header h2 span{background:linear-gradient(90deg,#d3135a,#ee4d83);color:transparent;background-clip:text;-webkit-background-clip:text}
+.gateway .subtitle{color:#8a4566;font-size:14px}
+.gateway .refresh{border-color:#ec9cbb;background:#fff;color:#9d154a}
+.gateway .statGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.gateway .stat,.gateway .primaryStat{
+  min-height:131px;background:#fff;border:1px solid rgba(216,83,137,.31);
+  box-shadow:0 8px 20px rgba(168,25,79,.055)
+}
+.gateway .stat span{color:#9e3960;font-size:12px}
+.gateway .stat strong{color:#b41451;font-size:clamp(25px,2.2vw,37px)}
+.gateway .stat small{color:#864c65}
+.gateway .mainGrid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(14px,1.7vw,25px)}
+.gateway .withdrawForm,.gateway .history{
+  width:100%;max-width:none;margin:0;padding:clamp(19px,2.1vw,29px);
+  border:1px solid rgba(215,50,114,.26);border-radius:20px;
+  background:#fff;box-shadow:0 10px 29px rgba(167,42,89,.09)
+}
+.gateway .panelHeading h3{color:#86113d;font-size:clamp(19px,1.55vw,25px)}
+.gateway .panelHeading p{color:#97526e;font-size:13px}
+.gateway .step{background:#fce4ee;border:1px solid #f8b1cc;color:#c3165a}
+.gateway .methods legend{color:#99274e;font-size:13px}
+.gateway .method{min-height:77px;border-color:#f0adc5;background:#fff5f9;color:#83193e}
+.gateway .method strong{color:#881443;font-size:20px}
+.gateway .method small{color:#9c6078}
+.gateway .activePink{background:#ffd7e7;border-color:#d11459;box-shadow:0 0 0 2px rgba(220,24,91,.08)}
+.gateway .activeOrange{background:#ffead1;border-color:#eb9f45}
+.gateway .field>span{color:#951b4c;font-size:13px}
+.gateway .field input{
+  color:#56122d;background:#fff;
+  border:1px solid #dfadc3;min-height:53px;
+  font-size:17px
+}
+.gateway .field input:focus{border-color:#e21466;box-shadow:0 0 0 3px rgba(226,20,101,.12)}
+.gateway .field input::placeholder{color:#b77e98}
+.gateway .field small{color:#8b4b68}
+.gateway .feeNotice{background:#fff0e8;border:1px solid #e5b39c}
+.gateway .feeNotice>span,.gateway .feeNotice strong{color:#ac4630}
+.gateway .feeNotice p{color:#854d37;font-size:13px}
+.gateway .consent span{color:#7a3956;font-size:13px}
+.gateway .consent input{accent-color:#db1863}
+.gateway .submit{
+  color:#fff;background:linear-gradient(110deg,#b80d4c,#f01c71);
+  box-shadow:0 10px 28px rgba(199,10,78,.2);font-size:15px
+}
+.gateway .submit:disabled{background:#d9c7d0;color:#896778;box-shadow:none}
+.gateway .formFooter{color:#925371}
+.gateway .info{background:#fff1dc;border:1px solid #e6bd8e;color:#7a4a21}
+.gateway .warning{background:#fff1df;color:#864025;border:1px solid #e4b58f}
+.gateway .success{background:#e9fff3;color:#206f4f;border:1px solid #99dfb8}
+.gateway .emptyBox{background:#fff5fa;border:1px dashed #ebaac5}
+.gateway .emptyBox strong{color:#8b1547}
+.gateway .emptyBox p{color:#9a5974}
+.gateway .emptyBox>span{color:#d31d63}
+.gateway .historyRow{background:#fff6fa;border:1px solid #f1bed3}
+.gateway .historyAmount{color:#ab1354}
+.gateway .historyMeta,.gateway .statusNote{color:#91516b}
+.gateway .disclaimer{border-color:rgba(219,89,145,.22);color:#7f4561}
+.gateway .disclaimer p{color:#7f4561}
+@media(max-width:1100px){
+  .gateway .mainGrid{grid-template-columns:minmax(0,1fr)}
+  .gateway .statGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .gateway.shell{padding:15px 12px}
+  .gateway .header{align-items:flex-start}
+  .gateway .header h2{font-size:28px}
+  .gateway .stat{min-height:113px;padding:14px}
+  .gateway .stat span{font-size:11px}
+  .gateway .stat strong{font-size:25px}
+  .gateway .stat small{font-size:11px}
+  .gateway .withdrawForm,.gateway .history{padding:17px 13px;border-radius:15px}
+  .gateway .methods{gap:9px}
+  .gateway .method{padding-left:39px}
+  .gateway .field input{font-size:16px}
+  .gateway .step{width:43px;height:43px;flex-basis:43px}
+}
+@media(max-width:360px){.gateway .statGrid{grid-template-columns:1fr}}
