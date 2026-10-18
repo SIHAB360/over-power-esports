@@ -270,7 +270,6 @@ export default function AdminDashboard() {
   const [data, setData] = useState({});
   const [sourceErrors, setSourceErrors] = useState({});
   const [verificationRefreshVersion, setVerificationRefreshVersion] = useState(0);
-  const [withdrawalRefreshVersion, setWithdrawalRefreshVersion] = useState(0);
 
   const refresh = useCallback(async () => {
     setLoadingData(true);
@@ -620,20 +619,21 @@ export default function AdminDashboard() {
 
             <div className={styles.sectionHeading}>
               <div>
-                <span className={styles.sectionOverline}>CONTROL ROOM / {active.toUpperCase()}</span>
+                <span className={styles.sectionOverline}>CONTROL ROOM / {active === "salary" ? "WITHDRAWALS" : active.toUpperCase()}</span>
                 <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
                 <p>{activeNav.description}</p>
               </div>
               <div className={styles.headingActions}>
                 {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
                 {active === "matches" && <Link className={styles.sectionAction} href="/admin/matches/history"><FiClock aria-hidden="true"/> Match History <FiArrowUpRight aria-hidden="true"/></Link>}
-                <button type="button" className={styles.sectionAction} onClick={() => {
-                    refresh();
-                    if (active === "verification") setVerificationRefreshVersion((value) => value + 1);
-                    if (active === "salary") setWithdrawalRefreshVersion((value) => value + 1);
-                  }} disabled={loadingData}>
-                  <FiRefreshCw aria-hidden="true"/> {loadingData ? "Refreshing…" : "Refresh data"}
-                </button>
+                {active !== "salary" && (
+                  <button type="button" className={styles.sectionAction} onClick={() => {
+                      refresh();
+                      if (active === "verification") setVerificationRefreshVersion((value) => value + 1);
+                    }} disabled={loadingData}>
+                    <FiRefreshCw aria-hidden="true"/> {loadingData ? "Refreshing…" : "Refresh data"}
+                  </button>
+                )}
               </div>
             </div>
 
@@ -699,10 +699,7 @@ export default function AdminDashboard() {
             ) : active === "verification" ? (
               <VerificationPanel refreshVersion={verificationRefreshVersion} />
             ) : active === "salary" ? (
-              <WithdrawalManagement
-                players={players}
-                refreshVersion={withdrawalRefreshVersion}
-              />
+              <WithdrawalManagement players={players} />
             ) : (
               <div className={styles.sectionView}>
                 {sourceErrors[active] && <div className={styles.notice}>Unable to load {activeNav.name} data: {sourceErrors[active]}</div>}
