@@ -426,3 +426,22 @@
 .shell .method{min-height:91px}
 .shell .method strong{font-size:clamp(18px,1.15vw,23px)}
 @media(max-width:700px){.shell .providerIdentity{gap:6px}.shell .providerLogo{width:35px;height:35px;max-width:35px;flex-basis:35px;padding:3px}.shell .methods .method{padding-right:6px}.shell .method strong{font-size:17px}.shell .method small{font-size:11px}}
+
+/* Payment-provider inspired color system: bKash pink / Nagad red / Rocket purple.
+   Rocket is an accent only: the backend currently supports bKash and Nagad. */
+.shell{--wallet-accent:#e92b71;--wallet-light:#ff9bc3;--wallet-glow:rgba(237,34,110,.25);background:radial-gradient(ellipse at 0 0,var(--wallet-glow),transparent 45%),radial-gradient(ellipse at 100% 0,rgba(123,53,161,.16),transparent 48%),#100c1e;border-color:color-mix(in srgb,var(--wallet-accent) 53%,#53618c);transition:background .25s,border-color .25s}
+.shell[data-provider="nagad"]{--wallet-accent:#ed2529;--wallet-light:#ffb09b;--wallet-glow:rgba(231,34,31,.25)}
+.shell .topGlow{background:linear-gradient(90deg,#d22573 0%,#f33132 55%,#853a9e 100%);box-shadow:0 0 24px var(--wallet-glow)}
+.shell .header h2 span{background:linear-gradient(90deg,#ff8dbb,#ff706a 55%,#bf8bea);background-clip:text;-webkit-background-clip:text;color:transparent}
+.shell .overline,.shell .led{color:var(--wallet-light)}
+.shell .led{background:var(--wallet-accent);box-shadow:0 0 14px var(--wallet-accent)}
+.shell .primaryStat{border-color:var(--wallet-accent);background:linear-gradient(135deg,var(--wallet-glow),rgba(23,27,48,.92))}
+.shell .primaryStat strong{color:var(--wallet-light)}
+.shell .step{color:var(--wallet-light);border-color:var(--wallet-accent);background:var(--wallet-glow)}
+.shell .refresh:hover:not(:disabled),.shell .field input:focus-visible{border-color:var(--wallet-accent)}
+.shell .method{border-radius:14px;transition:background .2s,border-color .2s,box-shadow .2s}
+.shell .method.activePink{border-color:#f05a99;background:linear-gradient(135deg,rgba(201,23,83,.34),rgba(47,22,48,.88));box-shadow:inset 0 0 22px rgba(232,27,102,.10)}
+.shell .method.activeOrange{border-color:#ff5b53;background:linear-gradient(135deg,rgba(230,30,30,.34),rgba(48,23,28,.9));box-shadow:inset 0 0 22px rgba(228,33,33,.10)}
+.shell .submit:not(:disabled){background:linear-gradient(110deg,var(--wallet-accent),#af2674);border-color:var(--wallet-light);box-shadow:0 10px 27px var(--wallet-glow)}
+.shell .withdrawForm,.shell .history{border-color:rgba(227,117,165,.26)}
+@media(max-width:700px){.shell .methods{grid-template-columns:repeat(2,minmax(0,1fr))}.shell .method{min-width:0}}
