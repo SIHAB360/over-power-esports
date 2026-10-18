@@ -68,3 +68,16 @@ GitHub CI dependency installation and Next.js production build were successful. 
 **Important limitations:** Browser authentication and wallet API responses were **mocked**: this is a UI behavior smoke test, not a real Supabase authenticated user session or production-like authorization integration. Verified SQL RLS/accounting integration is separately recorded in Step 01 Run #9. Before release, a real consenting Player and authorized Admin must test Login, viewing respective wallets, history and read-only paths. Do not send or reveal account passwords, Supabase JWT or payment OTPs in this report.
 
 Production gate remains CLOSED: Do not merge Step 01/02/03 or execute their production migrations without separate explicit user approval. Existing live data remains 9 players, 76 earnings and 0 withdrawals; new withdrawal schema is absent.
+
+## Final mixed browser + live Next.js route guard test — 2026-10-18
+
+GitHub Actions [Chromium UI/browser & API preflight Run #4](https://github.com/SIHAB360/over-power-esports/actions/runs/39127281060): **SUCCESS** on commit `bbe5098c1eeb81c739a2a90849ff5ca563a1650e`. All **8 scenarios passed**.
+
+- Actual locally started **Next.js production-build API routes**, without Playwright interception or bearer token, returned `401 Unauthorized` for all five endpoints: GET `/api/player/wallet`, POST `/api/player/withdrawals`, GET `/api/admin/withdrawals`, POST `/api/admin/withdrawals/review`, and POST `/api/admin/withdrawals/confirm-payment`.
+- Chromium browser: unauthenticated Player/Admin redirect; authenticated *mock* Player dashboard wallet displays correct available funds and field/consent/insufficient-balance rules; mock request creates Pending and prevents duplicate submission; unavailable wallet fails closed on mobile; mock Player blocked from Admin page; synthetic Admin can Approve then *record* manual Paid with fee and reference; admin UI displays on narrow mobile viewport.
+- Synthetic account fixtures and intercepted provider numbers were not actual Supabase sessions. **No real user password, OTP, Supabase production API secret, provider wallet, production database write or payment transfer was involved**.
+- Next.js production build PASS. Vercel Preview deployment READY. Previous isolated PostgreSQL 17 schema restore, proposed migrations and wallet/RLS SQL lifecycle PASS (Run #9), and encrypted backup #6 independently decrypted and verified.
+
+**Unverified release requirement:** a consenting real Player and authorized Admin must manually sign in to their respective Preview pages, validate account navigation and read-only displays, and verify responsive/mobile appearance. Because live production has not had the withdrawal migrations installed, live wallet processing must stay disabled. Do not impersonate users or collect their credentials.
+
+**Release status: NOT APPROVED / NOT DEPLOYED.** Keep PR #12, PR #16 and PR #17 Draft. Apply production SQL / merge only with fresh explicit authorization.
