@@ -234,9 +234,19 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
               placeholder="Search players / number / reference on this page" aria-label="Search visible withdrawal page"/>
           </label>
           <div className={styles.list} role="list" aria-label="Withdrawal records">
-            {loading ? <p className={styles.empty}>Loading secure withdrawal records…</p>
-              : rows.length === 0 ? <p className={styles.empty}>{search ? "No matching requests on this page." : "No withdrawal requests in this status."}</p>
-                : rows.map(row => {
+            {loading ? <p className={styles.empty} role="status">Loading secure withdrawal records…</p>
+              : rows.length === 0 ? (
+                <div className={styles.emptyState} role="status">
+                  <span className={styles.emptyIcon} aria-hidden="true"><FiCreditCard /></span>
+                  <strong>{search ? "No matching requests" : filter ? `No ${filter} requests` : "No withdrawal requests yet"}</strong>
+                  <p>{search
+                    ? "Nothing on this page matches your search. Try another name or clear the search."
+                    : filter
+                      ? "There are no requests with this status right now. Choose All requests to see other records."
+                      : "When a player submits a bKash or Nagad withdrawal request, it will appear here for review."}</p>
+                </div>
+              )
+              : rows.map(row => {
                   const p = playerLookup.get(String(row.player_id));
                   return <button type="button" role="listitem" key={row.id}
                     className={[styles.listRow,selectedId === row.id ? styles.listRowActive : ""].join(" ")}
@@ -257,7 +267,14 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
 
         <div className={styles.detailPanel}>
           <div className={styles.panelHead}><h4>REQUEST DETAILS</h4><FiFilter aria-hidden="true"/></div>
-          {!selected ? <div className={styles.noSelection}><FiShield aria-hidden="true"/><strong>Choose a withdrawal request</strong><p>Player details and approval or payment controls will appear here. Only admins can view receiver numbers.</p></div>
+          {!selected ? <div className={styles.noSelection}>
+            <span className={styles.noSelectionIcon} aria-hidden="true"><FiShield/></span>
+            <strong>{!loading && total === 0 && !filter ? "Ready for your first request" : "Choose a withdrawal request"}</strong>
+            <p>{!loading && total === 0 && !filter
+              ? "New player requests will appear on the left. Select one to securely review the receiver, amount and status."
+              : "Select a request on the left to view player details and the appropriate approval or payment controls."}</p>
+            <span className={styles.secureNote}><FiShield aria-hidden="true"/> Admin-only receiver details</span>
+          </div>
             : <div className={styles.details}>
               <div className={styles.requestHeading}>
                 <div><p>PLAYER</p><h4>{player?.name || "Player " + String(selected.player_id).slice(0,8)}</h4><small>{player?.team || "Team not listed"}</small></div>
