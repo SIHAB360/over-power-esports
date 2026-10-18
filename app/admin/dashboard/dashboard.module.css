@@ -1348,3 +1348,63 @@
   .dashboard .navItem,.dashboard .stat,.dashboard .commandAction{transition:none;}
   .dashboard .navItem:hover,.dashboard .stat:hover,.dashboard .commandAction:hover{transform:none;}
 }
+
+/* UI-only public live release: withdrawal finance backend is NOT active. */
+.dashboard .commandActions {grid-template-columns:repeat(4,minmax(0,1fr))}
+.dashboard .withdrawalQuickAction {
+  border-color:rgba(90,219,211,.6);
+  background:linear-gradient(120deg,rgba(23,178,190,.13),rgba(113,87,206,.11)),var(--surface);
+}
+.dashboard .withdrawalQuickAction .commandActionIcon {
+  color:#72e9e2;background:rgba(34,188,195,.16);
+}
+.dashboard .withdrawalQuickAction:hover {border-color:#6ae4de;box-shadow:0 12px 28px rgba(29,174,196,.16)}
+.withdrawalPreview {
+  padding:clamp(19px,3vw,35px);
+  border:1px solid rgba(96,207,235,.37);
+  border-radius:23px;
+  background:radial-gradient(ellipse at 0% 0%,rgba(51,189,228,.13),transparent 55%),
+    radial-gradient(ellipse at 100% 100%,rgba(146,102,255,.12),transparent 58%),
+    linear-gradient(141deg,#111b32,#0c152b);
+  color:#f7fcff;box-shadow:0 22px 51px rgba(0,0,0,.18);
+}
+.withdrawalPreviewHeader{display:flex;align-items:start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:21px}
+.withdrawalEyebrow{display:flex;align-items:center;gap:8px;font-size:12px;color:#72eae6;font-weight:950;letter-spacing:.09em}
+.withdrawalPreviewHeader h3{font-size:clamp(25px,2.6vw,38px);line-height:1.17;margin:8px 0 8px;color:#fff;font-weight:950}
+.withdrawalPreviewHeader h3 span{color:#8fc8ff}
+.withdrawalPreviewHeader p{max-width:715px;color:#becde5;font-size:14px;line-height:1.65;margin:0}
+.withdrawalPreviewLock{display:inline-flex;padding:10px 13px;border-radius:11px;border:1px solid rgba(248,180,90,.45);background:rgba(172,113,32,.13);color:#ffdc9b;font-size:11px;font-weight:950;white-space:nowrap}
+.withdrawalFinanceNotice{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;border:1px solid rgba(250,189,94,.30);border-radius:14px;background:rgba(166,110,34,.1);margin-bottom:20px}
+.withdrawalFinanceNotice>svg{flex:0 0 21px;margin-top:3px;color:#ffdc9b;font-size:21px}
+.withdrawalFinanceNotice strong{display:block;font-size:14px;color:#ffe2b0}
+.withdrawalFinanceNotice p{margin:6px 0 0;font-size:13px;line-height:1.65;color:#e6d0b1}
+.withdrawalPreviewStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:17px}
+.withdrawalPreviewStats>div{min-height:124px;display:flex;flex-direction:column;gap:9px;padding:17px;border-radius:15px;border:1px solid rgba(147,182,231,.23);background:rgba(25,44,74,.7)}
+.withdrawalPreviewStats span{font-size:11px;line-height:1.4;font-weight:950;letter-spacing:.045em;color:#bad0e9}
+.withdrawalPreviewStats strong{font-size:35px;color:#fff;line-height:1}
+.withdrawalPreviewStats small{font-size:12px;color:#9db4d1}
+.withdrawalPreviewColumns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:18px}
+.withdrawalPreviewPanel{min-width:0;padding:clamp(18px,2.3vw,25px);border:1px solid rgba(127,165,221,.28);background:rgba(10,21,42,.74);border-radius:16px}
+.withdrawalPreviewPanel h4{font-size:17px;color:#fff;margin:0 0 7px;font-weight:950;letter-spacing:.02em}
+.withdrawalPreviewPanel>p{font-size:13px;line-height:1.55;margin:0 0 18px;color:#adc4db}
+.withdrawalPreviewPanel>small{display:block;margin-top:16px;font-size:12px;color:#bacfe3;line-height:1.6}
+.withdrawalPreviewEmpty{display:flex;flex-direction:column;align-items:center;gap:9px;justify-content:center;min-height:195px;text-align:center;border:1px dashed rgba(111,171,221,.32);border-radius:13px;background:rgba(26,42,70,.27);padding:20px}
+.withdrawalPreviewEmpty svg{color:#8acced;font-size:35px}
+.withdrawalPreviewEmpty strong{color:#e6f8ff;font-size:16px}
+.withdrawalPreviewEmpty small{color:#aec2dd;line-height:1.55;font-size:12px}
+.withdrawalPreviewActions{display:grid;gap:10px}
+.withdrawalPreviewActions button{min-height:49px;padding:13px 12px;border:1px solid rgba(136,164,207,.19);border-radius:11px;background:#263550;color:#8fa4c2;font-weight:900;font-size:12px;cursor:not-allowed}
+.withdrawalPreview .actionTiles{margin-top:11px}
+.withdrawalPreview .actionTile{background:rgba(14,34,58,.85);border-color:rgba(131,168,222,.3);color:#f2faff}
+.withdrawalPreview .actionTile span{color:#f2faff}
+.withdrawalPreview .actionTile small{color:#aec8e2}
+@media (max-width:1400px){.dashboard .commandActions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1010px){.withdrawalPreviewStats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:690px){
+  .dashboard .commandActions{grid-template-columns:1fr}
+  .withdrawalPreview{padding:17px 12px;border-radius:15px}
+  .withdrawalPreviewColumns{grid-template-columns:1fr}
+  .withdrawalPreviewHeader h3{font-size:26px}
+  .withdrawalPreviewStats>div{min-height:110px;padding:13px}
+}
+@media (max-width:345px){.withdrawalPreviewStats{grid-template-columns:1fr}}
