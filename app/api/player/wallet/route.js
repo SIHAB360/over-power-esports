@@ -14,19 +14,26 @@ export async function GET(request) {
     if (playerError) throw playerError;
     if (!player?.id) return sendWithdrawalResponse({ message: "Approved player profile required." }, 403);
 
-    const [balance, history] = await Promise.all([
+    const [balance, history, access] = await Promise.all([
       client.rpc("get_player_wallet_balance", { p_player_id: player.id }),
       client.from("withdrawal_requests")
         .select("id,amount,status,provider,receiver_number,transfer_fee,net_payout,transaction_reference,created_at,updated_at,paid_at,rejection_reason")
         .eq("player_id", player.id)
         .order("created_at", { ascending: false })
         .limit(25),
+      client.from("player_withdrawal_access")
+        .select("enabled,updated_at").eq("player_id",player.id).maybeSingle(),
     ]);
     if (balance.error) throw balance.error;
     if (history.error) throw history.error;
+    if (access.error) throw access.error;
     return sendWithdrawalResponse({
       wallet: balance.data?.[0] || null,
       withdrawals: history.data || [],
+      withdrawalAccess: {
+        enabled: access.data?.enabled === true,
+        updatedAt: access.data?.updated_at || null,
+      },
     });
   } catch (error) {
     return withdrawalError(error, "Unable to load wallet.");
