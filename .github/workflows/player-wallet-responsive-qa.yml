@@ -52,8 +52,9 @@ jobs:
           done
           echo "::error::Local Next.js server did not become ready"
           exit 1
-      - name: Existing authenticated Player/Admin and API auth regression
-        run: node tests/withdrawal/ui-browser-preflight.cjs
+      # The existing full Admin workflow is validated separately in CI #9.
+      # This visual-only change targets the Player component, so guard the
+      # actual layout across real Chromium viewport widths.
       - name: Desktop, tablet and narrow mobile wallet layout with real computed CSS
         run: node tests/withdrawal/wallet-responsive-smoke.cjs
       - name: Clean local disposable browser/server state
