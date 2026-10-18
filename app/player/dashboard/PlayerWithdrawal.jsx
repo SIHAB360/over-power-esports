@@ -190,11 +190,11 @@ export default function PlayerWithdrawal() {
             <legend>পেমেন্ট মাধ্যম নির্বাচন করুন</legend>
             <label className={[styles.method, provider === "bkash" ? styles.activePink : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="bkash" checked={provider === "bkash"} onChange={() => setProvider("bkash")} />
-              <strong>bKash</strong><small>পার্সোনাল অ্যাকাউন্ট</small>
+              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="https://seekvectors.com/files/download/dfac9aaa4561ff1c9226a71ca109d465.png" alt="" loading="lazy" /><span><strong>bKash</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
             </label>
             <label className={[styles.method, provider === "nagad" ? styles.activeOrange : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="nagad" checked={provider === "nagad"} onChange={() => setProvider("nagad")} />
-              <strong>Nagad</strong><small>পার্সোনাল অ্যাকাউন্ট</small>
+              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="https://image.pngaaa.com/400/3425400-middle.png" alt="" loading="lazy" /><span><strong>Nagad</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
             </label>
           </fieldset>
 
