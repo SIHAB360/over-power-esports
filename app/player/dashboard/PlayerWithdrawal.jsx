@@ -139,7 +139,7 @@ export default function PlayerWithdrawal() {
   }
 
   return (
-    <section id="player-withdrawal" className={styles.shell} aria-labelledby="op-wallet-title">
+    <section id="player-withdrawal" data-provider={provider} className={styles.shell} aria-labelledby="op-wallet-title">
       <div className={styles.topGlow} aria-hidden="true" />
       <div className={styles.header}>
         <div>
