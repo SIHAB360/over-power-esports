@@ -1,0 +1,67 @@
+name: Admin Withdrawal responsive layout & safety checks
+on:
+  push:
+    branches:
+      - fix/admin-withdrawals-panel-polish-20261019
+    paths:
+      - app/admin/dashboard/page.js
+      - app/admin/dashboard/WithdrawalManagement.jsx
+      - app/admin/dashboard/WithdrawalManagement.module.css
+      - tests/withdrawal/admin-panel-polish-smoke.cjs
+      - .github/workflows/admin-withdrawals-polish-qa.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: withdrawal-ui-browser-preflight
+  cancel-in-progress: false
+
+jobs:
+  e2e-with-synthetic-fixtures:
+    name: Admin-only browser readability and finance-flow mock, no production credentials
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://op-ui-qa.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: synthetic-browser-preflight-not-real
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install Next.js and Playwright browser dependencies
+        run: |
+          npm install --no-fund --no-audit
+          npm install --no-save --no-fund --no-audit playwright@1.56.1
+          npx playwright install chromium --with-deps
+      - name: Build only against dummy public client environment
+        run: npm run build
+      - name: Launch disposable local production-build server
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start -- --hostname 127.0.0.1 --port 3145 \
+            >"$RUNNER_TEMP/withdrawal-ui-next.log" 2>&1 &
+          echo $! >"$RUNNER_TEMP/withdrawal-ui-next.pid"
+          for attempt in $(seq 1 80); do
+            if curl -fsS --max-time 2 -o /dev/null http://127.0.0.1:3145/login; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Local Next.js server did not become ready"
+          exit 1
+      - name: Chromium desktop/tablet/mobile admin UI & fake manual Paid regression
+        run: node tests/withdrawal/admin-panel-polish-smoke.cjs
+      - name: Clean local disposable browser/server state
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "$RUNNER_TEMP/withdrawal-ui-next.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/withdrawal-ui-next.pid")" || true
+          fi
+          rm -f "$RUNNER_TEMP/withdrawal-ui-next.log" "$RUNNER_TEMP/withdrawal-ui-next.pid"
+          echo "Staging UI browser preflight: no live keys or payment-provider connection were used." >>"$GITHUB_STEP_SUMMARY"
