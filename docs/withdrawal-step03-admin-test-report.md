@@ -50,3 +50,21 @@
 | Production merge / finance activation | BLOCKED BY SAFETY GATES |
 
 Production status: **unchanged** until a safe database restoration and end-to-end payment workflow is verified.
+
+## Browser-based UI verification — 2026-10-18
+
+GitHub Actions [Withdrawal Player/Admin UI browser preflight #3](https://github.com/SIHAB360/over-power-esports/actions/runs/39127072226) finished **SUCCESS**. All **7 independent Chromium tests** passed against a disposable locally built Next.js application, with dummy Supabase client URL and synthetic sessions, intercepted data and API calls.
+
+1. Player dashboard redirects unauthenticated visitors to Login.
+2. Authenticated synthetic Player: Wallet desktop display, available balance, insufficient-funds/number/consent validation, request creation, updated history and duplicate-request prevention.
+3. Backend `503` explicitly disables Player Withdrawal on responsive mobile viewport.
+4. Non-admin synthetic Player cannot access Admin Dashboard.
+5. Admin Dashboard redirects unauthenticated visitors to Login.
+6. Authenticated synthetic Admin: load pending request, approve it without any funds sent, then attest synthetic manual payment with fee and transaction reference; no payment-provider API calls.
+7. Admin Control Center displays on narrow mobile viewport.
+
+GitHub CI dependency installation and Next.js production build were successful. Vercel Preview of the branch was READY. No production database credentials, actual account tokens, private payment numbers or payment gateway were used.
+
+**Important limitations:** Browser authentication and wallet API responses were **mocked**: this is a UI behavior smoke test, not a real Supabase authenticated user session or production-like authorization integration. Verified SQL RLS/accounting integration is separately recorded in Step 01 Run #9. Before release, a real consenting Player and authorized Admin must test Login, viewing respective wallets, history and read-only paths. Do not send or reveal account passwords, Supabase JWT or payment OTPs in this report.
+
+Production gate remains CLOSED: Do not merge Step 01/02/03 or execute their production migrations without separate explicit user approval. Existing live data remains 9 players, 76 earnings and 0 withdrawals; new withdrawal schema is absent.
