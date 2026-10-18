@@ -673,6 +673,30 @@ const bestPlacement =
           </div>
         </section>
 
+        {/* Prominent quick access. This only scrolls to the secure wallet below;
+            the backend must still be activated by a separately approved migration. */}
+        {!adminView && (
+          <section className="op-wallet-entry" aria-label="Player withdrawal quick access">
+            <div className="op-wallet-entry-copy">
+              <span className="op-wallet-entry-eyebrow">PLAYER FINANCE / PERSONAL WALLET</span>
+              <strong>WITHDRAW YOUR EARNINGS</strong>
+              <span>Choose bKash or Nagad, track requests and view your secure wallet.</span>
+            </div>
+            <button
+              type="button"
+              className="op-wallet-entry-button"
+              onClick={() => {
+                const target = document.getElementById("player-withdrawal");
+                if (!target) return;
+                const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+              }}
+            >
+              <span aria-hidden="true">৳</span> OPEN WITHDRAWAL WALLET <span aria-hidden="true">↘</span>
+            </button>
+          </section>
+        )}
+
        {/* Stats */}
 <div className="stats">
   <div className="stat">
@@ -3637,6 +3661,71 @@ const bestPlacement =
           color: #b8c9e8;
           font-size: 11px;
           line-height: 1.4;
+        }
+        .op-wallet-entry {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          margin: 18px 0 22px;
+          padding: 20px clamp(16px, 2.5vw, 27px);
+          border: 1px solid rgba(71, 228, 222, .5);
+          border-radius: 17px;
+          background: linear-gradient(115deg, rgba(18, 114, 143, .28), rgba(20, 22, 44, .96) 53%, rgba(94, 45, 126, .3));
+          box-shadow: inset 0 1px 0 rgba(125, 241, 241, .13), 0 12px 30px rgba(0, 0, 0, .19);
+        }
+        .op-wallet-entry-copy {
+          display: flex;
+          flex: 1 1 210px;
+          flex-direction: column;
+          gap: 6px;
+          min-width: 0;
+        }
+        .op-wallet-entry-eyebrow {
+          color: #6bebdf;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: .08em;
+        }
+        .op-wallet-entry-copy strong {
+          color: #fff;
+          font-size: clamp(17px, 2.2vw, 23px);
+          font-weight: 950;
+          line-height: 1.2;
+        }
+        .op-wallet-entry-copy > span:last-child {
+          color: #c3d6e8;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+        .op-wallet-entry-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          min-height: 52px;
+          flex: 0 1 auto;
+          padding: 13px 20px;
+          border: none;
+          border-radius: 12px;
+          background: linear-gradient(112deg, #65f8d2, #63b5f6 74%, #c0a4f9);
+          color: #061925;
+          box-shadow: 0 9px 25px rgba(29, 201, 210, .18);
+          font: inherit;
+          font-size: 12px;
+          font-weight: 950;
+          letter-spacing: .02em;
+          cursor: pointer;
+        }
+        .op-wallet-entry-button:hover { filter: brightness(1.09); }
+        .op-wallet-entry-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+        @media (max-width: 680px) {
+          .op-wallet-entry { padding: 17px 14px; }
+          .op-wallet-entry-button { width: 100%; min-height: 53px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .op-wallet-entry-button { transition: none; }
         }
         .admin-view-badge {
           padding: 6px 9px;
