@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
 import PlayerWithdrawal from "./PlayerWithdrawal";
@@ -17,16 +17,40 @@ const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
 const [adminView, setAdminView] = useState(false);
 const [walletOpen, setWalletOpen] = useState(false);
+const walletDialogRef = useRef(null);
+const walletCloseRef = useRef(null);
+const walletTriggerRef = useRef(null);
 
 useEffect(() => {
   if (!walletOpen) return;
-  const onKeyDown = (event) => { if (event.key === "Escape") setWalletOpen(false); };
-  document.addEventListener("keydown", onKeyDown);
+  const previousFocus = document.activeElement;
   const previousOverflow = document.body.style.overflow;
   document.body.style.overflow = "hidden";
+  walletCloseRef.current?.focus();
+  const onKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setWalletOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const nodes = Array.from(walletDialogRef.current?.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ) || []).filter((node) => node.getClientRects().length > 0);
+    if (!nodes.length) { event.preventDefault(); return; }
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  };
+  document.addEventListener("keydown", onKeyDown);
   return () => {
     document.removeEventListener("keydown", onKeyDown);
     document.body.style.overflow = previousOverflow;
+    if (previousFocus?.isConnected) previousFocus.focus();
+    else walletTriggerRef.current?.focus();
   };
 }, [walletOpen]);
 
@@ -697,6 +721,7 @@ const bestPlacement =
             </div>
             <button
               type="button"
+              ref={walletTriggerRef}
               className={`op-wallet-entry-button ${walletModal.trigger}`}
               onClick={() => setWalletOpen(true)}
               aria-haspopup="dialog"
@@ -1234,10 +1259,10 @@ const bestPlacement =
         <div className={walletModal.overlay} onMouseDown={(event) => {
           if (event.target === event.currentTarget) setWalletOpen(false);
         }}>
-          <div className={walletModal.dialog} role="dialog" aria-modal="true" aria-label="উত্তোলন ও পেমেন্ট ওয়ালেট">
+          <div ref={walletDialogRef} className={walletModal.dialog} role="dialog" aria-modal="true" aria-label="উত্তোলন ও পেমেন্ট ওয়ালেট">
             <div className={walletModal.dialogHeader}>
               <div><span className={walletModal.eyebrow}>OVER POWER ESPORTS • SECURE PAYMENT</span><h2>পেমেন্ট ওয়ালেট</h2></div>
-              <button type="button" className={walletModal.close} onClick={() => setWalletOpen(false)} aria-label="পেমেন্ট উইন্ডো বন্ধ করুন">×</button>
+              <button type="button" ref={walletCloseRef} className={walletModal.close} onClick={() => setWalletOpen(false)} aria-label="পেমেন্ট উইন্ডো বন্ধ করুন">×</button>
             </div>
             <PlayerWithdrawal />
           </div>
