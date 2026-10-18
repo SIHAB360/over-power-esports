@@ -38,7 +38,7 @@ const NAV = [
   { key: "teams", name: "Teams", Icon: FiLayers, href: "/admin/teams", description: "Team roster and team management" },
   { key: "tournaments", name: "Tournaments", Icon: FiAward, href: "/admin/tournaments", description: "Tournaments and competitions" },
   { key: "profit", name: "Profit", Icon: FiDollarSign, href: "/admin/profit", description: "Match finance and profit records" },
-  { key: "salary", name: "Salary", Icon: FiCreditCard, description: "Salary and payout management" },
+  { key: "salary", name: "Withdrawals", Icon: FiCreditCard, description: "Player bKash/Nagad withdrawal interface — currently read-only" },
   { key: "verification", name: "Verification", Icon: FiShield, description: "Player verification and access control" },
   { key: "achievements", name: "Achievements", Icon: FiImage, href: "/admin/achievements", description: "Esports achievements and gallery" },
 ];
@@ -607,6 +607,11 @@ export default function AdminDashboard() {
                   <span className={styles.commandActionBody}><strong>Verification hub</strong><small>Secure live access codes</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
                 </button>
+                <button type="button" className={[styles.commandAction,styles.withdrawalQuickAction].join(" ")} onClick={() => goTo("salary")}>
+                  <span className={styles.commandActionIcon}><FiCreditCard aria-hidden="true"/></span>
+                  <span className={styles.commandActionBody}><strong>Player Withdrawals</strong><small>bKash / Nagad · Read-only preview</small></span>
+                  <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
+                </button>
               </section>
             )}
 
@@ -690,27 +695,53 @@ export default function AdminDashboard() {
             ) : active === "verification" ? (
               <VerificationPanel refreshVersion={verificationRefreshVersion} />
             ) : active === "salary" ? (
-              <div className={styles.sectionView}>
-                <div className={styles.salaryNotice} role="status">
-                  <span className={styles.salaryNoticeIcon}><FiCreditCard aria-hidden="true" /></span>
-                  <div className={styles.salaryNoticeContent}>
-                    <span className={styles.salaryNoticeKicker}>FINANCE WORKSPACE</span>
-                    <h3>Salary & Payouts</h3>
-                    <p>Individual salary payments are not connected yet. Your existing match earnings and player allocations are safely available in Profit Management.</p>
+              <section className={styles.withdrawalPreview} aria-label="Player withdrawals workspace read-only preview">
+                <div className={styles.withdrawalPreviewHeader}>
+                  <div>
+                    <span className={styles.withdrawalEyebrow}><FiLock aria-hidden="true"/> SECURE PLAYER FINANCE</span>
+                    <h3>Withdrawal <span>Control Center</span></h3>
+                    <p>Review bKash and Nagad earnings withdrawals when the secure payment system is activated.</p>
                   </div>
-                  <Link href="/admin/profit" className={styles.salaryNoticeAction}>
-                    Open Profit <FiArrowUpRight aria-hidden="true" />
-                  </Link>
+                  <span className={styles.withdrawalPreviewLock}>● NOT YET ENABLED</span>
+                </div>
+                <div className={styles.withdrawalFinanceNotice} role="status">
+                  <FiLock aria-hidden="true"/>
+                  <div><strong>Withdrawal management is currently locked.</strong>
+                    <p>Player requests, admin approvals and manual payment confirmation are disabled until the separate financial backend and database migration are approved. Existing Player, Match, Profit and Earnings records are unchanged.</p>
+                  </div>
+                </div>
+                <div className={styles.withdrawalPreviewStats}>
+                  <div><span>PENDING REVIEW</span><strong>—</strong><small>Not connected yet</small></div>
+                  <div><span>AWAITING PAYMENT</span><strong>—</strong><small>Not connected yet</small></div>
+                  <div><span>PAID RECORDS</span><strong>—</strong><small>Not connected yet</small></div>
+                  <div><span>REJECTED</span><strong>—</strong><small>Not connected yet</small></div>
+                </div>
+                <div className={styles.withdrawalPreviewColumns}>
+                  <div className={styles.withdrawalPreviewPanel}>
+                    <h4>WITHDRAWAL REQUESTS</h4>
+                    <p>Player requests will appear here after secure activation.</p>
+                    <div className={styles.withdrawalPreviewEmpty}>
+                      <FiCreditCard aria-hidden="true"/>
+                      <strong>Requests not enabled</strong>
+                      <small>No request list is connected to the live database.</small>
+                    </div>
+                  </div>
+                  <div className={styles.withdrawalPreviewPanel}>
+                    <h4>PAYMENT CONTROL</h4>
+                    <p>Admin confirmation will require a real provider reference.</p>
+                    <div className={styles.withdrawalPreviewActions}>
+                      <button type="button" disabled aria-disabled="true">APPROVE REQUEST</button>
+                      <button type="button" disabled aria-disabled="true">REJECT REQUEST</button>
+                      <button type="button" disabled aria-disabled="true">CONFIRM MANUAL PAID</button>
+                    </div>
+                    <small>Approval never sends money. Personal bKash/Nagad transfer charges are borne by the player.</small>
+                  </div>
                 </div>
                 <div className={styles.actionTiles}>
-                  <Link href="/admin/players" className={styles.actionTile}>
-                    <FiUsers/><div><span>Player Management</span><small>Review accounts and registration status</small></div>
-                  </Link>
-                  <Link href="/admin/profit" className={styles.actionTile}>
-                    <FiDollarSign/><div><span>Profit Management</span><small>View recorded match finances</small></div>
-                  </Link>
+                  <Link href="/admin/players" className={styles.actionTile}><FiUsers/><div><span>Player Management</span><small>Existing player registrations and approvals</small></div></Link>
+                  <Link href="/admin/profit" className={styles.actionTile}><FiDollarSign/><div><span>Profit Management</span><small>Existing match finances remain available</small></div></Link>
                 </div>
-              </div>
+              </section>
             ) : (
               <div className={styles.sectionView}>
                 {sourceErrors[active] && <div className={styles.notice}>Unable to load {activeNav.name} data: {sourceErrors[active]}</div>}
