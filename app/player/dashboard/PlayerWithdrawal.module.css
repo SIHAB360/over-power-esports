@@ -418,3 +418,11 @@
 .shell .subtitle,.shell .panelHeading p,.shell .field small,.shell .feeNotice p,.shell .historyMeta{font-weight:400;letter-spacing:0}
 @media(min-width:1101px){.shell .mainGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.shell .header{gap:10px;flex-wrap:wrap}.shell .refresh{margin-left:auto}.shell .statGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* bKash and Nagad branding inside the existing secure radio choices. */
+.shell .providerIdentity{display:flex;align-items:center;gap:12px;min-width:0;width:100%}
+.shell .providerIdentity>span{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0}
+.shell .providerLogo{display:block;width:49px;height:45px;max-width:49px;object-fit:contain;background:#fff;border-radius:9px;padding:4px;flex:0 0 49px}
+.shell .method{min-height:91px}
+.shell .method strong{font-size:clamp(18px,1.15vw,23px)}
+@media(max-width:700px){.shell .providerIdentity{gap:6px}.shell .providerLogo{width:35px;height:35px;max-width:35px;flex-basis:35px;padding:3px}.shell .methods .method{padding-right:6px}.shell .method strong{font-size:17px}.shell .method small{font-size:11px}}
