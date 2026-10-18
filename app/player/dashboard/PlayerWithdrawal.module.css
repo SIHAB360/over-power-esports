@@ -324,3 +324,86 @@
   .shell .stat{min-height:112px}
   .shell .methods{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* 2026-10-18: Consistent circular bKash/Nagad selection and legible charge.
+   Native radio appearance was overridden by global form CSS in some browsers.
+   Scope every rule to this wallet: no global styles or payment-logic changes. */
+.shell .methods .method input[type="radio"] {
+  -webkit-appearance:none;
+  appearance:none;
+  position:absolute;
+  top:50%;
+  left:16px;
+  transform:translateY(-50%);
+  display:block;
+  box-sizing:border-box;
+  flex:0 0 20px;
+  width:20px;
+  height:20px;
+  margin:0;
+  padding:0;
+  border:2px solid #9bb0cf;
+  border-radius:50%;
+  background:#17253e;
+  box-shadow:0 0 0 1px rgba(10,20,35,.35);
+  cursor:pointer;
+}
+.shell .methods .method input[type="radio"]:checked {
+  border-color:#73e7e5;
+  background:radial-gradient(circle at center,#73e7e5 0 4px,transparent 4.5px);
+  box-shadow:0 0 0 3px rgba(89,228,223,.16);
+}
+.shell .methods .method.activePink input[type="radio"]:checked {
+  border-color:#ff90cb;
+  background:radial-gradient(circle at center,#ff90cb 0 4px,transparent 4.5px);
+  box-shadow:0 0 0 3px rgba(255,107,186,.2);
+}
+.shell .methods .method.activeOrange input[type="radio"]:checked {
+  border-color:#ffc17c;
+  background:radial-gradient(circle at center,#ffc17c 0 4px,transparent 4.5px);
+  box-shadow:0 0 0 3px rgba(255,175,82,.18);
+}
+.shell .methods .method input[type="radio"]:focus-visible {
+  outline:3px solid #fff;
+  outline-offset:4px;
+}
+.shell .methods:disabled .method input[type="radio"] {cursor:not-allowed;}
+.shell .methods .method {padding-left:49px;}
+.shell .feeNotice {
+  align-items:flex-start;
+  padding:18px 18px;
+  gap:13px;
+  border:1px solid rgba(255,196,103,.48);
+  background:rgba(170,112,37,.15);
+}
+.shell .feeNotice > span {
+  margin-top:1px;
+  color:#ffda97;
+  font-size:25px;
+}
+.shell .feeNotice strong {
+  color:#ffe2ad;
+  font-size:14px;
+  letter-spacing:.025em;
+  line-height:1.5;
+}
+.shell .feeNotice p {
+  color:#f4dfc0;
+  font-size:14px;
+  line-height:1.72;
+  margin:7px 0 0;
+  max-width:72ch;
+  text-align:left;
+}
+@media (max-width:700px) {
+  .shell .methods .method {padding-left:40px;}
+  .shell .methods .method input[type="radio"] {
+    width:19px;
+    height:19px;
+    left:11px;
+  }
+  .shell .feeNotice {padding:16px 13px;gap:11px;}
+  .shell .feeNotice strong {font-size:13px;}
+  .shell .feeNotice p {font-size:13px;line-height:1.7;}
+}
