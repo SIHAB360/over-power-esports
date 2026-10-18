@@ -81,3 +81,13 @@ GitHub Actions [Chromium UI/browser & API preflight Run #4](https://github.com/S
 **Unverified release requirement:** a consenting real Player and authorized Admin must manually sign in to their respective Preview pages, validate account navigation and read-only displays, and verify responsive/mobile appearance. Because live production has not had the withdrawal migrations installed, live wallet processing must stay disabled. Do not impersonate users or collect their credentials.
 
 **Release status: NOT APPROVED / NOT DEPLOYED.** Keep PR #12, PR #16 and PR #17 Draft. Apply production SQL / merge only with fresh explicit authorization.
+
+## Withdrawal buttons discoverability verification — 2026-10-18
+
+GitHub Actions [Chromium Run #8](https://github.com/SIHAB360/over-power-esports/actions/runs/39128504935): **SUCCESS (9/9)**. Production-grade Next.js build succeeded; desktop/mobile mock-auth Chromium navigation and local actual API unauthorized checks succeeded.
+
+- Player Dashboard now displays a prominent **OPEN WITHDRAWAL WALLET** CTA immediately beneath Player Hero. Clicking scrolls to existing `#player-withdrawal` section; no payment or API is triggered merely by navigation.
+- Admin Dashboard Overview now displays a prominent **Player Withdrawals** quick-action. Clicking opens existing `salary` section/Withdrawal Control Center, preserving bookmarks and all other admin actions.
+- Staged code was verified in Chromium for Player quick-scroll, Admin shortcut navigation, and previous role/form/fee/paid checks. Vercel Preview READY.
+- **Live production main does not yet contain these UI changes**. Draft PRs #12, #16, #17 remain unmerged, and withdrawal database migration remains unapplied.
+- UI-only production rollout, if later approved, must clearly keep withdrawal actions disabled before database migration. Financial activation additionally requires explicit separate user approval.
