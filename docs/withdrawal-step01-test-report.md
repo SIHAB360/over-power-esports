@@ -133,3 +133,15 @@ Verified [GitHub Actions Run #9](https://github.com/SIHAB360/over-power-esports/
 - At verification time, live database still had 9 players, 76 earnings and 0 withdrawals; both migrations were unapplied.
 
 **Go-live state: NOT DEPLOYED**.
+
+## Post-rotation backup validation — 2026-10-18
+
+- GitHub Actions [Manual encrypted Supabase backup #6](https://github.com/SIHAB360/over-power-esports/actions/runs/39126019976): **SUCCESS**; all dump, archive validation, encryption, upload and temporary-cleanup steps passed.
+- Artifact: `op-esports-encrypted-db-39126019976` (Artifact ID `12136061896`, expires `2026-11-01 12:09 UTC`).
+- Independent examination of downloaded ZIP: CMS encrypted payload SHA-256 **PASS**; decryption using existing offline RSA private key/public certificate **PASS**; decrypted data has PostgreSQL `PGDMP` custom archive header **PASS**, size 489,623 bytes.
+- The decrypted temp file, keys extracted for the test, and temporary directory were wiped from the working container after verification. No plaintext data was placed in GitHub source or attached to the conversation.
+- Password stored in GitHub secret is sufficient for authenticated Postgres backup. **Do not interpret this as cryptographic proof that an older password has been disabled**; user reports having reset it. Keep secret private.
+- This is a fresh encrypted logical database backup, not a full project/Auth/Storage recovery rehearsal.
+- Production money schema remains unchanged as separately verified: 9 players, 76 earnings rows, 0 withdrawals, migration `provider` column absent. PR #12/#16/#17 still awaiting production release.
+
+Remaining requirements: confirm Supabase old DB credential is invalid if applicable; perform authenticated browser-level Player and Admin UI walkthrough, confirm existing site integrations, then request explicit permission for production migrations and staged deployment.
