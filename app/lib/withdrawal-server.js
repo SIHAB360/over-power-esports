@@ -14,6 +14,11 @@ export function withdrawalError(error, generic = "Request failed") {
       message: "Withdrawals are not enabled until the verified database migration is applied.",
     }, 503);
   }
+  if (/Withdrawal access is locked by admin/i.test(text)) {
+    return sendWithdrawalResponse({
+      message: "Withdrawal access is disabled by your administrator.",
+    }, 423);
+  }
   if (code === "42501" || /access denied|admin required|permission|approved player profile/i.test(text)) {
     return sendWithdrawalResponse({ message: "Permission denied." }, 403);
   }
