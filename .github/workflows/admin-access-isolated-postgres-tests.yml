@@ -1,0 +1,168 @@
+name: Admin Toggle security isolated PostgreSQL 17 tests (staging only)
+
+# Security: only code committed by maintainers to this specific feature branch
+# can trigger the job with the database-password secret. No PR/fork triggers.
+on:
+  push:
+    branches:
+      - feat/player-withdrawal-admin-toggle-step01-20261019
+    paths:
+      - .github/workflows/admin-access-isolated-postgres-tests.yml
+      - tests/withdrawal/admin-access-contract.sql
+      - supabase/migrations/20261019_admin_player_withdrawal_access.sql
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: op-admin-access-isolated-restore
+  cancel-in-progress: false
+
+jobs:
+  restore-public-and-test-finance:
+    name: Read-only source dump -> disposable Postgres -> migrations -> checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: local-ephemeral-only
+          POSTGRES_DB: postgres
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Read-only backup of PUBLIC schema (never upload plaintext)
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          PGHOST: aws-0-ap-northeast-1.pooler.supabase.com
+          PGPORT: "5432"
+          PGUSER: postgres.siiftefxumacaitjmuxj
+          PGDATABASE: postgres
+          PGSSLMODE: require
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${PGPASSWORD:-}" ]]; then
+            echo "::error::GitHub secret SUPABASE_DB_PASSWORD is missing"; exit 1
+          fi
+          # No SQL mutation to production; pg_dump's transaction is read-only.
+          docker run --rm --user "$(id -u):$(id -g)" \
+            -e PGPASSWORD -e PGHOST -e PGPORT -e PGUSER -e PGDATABASE -e PGSSLMODE \
+            -v "$RUNNER_TEMP:/backup" postgres:17 \
+            pg_dump --schema=public --format=custom --no-owner --no-acl \
+            --file=/backup/isolated-public-schema.dump
+          test -s "$RUNNER_TEMP/isolated-public-schema.dump"
+          echo "Production PUBLIC-schema read-only dump succeeded." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Bootstrap disposal-only PostgreSQL auth stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          # -i is mandatory: forward the SQL heredoc to the container.
+          docker run -i --rm --network host -e PGPASSWORD=local-ephemeral-only postgres:17 \
+            psql -h 127.0.0.1 -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE ROLE authenticated;
+          CREATE ROLE anon;
+          CREATE ROLE service_role;
+          CREATE SCHEMA IF NOT EXISTS auth;
+          CREATE TABLE IF NOT EXISTS auth.users(id uuid PRIMARY KEY);
+          CREATE SCHEMA IF NOT EXISTS extensions;
+          CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
+          CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
+          CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS
+            $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+          CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql STABLE AS
+            $$ SELECT nullif(current_setting('request.jwt.claim.role',true),'') $$;
+          CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
+            'SELECT ''{}''::jsonb';
+          -- Supabase grants auth schema lookup to logged-in/anon roles.
+          -- Mirror those grants in the throwaway vanilla PostgreSQL clone.
+          GRANT USAGE ON SCHEMA auth TO anon, authenticated;
+          GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA auth TO anon, authenticated;
+          -- Keep PostgreSQL's built-in empty public schema; pg_dump
+          -- --schema=public does not recreate that built-in schema.
+          SQL
+
+      - name: Restore PUBLIC schema and actual data in a separate container
+        shell: bash
+        run: |
+          set -euo pipefail
+          local_pg() {
+            docker run --rm --network host -e PGPASSWORD=local-ephemeral-only \
+              -v "$RUNNER_TEMP:/backup" postgres:17 \
+              "$@"
+          }
+          dump=/backup/isolated-public-schema.dump
+          # Run restore in segments, so auth.users FK stubs can be filled from
+          # the copied public profiles and achievement author IDs before FKs.
+          if ! local_pg pg_restore -h 127.0.0.1 -p 55432 -U postgres -d postgres \
+                 --schema=public --section=pre-data \
+                 --no-owner --no-acl --exit-on-error "$dump" >"$RUNNER_TEMP/restore.log" 2>&1; then
+            # Pre-data is schema DDL only; safe to show an error summary,
+            # but never display raw dump content or production row values.
+            grep -m 1 -E 'pg_restore: error:|ERROR:' "$RUNNER_TEMP/restore.log" | cut -c 1-280 || true
+            echo "::error::Isolated PUBLIC pre-data restore failed; no live database changes."; exit 1
+          fi
+          if ! local_pg pg_restore -h 127.0.0.1 -p 55432 -U postgres -d postgres \
+                 --schema=public --section=data --no-owner --no-acl \
+                 --exit-on-error "$dump" >>"$RUNNER_TEMP/restore.log" 2>&1; then
+            echo "::error::Isolated PUBLIC row restore failed; no live database changes."; exit 1
+          fi
+          local_pg psql -h 127.0.0.1 -p 55432 -U postgres -d postgres \
+            -v ON_ERROR_STOP=1 -c "
+              INSERT INTO auth.users(id)
+              SELECT id FROM public.profiles
+              UNION
+              SELECT created_by FROM public.achievement_gallery WHERE created_by IS NOT NULL
+              ON CONFLICT DO NOTHING;" > /dev/null
+          if ! local_pg pg_restore -h 127.0.0.1 -p 55432 -U postgres -d postgres \
+                 --schema=public --section=post-data --no-owner --no-acl \
+                 --exit-on-error "$dump" >>"$RUNNER_TEMP/restore.log" 2>&1; then
+            echo "::error::Isolated PUBLIC constraint/policy restore failed; no live database changes."; exit 1
+          fi
+          echo "Isolated PUBLIC-schema restore (schema + data + constraints) succeeded." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Apply proposed migrations ONLY to disposable clone
+        shell: bash
+        run: |
+          set -euo pipefail
+          for migration in supabase/migrations/20261019_admin_player_withdrawal_access.sql; do
+            docker run --rm --network host -e PGPASSWORD=local-ephemeral-only \
+              -v "$PWD:/repo:ro" postgres:17 \
+              psql -h 127.0.0.1 -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 \
+              -f "/repo/$migration" > /dev/null
+          done
+          echo "Admin withdrawal access migration applied to disposable clone ONLY (NOT production)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run permission, accounting and lifecycle integration assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm --network host -e PGPASSWORD=local-ephemeral-only \
+            -v "$PWD:/repo:ro" postgres:17 \
+            psql -h 127.0.0.1 -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 \
+              -f /repo/tests/withdrawal/admin-access-contract.sql >"$RUNNER_TEMP/assertions.log" 2>&1 || {
+                echo "::error::Isolated money/permission assertions failed; production unchanged."
+                exit 1
+              }
+          echo "All isolated access-toggle and legacy accounting integration assertions passed." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove temporary copied player data
+        if: always()
+        shell: bash
+        run: |
+          rm -f "$RUNNER_TEMP/isolated-public-schema.dump"
+          rm -f "$RUNNER_TEMP/restore.log" "$RUNNER_TEMP/assertions.log"
+          # Hosted runner is ephemeral. No database dump or passwords are
+          # committed to the public repo or uploaded as workflow artifacts.
