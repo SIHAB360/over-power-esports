@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <link
@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
         style={{
           "--font-orbitron": '"Orbitron", sans-serif',
           "--font-rajdhani": '"Rajdhani", sans-serif',
+          "--font-bangla": '"Hind Siliguri", "Kalpurush", sans-serif',
         }}
       >
         <PageTransition />

@@ -407,3 +407,7 @@
   .shell .feeNotice strong {font-size:13px;}
   .shell .feeNotice p {font-size:13px;line-height:1.7;}
 }
+
+/* Bengali typography aligned to the wallet reference while retaining existing finance styles. */
+.shell{font-family:var(--font-bangla),"Hind Siliguri","Kalpurush",sans-serif;}
+.shell button,.shell input,.shell label,.shell legend{font-family:inherit;}
