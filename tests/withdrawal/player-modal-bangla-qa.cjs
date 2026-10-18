@@ -243,13 +243,13 @@ async function run() {
     assert(await quickWallet.isVisible(),"Player must see Withdrawal shortcut directly after Hero");
     await quickWallet.click();
     assert(await page.getByRole("dialog").isVisible(),"Withdrawal opens as a modal");
-    assert(await page.getByRole("button",{name:"পেমেন্ট উইন্ডো বন্ধ করুন"}).isFocused(),"Close button receives initial focus");
+    assert(await page.getByRole("button",{name:"পেমেন্ট উইন্ডো বন্ধ করুন"}).evaluate(node=>document.activeElement===node),"Close button receives initial focus");
     await page.getByRole("dialog",{name:"উত্তোলন ও পেমেন্ট ওয়ালেট"}).waitFor({state:"visible"});
     await page.locator("#player-withdrawal").waitFor({state:"visible"});
     await waitForText(page,"উত্তোলনযোগ্য ব্যালেন্স");
     await page.keyboard.press("Escape");
     assert.equal(await page.getByRole("dialog").count(),0,"Escape closes modal");
-    assert(await quickWallet.isFocused(),"Focus returns to dashboard shortcut");
+    assert(await quickWallet.evaluate(node=>document.activeElement===node),"Focus returns to dashboard shortcut");
     await quickWallet.click();
     await waitForText(page,"৳9.00");
     assert(state.seenPlayerWalletToken,"Player API must carry authenticated token");
