@@ -1,0 +1,56 @@
+name: Player Withdrawal Bengali modal and admin synthetic browser QA
+on:
+  push:
+    branches:
+      - feat/player-withdrawal-modal-bangla-20261019
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: player-modal-bangla-qa
+  cancel-in-progress: false
+
+jobs:
+  synthetic-browser-preflight:
+    name: PC/mobile Chromium, fake wallet and admin, no real funds
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://op-ui-qa.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: synthetic-browser-preflight-not-real
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install test dependencies
+        run: |
+          npm install --no-fund --no-audit
+          npm install --no-save --no-fund --no-audit playwright@1.56.1
+          npx playwright install chromium --with-deps
+      - name: Build isolated Next.js app against fake public environment
+        run: npm run build
+      - name: Start disposable server
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start -- --hostname 127.0.0.1 --port 3145 >"$RUNNER_TEMP/op-modal-next.log" 2>&1 &
+          echo $! >"$RUNNER_TEMP/op-modal-next.pid"
+          for attempt in $(seq 1 80); do
+            if curl -fsS --max-time 2 -o /dev/null http://127.0.0.1:3145/login; then exit 0; fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/op-modal-next.log"
+          exit 1
+      - name: Run synthetic desktop/mobile player and admin browser checks
+        run: node tests/withdrawal/player-modal-bangla-qa.cjs
+      - name: Clean up
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "$RUNNER_TEMP/op-modal-next.pid" ]; then kill "$(cat "$RUNNER_TEMP/op-modal-next.pid")" || true; fi
+          rm -f "$RUNNER_TEMP/op-modal-next.log" "$RUNNER_TEMP/op-modal-next.pid"
+          echo "No live payment or Supabase credentials used." >>"$GITHUB_STEP_SUMMARY"
