@@ -672,6 +672,30 @@ const bestPlacement =
           </div>
         </section>
 
+        {/* UI-only: prominent withdrawal navigation, no financial API calls.
+            No live money transfer or wallet record is exposed until approval. */}
+        {!adminView && (
+          <section className="op-wallet-entry" aria-label="Personal wallet quick access">
+            <div className="op-wallet-entry-copy">
+              <span className="op-wallet-entry-eyebrow">PLAYER FINANCE / PERSONAL WALLET</span>
+              <strong>WITHDRAW YOUR EARNINGS</strong>
+              <span>bKash & Nagad withdrawal controls are being prepared securely.</span>
+            </div>
+            <button
+              type="button"
+              className="op-wallet-entry-button"
+              onClick={() => {
+                const target = document.getElementById("player-withdrawal-preview");
+                if (!target) return;
+                const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+              }}
+            >
+              <span aria-hidden="true">৳</span> OPEN WITHDRAWAL WALLET <span aria-hidden="true">↘</span>
+            </button>
+          </section>
+        )}
+
        {/* Stats */}
 <div className="stats">
   <div className="stat">
@@ -1181,6 +1205,52 @@ const bestPlacement =
               )}
           </div>
         </section>
+
+        {!adminView && (
+          <section className="op-wallet-shell" id="player-withdrawal-preview" aria-labelledby="op-wallet-title">
+            <div className="op-wallet-header">
+              <div>
+                <span className="op-wallet-eyebrow">SECURE WALLET / WITHDRAWALS</span>
+                <h2 id="op-wallet-title">PLAYER <span>WITHDRAWALS</span></h2>
+                <p>Request and payout features will become available only after final financial activation.</p>
+              </div>
+              <span className="op-wallet-lock">● NOT YET ENABLED</span>
+            </div>
+            <div className="op-wallet-stat-grid" aria-label="Wallet figures unavailable until activation">
+              <div className="op-wallet-stat"><span>AVAILABLE BALANCE</span><strong>—</strong><small>Secure wallet not connected yet</small></div>
+              <div className="op-wallet-stat"><span>PENDING REQUESTS</span><strong>—</strong><small>Requests cannot be submitted yet</small></div>
+              <div className="op-wallet-stat"><span>TOTAL PAID OUT</span><strong>—</strong><small>Manual payouts not activated</small></div>
+            </div>
+            <div className="op-wallet-preview-grid">
+              <div className="op-wallet-panel">
+                <h3>REQUEST WITHDRAWAL</h3>
+                <p className="op-wallet-panel-caption">Personal account payout options</p>
+                <div className="op-wallet-providers">
+                  <span>bKash <small>Personal wallet</small></span>
+                  <span>Nagad <small>Personal wallet</small></span>
+                </div>
+                <label className="op-wallet-disabled-label">RECEIVER MOBILE NUMBER
+                  <input type="tel" placeholder="01XXXXXXXXX" disabled aria-label="Receiver number unavailable until activation" />
+                </label>
+                <label className="op-wallet-disabled-label">AMOUNT (BDT)
+                  <input type="text" placeholder="0.00" disabled aria-label="Withdrawal amount unavailable until activation" />
+                </label>
+                <div className="op-wallet-warning">Any future bKash/Nagad transfer charge will be paid by the player. Admin approval is required before a manual payout.</div>
+                <button type="button" className="op-wallet-disabled-submit" disabled aria-disabled="true">WITHDRAWALS NOT YET ENABLED</button>
+              </div>
+              <div className="op-wallet-panel">
+                <h3>WITHDRAWAL HISTORY</h3>
+                <p className="op-wallet-panel-caption">Pending · Approved · Paid · Rejected</p>
+                <div className="op-wallet-empty">
+                  <span aria-hidden="true">◇</span>
+                  <strong>Withdrawal history coming soon</strong>
+                  <p>History, transaction references and fees will appear when the secure financial system is activated.</p>
+                </div>
+                <div className="op-wallet-help">Your existing match statistics and all-time earnings remain unchanged. No request or payment can be made from this screen.</div>
+              </div>
+            </div>
+          </section>
+        )}
           </div>
         </div>
         {!adminView && (
@@ -3633,6 +3703,71 @@ const bestPlacement =
           font-size: 11px;
           line-height: 1.4;
         }
+
+        /* Safe UI-only Wallet: no withdrawal APIs, wallet balance or credentials. */
+        .op-wallet-entry {
+          display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:19px;
+          margin:18px 0 22px;padding:20px clamp(16px,2.5vw,28px);
+          border:1px solid rgba(71,228,222,.51);border-radius:18px;
+          background:linear-gradient(115deg,rgba(18,114,143,.28),rgba(19,23,46,.96) 53%,rgba(94,45,126,.29));
+          box-shadow:inset 0 1px 0 rgba(125,241,241,.14),0 12px 30px rgba(0,0,0,.2);
+        }
+        .op-wallet-entry-copy{display:flex;flex:1 1 225px;flex-direction:column;gap:6px;min-width:0}
+        .op-wallet-entry-eyebrow{color:#6bebdf;font-size:11px;font-weight:900;letter-spacing:.08em}
+        .op-wallet-entry-copy strong{font-size:clamp(17px,2.2vw,24px);color:#fff;font-weight:950;line-height:1.2}
+        .op-wallet-entry-copy > span:last-child{color:#c4d7e8;font-size:13px;line-height:1.5}
+        .op-wallet-entry-button{
+          display:inline-flex;align-items:center;justify-content:center;gap:10px;
+          min-height:52px;flex:0 1 auto;padding:13px 19px;border:0;border-radius:12px;
+          background:linear-gradient(112deg,#65f8d2,#63b5f6 74%,#c0a4f9);color:#061925;
+          box-shadow:0 9px 25px rgba(29,201,210,.2);
+          font:inherit;font-size:12px;font-weight:950;letter-spacing:.02em;cursor:pointer;
+        }
+        .op-wallet-entry-button:hover{filter:brightness(1.08)}
+        .op-wallet-entry-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+        .op-wallet-shell{
+          scroll-margin-top:30px;position:relative;overflow:hidden;margin:30px 0 12px;
+          padding:clamp(20px,3vw,34px);border:1px solid rgba(95,218,232,.35);border-radius:22px;
+          background:radial-gradient(circle at top left,rgba(47,204,224,.11),transparent 53%),
+            radial-gradient(circle at bottom right,rgba(161,93,245,.13),transparent 57%),
+            linear-gradient(145deg,#0d1d36,#101323);
+          color:#f9fdff;
+        }
+        .op-wallet-header{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:flex-start;gap:13px;margin-bottom:22px}
+        .op-wallet-eyebrow{color:#69eddb;font-size:11px;font-weight:900;letter-spacing:.09em}
+        .op-wallet-header h2{margin:6px 0 8px;color:#f6ffff;font-size:clamp(26px,3.2vw,39px);letter-spacing:-.025em;font-weight:950}
+        .op-wallet-header h2 span{color:#82d5fd}
+        .op-wallet-header p{max-width:650px;color:#b8cbdf;font-size:14px;line-height:1.55;margin:0}
+        .op-wallet-lock{display:inline-flex;align-items:center;gap:7px;padding:10px 13px;border-radius:10px;border:1px solid rgba(248,188,96,.43);color:#ffdfa8;background:rgba(172,115,46,.12);font-size:12px;font-weight:950;white-space:nowrap}
+        .op-wallet-stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
+        .op-wallet-stat{display:flex;flex-direction:column;gap:9px;min-height:128px;padding:18px;border:1px solid rgba(144,186,226,.28);border-radius:15px;background:rgba(23,39,67,.75)}
+        .op-wallet-stat span{color:#afc5e4;font-size:11px;font-weight:900;letter-spacing:.05em}
+        .op-wallet-stat strong{color:#fff;font-size:32px;line-height:1.1}
+        .op-wallet-stat small{color:#93a9c7;font-size:12px;line-height:1.4}
+        .op-wallet-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+        .op-wallet-panel{min-width:0;padding:clamp(18px,2.2vw,25px);border:1px solid rgba(125,170,221,.23);border-radius:16px;background:rgba(9,19,39,.7)}
+        .op-wallet-panel h3{margin:0;color:#fff;font-size:19px;font-weight:950}
+        .op-wallet-panel-caption{margin:6px 0 19px;color:#abc0db;font-size:13px}
+        .op-wallet-providers{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 17px}
+        .op-wallet-providers span{display:flex;flex-direction:column;gap:5px;padding:15px;border:1px solid rgba(149,178,211,.27);border-radius:12px;background:rgba(28,41,64,.45);color:#f5fbff;font-size:18px;font-weight:900;opacity:.68}
+        .op-wallet-providers small{color:#b1c4dc;font-size:11px;font-weight:600}
+        .op-wallet-disabled-label{display:flex;flex-direction:column;gap:9px;margin-bottom:17px;font-size:12px;font-weight:900;color:#bccde6}
+        .op-wallet-disabled-label input{width:100%;min-height:50px;box-sizing:border-box;padding:13px;border-radius:11px;border:1px solid rgba(135,178,218,.25);background:#1a283e;color:#b8c5d7;font-size:15px;cursor:not-allowed}
+        .op-wallet-disabled-submit{width:100%;min-height:51px;border:0;border-radius:12px;background:#273550;color:#a1b5d0;font-size:12px;font-weight:900;cursor:not-allowed}
+        .op-wallet-warning,.op-wallet-help{padding:14px;border:1px solid rgba(246,175,83,.21);background:rgba(138,90,25,.09);border-radius:11px;color:#f1d5b3;font-size:12px;line-height:1.65;margin-bottom:15px}
+        .op-wallet-empty{text-align:center;margin:0 0 17px;padding:35px 13px;border:1px dashed rgba(110,172,218,.29);border-radius:13px;background:rgba(29,46,72,.22)}
+        .op-wallet-empty>span{display:block;color:#79c8f3;font-size:42px;margin-bottom:9px}
+        .op-wallet-empty strong{color:#eaf5ff;font-size:17px;font-weight:900}
+        .op-wallet-empty p{max-width:300px;margin:8px auto 0;color:#b0c2dc;font-size:13px;line-height:1.55}
+        .op-wallet-help{border-color:rgba(100,164,231,.23);background:rgba(34,95,160,.11);color:#b9d7f4}
+        @media(max-width:820px){.op-wallet-preview-grid{grid-template-columns:1fr}}
+        @media(max-width:680px){
+          .op-wallet-entry{padding:17px 14px}.op-wallet-entry-button{width:100%;min-height:53px}
+          .op-wallet-shell{padding:20px 14px;border-radius:17px}
+          .op-wallet-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+          .op-wallet-header h2{font-size:27px}
+        }
+        @media(max-width:370px){.op-wallet-stat-grid{grid-template-columns:1fr}}
         .admin-view-badge {
           padding: 6px 9px;
           border: 1px solid rgba(66,216,233,.32);
