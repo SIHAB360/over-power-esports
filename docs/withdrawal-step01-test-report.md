@@ -84,3 +84,64 @@ Do NOT drop financial tables or columns after real transactions. A rollback afte
 - [ ] Disposable test-user financial and concurrency tests
 - [ ] Production merge/deploy after successful test
 - [ ] Separate Step 02/03 approval with "d"
+
+## 2026-10-17 isolated PostgreSQL 17 integration result — PASS
+
+GitHub Actions Run #7: https://github.com/SIHAB360/over-power-esports/actions/runs/39064534632 — SUCCESS.
+
+- Fresh production PUBLIC schema/data pg_dump succeeded (read-only, no live writes).
+- Public schema, data, policies, indexes and FKs restored in disposable PostgreSQL 17 with minimal auth stubs. This does NOT prove recovery of Supabase Auth/Storage internals or a whole project.
+- Both proposed Step 01 SQL migrations applied successfully ONLY to the disposable clone.
+- SQL assertions passed: 9 players, 76 earnings, zero source withdrawals; no role self-escalation grants; unsafe match injection policies removed; protected earnings DML/TRUNCATE; one active request; wallet reservation; duplicate rejection; player prevented from admin approval; admin rejection released reserved balance; Pending -> Paid blocked; manual Paid with actual fee/net and reference; repeat Paid rejected; 5 audit events; balance debited exactly once.
+- All test transactions and simulated provider reference existed ONLY in disposable database, not Production. No real bKash or Nagad transfer.
+- Runner removed plaintext backup and test logs; no user data was uploaded as artifacts.
+
+### Security blocker (DO NOT go live yet)
+
+Public GitHub main tracks .env.local, and Step 01 branch stages its removal and a new .gitignore. A keys-only review of the current file and both historical versions found ONLY NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY (both intentionally client-visible); NO SUPABASE_SERVICE_ROLE_KEY or database-password field in those file versions. Do not falsely claim service-role exposure from this file. Continue repository-wide secret/history review as appropriate. Independently, a database password candidate was previously posted in chat; rotate it IF it remains active and update the existing GitHub Actions backup secret. Production finance release still requires authenticated E2E/explicit approval.
+
+### Remaining release gates
+
+- [x] Encrypted backup #5 decrypted and archive validated.
+- [x] Isolated public schema/data restore in PostgreSQL 17.
+- [x] SQL migration and wallet/admin/Paid test lifecycle passed in isolated clone.
+- [x] Hardened registration, privilege escalation, fake earnings and wallet source write rules staged in Step 01.
+- [ ] Confirm any password previously disclosed in chat is no longer active; verify Vercel/GitHub secrets and review repository history for any actual privileged exposure (not established for .env.local).
+- [ ] Authenticated desktop/mobile browser walkthrough with authorized player/admin account.
+- [ ] Explicit approval to apply migrations on production with controlled financial smoke testing.
+- [ ] Real bKash/Nagad manual transfer receipt/reconciliation process documented and tested.
+
+Release decision: BLOCKED. All withdrawal PRs remain draft; database migration NOT applied on live Supabase.
+
+## Final isolated RLS smoke test — GitHub Actions Run #9 SUCCESS
+
+Verified [GitHub Actions Run #9](https://github.com/SIHAB360/over-power-esports/actions/runs/39088863849) finished **success** on commit `60a5a9518d8d899e65651ebf61de53100022c618`. All pipeline jobs completed:
+
+- Production `public` data exported **read-only** to the ephemeral runner; encrypted backup from prior Run #5 remains separately available.
+- Isolated PostgreSQL 17 restored public schema, constraints, real 9 players and 76 earnings records.
+- Two proposed SQL migrations applied successfully **only in the disposable clone**.
+- Financial request/approval/reject/manual Paid lifecycle, duplicate and fee accounting, and audit assertions completed successfully.
+- Additional real-role impersonation testing using non-privileged `authenticated` and `anon` roles blocked profile admin escalation, player self-approval, direct earnings changes and forged anonymous match insertion. The disposable auth schema stubs used Supabase-equivalent grants.
+- Temporary dump and test logs removed; no player data or plaintext archive uploaded as artifact.
+
+### Before release
+
+- This validates the **public schema/financial SQL** in a disposable PostgreSQL 17 environment, not all Supabase infrastructure, storage and Auth internals.
+- Do not assume this verifies live authenticated browsers: desktop/mobile Player and Admin end-to-end tests remain pending.
+- Independently confirm that the database password disclosed earlier in chat is no longer active; do **not** post any credential here. Update GitHub secret if password rotated and verify Vercel configuration.
+- Obtain **explicit new approval** before applying production migration or merging Draft PRs #12 → #16 → #17.
+- At verification time, live database still had 9 players, 76 earnings and 0 withdrawals; both migrations were unapplied.
+
+**Go-live state: NOT DEPLOYED**.
+
+## Post-rotation backup validation — 2026-10-18
+
+- GitHub Actions [Manual encrypted Supabase backup #6](https://github.com/SIHAB360/over-power-esports/actions/runs/39126019976): **SUCCESS**; all dump, archive validation, encryption, upload and temporary-cleanup steps passed.
+- Artifact: `op-esports-encrypted-db-39126019976` (Artifact ID `12136061896`, expires `2026-11-01 12:09 UTC`).
+- Independent examination of downloaded ZIP: CMS encrypted payload SHA-256 **PASS**; decryption using existing offline RSA private key/public certificate **PASS**; decrypted data has PostgreSQL `PGDMP` custom archive header **PASS**, size 489,623 bytes.
+- The decrypted temp file, keys extracted for the test, and temporary directory were wiped from the working container after verification. No plaintext data was placed in GitHub source or attached to the conversation.
+- Password stored in GitHub secret is sufficient for authenticated Postgres backup. **Do not interpret this as cryptographic proof that an older password has been disabled**; user reports having reset it. Keep secret private.
+- This is a fresh encrypted logical database backup, not a full project/Auth/Storage recovery rehearsal.
+- Production money schema remains unchanged as separately verified: 9 players, 76 earnings rows, 0 withdrawals, migration `provider` column absent. PR #12/#16/#17 still awaiting production release.
+
+Remaining requirements: confirm Supabase old DB credential is invalid if applicable; perform authenticated browser-level Player and Admin UI walkthrough, confirm existing site integrations, then request explicit permission for production migrations and staged deployment.
