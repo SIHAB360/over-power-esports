@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
 import PlayerWithdrawal from "./PlayerWithdrawal";
+import walletModal from "./WithdrawalModal.module.css";
 
 export default function PlayerDashboard() {
   const router = useRouter();
@@ -15,6 +16,43 @@ const [filterType, setFilterType] = useState("all");
 const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
 const [adminView, setAdminView] = useState(false);
+const [walletOpen, setWalletOpen] = useState(false);
+const walletDialogRef = useRef(null);
+const walletCloseRef = useRef(null);
+const walletTriggerRef = useRef(null);
+
+useEffect(() => {
+  if (!walletOpen) return;
+  const previousFocus = document.activeElement;
+  const previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  walletCloseRef.current?.focus();
+  const onKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setWalletOpen(false);
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const nodes = Array.from(walletDialogRef.current?.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ) || []).filter((node) => node.getClientRects().length > 0);
+    if (!nodes.length) { event.preventDefault(); return; }
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  };
+  document.addEventListener("keydown", onKeyDown);
+  return () => {
+    document.removeEventListener("keydown", onKeyDown);
+    document.body.style.overflow = previousOverflow;
+    if (previousFocus?.isConnected) previousFocus.focus();
+    else walletTriggerRef.current?.focus();
+  };
+}, [walletOpen]);
 
 useEffect(() => {
   checkUser();
@@ -673,26 +711,23 @@ const bestPlacement =
           </div>
         </section>
 
-        {/* Prominent quick access. This only scrolls to the secure wallet below;
-            the backend must still be activated by a separately approved migration. */}
+        {/* Withdrawal form opens in a dedicated responsive dialog. */}
         {!adminView && (
           <section className="op-wallet-entry" aria-label="Player withdrawal quick access">
             <div className="op-wallet-entry-copy">
-              <span className="op-wallet-entry-eyebrow">PLAYER FINANCE / PERSONAL WALLET</span>
-              <strong>WITHDRAW YOUR EARNINGS</strong>
-              <span>Choose bKash or Nagad, track requests and view your secure wallet.</span>
+              <span className="op-wallet-entry-eyebrow">OVER POWER / PLAYER WALLET</span>
+              <strong>আপনার আয় উত্তোলন করুন</strong>
+              <span>বিকাশ অথবা নগদ পার্সোনাল অ্যাকাউন্টে উত্তোলনের অনুরোধ করুন।</span>
             </div>
             <button
               type="button"
-              className="op-wallet-entry-button"
-              onClick={() => {
-                const target = document.getElementById("player-withdrawal");
-                if (!target) return;
-                const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-                target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-              }}
+              ref={walletTriggerRef}
+              className={`op-wallet-entry-button ${walletModal.trigger}`}
+              onClick={() => setWalletOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={walletOpen}
             >
-              <span aria-hidden="true">৳</span> OPEN WITHDRAWAL WALLET <span aria-hidden="true">↘</span>
+              <span aria-hidden="true">৳</span> উত্তোলন করুন <span aria-hidden="true">↘</span>
             </button>
           </section>
         )}
@@ -1207,9 +1242,7 @@ const bestPlacement =
           </div>
         </section>
 
-        {/* Step 02: Secure wallet and manual withdrawal UI.
-            Admin's player preview deliberately does not load any other player's wallet. */}
-        {!adminView && <PlayerWithdrawal />}
+        {/* Wallet opens only when the player requests it; never load it in admin preview. */}
           </div>
         </div>
         {!adminView && (
@@ -1221,6 +1254,20 @@ const bestPlacement =
           </div>
         )}
       </div>
+
+      {!adminView && walletOpen && (
+        <div className={walletModal.overlay} onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setWalletOpen(false);
+        }}>
+          <div ref={walletDialogRef} className={walletModal.dialog} role="dialog" aria-modal="true" aria-label="উত্তোলন ও পেমেন্ট ওয়ালেট">
+            <div className={walletModal.dialogHeader}>
+              <div><span className={walletModal.eyebrow}>OVER POWER ESPORTS • SECURE PAYMENT</span><h2>পেমেন্ট ওয়ালেট</h2></div>
+              <button type="button" ref={walletCloseRef} className={walletModal.close} onClick={() => setWalletOpen(false)} aria-label="পেমেন্ট উইন্ডো বন্ধ করুন">×</button>
+            </div>
+            <PlayerWithdrawal />
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .page {

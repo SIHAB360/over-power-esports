@@ -22,13 +22,13 @@ const dates = (value) => {
 const maskNumber = (value) =>
   typeof value === "string" && /^01[3-9][0-9]{8}$/.test(value)
     ? value.slice(0, 3) + "•••••" + value.slice(-3)
-    : "Hidden";
+    : "গোপন";
 
 const statuses = {
-  pending: { title: "PENDING REVIEW", note: "Awaiting admin review" },
-  approved: { title: "APPROVED", note: "Awaiting manual payment" },
-  paid: { title: "PAID", note: "Admin confirmed payout" },
-  rejected: { title: "REJECTED", note: "Amount returned to available wallet" },
+  pending: { title: "পর্যালোচনাধীন", note: "অ্যাডমিনের অনুমোদনের অপেক্ষায়" },
+  approved: { title: "অনুমোদিত", note: "পেমেন্ট পাঠানোর অপেক্ষায়" },
+  paid: { title: "পরিশোধিত", note: "অ্যাডমিন পেমেন্ট নিশ্চিত করেছেন" },
+  rejected: { title: "বাতিল", note: "টাকা উপলব্ধ ব্যালেন্সে ফেরত দেওয়া হয়েছে" },
 };
 
 export default function PlayerWithdrawal() {
@@ -50,7 +50,7 @@ export default function PlayerWithdrawal() {
     if (!silent && mounted.current) setLoading(true);
     try {
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !session?.access_token) throw new Error("Please sign in again.");
+      if (sessionError || !session?.access_token) throw new Error("আবার লগইন করুন।");
       const response = await fetch("/api/player/wallet", {
         method: "GET",
         cache: "no-store",
@@ -61,11 +61,11 @@ export default function PlayerWithdrawal() {
         if (response.status === 503) {
           if (mounted.current) {
             setEnabled(false);
-            setError("Withdrawals are being prepared. Your earnings remain safely recorded.");
+            setError("উত্তোলন সেবা এখনো চালু হয়নি। আপনার আয়ের হিসাব অক্ষত রয়েছে।");
           }
           return;
         }
-        throw new Error(body?.message || "Unable to load wallet.");
+        throw new Error(body?.message || "ওয়ালেটের তথ্য পাওয়া যায়নি।");
       }
       if (!mounted.current) return;
       setWallet(body.wallet);
@@ -75,7 +75,7 @@ export default function PlayerWithdrawal() {
     } catch (err) {
       if (mounted.current) {
         setEnabled(false);
-        setError(err?.message || "Unable to load wallet.");
+        setError(err?.message || "ওয়ালেটের তথ্য পাওয়া যায়নি।");
       }
     } finally {
       if (mounted.current) setLoading(false);
@@ -106,7 +106,7 @@ export default function PlayerWithdrawal() {
     setError("");
     try {
       const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError || !session?.access_token) throw new Error("Sign in to request a withdrawal.");
+      if (sessionError || !session?.access_token) throw new Error("উত্তোলনের অনুরোধ করতে লগইন করুন।");
       const response = await fetch("/api/player/withdrawals", {
         method: "POST",
         cache: "no-store",
@@ -121,9 +121,9 @@ export default function PlayerWithdrawal() {
         }),
       });
       const body = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(body?.message || "Request could not be submitted.");
+      if (!response.ok) throw new Error(body?.message || "উত্তোলনের অনুরোধ জমা হয়নি।");
       if (mounted.current) {
-        setFeedback("Your withdrawal request is pending admin review. No money has been sent yet.");
+        setFeedback("আপনার উত্তোলনের অনুরোধ জমা হয়েছে। অ্যাডমিন অনুমোদন ও পেমেন্ট না করা পর্যন্ত টাকা পাঠানো হবে না।");
         setAmount("");
         setNumber("");
         setAccepted(false);
@@ -131,7 +131,7 @@ export default function PlayerWithdrawal() {
         await load(true);
       }
     } catch (err) {
-      if (mounted.current) setError(err?.message || "Withdrawal request failed.");
+      if (mounted.current) setError(err?.message || "উত্তোলনের অনুরোধ ব্যর্থ হয়েছে।");
     } finally {
       submitting.current = false;
       if (mounted.current) setBusy(false);
@@ -143,12 +143,12 @@ export default function PlayerWithdrawal() {
       <div className={styles.topGlow} aria-hidden="true" />
       <div className={styles.header}>
         <div>
-          <p className={styles.overline}><span className={styles.led} /> PLAYER FINANCE / SECURE WALLET</p>
-          <h2 id="op-wallet-title">EARNINGS & <span>WITHDRAWALS</span></h2>
-          <p className={styles.subtitle}>Track completed-match earnings. Request a manual bKash or Nagad payout.</p>
+          <p className={styles.overline}><span className={styles.led} /> প্লেয়ার ফাইন্যান্স / সুরক্ষিত ওয়ালেট</p>
+          <h2 id="op-wallet-title">আয় ও <span>উত্তোলন</span></h2>
+          <p className={styles.subtitle}>আপনার আয়ের হিসাব দেখুন এবং বিকাশ বা নগদে পেমেন্টের অনুরোধ করুন।</p>
         </div>
-        <button type="button" className={styles.refresh} onClick={() => load()} disabled={loading || busy} aria-label="Refresh wallet and withdrawals">
-          <span aria-hidden="true">↻</span> {loading ? "LOADING" : "REFRESH"}
+        <button type="button" className={styles.refresh} onClick={() => load()} disabled={loading || busy} aria-label="ওয়ালেটের তথ্য রিফ্রেশ করুন">
+          <span aria-hidden="true">↻</span> {loading ? "লোড হচ্ছে" : "রিফ্রেশ"}
         </button>
       </div>
 
@@ -157,24 +157,24 @@ export default function PlayerWithdrawal() {
 
       <div className={styles.statGrid}>
         <article className={[styles.stat, styles.primaryStat].join(" ")}>
-          <span>AVAILABLE BALANCE</span>
+          <span>উত্তোলনযোগ্য ব্যালেন্স</span>
           <strong>{enabled ? money(available) : "—"}</strong>
-          <small>Completed earnings, less pending and paid withdrawals</small>
+          <small>অনিষ্পন্ন ও পরিশোধিত উত্তোলন বাদ দেওয়ার পর</small>
         </article>
         <article className={styles.stat}>
-          <span>LIFETIME NET EARNINGS</span>
+          <span>সর্বমোট নেট আয়</span>
           <strong>{enabled ? money(wallet?.net_earnings) : "—"}</strong>
-          <small>Based on completed matches</small>
+          <small>সম্পন্ন ম্যাচের ভিত্তিতে</small>
         </article>
         <article className={styles.stat}>
-          <span>RESERVED AMOUNT</span>
+          <span>অপেক্ষমাণ টাকা</span>
           <strong>{enabled ? money(reserved) : "—"}</strong>
-          <small>Pending or approved requests</small>
+          <small>অনুমোদনের অপেক্ষায় বা অনুমোদিত অনুরোধ</small>
         </article>
         <article className={styles.stat}>
-          <span>TOTAL PAID OUT</span>
+          <span>মোট পরিশোধিত টাকা</span>
           <strong>{enabled ? money(wallet?.paid_withdrawals) : "—"}</strong>
-          <small>Confirmed manual payouts</small>
+          <small>নিশ্চিত করা পেমেন্ট</small>
         </article>
       </div>
 
@@ -182,78 +182,78 @@ export default function PlayerWithdrawal() {
         <form className={styles.withdrawForm} onSubmit={submit} autoComplete="off">
           <div className={styles.panelHeading}>
             <span className={styles.step}>01</span>
-            <div><h3>REQUEST WITHDRAWAL</h3><p>Your money, your preferred mobile wallet.</p></div>
+            <div><h3>উত্তোলনের অনুরোধ</h3><p>আপনার পছন্দের মোবাইল ওয়ালেটে টাকা নিন।</p></div>
           </div>
-          {hasActive && <div className={styles.info} role="status">One request is already pending or approved. You can submit another after it is paid or rejected.</div>}
+          {hasActive && <div className={styles.info} role="status">আপনার একটি অনুরোধ সক্রিয় রয়েছে। সেটি পরিশোধ বা বাতিল হওয়ার পর নতুন অনুরোধ করুন।</div>}
 
           <fieldset disabled={!enabled || busy || hasActive} className={styles.methods}>
-            <legend>SELECT PAYMENT METHOD</legend>
+            <legend>পেমেন্ট মাধ্যম নির্বাচন করুন</legend>
             <label className={[styles.method, provider === "bkash" ? styles.activePink : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="bkash" checked={provider === "bkash"} onChange={() => setProvider("bkash")} />
-              <strong>bKash</strong><small>Personal wallet</small>
+              <strong>bKash</strong><small>পার্সোনাল অ্যাকাউন্ট</small>
             </label>
             <label className={[styles.method, provider === "nagad" ? styles.activeOrange : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="nagad" checked={provider === "nagad"} onChange={() => setProvider("nagad")} />
-              <strong>Nagad</strong><small>Personal wallet</small>
+              <strong>Nagad</strong><small>পার্সোনাল অ্যাকাউন্ট</small>
             </label>
           </fieldset>
 
           <label className={styles.field}>
-            <span>RECEIVER NUMBER</span>
+            <span>প্রাপকের মোবাইল নম্বর</span>
             <input type="tel" inputMode="numeric" autoComplete="off" placeholder="01XXXXXXXXX" maxLength={11}
               pattern="01[3-9][0-9]{8}" value={number}
               onChange={(e) => setNumber(e.target.value.replace(/\D/g, "").slice(0, 11))}
               disabled={!enabled || busy || hasActive} aria-invalid={number.length > 0 && !numberValid} />
-            <small>Enter the exact number where the admin will send your payout.</small>
+            <small>যে নম্বরে টাকা নিতে চান, সেই নম্বরটি সঠিকভাবে দিন।</small>
           </label>
 
           <label className={styles.field}>
-            <span>REQUEST AMOUNT (BDT)</span>
+            <span>উত্তোলনের পরিমাণ (টাকা)</span>
             <input type="text" inputMode="decimal" placeholder="0.00" value={amount}
               onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, "").slice(0, 16))}
               disabled={!enabled || busy || hasActive} aria-invalid={amount.length > 0 && (!amountValid || requested > available || requested <= 0)} />
-            <small>Available now: {enabled ? money(available) : "—"}</small>
+            <small>বর্তমান ব্যালেন্স: {enabled ? money(available) : "—"}</small>
           </label>
 
           <div className={styles.feeNotice}>
             <span aria-hidden="true">ⓘ</span>
             <div>
-              <strong>TRANSFER CHARGE PAID BY PLAYER</strong>
-              <p>The actual bKash/Nagad transfer charge is paid by you and deducted from your requested amount. You receive the remaining amount after the charge. After sending payment, the admin records the actual charge and transaction ID. No fixed charge rate has been set.</p>
+              <strong>TRANSFER CHARGE পরিশোধিত BY PLAYER</strong>
+              <p>বিকাশ বা নগদের প্রকৃত ট্রান্সফার চার্জ আপনার অনুরোধের টাকা থেকে কাটা হবে। চার্জ বাদে বাকি টাকা পাবেন। পেমেন্টের পরে অ্যাডমিন প্রকৃত চার্জ ও ট্রানজ্যাকশন আইডি সংরক্ষণ করবেন। নির্দিষ্ট কোনো চার্জের হার এখনো নির্ধারণ করা হয়নি।</p>
             </div>
           </div>
 
           <label className={styles.consent}>
             <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} disabled={!enabled || busy || hasActive} />
-            <span>I confirm the receiver number is correct and understand that the actual transfer fee will reduce my payout.</span>
+            <span>প্রাপকের নম্বর সঠিক এবং প্রকৃত ট্রান্সফার চার্জ কাটা হবে—এতে আমি সম্মত।</span>
           </label>
 
           <button type="submit" className={styles.submit} disabled={!canSubmit}>
-            {busy ? "SUBMITTING..." : !enabled ? "WITHDRAWALS NOT YET ENABLED" : hasActive ? "REQUEST ALREADY ACTIVE" : "REQUEST WITHDRAWAL"}
+            {busy ? "জমা হচ্ছে..." : !enabled ? "উত্তোলন এখনো চালু হয়নি" : hasActive ? "একটি অনুরোধ সক্রিয় আছে" : "উত্তোলনের অনুরোধ"}
             <span aria-hidden="true">→</span>
           </button>
-          <p className={styles.formFooter}>Admin approval is required. Approval does not mean payment was sent.</p>
+          <p className={styles.formFooter}>অ্যাডমিনের অনুমোদন প্রয়োজন। অনুমোদন মানেই টাকা পাঠানো হয়েছে, এমন নয়।</p>
         </form>
 
         <div className={styles.history}>
           <div className={styles.panelHeading}>
             <span className={styles.step}>02</span>
-            <div><h3>WITHDRAWAL HISTORY</h3><p>Your latest 25 requests and payment updates.</p></div>
+            <div><h3>উত্তোলনের ইতিহাস</h3><p>সর্বশেষ ২৫টি অনুরোধ ও পেমেন্ট আপডেট।</p></div>
           </div>
           {loading ? (
-            <p className={styles.empty}>Loading your withdrawal history...</p>
+            <p className={styles.empty}>উত্তোলনের ইতিহাস লোড হচ্ছে...</p>
           ) : !enabled ? (
-            <p className={styles.empty}>Wallet history will appear here once the secure withdrawal service is enabled.</p>
+            <p className={styles.empty}>উত্তোলন সেবা চালু হলে এখানে ইতিহাস দেখা যাবে।</p>
           ) : history.length === 0 ? (
             <div className={styles.emptyBox}>
               <span aria-hidden="true">◇</span>
-              <strong>No withdrawals yet</strong>
-              <p>Your first request will appear here after submission.</p>
+              <strong>এখনো কোনো উত্তোলন নেই</strong>
+              <p>প্রথম অনুরোধ জমা দেওয়ার পর এখানে দেখা যাবে।</p>
             </div>
           ) : (
             <ul className={styles.historyList}>
               {history.map((item) => {
-                const status = statuses[item.status] || { title: "UNKNOWN", note: "Awaiting an update" };
+                const status = statuses[item.status] || { title: "অজানা", note: "আপডেটের অপেক্ষায়" };
                 return (
                   <li key={item.id} className={styles.historyRow}>
                     <div className={styles.historyTop}>
@@ -267,13 +267,13 @@ export default function PlayerWithdrawal() {
                     <small className={styles.statusNote}>{status.note}</small>
                     {item.status === "paid" && (
                       <div className={styles.paymentDetail}>
-                        <span>Charge {money(item.transfer_fee)}</span>
-                        <span>Received {money(item.net_payout)}</span>
-                        <span>Transaction ref: {item.transaction_reference || "—"}</span>
+                        <span>চার্জ {money(item.transfer_fee)}</span>
+                        <span>প্রাপ্ত {money(item.net_payout)}</span>
+                        <span>ট্রানজ্যাকশন আইডি: {item.transaction_reference || "—"}</span>
                       </div>
                     )}
                     {item.status === "rejected" && item.rejection_reason && (
-                      <p className={styles.rejectReason}>Reason: {item.rejection_reason}</p>
+                      <p className={styles.rejectReason}>কারণ: {item.rejection_reason}</p>
                     )}
                   </li>
                 );
@@ -282,7 +282,7 @@ export default function PlayerWithdrawal() {
           )}
           <div className={styles.disclaimer}>
             <span aria-hidden="true">🔒</span>
-            <p>Only your own wallet information is available here. Never share your bKash/Nagad PIN, OTP or login password.</p>
+            <p>এখানে শুধু আপনার ওয়ালেটের তথ্য দেখানো হয়। বিকাশ/নগদের PIN, OTP বা লগইন পাসওয়ার্ড কাউকে দেবেন না।</p>
           </div>
         </div>
       </div>
