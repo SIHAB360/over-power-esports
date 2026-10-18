@@ -697,7 +697,7 @@ const bestPlacement =
             </div>
             <button
               type="button"
-              className="op-wallet-entry-button"
+              className={`op-wallet-entry-button ${walletModal.trigger}`}
               onClick={() => setWalletOpen(true)}
               aria-haspopup="dialog"
               aria-expanded={walletOpen}
