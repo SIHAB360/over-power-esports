@@ -85,6 +85,10 @@ jobs:
             $$ SELECT nullif(current_setting('request.jwt.claim.role',true),'') $$;
           CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
             'SELECT ''{}''::jsonb';
+          -- Supabase grants auth schema lookup to logged-in/anon roles.
+          -- Mirror those grants in the throwaway vanilla PostgreSQL clone.
+          GRANT USAGE ON SCHEMA auth TO anon, authenticated;
+          GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA auth TO anon, authenticated;
           -- Keep PostgreSQL's built-in empty public schema; pg_dump
           -- --schema=public does not recreate that built-in schema.
           SQL
