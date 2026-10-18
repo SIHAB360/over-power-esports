@@ -144,3 +144,124 @@
 .buttons{flex-direction:column;}
 }
 @media(prefers-reduced-motion:reduce){.listRow{transition:none;}.listRow:hover{transform:none;}}
+
+/* Admin Withdrawal visual refinements — 2026-10-19.
+   Pure CSS: preserve filters, API calls, approvals, ledger and status logic. */
+.shell .heading { align-items:center; gap:24px; margin-bottom:25px; }
+.shell .eyebrow { font-size:13px;line-height:1.5;letter-spacing:.075em; }
+.shell .heading h3 {font-size:clamp(28px,2.55vw,40px);line-height:1.19;}
+.shell .subheading {font-size:clamp(15px,.92vw,17px);line-height:1.7;max-width:860px;}
+.shell .refresh {font-size:14px;min-height:49px;padding:12px 17px;gap:10px;}
+.shell .ruleStrip {font-size:14px;line-height:1.7;padding:16px 17px;gap:14px;}
+.shell .metricGrid {gap:clamp(11px,1vw,18px);margin-bottom:23px;}
+.shell .metric {min-height:148px;padding:clamp(17px,1.35vw,23px);gap:11px;}
+.shell .metricLabel {font-size:clamp(12px,.78vw,14px);line-height:1.5;letter-spacing:.025em;}
+.shell .metric strong {font-size:clamp(32px,2.3vw,42px);}
+.shell .metric small {font-size:13px;line-height:1.5;}
+.shell .panels {align-items:stretch;gap:clamp(13px,1.1vw,21px);}
+.shell .listPanel,.shell .detailPanel {
+  min-height:470px;
+  padding:clamp(18px,1.75vw,28px);
+  display:flex;flex-direction:column;min-width:0;
+}
+.shell .panelHead {margin-bottom:19px;}
+.shell .panelHead h4 {font-size:clamp(17px,1.08vw,21px);line-height:1.35;letter-spacing:.025em;}
+.shell .panelHead small {font-size:13px;line-height:1.5;}
+.shell .filters {gap:9px;margin-bottom:18px;}
+.shell .filter {min-height:44px;padding:10px 15px;font-size:14px;line-height:1.4;}
+.shell .search {min-height:54px;margin-bottom:18px;padding:0 16px;}
+.shell .search input {font-size:15px;}
+.shell .search input::placeholder {color:#aec3da;opacity:1;}
+.shell .list {flex:1;max-height:650px;}
+.shell .listRow {padding:19px 18px;gap:11px;}
+.shell .rowTop strong {font-size:17px;}
+.shell .rowTop b {font-size:23px;}
+.shell .rowMeta {font-size:13px;line-height:1.5;}
+.shell .status {font-size:12px;letter-spacing:.02em;padding:7px 10px;}
+.shell .pageControl {margin-top:17px;}
+.shell .pageControl button {min-height:44px;font-size:13px;padding:11px 14px;}
+.shell .pageControl span {font-size:13px;}
+.shell .empty {font-size:15px;}
+.shell .emptyState {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;min-height:268px;gap:12px;text-align:center;padding:30px 22px;
+  color:#d0e1f4;border:1px dashed rgba(113,184,229,.42);
+  border-radius:17px;
+  background:radial-gradient(circle at 50% 20%,rgba(51,150,193,.11),transparent 65%),rgba(25,43,69,.34);
+}
+.shell .emptyIcon {
+  width:64px;height:64px;display:grid;place-items:center;
+  color:#7ce5f2;border:1px solid rgba(100,213,225,.38);
+  background:rgba(55,158,195,.14);border-radius:18px;
+  box-shadow:0 0 24px rgba(53,176,225,.10);
+}
+.shell .emptyIcon svg {width:30px;height:30px;}
+.shell .emptyState strong {color:#f2fbff;font-size:clamp(18px,1.25vw,22px);font-weight:900;}
+.shell .emptyState p {margin:0;max-width:385px;color:#bdd4e9;line-height:1.65;font-size:14px;}
+.shell .noSelection {flex:1;min-height:310px;gap:15px;padding:30px 20px;}
+.shell .noSelectionIcon {
+  width:72px;height:72px;display:grid;place-items:center;
+  color:#7ae2eb;border:1px solid rgba(113,211,233,.35);
+  border-radius:21px;background:rgba(45,150,184,.14);
+  box-shadow:0 0 30px rgba(50,194,235,.12);
+}
+.shell .noSelectionIcon svg {width:37px;height:37px;}
+.shell .noSelection strong {font-size:clamp(18px,1.25vw,22px);line-height:1.4;}
+.shell .noSelection p {max-width:390px;font-size:14px;line-height:1.75;color:#bbd1e8;}
+.shell .secureNote {
+  display:inline-flex;align-items:center;gap:7px;color:#b2efd9;
+  border:1px solid rgba(124,211,172,.25);padding:8px 11px;
+  border-radius:50px;background:rgba(41,115,100,.12);font-size:12px;font-weight:800;
+}
+.shell .requestHeading p {font-size:13px;}
+.shell .requestHeading h4 {font-size:21px;}
+.shell .requestHeading small {font-size:14px;}
+.shell .amountBlock span {font-size:13px;}
+.shell .amountBlock small {font-size:13px;}
+.shell .facts dt {font-size:14px;}
+.shell .facts dd {font-size:15px;}
+.shell .approveBtn,.shell .rejectBtn {min-height:49px;font-size:14px;}
+.shell .actionHead strong {font-size:14px;}
+.shell .actionHelp,.shell .hazard p,.shell .checkbox,.shell .privacy p {font-size:14px;}
+.shell .field > span {font-size:13px;}
+.shell .netPreview span {font-size:14px;}
+.shell .cancelBtn {font-size:14px;}
+.shell :is(.refresh,.filter,.listRow,.pageControl button,.recipient button):focus-visible {
+  outline:3px solid #fff;outline-offset:3px;
+}
+@media(max-width:1300px) {
+  .shell .listPanel,.shell .detailPanel {min-height:350px;}
+  .shell .emptyState {min-height:250px;}
+}
+@media(max-width:700px) {
+  .shell .heading {flex-direction:column;align-items:stretch;gap:15px;}
+  .shell .heading h3 {font-size:clamp(26px,6.5vw,36px);}
+  .shell .subheading {font-size:14px;}
+  .shell .refresh {width:100%;font-size:14px;}
+  .shell .ruleStrip {font-size:13px;padding:14px 13px;}
+  .shell .metricGrid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .shell .metric {min-height:133px;padding:15px 13px;}
+  .shell .metricLabel {font-size:12px;}
+  .shell .metric strong {font-size:32px;}
+  .shell .metric small {font-size:12px;}
+  .shell .listPanel,.shell .detailPanel {padding:17px 14px;min-height:325px;}
+  .shell .panelHead h4 {font-size:18px;}
+  .shell .panelHead small {font-size:12px;}
+  .shell .filters {gap:8px;}
+  .shell .filter {min-height:42px;font-size:13px;padding:9px 12px;}
+  .shell .rowTop strong {font-size:16px;}
+  .shell .rowTop b {font-size:21px;}
+  .shell .rowMeta {font-size:13px;}
+  .shell .emptyState {min-height:230px;padding:24px 15px;}
+  .shell .emptyState strong {font-size:18px;}
+  .shell .emptyState p {font-size:13px;}
+  .shell .noSelection {min-height:240px;padding:24px 16px;}
+  .shell .noSelection p {font-size:13px;}
+  .shell .facts dt,.shell .facts dd {font-size:14px;}
+  .shell .privacy p {font-size:13px;}
+}
+@media(max-width:380px) {
+  .shell .metricGrid {grid-template-columns:minmax(0,1fr);}
+  .shell .metric {min-height:111px;}
+  .shell .filter {flex:1 1 auto;}
+}
