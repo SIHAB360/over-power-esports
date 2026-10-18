@@ -219,7 +219,7 @@ export default function PlayerWithdrawal() {
             <span aria-hidden="true">ⓘ</span>
             <div>
               <strong>TRANSFER CHARGE PAID BY PLAYER</strong>
-              <p>The actual bKash/Nagad transfer fee is deducted from your requested amount. Your final received amount may be lower. The admin records the actual fee and transaction reference after sending money. No fixed fee rate has been set yet.</p>
+              <p>The actual bKash/Nagad transfer charge is paid by you and deducted from your requested amount. You receive the remaining amount after the charge. After sending payment, the admin records the actual charge and transaction ID. No fixed charge rate has been set.</p>
             </div>
           </div>
 
