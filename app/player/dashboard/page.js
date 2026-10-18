@@ -1204,6 +1204,12 @@ const bestPlacement =
         .dashboard-bottom-actions { display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap; }
         @media(max-width:640px) {.dashboard-bottom-actions {display:grid;grid-template-columns:1fr 1fr;gap:10px}.withdraw-bottom-btn {min-width:0;width:100%;font-size:15px;padding:10px}.dashboard-bottom-actions .magic-logout {width:100%;min-width:0}}
         @media(prefers-reduced-motion:reduce) {.withdraw-bottom-btn {transition:none}}
+        /* Match the existing logout button dimensions and alignment. */
+        .dashboard-bottom-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,240px));align-items:stretch!important;justify-content:center!important;gap:16px!important;max-width:520px;margin-inline:auto}
+        .dashboard-bottom-actions .withdraw-bottom-btn,.dashboard-bottom-actions .magic-logout{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:none!important;min-height:60px!important;height:60px!important;margin:0!important;border-radius:16px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;line-height:1.15!important}
+        .dashboard-bottom-actions .withdraw-bottom-btn{background:linear-gradient(115deg,#ff4a95,#ef236f 55%,#c7298f)!important;border:2px solid #ffa5d5!important;color:#fff!important;font-size:18px!important;font-weight:800!important;box-shadow:0 0 18px rgba(255,53,142,.55),0 8px 28px rgba(238,35,103,.35)!important;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+        .dashboard-bottom-actions .withdraw-bottom-btn:hover{transform:translateY(-2px);box-shadow:0 0 35px rgba(255,60,153,.8),0 12px 34px rgba(238,35,103,.4)!important}
+        @media(max-width:640px){.dashboard-bottom-actions{grid-template-columns:repeat(2,minmax(0,1fr));max-width:100%;gap:10px!important}.dashboard-bottom-actions .withdraw-bottom-btn,.dashboard-bottom-actions .magic-logout{height:54px!important;min-height:54px!important;font-size:15px!important;padding:8px!important}}
         .page {
           min-height: 100vh;
           background: #000;
