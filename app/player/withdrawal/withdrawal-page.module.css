@@ -4,18 +4,18 @@
   margin:0;padding:0!important;overflow-x:clip;
   background:radial-gradient(ellipse at 90% 0%,rgba(204,35,117,.12),transparent 43%),#050914;
   color:#fff;
-  font-family:var(--font-bangla),"Hind Siliguri","Noto Sans Bengali",sans-serif;
+  font-family:"Noto Serif Bengali","Noto Sans Bengali",serif;
 }
 .page *{box-sizing:border-box}
 .wrap{width:100%;max-width:none;margin:0;padding:0}
 .topbar{width:100%;margin:0;padding:14px clamp(12px,2vw,32px);min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(8,13,27,.85);border-bottom:1px solid rgba(100,140,195,.2)}
-.back{min-height:43px;padding:8px 15px;border-radius:11px;border:1px solid rgba(143,186,239,.46);background:#14243f;color:#fff;font:700 16px var(--font-bangla),"Hind Siliguri",sans-serif;cursor:pointer}
+.back{min-height:43px;padding:8px 15px;border-radius:11px;border:1px solid rgba(143,186,239,.46);background:#14243f;color:#fff;font:700 16px "Noto Serif Bengali","Noto Sans Bengali",serif;cursor:pointer}
 .back:hover,.back:focus-visible{border-color:#ff80b7;outline-offset:2px}
 .brand{font:800 12px system-ui,sans-serif;letter-spacing:.10em;color:#ff8abc;text-align:right}
 .state{min-height:calc(100dvh - 72px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;font-size:19px}
 .state button{padding:12px 20px;border:1px solid #ed79af;border-radius:12px;color:#fff;background:#981c5d;cursor:pointer}
 .page :global(#player-withdrawal){width:100%;max-width:none;margin:0!important;min-height:calc(100dvh - 72px);padding:clamp(14px,2vw,32px)!important;border:0!important;border-radius:0!important;box-shadow:none!important}
-.page :global(#player-withdrawal),.page :global(#player-withdrawal *){font-family:var(--font-bangla),"Hind Siliguri","Noto Sans Bengali",sans-serif}
+.page :global(#player-withdrawal),.page :global(#player-withdrawal *){font-family:"Noto Serif Bengali","Noto Sans Bengali",serif}
 .page :global(#player-withdrawal .unused){max-width:none}
 @media(max-width:720px){
  .topbar{padding:10px 12px;min-height:60px}
@@ -24,3 +24,8 @@
  .page :global(#player-withdrawal){padding:12px 10px 22px!important;min-height:calc(100dvh - 60px)}
 }
 @media(max-width:390px){.brand{font-size:9px}}
+
+/* Screenshot-reference: Bengali display letterforms with a softer serif and bold headline. */
+.page :global(#player-withdrawal) { font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important; }
+.page :global(#player-withdrawal h2),.page :global(#player-withdrawal h3),.page :global(#player-withdrawal strong){font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important;letter-spacing:0!important;font-weight:700!important}
+.page :global(#player-withdrawal button),.page :global(#player-withdrawal input){font-family:"Noto Serif Bengali","Noto Sans Bengali",serif!important}
