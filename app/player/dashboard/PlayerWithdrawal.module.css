@@ -411,3 +411,10 @@
 /* Bengali typography aligned to the wallet reference while retaining existing finance styles. */
 .shell{font-family:var(--font-bangla),"Hind Siliguri","Kalpurush",sans-serif;}
 .shell button,.shell input,.shell label,.shell legend{font-family:inherit;}
+
+/* Preserve natural Bengali glyph shapes rather than extra-heavy esports lettering. */
+.shell .header h2,.shell .panelHeading h3,.shell .stat strong,.shell .emptyBox strong{font-weight:700;letter-spacing:0}
+.shell .stat span,.shell .field>span,.shell .methods legend,.shell .method small,.shell .overline{font-weight:600;letter-spacing:0}
+.shell .subtitle,.shell .panelHeading p,.shell .field small,.shell .feeNotice p,.shell .historyMeta{font-weight:400;letter-spacing:0}
+@media(min-width:1101px){.shell .mainGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.shell .header{gap:10px;flex-wrap:wrap}.shell .refresh{margin-left:auto}.shell .statGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
