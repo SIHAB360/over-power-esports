@@ -610,6 +610,11 @@ export default function AdminDashboard() {
                   <span className={styles.commandActionBody}><strong>Verification hub</strong><small>Secure live access codes</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
                 </button>
+                <button type="button" className={[styles.commandAction, styles.withdrawalQuickAction].join(" ")} onClick={() => goTo("salary")}>
+                  <span className={styles.commandActionIcon}><FiCreditCard aria-hidden="true"/></span>
+                  <span className={styles.commandActionBody}><strong>Player Withdrawals</strong><small>bKash / Nagad · Review & payouts</small></span>
+                  <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
+                </button>
               </section>
             )}
 
