@@ -22,7 +22,7 @@ const dates = (value) => {
 const maskNumber = (value) =>
   typeof value === "string" && /^01[3-9][0-9]{8}$/.test(value)
     ? value.slice(0, 3) + "•••••" + value.slice(-3)
-    : "Hidden";
+    : "গোপন";
 
 const statuses = {
   pending: { title: "পর্যালোচনাধীন", note: "অ্যাডমিনের অনুমোদনের অপেক্ষায়" },
@@ -172,7 +172,7 @@ export default function PlayerWithdrawal() {
           <small>অনুমোদনের অপেক্ষায় বা অনুমোদিত অনুরোধ</small>
         </article>
         <article className={styles.stat}>
-          <span>TOTAL পরিশোধিত OUT</span>
+          <span>মোট পরিশোধিত টাকা</span>
           <strong>{enabled ? money(wallet?.paid_withdrawals) : "—"}</strong>
           <small>নিশ্চিত করা পেমেন্ট</small>
         </article>
