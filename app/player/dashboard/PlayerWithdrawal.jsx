@@ -190,11 +190,11 @@ export default function PlayerWithdrawal() {
             <legend>পেমেন্ট মাধ্যম নির্বাচন করুন</legend>
             <label className={[styles.method, provider === "bkash" ? styles.activePink : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="bkash" checked={provider === "bkash"} onChange={() => setProvider("bkash")} />
-              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="https://seekvectors.com/files/download/dfac9aaa4561ff1c9226a71ca109d465.png" alt="" loading="lazy" /><span><strong>bKash</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
+              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="data:image/webp;base64,UklGRnQBAABXRUJQVlA4IGgBAABQCACdASocABwAPpFCnEqlo6KhqAgAsBIJbAC+cII4BYALYz/QDWAPQA/YDrQiVVeTD6DDOkr/8ifygNc1CmIZ7MgfzkwhcE11I4AA/rcKutRZaemt+kFwkd4fezZGH/zWjBdkJsNx/nCWdBcAV6IsRVZ5ajIXMZW51a/EjelJrOAW2P/x1UoApFU/5egv6t7//BQKzprw9ZgCYdGiUyIx78aknbsbb6HYWlE4voeX/gka+QkDSRs23frEOrxbUZimOl58PRF+5/THVUeu32of5YDZ7Arc2vz/xQWhhh7nMdpKJJMYj/GKVK79+eXPoaf2YXVhVNslvrnrhnXIEU1UmFV7kxaFel3WAP4uHgxDSJ1u9o9vr7SiIApjoiX96RmodBs2vh58G7HEoI4v0To/NTZSXCO9/RyYizOWF2rtBDwgNyFa940ugfKeRXtrydeNuVk/6TzvfG5+Z9k9od/ByYopWpBbUAA=" alt="" loading="lazy" /><span><strong>bKash</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
             </label>
             <label className={[styles.method, provider === "nagad" ? styles.activeOrange : ""].join(" ")}>
               <input type="radio" name="paymentMethod" value="nagad" checked={provider === "nagad"} onChange={() => setProvider("nagad")} />
-              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="https://image.pngaaa.com/400/3425400-middle.png" alt="" loading="lazy" /><span><strong>Nagad</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
+              <span className={styles.providerIdentity}><img className={styles.providerLogo} src="data:image/webp;base64,UklGRn4BAABXRUJQVlA4IHIBAADwBwCdASocABwAPoE2lEelIyIhN/qoAKAQCWwAnTKEdXeZp4l3lFu3FYf+kRkyYJcWTsK2Ik8D6cDCsclU/EYQn+V9o3LK5KAA/uu+g1YVVnxosunEWsftb34Y/UCVuXEj/mI2sIGJv8N0oYELAruUPQy9aHd2/t2NAAdixzczA//PfV+fZILHfhXgDfe1pbIhZFkt5ZzdPaU98z5q3ns6QSnp8emyOHMe1FeY61/5i5tls6KiGvpKwNYHnMxaRpJTdv1YAD7Ry9u8FTar/k7zwO7hGXgR2negBxrZ6rQGll9ViCBXUAp0wVrXcVvLju0lUVNkpsmxJNX8hfBd0ApR9n4S299d0+heXfsNKFP+OWOQsozeE/54bJiUoC9LnxG8WbaCEyvUfq2UTu8fMUkeziSUUlC5mIWvzIe2WzPtAJPy1J8iic9ff5xTZ/Tn/xJVgN+xV7gKVJYtrff6r+6vKOKCRA8P0jb/xAfH/4XaAAAA" alt="" loading="lazy" /><span><strong>Nagad</strong><small>পার্সোনাল অ্যাকাউন্ট</small></span></span>
             </label>
           </fieldset>
 
