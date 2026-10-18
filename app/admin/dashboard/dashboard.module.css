@@ -1348,3 +1348,30 @@
   .dashboard .navItem,.dashboard .stat,.dashboard .commandAction{transition:none;}
   .dashboard .navItem:hover,.dashboard .stat:hover,.dashboard .commandAction:hover{transform:none;}
 }
+
+/* Explicit withdrawals shortcut in the Admin Overview (Preview only).
+   Existing Salary navigation key and every manager section stay untouched. */
+.dashboard .commandActions {
+  grid-template-columns: repeat(4,minmax(0,1fr));
+}
+.dashboard .withdrawalQuickAction {
+  border-color: rgba(86, 228, 224, .62);
+  background: linear-gradient(122deg, rgba(20, 161, 164, .16), rgba(91, 89, 181, .12)),var(--surface);
+}
+.dashboard .withdrawalQuickAction .commandActionIcon {
+  color: #69ebdf;
+  background: rgba(25, 178, 186, .14);
+}
+.dashboard .withdrawalQuickAction .commandActionBody strong {
+  color: var(--text);
+}
+.dashboard .withdrawalQuickAction:hover {
+  border-color: #64e7de;
+  box-shadow: 0 12px 32px rgba(36, 212, 216, .13);
+}
+@media (max-width: 1420px) {
+  .dashboard .commandActions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 700px) {
+  .dashboard .commandActions { grid-template-columns: 1fr; }
+}
