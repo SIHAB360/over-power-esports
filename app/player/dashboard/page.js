@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import { useRouter } from "next/navigation";
-import PlayerWithdrawal from "./PlayerWithdrawal";
+import PlayerWithdrawalGateway from "./PlayerWithdrawalGateway";
 
 export default function PlayerDashboard() {
   const router = useRouter();
@@ -673,29 +673,9 @@ const bestPlacement =
           </div>
         </section>
 
-        {/* Prominent quick access. This only scrolls to the secure wallet below;
-            the backend must still be activated by a separately approved migration. */}
-        {!adminView && (
-          <section className="op-wallet-entry" aria-label="Player withdrawal quick access">
-            <div className="op-wallet-entry-copy">
-              <span className="op-wallet-entry-eyebrow">PLAYER FINANCE / PERSONAL WALLET</span>
-              <strong>WITHDRAW YOUR EARNINGS</strong>
-              <span>Choose bKash or Nagad, track requests and view your secure wallet.</span>
-            </div>
-            <button
-              type="button"
-              className="op-wallet-entry-button"
-              onClick={() => {
-                const target = document.getElementById("player-withdrawal");
-                if (!target) return;
-                const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-                target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-              }}
-            >
-              <span aria-hidden="true">৳</span> OPEN WITHDRAWAL WALLET <span aria-hidden="true">↘</span>
-            </button>
-          </section>
-        )}
+        {/* Player finance: single highlighted CTA; payment form opens in a
+            secure, responsive modal. Backend remains authoritative for access. */}
+        {!adminView && <PlayerWithdrawalGateway />}
 
        {/* Stats */}
 <div className="stats">
@@ -1209,7 +1189,7 @@ const bestPlacement =
 
         {/* Step 02: Secure wallet and manual withdrawal UI.
             Admin's player preview deliberately does not load any other player's wallet. */}
-        {!adminView && <PlayerWithdrawal />}
+
           </div>
         </div>
         {!adminView && (
