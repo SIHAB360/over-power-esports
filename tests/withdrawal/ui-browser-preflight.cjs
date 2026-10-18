@@ -206,6 +206,28 @@ async function run() {
    results.push(name);
  }
  try {
+  await check("Actual Next.js Withdrawal APIs reject missing bearer tokens",async()=>{
+    // These requests intentionally do NOT go through Playwright's mock
+    // interception. They hit the real, locally running Next.js API routes,
+    // with no Supabase account or real database involved.
+    const targets=[
+      ["/api/player/wallet","GET"],
+      ["/api/player/withdrawals","POST"],
+      ["/api/admin/withdrawals","GET"],
+      ["/api/admin/withdrawals/review","POST"],
+      ["/api/admin/withdrawals/confirm-payment","POST"],
+    ];
+    for(const [path,method] of targets){
+      const response=await fetch(BASE+path,{
+        method,
+        headers:method==="POST" ? {"Content-Type":"application/json"}:{},
+        ...(method==="POST" ? {body:"{}"}:{}),
+      });
+      assert.equal(response.status,401,path+" must reject missing authentication with 401");
+      const body=await response.json();
+      assert(/Authentication required/i.test(body.message||""),path+" must return a safe error");
+    }
+  });
   await check("Player unauthenticated redirects to Login",async()=>{
     const context=await browser.newContext();
     const page=await context.newPage();
