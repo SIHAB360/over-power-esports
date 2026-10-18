@@ -16,6 +16,7 @@ import logo from "../../assets/logo.png";
 import styles from "./dashboard.module.css";
 import VerificationPanel from "./VerificationPanel";
 const WithdrawalManagement = dynamic(() => import("./WithdrawalManagement"), { ssr: false });
+const WithdrawalAccessPanel = dynamic(() => import("./WithdrawalAccessPanel"), { ssr: false });
 
 // Reuse each existing FULL management page inside the new command center.
 // This preserves every existing form, field, validation, database write and record view.
@@ -699,7 +700,10 @@ export default function AdminDashboard() {
             ) : active === "verification" ? (
               <VerificationPanel refreshVersion={verificationRefreshVersion} />
             ) : active === "salary" ? (
-              <WithdrawalManagement players={players} />
+              <div className={styles.sectionView}>
+                <WithdrawalAccessPanel />
+                <WithdrawalManagement players={players} />
+              </div>
             ) : (
               <div className={styles.sectionView}>
                 {sourceErrors[active] && <div className={styles.notice}>Unable to load {activeNav.name} data: {sourceErrors[active]}</div>}
