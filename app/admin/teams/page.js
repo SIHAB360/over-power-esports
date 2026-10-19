@@ -234,8 +234,6 @@ export default function TeamsPage({moderatorMode=false}={}) {
 
 
           <form onSubmit={createTeam}>
-          <fieldset disabled={moderatorMode&&!canCreate} style={{border:0,padding:0,minWidth:0}}>
-
 
             <div className="grid">
 
@@ -336,7 +334,7 @@ export default function TeamsPage({moderatorMode=false}={}) {
 
 
 
-            <button className="create-btn">
+            <button className="create-btn" disabled={moderatorMode&&!canCreate||saving}>
 
               {
                 saving
@@ -348,9 +346,6 @@ export default function TeamsPage({moderatorMode=false}={}) {
 
             </button>
 
-
-
-          </fieldset>
           </form>
 
 

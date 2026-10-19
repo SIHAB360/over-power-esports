@@ -268,9 +268,6 @@ export default function TournamentsPage({moderatorMode=false}={}) {
 
 
           <form onSubmit={createTournament}>
-          <fieldset disabled={moderatorMode&&!canCreate} style={{border:0,padding:0,minWidth:0}}>
-
-
 
             <div className="grid">
 
@@ -398,7 +395,7 @@ export default function TournamentsPage({moderatorMode=false}={}) {
 
 
 
-            <button className="create-btn">
+            <button className="create-btn" disabled={moderatorMode&&!canCreate||saving}>
 
 
               {
@@ -418,11 +415,6 @@ export default function TournamentsPage({moderatorMode=false}={}) {
 
             </button>
 
-
-
-
-
-          </fieldset>
           </form>
 
 
