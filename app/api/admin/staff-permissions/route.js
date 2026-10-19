@@ -22,7 +22,9 @@ export async function GET(request){
  const ctx=await context(request);if(ctx.failure)return ctx.failure;
  const {data,error}=await ctx.admin.from("staff_permissions").select("user_id,match_view,match_create,match_edit,updated_at").order("updated_at",{ascending:false}).limit(100);
  if(error)return reply({message:"Staff permission storage unavailable"},503);
- return reply({permissions:data||[]});
+ const {data:players,error:playersError}=await ctx.admin.from("players").select("user_id,full_name,ign").eq("status","approved").not("user_id","is",null).order("full_name",{ascending:true}).limit(500);
+ if(playersError)return reply({message:"Could not load player list"},503);
+ return reply({permissions:data||[],players:players||[]});
 }
 export async function POST(request){
  const ctx=await context(request);if(ctx.failure)return ctx.failure;
