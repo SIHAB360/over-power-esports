@@ -260,12 +260,6 @@ export default function TournamentsPage({moderatorMode=false}={}) {
 
 
           <h2>CREATE TOURNAMENT</h2>
-          {moderatorMode&&<p style={{color:"#83d7ef"}}>ADMIN WORKFLOW · {canCreate?"CREATE ENABLED":"READ ONLY"}</p>}
-          {moderatorMode&&!canFinance&&<p style={{color:"#ffce80"}}>Prize Pool, Entry Fee and Status Finalization require Finance Approval.</p>}
-          {accessError&&<p role="alert" style={{color:"#ffb3b3"}}>{accessError}</p>
-
-
-
 
           <form onSubmit={createTournament}>
 

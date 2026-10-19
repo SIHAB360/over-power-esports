@@ -227,11 +227,6 @@ export default function TeamsPage({moderatorMode=false}={}) {
 
 
           <h2>CREATE NEW TEAM</h2>
-          {moderatorMode&&<p style={{color:"#83d7ef"}}>ADMIN WORKFLOW · {canCreate?"CREATE ENABLED":"READ ONLY"}</p>}
-          {accessError&&<p role="alert" style={{color:"#ffb3b3"}}>{accessError}</p>}
-
-
-
 
           <form onSubmit={createTeam}>
 
