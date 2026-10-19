@@ -533,6 +533,7 @@ export default function AdminDashboard() {
               ))}
             </nav>
             <div className={styles.navSeparator}/>
+            <Link href="/admin/moderators" className={styles.navItem}><span className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
             <p className={styles.menuTitle}>QUICK ACCESS</p>
             <Link href="/" className={styles.navItem}>
               <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>

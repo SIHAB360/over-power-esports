@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import ModeratorShortcut from "./ModeratorShortcut";
 import { useRouter } from "next/navigation";
 
 export default function PlayerDashboard() {
@@ -1188,6 +1189,7 @@ const bestPlacement =
         </div>
         {!adminView && (
           <div className="dashboard-bottom-actions">
+            <ModeratorShortcut />
             <button type="button" className="withdraw-bottom-btn" onClick={() => router.push("/player/withdrawal")}>৳ <span>উত্তোলন</span> <span aria-hidden="true">↗</span></button>
             <button className="logout magic-logout" onClick={handleLogout} aria-label="Log out of player dashboard">
               <span className="logout-label">LOG OUT</span>
