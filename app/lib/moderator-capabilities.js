@@ -1,16 +1,16 @@
 // A capability is grantable only when its server-side RPC exists and is guarded.
 // Admin may preview all sections, but incomplete money/approval capabilities fail closed.
 export const MODERATOR_SECTIONS = Object.freeze([
-  {id:"matches",label:"Match Center",description:"Full match command center, result calculation and earnings with explicit finance approval",actions:["view","create","edit","approve"]},
-  {id:"players",label:"Players",description:"Player directory and public profile details",actions:["view"]},
+  {id:"matches",label:"Match Center",description:"Full match command center, result calculation and earnings with explicit finance approval",actions:["view","create","edit","delete","approve"]},
+  {id:"players",label:"Players",description:"Player directory and public profile details",actions:["view","approve"]},
   {id:"teams",label:"Teams",description:"Team details and roster overview",actions:["view","create","edit"]},
   {id:"tournaments",label:"Tournaments",description:"Tournament scheduling and registration with explicit finance approval",actions:["view","create","edit","approve"]},
   {id:"earnings",label:"Player Earnings",description:"Read-only financial records; edits are restricted",actions:["view"]},
-  {id:"withdrawals",label:"Withdrawals",description:"Read-only payout overview; private payment details are hidden",actions:["view"]},
-  {id:"profit",label:"Profit & Finance",description:"Read-only financial records; edits are restricted",actions:["view"]},
+  {id:"withdrawals",label:"Withdrawals",description:"Read-only payout overview; private payment details are hidden",actions:["view","approve","edit"]},
+  {id:"profit",label:"Profit & Finance",description:"Read-only financial records; edits are restricted",actions:["view","delete"]},
   {id:"verification",label:"Verification",description:"Read-only verification overview; approvals are restricted",actions:["view"]},
-  {id:"achievements",label:"Achievements",description:"Achievement overview; publishing is restricted",actions:["view"]},
-  {id:"registration_codes",label:"Registration Codes",description:"Unavailable until a secured backend is ready",actions:[]},
+  {id:"achievements",label:"Achievements",description:"Achievement overview; publishing is restricted",actions:["view","create","edit","delete","approve"]},
+  {id:"registration_codes",label:"Registration Codes",description:"Verification code register, view-only and secured",actions:["view"]},
 ]);
 export const MODERATOR_ACTIONS=Object.freeze(["view","create","edit","delete","approve","export"]);
 export const ACTION_LABELS=Object.freeze({view:"View",create:"Create",edit:"Edit",delete:"Delete",approve:"Approve",export:"Export"});
