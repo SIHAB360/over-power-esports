@@ -1,19 +1,19 @@
 // A capability is grantable only when its server-side RPC exists and is guarded.
 // Admin may preview all sections, but incomplete money/approval capabilities fail closed.
 export const MODERATOR_SECTIONS = Object.freeze([
-  {id:"matches",label:"ম্যাচ সেন্টার",description:"ম্যাচের সময়সূচি ও সাধারণ তথ্য",actions:["view","create","edit"]},
-  {id:"players",label:"প্লেয়ার ম্যানেজমেন্ট",description:"প্লেয়ারের প্রকাশ্য তথ্য",actions:["view"]},
-  {id:"teams",label:"টিম ম্যানেজমেন্ট",description:"টিমের সাধারণ তথ্য",actions:["view","create","edit"]},
-  {id:"tournaments",label:"টুর্নামেন্ট",description:"টুর্নামেন্টের সাধারণ তথ্য",actions:["view","create","edit"]},
-  {id:"earnings",label:"প্লেয়ার আর্নিংস",description:"শুধু পড়ার অনুমতি; কোনো আর্থিক পরিবর্তন নয়",actions:["view"]},
-  {id:"withdrawals",label:"উত্তোলন",description:"মোবাইল নম্বর ছাড়াই পেমেন্ট সারাংশ দেখুন",actions:["view"]},
-  {id:"profit",label:"প্রফিট ও ফাইন্যান্স",description:"শুধু পড়ার অনুমতি; কোনো আর্থিক পরিবর্তন নয়",actions:["view"]},
-  {id:"verification",label:"ভেরিফিকেশন",description:"ভেরিফিকেশন সারাংশ; অনুমোদন দেওয়া যাবে না",actions:["view"]},
-  {id:"achievements",label:"অ্যাচিভমেন্ট",description:"অ্যাচিভমেন্টের তালিকা; আপলোড বন্ধ",actions:["view"]},
-  {id:"registration_codes",label:"রেজিস্ট্রেশন কোড",description:"সেটিংস — নিরাপত্তা সংযোগ অপেক্ষমাণ",actions:[]},
+  {id:"matches",label:"Match Center",description:"Match scheduling and general match details",actions:["view","create","edit"]},
+  {id:"players",label:"Players",description:"Player directory and public profile details",actions:["view"]},
+  {id:"teams",label:"Teams",description:"Team details and roster overview",actions:["view","create","edit"]},
+  {id:"tournaments",label:"Tournaments",description:"Tournament schedule and general information",actions:["view","create","edit"]},
+  {id:"earnings",label:"Player Earnings",description:"Read-only financial records; edits are restricted",actions:["view"]},
+  {id:"withdrawals",label:"Withdrawals",description:"Read-only payout overview; private payment details are hidden",actions:["view"]},
+  {id:"profit",label:"Profit & Finance",description:"Read-only financial records; edits are restricted",actions:["view"]},
+  {id:"verification",label:"Verification",description:"Read-only verification overview; approvals are restricted",actions:["view"]},
+  {id:"achievements",label:"Achievements",description:"Achievement overview; publishing is restricted",actions:["view"]},
+  {id:"registration_codes",label:"Registration Codes",description:"Unavailable until a secured backend is ready",actions:[]},
 ]);
 export const MODERATOR_ACTIONS=Object.freeze(["view","create","edit","delete","approve","export"]);
-export const ACTION_LABELS=Object.freeze({view:"দেখা",create:"তৈরি",edit:"এডিট",delete:"ডিলিট",approve:"অনুমোদন",export:"রিপোর্ট"});
+export const ACTION_LABELS=Object.freeze({view:"View",create:"Create",edit:"Edit",delete:"Delete",approve:"Approve",export:"Export"});
 export const SECTION_IDS=new Set(MODERATOR_SECTIONS.map(s=>s.id));
 export const ACTION_IDS=new Set(MODERATOR_ACTIONS);
 export function isSupportedModeratorAction(section,action){return Boolean(MODERATOR_SECTIONS.find(s=>s.id===section)?.actions.includes(action));}

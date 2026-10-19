@@ -11,5 +11,5 @@ export default function ModeratorShortcut(){
   if(active)setEnabled(body.enabled&&body.permissions?.some(x=>x.action==="view"));
  })();return()=>{active=false}},[]);
  if(!enabled)return null;
- return <Link href="/moderator/dashboard" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minHeight:54,padding:"12px 20px",borderRadius:16,background:"linear-gradient(110deg,#7547c9,#ed397f)",color:"#fff",fontSize:16,fontWeight:800,textDecoration:"none",border:"1px solid #db9cf8"}}>⚙ MODERATOR PANEL ↗</Link>;
+ return <Link href="/moderator/dashboard" style={{display:"inline-flex",alignItems:"center",justifyContent:"center",minHeight:54,padding:"12px 20px",borderRadius:16,background:"linear-gradient(110deg,#49d6de,#2ea6b9)",color:"#071a28",fontSize:16,fontWeight:800,textDecoration:"none",border:"1px solid #9ceaf0"}}>⚙ MODERATOR PANEL ↗</Link>;
 }

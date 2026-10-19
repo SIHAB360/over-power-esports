@@ -13,7 +13,7 @@ export default function ModeratorManagement(){
   const [section,setSection]=useState("matches");
   const call=useCallback(async(method="GET",body)=>{
     const {data:{session}}=await supabase.auth.getSession();
-    if(!session?.access_token)throw Error("আপনার সেশন শেষ হয়েছে। আবার লগইন করুন।");
+    if(!session?.access_token)throw Error("Your session has expired. Please sign in again.");
     const res=await fetch("/api/admin/moderators",{method,cache:"no-store",headers:{Authorization:`Bearer ${session.access_token}`,...(body?{"Content-Type":"application/json"}:{})},...(body?{body:JSON.stringify(body)}:{})});
     const out=await res.json().catch(()=>({}));if(!res.ok)throw Error(out.message||"Moderator Service unavailable");return out;
   },[]);
@@ -38,47 +38,47 @@ export default function ModeratorManagement(){
   }
   async function save(active=enabled){
     if(!selected||saving)return;
-    if(!active&&!window.confirm("এই মডারেটরের সব অ্যাক্সেস বন্ধ করবেন?"))return;
-    if(chosen?.status!=="approved"&&active){setNotice("শুধু অনুমোদিত প্লেয়ারকে মডারেটর করা যাবে।");return;}
+    if(!active&&!window.confirm("Revoke all access for this moderator?"))return;
+    if(chosen?.status!=="approved"&&active){setNotice("Only approved players can be moderators.");return;}
     setSaving(true);try{
       const payload={userId:selected,enabled:active,grants:active?normalizeModeratorGrants(allowed):empty};
-      await call("POST",payload);await refresh();setNotice(active?"Moderator Permissions সংরক্ষণ হয়েছে।":"Moderator Access বন্ধ হয়েছে।");
+      await call("POST",payload);await refresh();setNotice(active?"Moderator permissions saved successfully.":"Moderator access has been revoked.");
     }catch(e){setNotice(e.message)}finally{setSaving(false)}
   }
   return <main className={styles.page}><div className={styles.wrap}>
-    <header className={styles.header}><Link href="/admin/dashboard">← অ্যাডমিন ড্যাশবোর্ড</Link><span className={styles.eyebrow}>OVER POWER ESPORTS · SUPER ADMIN</span></header>
-    <div className={styles.heading}><div><h1>মডারেটর ম্যানেজমেন্ট</h1><p>প্লেয়ারকে Moderator বানান এবং প্রতিটি সেকশনের কাজ আলাদাভাবে নিয়ন্ত্রণ করুন।</p></div><span className={styles.shield}>♜</span></div>
-    <div className={styles.metrics}><div><strong>{players.length}</strong><small>রেজিস্টার্ড প্লেয়ার</small></div><div><strong>{moderators.filter(x=>x.enabled).length}</strong><small>সক্রিয় মডারেটর</small></div><div><strong>{grants.length}</strong><small>সেকশন পারমিশন</small></div></div>
+    <header className={styles.header}><Link href="/admin/dashboard">← Admin Dashboard</Link><span className={styles.eyebrow}>OVER POWER ESPORTS  /  ADMIN CONSOLE</span></header>
+    <div className={styles.heading}><div><span className={styles.kicker}>Access Control Center</span><h1>Moderator Management</h1><p>Assign trusted players and manage their section-level permissions. · অনুমতি আপনি নিয়ন্ত্রণ করবেন।</p></div><span className={styles.shield}>✧</span></div>
+    <div className={styles.metrics}><div><strong>{players.length}</strong><small>Registered Players</small></div><div><strong>{moderators.filter(x=>x.enabled).length}</strong><small>Active Moderators</small></div><div><strong>{grants.length}</strong><small>Permission Grants</small></div></div>
     {notice&&<p role="status" className={styles.notice}>{notice}</p>}
     <div className={styles.layout}><section className={styles.panel}>
-      <h2>১. প্লেয়ার নির্বাচন করুন</h2><input className={styles.input} aria-label="প্লেয়ার খুঁজুন" placeholder="নাম বা IGN দিয়ে খুঁজুন..." value={search} onChange={e=>setSearch(e.target.value)}/>
-      <div className={styles.roster} role="listbox" aria-label="Moderator হিসেবে নির্বাচন করার জন্য প্লেয়ার">
-        {loading?<p>লোড হচ্ছে...</p>:filtered.length===0?<p>কোনো প্লেয়ার পাওয়া যায়নি।</p>:filtered.map(player=>{
-          const member=moderators.find(m=>m.user_id===player.user_id);return <button key={player.user_id} className={`${styles.rosterEntry} ${selected===player.user_id?styles.rosterSelected:""}`} role="option" aria-selected={selected===player.user_id} onClick={()=>setSelected(player.user_id)}>
-            <span className={styles.avatar}>{(player.full_name||player.ign||"P").charAt(0).toUpperCase()}</span><span><strong>{player.full_name||player.ign||"Player"}</strong><small>{player.ign||"—"} · {player.status==="approved"?"অনুমোদিত":"অননুমোদিত"}</small></span>{member?.enabled&&<span className={styles.activeDot}>MOD</span>}
+      <h2><span className={styles.step}>01</span>Select Player</h2><input className={styles.input} aria-label="Search players" placeholder="Search name or IGN..." value={search} onChange={e=>setSearch(e.target.value)}/>
+      <div className={styles.roster} role="listbox" aria-label="Player selection for moderator role">
+        {loading?<p>Loading...</p>:filtered.length===0?<p>No matching players found.</p>:filtered.map(player=>{
+          const member=moderators.find(m=>m.user_id===player.user_id);return <button key={player.user_id} className={`${styles.rosterEntry} ${selected===player.user_id?styles.rosterSelected:""}`} role="option" aria-selected={selected===player.user_id} type="button" onClick={()=>setSelected(player.user_id)}>
+            <span className={styles.avatar}>{(player.full_name||player.ign||"P").charAt(0).toUpperCase()}</span><span><strong>{player.full_name||player.ign||"Player"}</strong><small>{player.ign||"—"} · {player.status==="approved"?"Approved":"Not approved"}</small></span>{member?.enabled&&<span className={styles.activeDot}>ACTIVE</span>}
           </button>
         })}
       </div>
     </section>
     <section className={styles.panel}>
-      <h2>২. মডারেটর ও পারমিশন সেট করুন</h2>
-      {!selected?<p className={styles.hint}>বাঁ পাশ থেকে একজন প্লেয়ার নির্বাচন করুন।</p>:<>
+      <h2><span className={styles.step}>02</span>Configure Permissions</h2>
+      {!selected?<p className={styles.hint}>Select a player to configure moderator access.</p>:<>
         <div className={styles.memberHead}><strong>{chosen?.full_name||chosen?.ign||"Selected player"}</strong><label className={styles.toggle}><input type="checkbox" checked={enabled} onChange={e=>setEnabled(e.target.checked)}/> Moderator Active</label></div>
-        <p className={styles.hint}>নিচে যে বিভাগের Permission দেবেন, Moderator Dashboard-এ শুধু সেই কাজগুলো থাকবে। নিরাপদ Backend তৈরি নেই এমন Permission এখন বন্ধ।</p>
+        <p className={styles.hint}>Only approved permissions appear on the Moderator Dashboard. Unavailable actions remain locked until securely supported.</p>
         <div className={styles.sectionTabs}>{MODERATOR_SECTIONS.map(item=><button key={item.id} className={section===item.id?styles.tabActive:""} type="button" onClick={()=>setSection(item.id)}>{item.label}</button>)}</div>
-        <div className={styles.actionPane}><h3>{MODERATOR_SECTIONS.find(x=>x.id===section)?.label}</h3><p>{MODERATOR_SECTIONS.find(x=>x.id===section)?.description}</p><div className={styles.actions}>{MODERATOR_ACTIONS.map(action=><label key={`${section}.${action}`}><input type="checkbox" checked={allowed.some(x=>x.section===section&&x.action===action)} disabled={!enabled||!MODERATOR_SECTIONS.find(s=>s.id===section)?.actions.includes(action)} onChange={e=>toggle(section,action,e.target.checked)}/><span>{ACTION_LABELS[action]}{!MODERATOR_SECTIONS.find(s=>s.id===section)?.actions.includes(action)?" · পরে":""}</span></label>)}</div></div>
-        <div className={styles.summary}><strong>অনুমতির সারাংশ</strong><p>{new Set(allowed.map(x=>x.section)).size}টি সেকশন · {allowed.length}টি কাজ</p></div>
-        <div className={styles.buttons}><button disabled={saving||loading} onClick={()=>save(enabled)} className={styles.save}>{saving?"সংরক্ষণ হচ্ছে...":"পারমিশন সংরক্ষণ"}</button><button disabled={saving||loading} onClick={()=>save(false)} className={styles.revoke}>সব অ্যাক্সেস বন্ধ</button></div>
+        <div className={styles.actionPane}><h3>{MODERATOR_SECTIONS.find(x=>x.id===section)?.label}</h3><p>{MODERATOR_SECTIONS.find(x=>x.id===section)?.description}</p><div className={styles.actions}>{MODERATOR_ACTIONS.map(action=><label key={`${section}.${action}`}><input type="checkbox" checked={allowed.some(x=>x.section===section&&x.action===action)} disabled={!enabled||!MODERATOR_SECTIONS.find(s=>s.id===section)?.actions.includes(action)} onChange={e=>toggle(section,action,e.target.checked)}/><span>{ACTION_LABELS[action]}{!MODERATOR_SECTIONS.find(s=>s.id===section)?.actions.includes(action)?" · Locked":""}</span></label>)}</div></div>
+        <div className={styles.summary}><strong>Permission Summary</strong><p>{new Set(allowed.map(x=>x.section)).size} sections · {allowed.length} actions</p></div>
+        <div className={styles.buttons}><button disabled={saving||loading} onClick={()=>save(enabled)} className={styles.save}>{saving?"Saving...":"Save Permissions"}</button><button disabled={saving||loading} onClick={()=>save(false)} className={styles.revoke}>Revoke Access</button></div>
       </>}
     </section></div>
-    <section className={styles.panel} style={{marginTop:22}}><div className={styles.auditHeader}><h2>মডারেটর কার্যক্রম ও অনুমতির ইতিহাস</h2><button type="button" onClick={refresh} disabled={loading}>রিফ্রেশ</button></div>
-      {audit.length===0&&operationAudit.length===0?<p className={styles.hint}>এখনো কোনো কার্যক্রম নেই।</p>:<div className={styles.auditList}>
+    <section className={`${styles.panel} ${styles.auditPanel}`}><div className={styles.auditHeader}><h2>Permission & Activity History</h2><button type="button" onClick={refresh} disabled={loading}>Refresh</button></div>
+      {audit.length===0&&operationAudit.length===0?<p className={styles.hint}>No permission changes or moderator activity yet.</p>:<div className={styles.auditList}>
       {[
-        ...audit.map(item=>({key:`a-${item.user_id}-${item.created_at}`,time:item.created_at,who:item.user_id,label:`${item.new_enabled?"অনুমতি আপডেট":"অ্যাক্সেস বন্ধ"} · ${(item.new_permissions||[]).length}টি`,type:"permission"})),
+        ...audit.map(item=>({key:`a-${item.user_id}-${item.created_at}`,time:item.created_at,who:item.user_id,label:`${item.new_enabled?"Permissions updated":"Access revoked"} · ${(item.new_permissions||[]).length} grants`,type:"permission"})),
         ...operationAudit.map(item=>({key:`o-${item.record_id}-${item.created_at}`,time:item.created_at,who:item.actor_id,label:`${item.section} · ${item.action}`,type:"operation"}))
-      ].sort((a,b)=>new Date(b.time)-new Date(a.time)).slice(0,30).map(item=><div className={styles.auditItem} key={item.key}><span><strong>{item.label}</strong><small>{item.who||"সিস্টেম"}</small></span><time dateTime={item.time}>{item.time?new Date(item.time).toLocaleString("bn-BD"):"—"}</time></div>)}
+      ].sort((a,b)=>new Date(b.time)-new Date(a.time)).slice(0,30).map(item=><div className={styles.auditItem} key={item.key}><span><strong>{item.label}</strong><small>{item.who||"System"}</small></span><time dateTime={item.time}>{item.time?new Date(item.time).toLocaleString("en-BD"):"—"}</time></div>)}
       </div>}
     </section>
-    <p className={styles.footnote}>নিরাপত্তা: Moderator Permission আলাদা টেবিলে থাকবে, পুরোনো Global Admin/Moderator Role দেওয়া হবে না। সেকশনগুলোতে কাজ করতে Server-side Permission Enforcement সম্পূর্ণ হওয়া বাধ্যতামূলক।</p>
+    <p className={styles.footnote}>Security: Moderator permissions are scoped and audited. No global admin privileges are assigned. All actions are verified server-side.</p>
   </div></main>;
 }
