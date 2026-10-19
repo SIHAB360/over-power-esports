@@ -506,7 +506,7 @@ export default function TeamsPage({moderatorMode=false}={}) {
                         onClick={()=>{
 
                           window.location.href =
-                          moderatorMode?`/moderator/section/teams?screen=records`:`/admin/teams/${team.id}`;
+                          moderatorMode?`/moderator/teams/${team.id}`:`/admin/teams/${team.id}`;
 
                         }}
 

@@ -529,7 +529,7 @@ export default function TournamentsPage({moderatorMode=false}={}) {
 
                         <button
                         onClick={()=>{
-                          window.location.href = moderatorMode?`/moderator/section/tournaments?screen=records`:`/admin/tournaments/${tournament.id}`;
+                          window.location.href = moderatorMode?`/moderator/tournaments/${tournament.id}`:`/admin/tournaments/${tournament.id}`;
                         }}
                         >
                         MANAGE TOURNAMENT →

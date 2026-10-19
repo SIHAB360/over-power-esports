@@ -5,7 +5,7 @@ import { supabase } from "../../../lib/supabase";
 import { useParams } from "next/navigation";
 
 
-export default function TournamentDetails(){
+export default function TournamentDetails({moderatorMode=false}={}){
 
   const params = useParams();
 
@@ -17,19 +17,32 @@ export default function TournamentDetails(){
     const [teams,setTeams] = useState([]);
     const [showTeams,setShowTeams] = useState(false);
 const [registeredTeams,setRegisteredTeams] = useState([]);
+const [moderatorRights,setModeratorRights]=useState([]);
+const [denied,setDenied]=useState("");
+const canEdit=!moderatorMode||moderatorRights.some(p=>p.section==='tournaments'&&p.action==='edit');
+async function scopedTournament(operation,teamId){
+ const {data:{session}}=await supabase.auth.getSession();
+ const res=await fetch('/api/moderator/operations',{method:'POST',cache:'no-store',
+ headers:{Authorization:`Bearer ${session?.access_token||''}`,'Content-Type':'application/json'},
+ body:JSON.stringify({section:'tournaments',action:'edit',id,data:{operation,teamId}})});
+ const result=await res.json().catch(()=>({}));
+ return {error:res.ok?null:new Error(result.message||'Tournament registration failed')};
+}
 
 
  useEffect(()=>{
-
-  if(id){
-
-    loadTournament();
-    loadTeams();
-    loadRegisteredTeams();
-
-  }
-
-},[id]);
+  (async()=>{
+    if(moderatorMode){
+      const {data:{session}}=await supabase.auth.getSession();
+      const res=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session?.access_token||''}`},cache:'no-store'});
+      if(!res.ok)throw Error('Moderator access disabled.');
+      const me=await res.json();
+      if(!me.permissions?.some(p=>p.section==='tournaments'&&p.action==='view'))throw Error('Tournaments View permission required.');
+      setModeratorRights(me.permissions);
+    }
+    if(id)await Promise.all([loadTournament(),loadTeams(),loadRegisteredTeams()]);
+  })().catch(e=>{setDenied(e.message);setLoading(false)});
+},[id,moderatorMode]);
 
 
   async function loadTournament(){
@@ -134,19 +147,9 @@ async function addTeam(teamId){
 
 
 
-  const {error}=await supabase
-
-  .from("tournament_teams")
-
-  .insert([
-
-    {
-      tournament_id:id,
-      team_id:teamId,
-      status:"registered"
-    }
-
-  ]);
+  const {error}=moderatorMode
+   ? await scopedTournament('register_team',teamId)
+   : await supabase.from('tournament_teams').insert([{tournament_id:id,team_id:teamId,status:'registered'}]);
 
 
 
@@ -170,13 +173,10 @@ async function addTeam(teamId){
 
 async function removeTeam(teamId){
 
-  const {error}=await supabase
-
-  .from("tournament_teams")
-
-  .delete()
-
-  .eq("id",teamId);
+  const reg=registeredTeams.find(r=>r.id===teamId);
+  const {error}=moderatorMode
+    ? (!reg?.teams?.id?{error:new Error('Team registration missing')}:await scopedTournament('remove_team',reg.teams.id))
+    : await supabase.from('tournament_teams').delete().eq('id',teamId);
 
 
   if(error){
@@ -194,6 +194,7 @@ async function removeTeam(teamId){
 
 }
 
+  if(denied)return <main style={{padding:30,color:"#ffc0a2",background:"#071421",minHeight:"100vh"}} role="alert">{denied}</main>;
   if(loading){
 
     return(
@@ -358,7 +359,7 @@ Status: {item.status}
 
 
 <button
-onClick={()=>removeTeam(item.id)}
+disabled={!canEdit} onClick={()=>removeTeam(item.id)}
 >
 REMOVE
 </button>
@@ -419,7 +420,7 @@ ADDED
 :
 
 <button
-onClick={()=>addTeam(team.id)}
+disabled={!canEdit} onClick={()=>addTeam(team.id)}
 >
 ADD
 </button>

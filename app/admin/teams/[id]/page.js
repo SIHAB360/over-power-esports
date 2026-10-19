@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
 
-export default function TeamPlayersPage() {
+export default function TeamPlayersPage({moderatorMode=false}={}) {
   const params = useParams();
   const router = useRouter();
   const teamId = params.id;
@@ -13,10 +13,31 @@ export default function TeamPlayersPage() {
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState("");
+  const [moderatorRights,setModeratorRights]=useState([]);
+  const [denied,setDenied]=useState("");
+  const canEdit=!moderatorMode||moderatorRights.some(p=>p.section==="teams"&&p.action==="edit");
+  async function scopedRoster(operation,playerId){
+   const {data:{session}}=await supabase.auth.getSession();
+   const res=await fetch('/api/moderator/operations',{method:'POST',cache:'no-store',
+    headers:{Authorization:`Bearer ${session?.access_token||''}`,'Content-Type':'application/json'},
+    body:JSON.stringify({section:'teams',action:'edit',id:playerId,data:{operation,teamId}})});
+   const response=await res.json().catch(()=>({}));
+   return {error:res.ok?null:new Error(response.message||'Roster change failed')};
+  }
 
-  useEffect(() => {
-    if (teamId) loadData();
-  }, [teamId]);
+  useEffect(()=>{
+   (async()=>{
+    if(moderatorMode){
+      const {data:{session}}=await supabase.auth.getSession();
+      const res=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session?.access_token||''}`},cache:'no-store'});
+      if(!res.ok)throw Error('Moderator access disabled.');
+      const access=await res.json();
+      if(!access.permissions?.some(p=>p.section==='teams'&&p.action==='view'))throw Error('Teams View permission required.');
+      setModeratorRights(access.permissions);
+    }
+    if(teamId)await loadData();
+   })().catch(e=>{setDenied(e.message);setLoading(false)});
+  },[teamId,moderatorMode]);
 
   async function loadData() {
     setLoading(true);
@@ -54,10 +75,9 @@ export default function TeamPlayersPage() {
 
   async function addPlayer(playerId) {
     setActionLoading(playerId);
-    const { error } = await supabase
-      .from("players")
-      .update({ team_id: teamId })
-      .eq("id", playerId);
+    const {error}=moderatorMode
+      ? await scopedRoster('assign_player',playerId)
+      : await supabase.from('players').update({team_id:teamId}).eq('id',playerId);
 
     if (error) {
       alert(error.message);
@@ -70,10 +90,9 @@ export default function TeamPlayersPage() {
 
   async function removePlayer(playerId) {
     setActionLoading(playerId);
-    const { error } = await supabase
-      .from("players")
-      .update({ team_id: null })
-      .eq("id", playerId);
+    const {error}=moderatorMode
+      ? await scopedRoster('remove_player',playerId)
+      : await supabase.from('players').update({team_id:null}).eq('id',playerId);
 
     if (error) {
       alert(error.message);
@@ -84,6 +103,7 @@ export default function TeamPlayersPage() {
     setActionLoading("");
   }
 
+  if(denied)return <main style={{padding:30,color:"#ffcebc",background:"#071421",minHeight:"100vh"}} role="alert">{denied}</main>;
   if (loading) {
     return (
       <main className="loading-page">
@@ -133,7 +153,7 @@ export default function TeamPlayersPage() {
       <div className="container">
         {/* Top Bar */}
         <div className="topbar">
-          <button className="back-btn" onClick={() => router.push("/admin/teams")}>
+          <button className="back-btn" onClick={() => router.push(moderatorMode?"/moderator/section/teams":"/admin/teams")}>
             ← BACK TO TEAMS
           </button>
           <span className="brand">OVER POWER ESPORTS</span>
@@ -257,7 +277,7 @@ export default function TeamPlayersPage() {
                   </div>
                   <button
                     className="btn remove"
-                    onClick={() => removePlayer(player.id)}
+                    disabled={!canEdit} onClick={() => removePlayer(player.id)}
                     disabled={actionLoading === player.id}
                   >
                     {actionLoading === player.id ? "REMOVING..." : "REMOVE"}
@@ -312,7 +332,7 @@ export default function TeamPlayersPage() {
                   </div>
                   <button
                     className="btn add"
-                    onClick={() => addPlayer(player.id)}
+                    disabled={!canEdit} onClick={() => addPlayer(player.id)}
                     disabled={actionLoading === player.id}
                   >
                     {actionLoading === player.id ? "ADDING..." : "ADD PLAYER"}
