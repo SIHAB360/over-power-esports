@@ -92,8 +92,11 @@ function SummaryCard({ title, value, color, icon }) {
   );
 }
 
-export default function ProfitPage() {
+export default function ProfitPage({moderatorMode=false}={}) {
   const [financeData, setFinanceData] = useState([]);
+  const [moderatorRights,setModeratorRights]=useState([]);
+  const [authNotice,setAuthNotice]=useState("");
+  const canDelete=!moderatorMode||moderatorRights.some(p=>p.section==="profit"&&p.action==="delete");
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedTeam, setSelectedTeam] = useState("");
@@ -105,9 +108,20 @@ export default function ProfitPage() {
   const [openPerformance, setOpenPerformance] = useState(null);
   const [loadingStats, setLoadingStats] = useState(null);
 
-  useEffect(() => {
-    loadFinance();
-  }, []);
+  useEffect(()=>{
+    (async()=>{
+      if(moderatorMode){
+        const {data:{session}}=await supabase.auth.getSession();
+        if(!session)throw Error('Sign in to continue.');
+        const response=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
+        if(!response.ok)throw Error('Moderator access denied.');
+        const data=await response.json();
+        if(!data.permissions?.some(x=>x.section==='profit'&&x.action==='view'))throw Error('Profit View permission required.');
+        setModeratorRights(data.permissions);
+      }
+      await loadFinance();
+    })().catch(error=>{setAuthNotice(error.message);setLoading(false)});
+  },[moderatorMode]);
 
   async function loadFinance() {
     setLoading(true);
@@ -197,11 +211,17 @@ export default function ProfitPage() {
     );
 
     if (!confirmDelete) return;
-
-    const { error } = await supabase
-      .from("match_finance")
-      .delete()
-      .eq("id", id);
+    if(moderatorMode&&!canDelete){alert('Profit Delete permission required.');return;}
+    let error;
+    if(moderatorMode){
+      const {data:{session}}=await supabase.auth.getSession();
+      if(!session?.access_token){alert('Please sign in.');return;}
+      const res=await fetch('/api/moderator/operations',{method:'POST',headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},body:JSON.stringify({section:'profit',action:'delete',id,data:{}})});
+      const result=await res.json().catch(()=>({}));
+      error=res.ok?null:new Error(result.message||'Delete denied');
+    }else{
+      ({error}=await supabase.from('match_finance').delete().eq('id',id));
+    }
 
     if (error) {
       alert(error.message);
@@ -594,7 +614,7 @@ export default function ProfitPage() {
                       }}
                     >
                       <button
-                        onClick={() => deleteFinance(item.id)}
+                        disabled={!canDelete} onClick={() => deleteFinance(item.id)}
                         style={{
                           padding: "12px 20px",
                           borderRadius: "14px",
