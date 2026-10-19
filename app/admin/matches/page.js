@@ -10,11 +10,14 @@ const MANAGEMENT_PERCENTAGE = 30;
 const PLAYER_PERCENTAGE = 70;
 const REQUIRED_PLAYERS = 4;
 
-export default function AdminMatchesPage() {
+export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const router = useRouter();
 
   const [pageLoading, setPageLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [moderatorPermissions, setModeratorPermissions] = useState([]);
+  const canCreate = !moderatorMode || moderatorPermissions.some(p => p.section === "matches" && p.action === "create");
+  const canFinalize = !moderatorMode || moderatorPermissions.some(p => p.section === "matches" && p.action === "approve");
 
   const [teams, setTeams] = useState([]);
   const [registeredPlayers, setRegisteredPlayers] = useState([]);
@@ -74,8 +77,25 @@ export default function AdminMatchesPage() {
 
       const role = profile?.role?.toLowerCase();
 
-      if (role !== "admin" && role !== "moderator") {
-        router.replace("/");
+      if (moderatorMode) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) { router.replace("/login"); return; }
+        const access = await fetch("/api/moderator/me", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+          cache: "no-store"
+        });
+        if (!access.ok) throw new Error("Moderator access has been disabled or revoked.");
+        const result = await access.json();
+        if (!result.permissions?.some(p => p.section === "matches" && p.action === "view")) {
+          throw new Error("Match Center View permission required.");
+        }
+        setModeratorPermissions(result.permissions);
+        if (!result.permissions.some(p => p.section === "matches" && p.action === "approve")) {
+          setForm(previous => ({ ...previous, status: "upcoming", entry_fee: "", prize_money: "",
+            team1_score: "", team2_score: "", winner_id: "", position: "", points: "" }));
+        }
+      } else if (role !== "admin") {
+        router.replace("/login");
         return;
       }
 
@@ -278,6 +298,20 @@ export default function AdminMatchesPage() {
 
   async function handleSaveMatch(e) {
     e.preventDefault();
+    if (moderatorMode && !canCreate) {
+      setMessage("Main Admin must grant Match Center · Create permission.");
+      setMessageType("error");
+      return;
+    }
+    if (moderatorMode && !canFinalize && (form.status !== "upcoming" ||
+      Number(form.entry_fee) || Number(form.prize_money) ||
+      Number(form.team1_score) || Number(form.team2_score) || form.winner_id ||
+      Number(form.position) || Number(form.points) ||
+      Object.values(playerStats).some(p => Number(p.kills)||Number(p.assists)||Number(p.damage)||p.mvp))) {
+      setMessage("Match Results & Finance approval permission is required.");
+      setMessageType("error");
+      return;
+    }
     setMessage("");
     setMessageType("");
 
@@ -338,7 +372,7 @@ export default function AdminMatchesPage() {
       }));
 
       const { data: matchId, error: saveError } = await supabase.rpc(
-        "create_esports_match",
+        moderatorMode ? "moderator_create_esports_match" : "create_esports_match",
         { p_match: payload, p_players: participants }
       );
 
@@ -450,6 +484,15 @@ export default function AdminMatchesPage() {
             <span className="eyebrow">OVER POWER ESPORTS</span>
             <h1>MATCH COMMAND CENTER</h1>
             <p>Record matches, active players, results and earnings.</p>
+            {moderatorMode && <p style={{color:"#75d6e4",fontWeight:700,fontSize:13}}>
+              MODERATOR MODE · Assigned: {moderatorPermissions.filter(p=>p.section==="matches").map(p=>p.action.toUpperCase()).join(" · ") || "VIEW"}
+            </p>}
+            {moderatorMode && !canCreate && <p role="status" style={{color:"#ffd58c",fontSize:13}}>
+              Read-only workflow preview. Request Create permission from Main Admin to submit matches.
+            </p>}
+            {moderatorMode && !canFinalize && <p style={{color:"#ffd58c",fontSize:13}}>
+              Results, player statistics and money entries require separate Finalize & Finance approval.
+            </p>}
           </div>
 
           <div className="rule-pill">
@@ -469,6 +512,7 @@ export default function AdminMatchesPage() {
         )}
 
         <form onSubmit={handleSaveMatch}>
+          <fieldset disabled={moderatorMode && !canCreate} style={{border:0,padding:0,margin:0,minWidth:0}}>
           {/* STEP 01 */}
           <section className="panel">
             <SectionTitle
@@ -518,6 +562,7 @@ export default function AdminMatchesPage() {
               <FieldWrap label="Status">
                 <select
                   name="status"
+                  disabled={moderatorMode && !canFinalize}
                   value={form.status}
                   onChange={handleChange}
                 >
@@ -865,6 +910,7 @@ export default function AdminMatchesPage() {
                   min="0"
                   step="0.01"
                   name="entry_fee"
+                  disabled={moderatorMode && !canFinalize}
                   value={form.entry_fee}
                   onChange={handleChange}
                   placeholder="0"
@@ -877,6 +923,7 @@ export default function AdminMatchesPage() {
                   min="0"
                   step="0.01"
                   name="prize_money"
+                  disabled={moderatorMode && !canFinalize}
                   value={form.prize_money}
                   onChange={handleChange}
                   placeholder="0"
@@ -940,6 +987,7 @@ export default function AdminMatchesPage() {
             </span>
             <strong>→</strong>
           </button>
+          </fieldset>
         </form>
 
         {/* HISTORY ARCHIVE LINK — all saved records now live on a separate page. */}
@@ -951,7 +999,7 @@ export default function AdminMatchesPage() {
               <h3>Every match, all in one place</h3>
               <p>See all your recorded matches in serial order, including lobby, Scrim or Champion Rush, entry fee, prize, profit or loss, date and time.</p>
             </div>
-            <Link href="/admin/matches/history" className="history-open-button">
+            <Link href={moderatorMode ? "/moderator/section/matches?screen=records" : "/admin/matches/history"} className="history-open-button">
               VIEW MATCH HISTORY <span aria-hidden="true">→</span>
             </Link>
           </div>

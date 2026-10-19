@@ -1,10 +1,10 @@
 // A capability is grantable only when its server-side RPC exists and is guarded.
 // Admin may preview all sections, but incomplete money/approval capabilities fail closed.
 export const MODERATOR_SECTIONS = Object.freeze([
-  {id:"matches",label:"Match Center",description:"Match scheduling and general match details",actions:["view","create","edit"]},
+  {id:"matches",label:"Match Center",description:"Full match command center, result calculation and earnings with explicit finance approval",actions:["view","create","edit","approve"]},
   {id:"players",label:"Players",description:"Player directory and public profile details",actions:["view"]},
   {id:"teams",label:"Teams",description:"Team details and roster overview",actions:["view","create","edit"]},
-  {id:"tournaments",label:"Tournaments",description:"Tournament schedule and general information",actions:["view","create","edit"]},
+  {id:"tournaments",label:"Tournaments",description:"Tournament scheduling and registration with explicit finance approval",actions:["view","create","edit","approve"]},
   {id:"earnings",label:"Player Earnings",description:"Read-only financial records; edits are restricted",actions:["view"]},
   {id:"withdrawals",label:"Withdrawals",description:"Read-only payout overview; private payment details are hidden",actions:["view"]},
   {id:"profit",label:"Profit & Finance",description:"Read-only financial records; edits are restricted",actions:["view"]},
