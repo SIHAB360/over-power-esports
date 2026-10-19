@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 
-export default function TeamsPage() {
+export default function TeamsPage({moderatorMode=false}={}) {
 
 
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [rights,setRights]=useState([]);
+  const [accessError,setAccessError]=useState("");
+  const canCreate=!moderatorMode||rights.some(p=>p.section==="teams"&&p.action==="create");
 
 
   const [form, setForm] = useState({
@@ -27,11 +30,20 @@ export default function TeamsPage() {
 
 
 
-  useEffect(() => {
-
-    loadTeams();
-
-  }, []);
+  useEffect(()=>{
+   (async()=>{
+    if(moderatorMode){
+     const {data:{session}}=await supabase.auth.getSession();
+     if(!session?.access_token)throw Error("Please sign in.");
+     const res=await fetch("/api/moderator/me",{cache:"no-store",headers:{Authorization:`Bearer ${session.access_token}`}});
+     if(!res.ok)throw Error("Moderator access disabled.");
+     const body=await res.json();
+     if(!body.permissions?.some(p=>p.section==="teams"&&p.action==="view"))throw Error("Teams View permission required.");
+     setRights(body.permissions);
+    }
+    await loadTeams();
+   })().catch(e=>{setAccessError(e.message);setLoading(false)});
+  },[moderatorMode]);
 
 
 
@@ -96,6 +108,7 @@ export default function TeamsPage() {
 
 
     e.preventDefault();
+    if(!canCreate){alert('Main Admin must grant Teams Create permission.');return;}
 
 
 
@@ -113,19 +126,9 @@ export default function TeamsPage() {
 
 
 
-    const { error } = await supabase
-      .from("teams")
-      .insert([
-
-        {
-
-          ...form,
-
-          total_winnings: 0
-
-        }
-
-      ]);
+    const {error} = moderatorMode
+       ? await supabase.rpc("moderator_create_team_full",{p_data:form})
+       : await supabase.from("teams").insert([{...form,total_winnings:0}]);
 
 
 
@@ -223,14 +226,15 @@ export default function TeamsPage() {
         <section className="panel">
 
 
-          <h2>
-            CREATE NEW TEAM
-          </h2>
+          <h2>CREATE NEW TEAM</h2>
+          {moderatorMode&&<p style={{color:"#83d7ef"}}>ADMIN WORKFLOW · {canCreate?"CREATE ENABLED":"READ ONLY"}</p>}
+          {accessError&&<p role="alert" style={{color:"#ffb3b3"}}>{accessError}</p>}
 
 
 
 
           <form onSubmit={createTeam}>
+          <fieldset disabled={moderatorMode&&!canCreate} style={{border:0,padding:0,minWidth:0}}>
 
 
             <div className="grid">
@@ -346,6 +350,7 @@ export default function TeamsPage() {
 
 
 
+          </fieldset>
           </form>
 
 
@@ -511,7 +516,7 @@ export default function TeamsPage() {
                         onClick={()=>{
 
                           window.location.href =
-                          `/admin/teams/${team.id}`;
+                          moderatorMode?`/moderator/section/teams?screen=records`:`/admin/teams/${team.id}`;
 
                         }}
 
