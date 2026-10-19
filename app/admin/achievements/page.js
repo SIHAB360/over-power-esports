@@ -20,10 +20,12 @@ function imageUrl(path) {
   return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
 }
 
-export default function AdminAchievementsPage() {
+export default function AdminAchievementsPage({moderatorMode=false}={}) {
   const router = useRouter();
   const [phase, setPhase] = useState("checking");
   const [userId, setUserId] = useState("");
+  const [moderatorRights,setModeratorRights]=useState([]);
+  const canPerform=action=>!moderatorMode||moderatorRights.some(g=>g.section==="achievements"&&g.action===action);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [loadingItems, setLoadingItems] = useState(false);
@@ -58,15 +60,22 @@ export default function AdminAchievementsPage() {
       const { data: profile, error: roleError } = await supabase
         .from("profiles").select("role").eq("id", user.id).single();
       if (!active) return;
-      if (roleError || profile?.role?.toLowerCase() !== "admin") {
-        setPhase("forbidden");
-        return;
+      if(moderatorMode){
+        const {data:{session}}=await supabase.auth.getSession();
+        const response=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session?.access_token||''}`},cache:'no-store'});
+        if(!response.ok){setPhase('forbidden');return;}
+        const access=await response.json();
+        if(!access.permissions?.some(g=>g.section==='achievements'&&g.action==='view')){setPhase('forbidden');return;}
+        setModeratorRights(access.permissions);
+        if(!access.permissions.some(g=>g.section==='achievements'&&g.action==='approve'))setPublishNow(false);
+      }else if(roleError||profile?.role?.toLowerCase()!=='admin'){
+        setPhase('forbidden');return;
       }
       setUserId(user.id);
       setPhase("ready");
     })();
     return () => { active = false; };
-  }, [router]);
+  }, [router,moderatorMode]);
 
   useEffect(() => {
     if (phase === "ready") {
@@ -104,9 +113,39 @@ export default function AdminAchievementsPage() {
     return teams.find((team) => team.id === teamId)?.team_name || "TEAM NOT FOUND";
   }
 
+
+  async function delegatedAction(action,id,data={}){
+    if(!canPerform(action))return {error:new Error('Achievement permission not granted.')};
+    try{
+      const {data:{session}}=await supabase.auth.getSession();
+      if(!session?.access_token)throw Error('Please sign in again.');
+      const res=await fetch('/api/moderator/operations',{method:'POST',cache:'no-store',
+        headers:{Authorization:`Bearer ${session.access_token}`,'Content-Type':'application/json'},
+        body:JSON.stringify({section:'achievements',action,id,data})});
+      const out=await res.json().catch(()=>({}));
+      if(!res.ok)throw Error(out.message||'Achievement operation failed.');
+      return {data:out.record,error:null};
+    }catch(error){return {error};}
+  }
+
   async function fetchGallery(append = false) {
     setLoadingItems(true);
     setError("");
+    if(moderatorMode){
+      try{
+        const {data:{session}}=await supabase.auth.getSession();
+        const res=await fetch('/api/moderator/sections/achievements',{cache:'no-store',
+          headers:{Authorization:`Bearer ${session?.access_token||''}`}});
+        const out=await res.json().catch(()=>({}));
+        if(!res.ok)throw Error(out.message||'Gallery list unavailable.');
+        const records=Array.isArray(out.records)?out.records:[];
+        records.sort((a,b)=>Number(a.sort_order||0)-Number(b.sort_order||0)||
+           String(b.created_at||'').localeCompare(String(a.created_at||'')));
+        setItems(records);setHasMore(false);
+      }catch(error){setError(error.message)}
+      finally{setLoadingItems(false)}
+      return;
+    }
     const offset = append ? items.length : 0;
     const { data, error: queryError } = await supabase
       .from("achievement_gallery")
@@ -138,7 +177,7 @@ export default function AdminAchievementsPage() {
   }
 
   async function uploadFiles() {
-    if (!userId || uploading || !selectedFiles.length) return;
+    if (!userId || uploading || !selectedFiles.length || !canPerform("create")) return;
     if (!selectedTeamId || !teams.some((team) => team.id === selectedTeamId)) {
       setError("Select a valid team before uploading screenshots.");
       return;
@@ -161,19 +200,21 @@ export default function AdminAchievementsPage() {
         continue;
       }
       const title = file.name.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").slice(0, 130);
-      const inserted = await supabase.from("achievement_gallery").insert({
-        file_path: path,
-        title,
-        category,
-        team_id: selectedTeamId,
-        sort_order: 0,
-        is_published: publishNow,
-        created_by: userId,
+      const inserted = moderatorMode
+        ? await delegatedAction('create',null,{file_path:path,title,category,team_id:selectedTeamId})
+        : await supabase.from("achievement_gallery").insert({
+        file_path:path,title,category,team_id:selectedTeamId,sort_order:0,is_published:publishNow,created_by:userId,
       });
       if (inserted.error) {
         await supabase.storage.from(BUCKET).remove([path]);
         errors.push(`${file.name}: ${inserted.error.message}`);
-      } else completed++;
+      } else {
+        completed++;
+        if(moderatorMode&&publishNow&&canPerform('approve')&&inserted.data?.id){
+          const published=await delegatedAction('approve',inserted.data.id,{is_published:true});
+          if(published.error)errors.push(file.name+': Uploaded as draft; publish failed.');
+        }
+      }
     }
     setUploading(false);
     setProgress("");
@@ -189,9 +230,9 @@ export default function AdminAchievementsPage() {
     if (busyId) return;
     setBusyId(item.id);
     setError("");
-    const { error: updateError } = await supabase
-      .from("achievement_gallery")
-      .update({ is_published: !item.is_published }).eq("id", item.id);
+    const {error:updateError}=moderatorMode
+       ? await delegatedAction('approve',item.id,{is_published:!item.is_published})
+       : await supabase.from('achievement_gallery').update({is_published:!item.is_published}).eq('id',item.id);
     if (updateError) setError(updateError.message);
     else setItems((prev) => prev.map((x) => x.id === item.id
       ? { ...x, is_published: !x.is_published } : x));
@@ -217,8 +258,9 @@ export default function AdminAchievementsPage() {
       team_id: draft.team_id || null,
       sort_order: Math.trunc(Number(draft.sort_order) || 0),
     };
-    const { error: saveError } = await supabase
-      .from("achievement_gallery").update(updates).eq("id", item.id);
+    const {error:saveError}=moderatorMode
+       ? await delegatedAction('edit',item.id,updates)
+       : await supabase.from('achievement_gallery').update(updates).eq('id',item.id);
     if (saveError) setError(saveError.message);
     else {
       setEditing(null);
@@ -233,8 +275,9 @@ export default function AdminAchievementsPage() {
     setBusyId(item.id);
     setError("");
     // Remove the public gallery record before its associated storage file.
-    const deleted = await supabase.from("achievement_gallery")
-      .delete().eq("id", item.id);
+    const deleted=moderatorMode
+      ? await delegatedAction('delete',item.id,{})
+      : await supabase.from('achievement_gallery').delete().eq('id',item.id);
     if (deleted.error) {
       setError(deleted.error.message);
     } else {
@@ -317,10 +360,10 @@ export default function AdminAchievementsPage() {
               </select>
             </label>
             <label className="aa-publish">
-              <input type="checkbox" checked={publishNow} onChange={(event) => setPublishNow(event.target.checked)} disabled={uploading} />
+              <input type="checkbox" checked={publishNow} onChange={(event) => setPublishNow(event.target.checked)} disabled={uploading||!canPerform("approve")} />
               <span>Publish immediately</span>
             </label>
-            <button type="button" className="aa-primary" disabled={uploading || !selectedFiles.length || !selectedTeamId || teamsLoading} onClick={uploadFiles}>
+            <button type="button" className="aa-primary" disabled={uploading || !selectedFiles.length || !selectedTeamId || teamsLoading || !canPerform("create")} onClick={uploadFiles}>
               {uploading ? <><FiRefreshCw className="aa-spin" /> {progress || "Uploading..."}</>
                 : <><FiPlus /> UPLOAD {selectedFiles.length || ""} SCREENSHOT{selectedFiles.length === 1 ? "" : "S"}</>}
             </button>
@@ -379,17 +422,17 @@ export default function AdminAchievementsPage() {
                       <input aria-label="Sort order" type="number" value={draft.sort_order} onChange={(event) => setDraft({ ...draft, sort_order: event.target.value })} />
                     </div>
                     <div className="aa-actions">
-                      <button type="button" onClick={() => saveEdit(item)} disabled={busyId === item.id}><FiCheck /> SAVE</button>
+                      <button type="button" onClick={() => saveEdit(item)} disabled={busyId === item.id||!canPerform("edit")}><FiCheck /> SAVE</button>
                       <button type="button" onClick={() => setEditing(null)}><FiX /> CANCEL</button>
                     </div>
                   </div> : <>
                     <h3 title={item.title || "Untitled screenshot"}>{item.title || "Untitled screenshot"}</h3>
                     <div className="aa-actions">
-                      <button type="button" onClick={() => beginEdit(item)} disabled={!!busyId}><FiEdit3 /> EDIT</button>
-                      <button type="button" onClick={() => changeVisibility(item)} disabled={!!busyId}>
+                      <button type="button" onClick={() => beginEdit(item)} disabled={!!busyId||!canPerform("edit")}><FiEdit3 /> EDIT</button>
+                      <button type="button" onClick={() => changeVisibility(item)} disabled={!!busyId||!canPerform("approve")}>
                         {item.is_published ? <FiEyeOff /> : <FiEye />} {item.is_published ? "HIDE" : "PUBLISH"}
                       </button>
-                      <button type="button" className="aa-danger" onClick={() => deleteItem(item)} disabled={!!busyId}><FiTrash2 /> DELETE</button>
+                      <button type="button" className="aa-danger" onClick={() => deleteItem(item)} disabled={!!busyId||!canPerform("delete")}><FiTrash2 /> DELETE</button>
                     </div>
                   </>}
                 </div>
