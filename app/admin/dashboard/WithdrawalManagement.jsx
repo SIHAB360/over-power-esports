@@ -35,7 +35,7 @@ const validMoney = (value) => /^(?:0|[1-9]\d{0,11})(?:\.\d{1,2})?$/.test(String(
 const isUuid = (value) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const statuses = ["pending","approved","paid","rejected"];
 
-export default function WithdrawalManagement({ players = [], refreshVersion = 0 }) {
+export default function WithdrawalManagement({ players = [], refreshVersion = 0, moderatorMode = false }) {
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
   const [requests, setRequests] = useState([]);
@@ -45,6 +45,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [scopedRights,setScopedRights]=useState({review:false,pay:false});
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [action, setAction] = useState("");
@@ -77,7 +78,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
       const token = await getToken();
       const query = new URLSearchParams({ page:String(page) });
       if (filter) query.set("status",filter);
-      const response = await fetch("/api/admin/withdrawals?" + query, {
+      const response = await fetch((moderatorMode?"/api/moderator/withdrawals?":"/api/admin/withdrawals?") + query, {
         cache:"no-store",
         headers:{ Authorization:"Bearer " + token },
       });
@@ -90,6 +91,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
       }
       if (requestSeq.current !== seq) return;
       setRequests(Array.isArray(data.requests) ? data.requests : []);
+      setScopedRights({review:!moderatorMode||Boolean(data.can_review),pay:!moderatorMode||Boolean(data.can_pay)});
       setTotal(Number(data.total) || 0);
       setCounts(data.counts || {});
       setSelectedId(previous => {
@@ -105,7 +107,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
     } finally {
       if (requestSeq.current === seq) setLoading(false);
     }
-  }, [getToken,filter,page]);
+  }, [getToken,filter,page,moderatorMode]);
 
   useEffect(() => { getData(); return () => { requestSeq.current++; }; }, [getData,refreshVersion]);
 
@@ -149,9 +151,9 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
     try {
       const token = await getToken();
       const pay = action === "pay";
-      const path = pay ? "/api/admin/withdrawals/confirm-payment" : "/api/admin/withdrawals/review";
+      const path = pay ? (moderatorMode ? "/api/moderator/withdrawals/confirm-payment" : "/api/admin/withdrawals/confirm-payment") : (moderatorMode ? "/api/moderator/withdrawals/review" : "/api/admin/withdrawals/review");
       const payload = pay
-        ? { requestId:selected.id, transferFee:Number(fee), transactionReference:reference.trim(), note:note.trim() || null }
+        ? { requestId:selected.id, transferFee:Number(fee), transactionReference:reference.trim(), note:note.trim() || null, confirmed }
         : { requestId:selected.id, decision:action === "approve" ? "approved" : "rejected", reason:action === "reject" ? reason.trim() : null };
       const result = await fetch(path, {
         method:"POST",cache:"no-store",
@@ -295,12 +297,12 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0 
                 {selected.status === "rejected" && <div><dt>Rejection reason</dt><dd className={styles.break}>{selected.rejection_reason || "—"}</dd></div>}
               </dl>
 
-              {selected.status === "pending" && !action && <div className={styles.buttons}>
+              {selected.status === "pending" && !action && scopedRights.review && <div className={styles.buttons}>
                 <button type="button" className={styles.approveBtn} onClick={() => setAction("approve")} disabled={busy}><FiCheckCircle/> Approve</button>
-                <button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>
+                {scopedRights.review&&<button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>}
               </div>}
-              {selected.status === "approved" && !action && <div className={styles.buttons}>
-                <button type="button" className={styles.approveBtn} onClick={() => setAction("pay")} disabled={busy}><FiDollarSign/> Record payment</button>
+              {selected.status === "approved" && !action && (scopedRights.review||scopedRights.pay) && <div className={styles.buttons}>
+                {scopedRights.pay&&<button type="button" className={styles.approveBtn} onClick={() => setAction("pay")} disabled={busy}><FiDollarSign/> Record payment</button>}
                 <button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>
               </div>}
 

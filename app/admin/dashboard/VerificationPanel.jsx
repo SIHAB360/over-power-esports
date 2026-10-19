@@ -24,7 +24,7 @@ function isExpired(item, now) {
   return Number.isFinite(time) && time <= now;
 }
 
-export default function VerificationPanel({ refreshVersion = 0 }) {
+export default function VerificationPanel({ refreshVersion = 0, moderatorMode = false }) {
   const [codes, setCodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -49,7 +49,7 @@ export default function VerificationPanel({ refreshVersion = 0 }) {
         throw new Error("Admin session not found. Please sign in again.");
       }
 
-      const response = await fetch("/api/admin/registration-codes", {
+      const response = await fetch(moderatorMode?"/api/moderator/registration-codes":"/api/admin/registration-codes", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
