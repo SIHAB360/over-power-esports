@@ -14,7 +14,7 @@ const emptyMetrics = {
   earnings: 0,
 };
 
-export default function PlayerProfilePage() {
+export default function PlayerProfilePage({moderatorMode=false}={}) {
   const params = useParams();
   const router = useRouter();
   const rawId = params?.id;
@@ -24,6 +24,7 @@ export default function PlayerProfilePage() {
   const [metrics, setMetrics] = useState(emptyMetrics);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [earningsAllowed,setEarningsAllowed]=useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -51,9 +52,17 @@ export default function PlayerProfilePage() {
           .eq("id", user.id)
           .single();
 
-        if (roleError || adminProfile?.role?.toLowerCase() !== "admin") {
-          router.replace("/login");
-          return;
+        let canReadEarnings=true;
+        if(moderatorMode){
+          const {data:{session}}=await supabase.auth.getSession();
+          const response=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session?.access_token||''}`},cache:'no-store'});
+          if(!response.ok){setLoadError('Moderator access disabled.');return;}
+          const access=await response.json();
+          if(!access.permissions?.some(p=>p.section==='players'&&p.action==='view')){setLoadError('Players View permission required.');return;}
+          canReadEarnings=Boolean(access.permissions.some(p=>p.section==='earnings'&&p.action==='view'));
+          setEarningsAllowed(canReadEarnings);
+        } else if(roleError||adminProfile?.role?.toLowerCase()!=='admin'){
+          router.replace('/login');return;
         }
 
         const { data: playerData, error: playerError } = await supabase
@@ -78,10 +87,9 @@ export default function PlayerProfilePage() {
             .from("match_player_stats")
             .select("kills, assists, damage, mvp, placement")
             .eq("player_id", playerData.id),
-          supabase
-            .from("player_earnings")
-            .select("amount")
-            .eq("player_id", playerData.id),
+          canReadEarnings
+            ? supabase.from("player_earnings").select("amount").eq("player_id",playerData.id)
+            : Promise.resolve({data:[]}),
         ]);
 
         const stats = statsData || [];
@@ -114,7 +122,7 @@ export default function PlayerProfilePage() {
     return () => {
       cancelled = true;
     };
-  }, [id, router]);
+  }, [id, router, moderatorMode]);
 
   const value = (item) => {
     if (item === null || item === undefined || String(item).trim() === "") return "Not provided";
@@ -184,7 +192,7 @@ export default function PlayerProfilePage() {
         <div className="error-icon">!</div>
         <h1>PLAYER PROFILE UNAVAILABLE</h1>
         <p>{loadError || "The requested player profile was not found."}</p>
-        <button type="button" onClick={() => router.push("/admin/players")}>
+        <button type="button" onClick={() => router.push(moderatorMode?"/moderator/section/players":"/admin/players")}>
           ← BACK TO PLAYERS
         </button>
         <style jsx>{`
