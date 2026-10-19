@@ -12,6 +12,9 @@ import AdminTournamentsPage from "../../../admin/tournaments/page";
 import WithdrawalManagement from "../../../admin/dashboard/WithdrawalManagement";
 import VerificationPanel from "../../../admin/dashboard/VerificationPanel";
 import ModeratorAdminActions from "./ModeratorAdminActions";
+import AdminPlayersPage from "../../../admin/players/page";
+import AdminProfitPage from "../../../admin/profit/page";
+import AdminAchievementsPage from "../../../admin/achievements/page";
 
 const FORMS={
  matches:[["team1_id","Team One","team"],["team2_id","Team Two","team"],["match_date","Match Date & Time","datetime-local"],["match_type","Match Type","text"],["platform","Platform","text"],["map","Map","text"],["sponsor","Sponsor","text"],["notice","Notice","textarea"]],
@@ -166,6 +169,15 @@ export default function ModeratorSection(){
  useEffect(()=>{
    if(["matches","teams","tournaments"].includes(section) && new URLSearchParams(window.location.search).get("screen")==="records") setScreen("records");
  },[section]);
+ if(section==="players")return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(8px,2vw,20px)"}}>
+  <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
+  <AdminPlayersPage moderatorMode/></main>;
+ if(section==="profit")return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(8px,2vw,20px)"}}>
+  <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
+  <AdminProfitPage moderatorMode/></main>;
+ if(section==="achievements")return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(8px,2vw,20px)"}}>
+  <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
+  <AdminAchievementsPage moderatorMode/></main>;
  if(section==="withdrawals")return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(12px,3vw,35px)"}}>
   <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
   <WithdrawalManagement moderatorMode/></main>;
