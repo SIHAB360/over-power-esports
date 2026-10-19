@@ -4,13 +4,15 @@ import { supabase } from "../../lib/supabase";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./players.module.css";
 
-export default function PlayersPage() {
+export default function PlayersPage({moderatorMode=false}={}) {
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [approvingId, setApprovingId] = useState("");
   const [notice, setNotice] = useState("");
+  const [moderatorRights,setModeratorRights]=useState([]);
+  const canApprove=!moderatorMode||moderatorRights.some(p=>p.section==="players"&&p.action==="approve");
 
   useEffect(() => {
     let active = true;
@@ -29,9 +31,18 @@ export default function PlayersPage() {
         .eq("id", user.id)
         .single();
 
-      if (profileError || profile?.role?.toLowerCase() !== "admin") {
-        window.location.assign("/login");
-        return;
+      if(moderatorMode){
+        const {data:{session}}=await supabase.auth.getSession();
+        if(!session?.access_token){window.location.assign('/login');return;}
+        const res=await fetch('/api/moderator/me',{headers:{Authorization:`Bearer ${session.access_token}`},cache:'no-store'});
+        if(!res.ok){setNotice('Moderator access disabled.');setLoading(false);return;}
+        const out=await res.json();
+        if(!out.permissions?.some(p=>p.section==='players'&&p.action==='view')){
+         setNotice('Players View permission required.');setLoading(false);return;
+        }
+        setModeratorRights(out.permissions);
+      }else if(profileError||profile?.role?.toLowerCase()!=='admin'){
+        window.location.assign('/login');return;
       }
 
       if (active) await fetchPlayers();
@@ -42,7 +53,7 @@ export default function PlayersPage() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [moderatorMode]);
 
   const fetchPlayers = async () => {
     setNotice("");
@@ -63,10 +74,18 @@ export default function PlayersPage() {
     setApprovingId(id);
     setNotice("");
 
-    const { error } = await supabase
-      .from("players")
-      .update({ status: "approved" })
-      .eq("id", id);
+    if(!canApprove){setNotice('Players Approve permission required.');setApprovingId('');return;}
+    let error;
+    if(moderatorMode){
+      const {data:{session}}=await supabase.auth.getSession();
+      const response=await fetch('/api/moderator/operations',{method:'POST',
+        headers:{Authorization:`Bearer ${session?.access_token||''}`,'Content-Type':'application/json'},
+        body:JSON.stringify({section:'players',action:'approve',id,data:{}})});
+      const result=await response.json().catch(()=>({}));
+      error=response.ok?null:new Error(result.message||'Approval denied');
+    }else{
+      ({error}=await supabase.from('players').update({status:'approved'}).eq('id',id));
+    }
 
     if (error) {
       setNotice("This player could not be approved. Please try again.");
@@ -220,21 +239,21 @@ export default function PlayersPage() {
                 <button
                   type="button"
                   className={styles.button}
-                  onClick={() => window.location.assign(`/admin/players/${encodeURIComponent(player.id)}`)}
+                  onClick={() => window.location.assign(moderatorMode?`/moderator/players/${encodeURIComponent(player.id)}`:`/admin/players/${encodeURIComponent(player.id)}`)}
                 >
                   VIEW PROFILE <span aria-hidden="true">↗</span>
                 </button>
 
-                <button
+                {!moderatorMode&&<button
                   type="button"
                   className={[styles.button, styles.dashboardButton].join(" ")}
                   onClick={() => window.location.assign(`/player/dashboard?adminPlayerId=${encodeURIComponent(player.id)}`)}
                   aria-label={`Open read-only dashboard for ${player.ign || player.full_name || "player"}`}
                 >
                   DASHBOARD <span aria-hidden="true">▦</span>
-                </button>
+                </button>}
 
-                {!isApproved && (
+                {!isApproved && canApprove && (
                   <button
                     type="button"
                     className={[styles.button, styles.approveButton].join(" ")}
