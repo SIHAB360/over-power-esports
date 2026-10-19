@@ -13,7 +13,9 @@ async function context(request){
  if(error||!user)return {failure:reply({message:"Authentication required"},401)};
  const admin=createClient(url,secret,{auth:{persistSession:false,autoRefreshToken:false}});
  const {data:profile,error:roleError}=await admin.from("profiles").select("role").eq("id",user.id).maybeSingle();
- if(roleError||profile?.role?.toLowerCase()!=="admin")return {failure:reply({message:"Only main admin can manage staff"},403)};
+ const {data:trustedUser,error:trustedError}=await admin.auth.admin.getUserById(user.id);
+ const trustedRole=String(trustedUser?.user?.app_metadata?.role||"").toLowerCase();
+ if(trustedError||roleError||profile?.role?.toLowerCase()!=="admin"||trustedRole!=="admin")return {failure:reply({message:"Verified main admin access required"},403)};
  return {admin,user};
 }
 export async function GET(request){
