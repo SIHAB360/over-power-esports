@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 
-export default function TournamentsPage() {
+export default function TournamentsPage({moderatorMode=false}={}) {
 
 
   const [tournaments, setTournaments] = useState([]);
@@ -12,6 +12,10 @@ export default function TournamentsPage() {
   const [loading, setLoading] = useState(true);
 
   const [saving, setSaving] = useState(false);
+  const [rights,setRights]=useState([]);
+  const [accessError,setAccessError]=useState("");
+  const canCreate=!moderatorMode||rights.some(p=>p.section==="tournaments"&&p.action==="create");
+  const canFinance=!moderatorMode||rights.some(p=>p.section==="tournaments"&&p.action==="approve");
 
 
 
@@ -34,11 +38,23 @@ export default function TournamentsPage() {
 
 
 
-  useEffect(() => {
-
-    loadTournaments();
-
-  }, []);
+  useEffect(()=>{
+    (async()=>{
+      if(moderatorMode){
+        const {data:{session}}=await supabase.auth.getSession();
+        if(!session?.access_token)throw Error("Please sign in.");
+        const res=await fetch("/api/moderator/me",{cache:"no-store",headers:{Authorization:`Bearer ${session.access_token}`}});
+        if(!res.ok)throw Error("Moderator access disabled.");
+        const body=await res.json();
+        if(!body.permissions?.some(p=>p.section==="tournaments"&&p.action==="view"))throw Error("Tournaments View permission required.");
+        setRights(body.permissions);
+        if(!body.permissions.some(p=>p.section==="tournaments"&&p.action==="approve")){
+          setForm(previous=>({...previous,status:"upcoming",entry_fee:"",prize_pool:""}));
+        }
+      }
+      await loadTournaments();
+    })().catch(e=>{setAccessError(e.message);setLoading(false)});
+  },[moderatorMode]);
 
 
 
@@ -113,6 +129,10 @@ export default function TournamentsPage() {
  async function createTournament(e){
 
   e.preventDefault();
+  if(!canCreate){alert("Main Admin must grant Tournaments Create permission.");return;}
+  if(moderatorMode&&!canFinance&&(Number(form.prize_pool)||Number(form.entry_fee)||form.status!=="upcoming")){
+    alert("Tournament finance approval required.");return;
+  }
 
 
   if(!form.name){
@@ -147,27 +167,10 @@ export default function TournamentsPage() {
 
 
 
-  const {error}=await supabase
-
-    .from("tournaments")
-
-    .insert([
-
-      {
-
-        ...form,
-
-        prize_pool:Number(form.prize_pool),
-
-        entry_fee:Number(form.entry_fee),
-
-        max_teams:Number(form.max_teams),
-
-        organizer_id:user.id
-
-      }
-
-    ]);
+  const {error}=moderatorMode
+    ? await supabase.rpc("moderator_create_tournament_full",{p_data:form})
+    : await supabase.from("tournaments").insert([{...form,prize_pool:Number(form.prize_pool),
+      entry_fee:Number(form.entry_fee),max_teams:Number(form.max_teams),organizer_id:user.id}]);
 
 
 
@@ -256,14 +259,16 @@ export default function TournamentsPage() {
           <section className="panel">
 
 
-          <h2>
-            CREATE TOURNAMENT
-          </h2>
+          <h2>CREATE TOURNAMENT</h2>
+          {moderatorMode&&<p style={{color:"#83d7ef"}}>ADMIN WORKFLOW · {canCreate?"CREATE ENABLED":"READ ONLY"}</p>}
+          {moderatorMode&&!canFinance&&<p style={{color:"#ffce80"}}>Prize Pool, Entry Fee and Status Finalization require Finance Approval.</p>}
+          {accessError&&<p role="alert" style={{color:"#ffb3b3"}}>{accessError}</p>
 
 
 
 
           <form onSubmit={createTournament}>
+          <fieldset disabled={moderatorMode&&!canCreate} style={{border:0,padding:0,minWidth:0}}>
 
 
 
@@ -289,7 +294,7 @@ export default function TournamentsPage() {
 
 
               <input
-                name="prize_pool"
+                name="prize_pool" disabled={moderatorMode&&!canFinance}
                 placeholder="Prize Pool"
                 type="number"
                 value={form.prize_pool}
@@ -299,7 +304,7 @@ export default function TournamentsPage() {
 
 
               <input
-                name="entry_fee"
+                name="entry_fee" disabled={moderatorMode&&!canFinance}
                 placeholder="Entry Fee"
                 type="number"
                 value={form.entry_fee}
@@ -346,7 +351,7 @@ export default function TournamentsPage() {
 
 
               <select
-                name="status"
+                name="status" disabled={moderatorMode&&!canFinance}
                 value={form.status}
                 onChange={handleChange}
               >
@@ -417,6 +422,7 @@ export default function TournamentsPage() {
 
 
 
+          </fieldset>
           </form>
 
 
@@ -537,7 +543,7 @@ export default function TournamentsPage() {
 
                         <button
                         onClick={()=>{
-                          window.location.href = `/admin/tournaments/${tournament.id}`;
+                          window.location.href = moderatorMode?`/moderator/section/tournaments?screen=records`:`/admin/tournaments/${tournament.id}`;
                         }}
                         >
                         MANAGE TOURNAMENT →
