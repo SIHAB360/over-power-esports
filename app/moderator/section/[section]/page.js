@@ -9,6 +9,9 @@ import styles from "./section.module.css";
 import AdminMatchesPage from "../../../admin/matches/page";
 import AdminTeamsPage from "../../../admin/teams/page";
 import AdminTournamentsPage from "../../../admin/tournaments/page";
+import WithdrawalManagement from "../../../admin/dashboard/WithdrawalManagement";
+import VerificationPanel from "../../../admin/dashboard/VerificationPanel";
+import ModeratorAdminActions from "./ModeratorAdminActions";
 
 const FORMS={
  matches:[["team1_id","Team One","team"],["team2_id","Team Two","team"],["match_date","Match Date & Time","datetime-local"],["match_type","Match Type","text"],["platform","Platform","text"],["map","Map","text"],["sponsor","Sponsor","text"],["notice","Notice","textarea"]],
@@ -137,6 +140,7 @@ function ModeratorSectionRecords(){
       </article>)}
     </div>:<div className={styles.tableScroll}><table className={styles.dataTable}><thead><tr><th>{meta.label}</th>{(FIELDS[section]||[]).slice(1,5).map(([key,label])=><th key={key}>{label}</th>)}<th>Actions</th></tr></thead><tbody>{visible.map(row=><tr key={row.id}><td className={styles.mainCell}><strong>{row[LABEL[section]]||row.full_name||"Record"}</strong></td>{(FIELDS[section]||[]).slice(1,5).map(([key,,type])=><td key={key}>{safeText(row,key,type)}</td>)}<td><div className={styles.tableActions}><button type="button" onClick={()=>setDetails(row)}>Details</button>{canEditRecord(row)&&<button type="button" onClick={()=>edit(row)}>Edit</button>}</div></td></tr>)}</tbody></table></div>}
    </section>
+   <ModeratorAdminActions section={section} rights={rights} records={records} refresh={load}/>
    {showForm&&<section className={styles.panel} id="editor"><div className={styles.panelHeading}><div><span className={styles.eyebrow}>AUTHORIZED CHANGES ONLY</span><h2>{selected?"Edit Record":"Create New Record"}</h2></div>{selected&&<button type="button" onClick={beginCreate}>Cancel</button>}</div>
     {selected&&<p className={styles.editorNote}>Only approved non-financial fields can be changed here. Existing match results, team scores and payouts are protected.</p>}
     <form onSubmit={submit} className={styles.form}>{formFields.filter(([key])=>!(selected&&section==="matches"&&["team1_id","team2_id"].includes(key))).map(([key,label,type])=><label key={key}><span>{label}{!selected&&REQUIRED[section]?.includes(key)&&" *"}</span>
@@ -162,6 +166,12 @@ export default function ModeratorSection(){
  useEffect(()=>{
    if(["matches","teams","tournaments"].includes(section) && new URLSearchParams(window.location.search).get("screen")==="records") setScreen("records");
  },[section]);
+ if(section==="withdrawals")return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(12px,3vw,35px)"}}>
+  <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
+  <WithdrawalManagement moderatorMode/></main>;
+ if(["verification","registration_codes"].includes(section))return <main style={{minHeight:"100vh",background:"#071421",padding:"clamp(12px,3vw,35px)"}}>
+  <Link href="/moderator/dashboard" style={{color:"#84dfee",fontWeight:800}}>← Moderator Dashboard</Link>
+  <VerificationPanel moderatorMode/></main>;
  if(!["matches","teams","tournaments"].includes(section)) return <ModeratorSectionRecords/>;
  return <div style={{minHeight:"100vh",background:"#071421"}}>
    <nav aria-label="Match workspace views" style={{display:"flex",gap:12,flexWrap:"wrap",padding:"15px max(16px,3vw)",background:"#102337",borderBottom:"1px solid #315367"}}>
@@ -171,7 +181,7 @@ export default function ModeratorSection(){
       </button>
       <button type="button" onClick={()=>setScreen("records")} aria-pressed={screen==="records"}
         style={{minHeight:44,borderRadius:12,padding:"9px 15px",fontWeight:800,cursor:"pointer",background:screen==="records"?"#64d7e7":"#193a51",color:screen==="records"?"#092132":"#fff",border:"1px solid #4e738a"}}>
-        Match Records · Edit
+        {section==="matches"?"Match Records":section==="teams"?"Team Roster & Records":"Tournament Registration & Records"} · Manage
       </button>
       <Link href="/moderator/dashboard" style={{alignSelf:"center",color:"#d4e9f2",fontWeight:750}}>← Moderator Dashboard</Link>
    </nav>
