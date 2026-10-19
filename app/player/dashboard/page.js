@@ -14,6 +14,19 @@ const [filterType, setFilterType] = useState("all");
 const [customFrom, setCustomFrom] = useState("");
 const [customTo, setCustomTo] = useState("");
 const [adminView, setAdminView] = useState(false);
+const [staffEnabled, setStaffEnabled] = useState(false);
+useEffect(() => {
+  let active = true;
+  (async () => {
+    const {data:{session}} = await supabase.auth.getSession();
+    if (!session?.access_token) return;
+    const res = await fetch("/api/player/staff-access", {headers:{Authorization:"Bearer "+session.access_token},cache:"no-store"}).catch(()=>null);
+    if (!res?.ok || !active) return;
+    const body=await res.json().catch(()=>({}));
+    if(active)setStaffEnabled(Array.isArray(body.grants)&&body.grants.some(x=>x.action==="view"));
+  })();
+  return()=>{active=false};
+}, []);
 
 
 useEffect(() => {
@@ -1188,6 +1201,7 @@ const bestPlacement =
         </div>
         {!adminView && (
           <div className="dashboard-bottom-actions">
+            {staffEnabled && <button type="button" className="withdraw-bottom-btn" onClick={() => router.push("/player/staff")}>⚙ Staff Panel ↗</button>}
             <button type="button" className="withdraw-bottom-btn" onClick={() => router.push("/player/withdrawal")}>৳ <span>উত্তোলন</span> <span aria-hidden="true">↗</span></button>
             <button className="logout magic-logout" onClick={handleLogout} aria-label="Log out of player dashboard">
               <span className="logout-label">LOG OUT</span>
