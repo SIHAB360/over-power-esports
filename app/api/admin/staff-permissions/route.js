@@ -1,3 +1,4 @@
+import {STAFF_SECTIONS,STAFF_ACTIONS} from "../../../lib/staff-sections";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 export const dynamic="force-dynamic";
@@ -20,7 +21,7 @@ async function context(request){
 }
 export async function GET(request){
  const ctx=await context(request);if(ctx.failure)return ctx.failure;
- const {data,error}=await ctx.admin.from("staff_permissions").select("user_id,match_view,match_create,match_edit,updated_at").order("updated_at",{ascending:false}).limit(100);
+ const {data,error}=await ctx.admin.from("staff_access_grants").select("user_id,section,action,created_at").order("created_at",{ascending:false}).limit(2000);
  if(error)return reply({message:"Staff permission storage unavailable"},503);
  const {data:players,error:playersError}=await ctx.admin.from("players").select("user_id,full_name,ign").eq("status","approved").not("user_id","is",null).order("full_name",{ascending:true}).limit(500);
  if(playersError)return reply({message:"Could not load player list"},503);
@@ -29,16 +30,14 @@ export async function GET(request){
 export async function POST(request){
  const ctx=await context(request);if(ctx.failure)return ctx.failure;
  const body=await request.json().catch(()=>null);
- if(!body||typeof body.userId!=="string"||!/^[0-9a-f-]{36}$/i.test(body.userId)||!["view","create","edit"].every(k=>typeof body[k]==="boolean"))
-   return reply({message:"Invalid staff permission"},400);
- if((body.create||body.edit)&&!body.view)return reply({message:"View permission is required for create/edit"},400);
+ if(!body||typeof body.userId!=="string"||!/^[0-9a-f-]{36}$/i.test(body.userId)||!STAFF_SECTIONS.some(s=>s.id===body.section)||!Array.isArray(body.actions)||body.actions.some(a=>!STAFF_ACTIONS.includes(a)))
+   return reply({message:"Invalid section, user or actions"},400);
+ if(body.actions.some(a=>a!=="view")&&!body.actions.includes("view"))return reply({message:"View required for all other actions"},400);
  if(body.userId===ctx.user.id)return reply({message:"Admin permissions cannot be edited here"},400);
  const {data:player,error:playerError}=await ctx.admin.from("players").select("id").eq("user_id",body.userId).eq("status","approved").maybeSingle();
  if(playerError||!player)return reply({message:"Approved registered player required"},400);
- const {error}=await ctx.admin.from("staff_permissions").upsert({
-   user_id:body.userId,match_view:body.view,match_create:body.create,match_edit:body.edit,
-   updated_at:new Date().toISOString(),granted_by:ctx.user.id
- },{onConflict:"user_id"});
- if(error)return reply({message:"Could not save permissions"},503);
- return reply({saved:true});
+ // Replace one user's grants for one section atomically once a dedicated RPC is available.
+ // Fail closed for now rather than delete old grants and risk partial writes.
+ return reply({message:"Section permission writing awaits audited atomic RPC and enforcement"},503);
+
 }
