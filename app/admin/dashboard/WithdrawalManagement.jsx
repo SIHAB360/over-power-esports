@@ -303,7 +303,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
               </div>}
               {selected.status === "approved" && !action && (scopedRights.review||scopedRights.pay) && <div className={styles.buttons}>
                 {scopedRights.pay&&<button type="button" className={styles.approveBtn} onClick={() => setAction("pay")} disabled={busy}><FiDollarSign/> Record payment</button>}
-                <button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>
+                {scopedRights.review&&<button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>}
               </div>}
 
               {action && <div className={styles.actionPanel}>
