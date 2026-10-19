@@ -6,7 +6,6 @@ import Link from "next/link";
 import {supabase} from "../../../lib/supabase";
 import {MODERATOR_SECTIONS} from "../../../lib/moderator-capabilities";
 import styles from "./section.module.css";
-import AdminMatchesPage from "../../../admin/matches/page";
 
 const FORMS={
  matches:[["team1_id","Team One","team"],["team2_id","Team Two","team"],["match_date","Match Date & Time","datetime-local"],["match_type","Match Type","text"],["platform","Platform","text"],["map","Map","text"],["sponsor","Sponsor","text"],["notice","Notice","textarea"]],
@@ -51,7 +50,7 @@ const summarize=(section,items)=>{
  if(section==="achievements")return [["Gallery Items",items.length],["Published",items.filter(x=>x.is_published).length],["Draft",items.filter(x=>!x.is_published).length],["Categories",new Set(items.map(x=>x.category).filter(Boolean)).size]];
  return [["Total Records",items.length],["Active",items.filter(x=>["active","approved","upcoming"].includes(x.status)).length],["Sections",1],["Access", "Scoped"]];
 };
-function ModeratorSectionRecords(){
+export default function ModeratorSection(){
  const {section}=useParams(),router=useRouter();
  const meta=MODERATOR_SECTIONS.find(x=>x.id===section);
  const [rights,setRights]=useState([]),[records,setRecords]=useState([]),[choices,setChoices]=useState([]);
@@ -152,27 +151,4 @@ function ModeratorSectionRecords(){
   </section></div>}
   <footer className={styles.footer}>Showing up to 200 latest records. Moderator rights are checked by the server for every request. No full Admin access is granted.</footer>
  </div></main>;
-}
-
-export default function ModeratorSection(){
- const {section} = useParams();
- const [screen,setScreen] = useState("command");
- useEffect(()=>{
-   if(section==="matches" && new URLSearchParams(window.location.search).get("screen")==="records") setScreen("records");
- },[section]);
- if(section!=="matches") return <ModeratorSectionRecords/>;
- return <div style={{minHeight:"100vh",background:"#071421"}}>
-   <nav aria-label="Match workspace views" style={{display:"flex",gap:12,flexWrap:"wrap",padding:"15px max(16px,3vw)",background:"#102337",borderBottom:"1px solid #315367"}}>
-      <button type="button" onClick={()=>setScreen("command")} aria-pressed={screen==="command"}
-        style={{minHeight:44,borderRadius:12,padding:"9px 15px",fontWeight:800,cursor:"pointer",background:screen==="command"?"#64d7e7":"#193a51",color:screen==="command"?"#092132":"#fff",border:"1px solid #4e738a"}}>
-        Match Command Center · Create
-      </button>
-      <button type="button" onClick={()=>setScreen("records")} aria-pressed={screen==="records"}
-        style={{minHeight:44,borderRadius:12,padding:"9px 15px",fontWeight:800,cursor:"pointer",background:screen==="records"?"#64d7e7":"#193a51",color:screen==="records"?"#092132":"#fff",border:"1px solid #4e738a"}}>
-        Match Records · Edit
-      </button>
-      <Link href="/moderator/dashboard" style={{alignSelf:"center",color:"#d4e9f2",fontWeight:750}}>← Moderator Dashboard</Link>
-   </nav>
-   {screen==="command"?<AdminMatchesPage moderatorMode/>:<ModeratorSectionRecords/>}
- </div>;
 }
