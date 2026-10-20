@@ -26,6 +26,8 @@ export default function AdminScrollCoordinator(){
     const sync=()=>{
       if(frame)cancelAnimationFrame(frame);
       frame=requestAnimationFrame(()=>{
+        // On phones the drawer scrolls naturally; only desktop uses sync.
+        if(window.matchMedia('(max-width:900px)').matches)return;
         const leftExtra=Math.max(0,menu.scrollHeight-menu.clientHeight);
         const rightExtra=Math.max(0,scroller.scrollHeight-scroller.clientHeight);
         // Never scroll a menu that already fits.
