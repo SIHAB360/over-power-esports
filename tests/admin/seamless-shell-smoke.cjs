@@ -48,7 +48,10 @@ async function createPage(browser,width,height){
 }
 async function ready(page,path,pattern){
  await page.goto(BASE+path,{waitUntil:'domcontentloaded'});
- await page.getByText(pattern).first().waitFor({state:'visible',timeout:50000});
+ const title=page.locator('main h1:visible').first();
+ await title.waitFor({state:'visible',timeout:50000});
+ const shown=(await title.textContent())||'';
+ assert(shown.toUpperCase().includes(pattern.toUpperCase()),'Unexpected route heading: '+shown);
  await page.waitForTimeout(700);
 }
 async function assertRightScroll(page,standalone){
