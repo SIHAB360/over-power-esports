@@ -248,8 +248,8 @@ export default function MatchHistoryPage() {
   }
 
   return (
-    <main className={styles.page}>
-      <div className={styles.container}>
+    <main data-op-history-page className={styles.page}>
+      <div data-op-history-container className={styles.container}>
         <div className={styles.topNav}>
           <Link href="/admin/dashboard?section=matches" className={styles.backLink}>
             <FiArrowLeft aria-hidden="true" /> Back to Match Command Center
@@ -257,7 +257,7 @@ export default function MatchHistoryPage() {
           <span className={styles.accessLabel}><FiShield aria-hidden="true" /> ADMIN MATCH ARCHIVE</span>
         </div>
 
-        <header className={styles.hero}>
+        <header data-op-history-hero className={styles.hero}>
           <div className={styles.heroText}>
             <p className={styles.eyebrow}><FiActivity aria-hidden="true" /> OVER POWER ESPORTS · RECORDS CENTER</p>
             <h1>Match <span>History</span></h1>
@@ -320,7 +320,7 @@ export default function MatchHistoryPage() {
           ) : matches.length === 0 && !loadError ? (
             <div className={styles.empty}>No matches found for the selected filters. Your saved data has not been changed.</div>
           ) : matches.length > 0 ? (
-            <div className={styles.tableScroller}>
+            <div data-op-history-table-scroll className={styles.tableScroller}>
               <table className={styles.historyTable}>
                 <thead>
                   <tr>

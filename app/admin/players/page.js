@@ -132,14 +132,14 @@ export default function PlayersPage({moderatorMode=false}={}) {
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerCopy}>
-          <div className={styles.eyebrow}><span className={styles.dot} /> OVER POWER ESPORTS · ADMIN</div>
+      <header data-op-players-header className={styles.header}>
+        <div data-op-players-header-copy className={styles.headerCopy}>
+          <div data-op-players-eyebrow className={styles.eyebrow}><span className={styles.dot} /> OVER POWER ESPORTS · ADMIN</div>
           <h1 className={styles.title}>PLAYER <span className={styles.titleAccent}>MANAGEMENT</span></h1>
-          <p className={styles.subtitle}>Review registrations, player details, teams and approval status from one place.</p>
+          <p data-op-players-subtitle className={styles.subtitle}>Review registrations, player details, teams and approval status from one place.</p>
         </div>
 
-        <div className={styles.headerStat}>
+        <div data-op-players-header-stat className={styles.headerStat}>
           <div className={styles.statIcon}>♙</div>
           <div>
             <span className={styles.statLabel}>REGISTERED PLAYERS</span>
@@ -148,7 +148,7 @@ export default function PlayersPage({moderatorMode=false}={}) {
         </div>
       </header>
 
-      <section className={styles.toolbar} aria-label="Search and filter players">
+      <section data-op-players-toolbar className={styles.toolbar} aria-label="Search and filter players">
         <div className={styles.searchWrap}>
           <span className={styles.searchIcon} aria-hidden="true">⌕</span>
           <input
@@ -187,13 +187,13 @@ export default function PlayersPage({moderatorMode=false}={}) {
         <span>Latest registrations first</span>
       </div>
 
-      <section className={styles.grid} aria-label="Registered players">
+      <section data-op-players-grid className={styles.grid} aria-label="Registered players">
         {filteredPlayers.map((player) => {
           const status = String(player.status || "pending").toLowerCase();
           const isApproved = status === "approved";
 
           return (
-            <article className={styles.card} key={player.id}>
+            <article data-op-players-card className={styles.card} key={player.id}>
               <div className={styles.cardTop}>
                 <div className={styles.profile}>
                   <div className={styles.avatar}>

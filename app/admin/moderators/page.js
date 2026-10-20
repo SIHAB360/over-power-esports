@@ -45,12 +45,12 @@ export default function ModeratorManagement(){
       await call("POST",payload);await refresh();setNotice(active?"Moderator permissions saved successfully.":"Moderator access has been revoked.");
     }catch(e){setNotice(e.message)}finally{setSaving(false)}
   }
-  return <main className={styles.page}><div className={styles.wrap}>
-    <header className={styles.header}><Link href="/admin/dashboard">← Admin Dashboard</Link><span className={styles.eyebrow}>OVER POWER ESPORTS  /  ADMIN CONSOLE</span></header>
-    <div className={styles.heading}><div><span className={styles.kicker}>Access Control Center</span><h1>Moderator Management</h1><p>Assign trusted players and manage their section-level permissions. · অনুমতি আপনি নিয়ন্ত্রণ করবেন।</p></div><span className={styles.shield}>✧</span></div>
+  return <main data-op-moderators-page className={styles.page}><div data-op-moderators-wrap className={styles.wrap}>
+    <header data-op-moderators-header className={styles.header}><Link href="/admin/dashboard">← Admin Dashboard</Link><span className={styles.eyebrow}>OVER POWER ESPORTS  /  ADMIN CONSOLE</span></header>
+    <div data-op-moderators-heading className={styles.heading}><div><span className={styles.kicker}>Access Control Center</span><h1>Moderator Management</h1><p>Assign trusted players and manage their section-level permissions. · অনুমতি আপনি নিয়ন্ত্রণ করবেন।</p></div><span className={styles.shield}>✧</span></div>
     <div className={styles.metrics}><div><strong>{players.length}</strong><small>Registered Players</small></div><div><strong>{moderators.filter(x=>x.enabled).length}</strong><small>Active Moderators</small></div><div><strong>{grants.length}</strong><small>Permission Grants</small></div></div>
     {notice&&<p role="status" className={styles.notice}>{notice}</p>}
-    <div className={styles.layout}><section className={styles.panel}>
+    <div className={styles.layout}><section data-op-moderators-panel className={styles.panel}>
       <h2><span className={styles.step}>01</span>Select Player</h2><input className={styles.input} aria-label="Search players" placeholder="Search name or IGN..." value={search} onChange={e=>setSearch(e.target.value)}/>
       <div className={styles.roster} role="listbox" aria-label="Player selection for moderator role">
         {loading?<p>Loading...</p>:filtered.length===0?<p>No matching players found.</p>:filtered.map(player=>{
@@ -60,7 +60,7 @@ export default function ModeratorManagement(){
         })}
       </div>
     </section>
-    <section className={styles.panel}>
+    <section data-op-moderators-panel className={styles.panel}>
       <h2><span className={styles.step}>02</span>Configure Permissions</h2>
       {!selected?<p className={styles.hint}>Select a player to configure moderator access.</p>:<>
         <div className={styles.memberHead}><strong>{chosen?.full_name||chosen?.ign||"Selected player"}</strong><label className={styles.toggle}><input type="checkbox" checked={enabled} onChange={e=>setEnabled(e.target.checked)}/> Moderator Active</label></div>

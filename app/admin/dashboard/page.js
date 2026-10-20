@@ -89,7 +89,7 @@ function groupStatus(rows, status) {
 
 function StatCard({ label, value, subtitle, Icon }) {
   return (
-    <article className={styles.stat}>
+    <article data-op-stat-card className={styles.stat}>
       <div className={styles.statTop}>
         <span className={styles.statLabel}>{label}</span>
         <span className={styles.statIcon}><Icon aria-hidden="true" /></span>
@@ -102,7 +102,7 @@ function StatCard({ label, value, subtitle, Icon }) {
 
 function Panel({ title, subtitle, children, className = "" }) {
   return (
-    <section className={[styles.panel, className].filter(Boolean).join(" ")}>
+    <section data-op-panel className={[styles.panel, className].filter(Boolean).join(" ")}>
       <div className={styles.panelHeader}>
         <div>
           <h3 className={styles.panelHeading}>{title}</h3>
@@ -485,92 +485,92 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className={[styles.dashboard, theme === "dark" ? styles.dark : styles.light].join(" ")}>
-      <div className={styles.layout}>
+    <div data-op-dashboard className={[styles.dashboard, theme === "dark" ? styles.dark : styles.light].join(" ")}>
+      <div data-op-dashboard-layout className={styles.layout}>
         {mobileOpen && <button type="button" className={styles.overlay} aria-label="Close menu" onClick={() => setMobileOpen(false)}/>}
-        <aside className={[styles.sidebar, mobileOpen ? styles.sidebarOpen : ""].join(" ")} aria-label="Admin navigation">
-          <div className={styles.sidebarTop}>
+        <aside data-op-sidebar className={[styles.sidebar, mobileOpen ? styles.sidebarOpen : ""].join(" ")} aria-label="Admin navigation">
+          <div data-op-sidebar-top className={styles.sidebarTop}>
             <Image className={styles.brandLogo} src={logo} alt="Over Power Esports" width={54} height={54} />
             <div className={styles.brandCopy}>
-              <p className={styles.brandTitle}>OVER POWER</p>
-              <p className={styles.brandSub}>ESPORTS ADMIN</p>
+              <p data-op-brand-title className={styles.brandTitle}>OVER POWER</p>
+              <p data-op-brand-sub className={styles.brandSub}>ESPORTS ADMIN</p>
             </div>
             <button type="button" className={styles.sidebarClose} aria-label="Close admin menu" onClick={() => setMobileOpen(false)}>
               <FiX aria-hidden="true" />
             </button>
           </div>
-          <div className={styles.navScroll}>
-            <p className={styles.menuTitle}>OPERATIONS</p>
+          <div data-op-nav-scroll className={styles.navScroll}>
+            <p data-op-menu-title className={styles.menuTitle}>OPERATIONS</p>
             <nav className={styles.navGroup} aria-label="Dashboard sections">
               {NAV.slice(0, 5).map(({ key,name,Icon }) => (
                 <button
                   type="button"
                   key={key}
-                  className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  data-op-admin-nav-item data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
-                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
                   <span className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
-                    <span className={styles.navCount}>{number(counts[key])}</span>
+                    <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
                 </button>
               ))}
             </nav>
-            <div className={styles.navSeparator}/>
-            <p className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
+            <div data-op-nav-separator className={styles.navSeparator}/>
+            <p data-op-menu-title className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
             <nav className={styles.navGroup} aria-label="Management and access sections">
               {NAV.slice(5).map(({ key,name,Icon }) => (
                 <button
                   type="button"
                   key={key}
-                  className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  data-op-admin-nav-item data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
-                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
                   <span className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
-                    <span className={styles.navCount}>{number(counts[key])}</span>
+                    <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
                 </button>
               ))}
             </nav>
-            <div className={styles.navSeparator}/>
-            <Link href="/admin/moderators" className={styles.navItem}><span className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
-            <Link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
-            <p className={styles.menuTitle}>QUICK ACCESS</p>
+            <div data-op-nav-separator className={styles.navSeparator}/>
+            <Link href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
+            <Link data-op-visitors-link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
+            <p data-op-menu-title className={styles.menuTitle}>QUICK ACCESS</p>
             <Link href="/" className={styles.navItem}>
-              <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
+              <span data-op-nav-icon className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
               <span className={styles.navText}>View Website</span>
             </Link>
           </div>
-          <div className={styles.sidebarFoot}>
-            <div className={styles.sidebarStatus}>
+          <div data-op-sidebar-foot className={styles.sidebarFoot}>
+            <div data-op-sidebar-status className={styles.sidebarStatus}>
               <span className={styles.sidebarStatusDot} aria-hidden="true" />
               <div>
                 <strong>{loadingData ? "SYNCING DATA" : Object.values(sourceErrors).some(Boolean) ? "REVIEW DATA SOURCES" : "SYSTEM CONNECTED"}</strong>
                 <small>Over Power · Secure admin</small>
               </div>
             </div>
-            <button type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
+            <button data-op-logout type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
           </div>
         </aside>
 
-        <main className={styles.main}>
-          <div className={styles.mainInner}>
-            <header className={styles.header}>
+        <main data-op-right-scroll className={styles.main}>
+          <div data-op-main-inner className={styles.mainInner}>
+            <header data-op-hero className={styles.header}>
               <div className={styles.mobileTop}>
                 <button type="button" className={styles.mobileMenuBtn} aria-label="Open admin menu" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)}>
                   <FiMenu aria-hidden="true" />
                 </button>
               </div>
-              <div className={styles.headerCenter}>
-                <p className={styles.eyebrow}><i className={styles.eyebrowDot}/> ADMIN OPERATIONS <span className={styles.heroSerial}>/ CONTROL ROOM 01</span></p>
-                <h1 className={styles.pageTitle}>OVER POWER <span>COMMAND CENTER</span></h1>
-                <p className={styles.pageSubtitle}>A single home for your players, squads, tournaments, results and finances.</p>
-                <div className={styles.heroMeta}>
+              <div data-op-hero-copy className={styles.headerCenter}>
+                <p data-op-hero-eyebrow className={styles.eyebrow}><i className={styles.eyebrowDot}/> ADMIN OPERATIONS <span className={styles.heroSerial}>/ CONTROL ROOM 01</span></p>
+                <h1 data-op-hero-title className={styles.pageTitle}>OVER POWER <span>COMMAND CENTER</span></h1>
+                <p data-op-hero-subtitle className={styles.pageSubtitle}>A single home for your players, squads, tournaments, results and finances.</p>
+                <div data-op-hero-meta className={styles.heroMeta}>
                   <span className={[styles.heroStatus, Object.values(sourceErrors).some(Boolean) ? styles.heroWarning : ""].join(" ")}>
                     <FiActivity aria-hidden="true" />
                     {loadingData ? "Syncing dashboard…" : Object.values(sourceErrors).some(Boolean) ? "Some data needs attention" : "Dashboard data synced"}
@@ -581,7 +581,7 @@ export default function AdminDashboard() {
 
             </header>
 
-            <section className={styles.stats} aria-label="Live key performance indicators">
+            <section data-op-stats className={styles.stats} aria-label="Live key performance indicators">
               <StatCard label="TOTAL PLAYERS" Icon={FiUsers} value={loadingData ? "…" : sourceErrors.players ? "—" : number(counts.players)} subtitle="Registered players" />
               <StatCard label="TOTAL MATCHES" Icon={FiTarget} value={loadingData ? "…" : sourceErrors.matches ? "—" : number(counts.matches)} subtitle="Recorded matches" />
               <StatCard label="TOURNAMENTS" Icon={FiAward} value={loadingData ? "…" : sourceErrors.tournaments ? "—" : number(counts.tournaments)} subtitle="Tournament records" />
@@ -589,23 +589,23 @@ export default function AdminDashboard() {
             </section>
 
             {active === "overview" && (
-              <section className={styles.commandActions} aria-label="Quick management shortcuts">
-                <button type="button" className={styles.commandAction} onClick={() => goTo("players")}>
+              <section data-op-action-grid className={styles.commandActions} aria-label="Quick management shortcuts">
+                <button data-op-command-action type="button" className={styles.commandAction} onClick={() => goTo("players")}>
                   <span className={styles.commandActionIcon}><FiUsers aria-hidden="true"/></span>
                   <span className={styles.commandActionBody}><strong>Player control</strong><small>Roster & approvals</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
                 </button>
-                <button type="button" className={styles.commandAction} onClick={() => goTo("matches")}>
+                <button data-op-command-action type="button" className={styles.commandAction} onClick={() => goTo("matches")}>
                   <span className={styles.commandActionIcon}><FiTarget aria-hidden="true"/></span>
                   <span className={styles.commandActionBody}><strong>Match operations</strong><small>Scores & schedules</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
                 </button>
-                <button type="button" className={styles.commandAction} onClick={() => goTo("verification")}>
+                <button data-op-command-action type="button" className={styles.commandAction} onClick={() => goTo("verification")}>
                   <span className={styles.commandActionIcon}><FiShield aria-hidden="true"/></span>
                   <span className={styles.commandActionBody}><strong>Verification hub</strong><small>Secure live access codes</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
                 </button>
-                <button type="button" className={[styles.commandAction, styles.withdrawalQuickAction].join(" ")} onClick={() => goTo("salary")}>
+                <button data-op-command-action type="button" className={[styles.commandAction, styles.withdrawalQuickAction].join(" ")} onClick={() => goTo("salary")}>
                   <span className={styles.commandActionIcon}><FiCreditCard aria-hidden="true"/></span>
                   <span className={styles.commandActionBody}><strong>Player Withdrawals</strong><small>bKash / Nagad · Review & payouts</small></span>
                   <FiArrowUpRight className={styles.commandActionArrow} aria-hidden="true" />
@@ -613,13 +613,13 @@ export default function AdminDashboard() {
               </section>
             )}
 
-            <div className={styles.sectionHeading}>
+            <div data-op-section-heading className={styles.sectionHeading}>
               <div>
-                <span className={styles.sectionOverline}>CONTROL ROOM / {active === "salary" ? "WITHDRAWALS" : active.toUpperCase()}</span>
+                <span data-op-section-overline className={styles.sectionOverline}>CONTROL ROOM / {active === "salary" ? "WITHDRAWALS" : active.toUpperCase()}</span>
                 <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
                 <p>{activeNav.description}</p>
               </div>
-              <div className={styles.headingActions}>
+              <div data-op-heading-actions className={styles.headingActions}>
                 {activeNav.href && <Link className={styles.sectionAction} href={activeNav.href}>Open full {activeNav.name} panel <FiArrowUpRight aria-hidden="true"/></Link>}
                 {active === "matches" && <Link className={styles.sectionAction} href="/admin/matches/history"><FiClock aria-hidden="true"/> Match History <FiArrowUpRight aria-hidden="true"/></Link>}
                 {active !== "salary" && (
@@ -636,7 +636,7 @@ export default function AdminDashboard() {
             {sourceErrors.general && <div className={styles.notice}>{sourceErrors.general}</div>}
 
             {active === "overview" ? (
-              <div className={styles.contentGrid}>
+              <div data-op-content-grid className={styles.contentGrid}>
                 <Panel title="Player & Match Activity" subtitle="Recent six months · actual database records" className={styles.panelWide}>
                   <div className={styles.legend}><span><i/>Players</span><span><i className={styles.second}/>Matches</span></div>
                   <TrendChart players={players} matches={matches} />
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
                   {tournaments.length===0 && !sourceErrors.tournaments && <p className={styles.infoStrip}>No tournaments added yet.</p>}
                 </Panel>
                 <Panel title="Latest Matches" subtitle="Recently recorded matches" className={styles.panelFull}>
-                  <div className={styles.tableWrap}>
+                  <div data-op-table-scroll className={styles.tableWrap}>
                     {sourceErrors.matches ? <div className={styles.empty}>Match data unavailable.</div> :
                       matches.length === 0 ? <div className={styles.empty}>No match records yet.</div> :
                         <table className={styles.dataTable}>
@@ -714,7 +714,7 @@ export default function AdminDashboard() {
                       <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder={"Search " + activeNav.name.toLowerCase()} aria-label={"Search " + activeNav.name}/>
                     </label>
                   </div>
-                  <div className={styles.tableWrap}>
+                  <div data-op-table-scroll className={styles.tableWrap}>
                     {loadingData ? <div className={styles.empty}>Loading records…</div> :
                       sourceErrors[active] ? <div className={styles.empty}>No records can be displayed until data is available.</div> :
                       !filtered.length ? <div className={styles.empty}>{search ? "No records match your search." : "No records created yet."}</div> :
