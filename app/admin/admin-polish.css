@@ -1,0 +1,180 @@
+/* OVER POWER ESPORTS · Unified admin skin
+   Scoped under /admin; player and public website remain untouched. */
+.op-admin-system {
+  --op-bg:#070e20;--op-panel:#111d33;--op-panel-2:#172742;
+  --op-ink:#f4f8ff;--op-muted:#abc1df;
+  --op-stroke:rgba(100,187,247,.31);--op-aqua:#4ce7ea;
+  --op-blue:#6998ff;--op-purple:#af85ff;--op-green:#56eac3;
+  --op-orange:#ffc28b;
+  isolation:isolate;
+  min-height:100vh;
+  background:radial-gradient(ellipse 920px 570px at 82% -7%,rgba(109,78,210,.14),transparent 70%),
+    radial-gradient(ellipse 830px 600px at 4% 26%,rgba(23,151,205,.10),transparent 72%),var(--op-bg);
+  color:var(--op-ink);
+  font-family:Inter,"Hind Siliguri",system-ui,sans-serif;
+}
+.op-admin-system,.op-admin-system *,.op-admin-system *::before,.op-admin-system *::after{box-sizing:border-box}
+.op-admin-view{width:100%;min-width:0}
+.op-admin-view > main,.op-admin-view > div{max-width:none}
+.op-admin-view > main{background-color:transparent;min-width:0}
+/* Theme is accessible on every standalone admin screen and embedded manager. */
+.op-admin-theme-tools{
+  position:fixed;z-index:90;top:13px;right:clamp(10px,2vw,30px);
+  min-height:43px;display:inline-flex;align-items:center;gap:4px;
+  padding:4px 5px 4px 11px;
+  border:1px solid rgba(91,190,240,.44);border-radius:15px;
+  background:rgba(12,26,48,.95);
+  color:#f8fcff;box-shadow:0 9px 26px rgba(0,0,0,.29),0 0 22px rgba(55,173,235,.11);
+  backdrop-filter:blur(18px);
+  font:800 12px/1.2 Inter,system-ui,sans-serif;
+}
+.op-admin-theme-caption{font-size:9px;color:#96bbd1;letter-spacing:.11em;margin-right:4px}
+.op-admin-theme-tools .op-theme-option{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:33px;min-width:73px;padding:6px 11px;
+  color:#c1d6ee;background:transparent;border:1px solid transparent;
+  border-radius:10px;cursor:pointer;font:inherit;
+  transition:background .2s,color .2s,transform .2s,border-color .2s,box-shadow .2s;
+}
+.op-admin-theme-tools .op-theme-option svg{font-size:15px}
+.op-admin-theme-tools .op-theme-option.selected{
+  color:#fff;background:linear-gradient(125deg,#23497a,#6244bd);
+  border-color:rgba(164,144,255,.63);box-shadow:0 0 14px rgba(104,116,255,.29);
+}
+.op-admin-theme-tools .op-theme-option:hover{transform:translateY(-1px);color:#fff}
+.op-admin-theme-tools .op-theme-option:focus-visible{
+  outline:3px solid #77edff;outline-offset:3px;
+}
+/* Leave room for utility strip on standalone detail pages; the command-center
+   hero already reserves its top-right corner for the same switch. */
+.op-admin-view:not(:has(> [class*="dashboard_dashboard"])) {padding-top:62px}
+.op-admin-view:has(> [class*="dashboard_dashboard"]) {padding-top:0}
+.op-admin-view > main,.op-admin-view > section{width:100%;max-width:none}
+.op-admin-system :is(button,a,input,select,textarea):focus-visible{
+  outline:2px solid var(--op-aqua);outline-offset:3px
+}
+.op-admin-system :is(button,a){-webkit-tap-highlight-color:transparent}
+.op-admin-system :is(input,select,textarea){max-width:100%}
+.op-admin-system :is(button,select){cursor:pointer}
+.op-admin-system :is(h1,h2,h3){text-wrap:balance}
+.op-admin-system :is(p,small){overflow-wrap:break-word}
+/* Consistent UI surfaces, aligned across legacy inline JSX and CSS modules. */
+.op-admin-view :is(
+  [class*="__panel"],[class*="__metric"],[class*="__card"],
+  [class*="__stat"],[class*="__hero"],
+  .aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card,.finance-card
+){
+  border-radius:clamp(14px,1.2vw,22px);
+  transition:border-color .24s ease,box-shadow .3s ease,transform .24s ease,background .25s ease;
+}
+.op-admin-view :is(
+  [class*="__panel"],[class*="__metric"],[class*="__card"],
+  [class*="__stat"],.aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card
+):hover{
+  border-color:rgba(93,210,248,.57);
+  box-shadow:0 13px 32px rgba(1,10,30,.19),0 0 22px rgba(44,179,239,.11);
+}
+.op-admin-view :is(
+ [class*="__save"],[class*="__refresh"],[class*="__action"],[class*="__button"],
+ .create-btn,.manage-btn,.aa-primary,.op-save-button
+):not(:disabled){transition:transform .22s ease,box-shadow .22s ease,filter .22s ease}
+.op-admin-view :is(
+ [class*="__save"],[class*="__refresh"],[class*="__action"],[class*="__button"],
+ .create-btn,.manage-btn,.aa-primary,.op-save-button
+):not(:disabled):hover{
+  filter:brightness(1.12);box-shadow:0 0 24px rgba(82,199,248,.26);
+}
+/* Common section headers, readable sizes and no desktop-width caps. */
+.op-admin-view :is(
+ [class*="players_container"],[class*="history_container"],
+ [class*="visitors_shell"],[class*="moderators_wrap"],
+ .aa-shell,.container,.op-shell
+){width:100%;max-width:none;margin-inline:auto}
+.op-admin-view :is(
+ [class*="__page"],.achievement-admin,.op-match-page
+){max-width:none}
+.op-admin-view :is([class*="__page"]){min-width:0}
+.op-admin-view :is([class*="__heading"] h1,[class*="__hero"] h1,
+ [class*="__header"] h1){line-height:1.15}
+/* Unified restrained neon edge aura for admin sections, not disruptive strobing. */
+@keyframes opAdminAmbient{
+  0%,100%{box-shadow:0 10px 27px rgba(1,12,29,.13),0 0 0 1px rgba(59,193,244,.09)}
+  50%{box-shadow:0 14px 35px rgba(1,12,29,.2),0 0 22px rgba(65,194,244,.14)}
+}
+.op-admin-view :is(
+ [class*="__hero"],[class*="__metrics"] > [class*="__metric"],
+ [class*="__stats"] > [class*="__stat"],
+ .aa-header,.aa-upload-panel
+){animation:opAdminAmbient 6s ease-in-out infinite}
+/* Wide screens fill the available browser width rather than artificially capping content. */
+@media(min-width:1200px){
+  .op-admin-view :is([class*="visitors_shell"],[class*="moderators_wrap"],
+    [class*="history_container"],[class*="players_container"]){max-width:none}
+  .op-admin-view > main{width:100%}
+}
+/* Real light mode (not merely changing the switch label). */
+html[data-op-admin-theme="light"] .op-admin-system{
+  --op-bg:#edf4ff;--op-panel:#ffffff;--op-panel-2:#eaf1ff;
+  --op-ink:#172744;--op-muted:#526780;--op-stroke:rgba(56,100,165,.24);
+  background:radial-gradient(ellipse at 0 0,rgba(125,204,249,.19),transparent 47%),
+    radial-gradient(ellipse at 100% 0,rgba(168,151,255,.13),transparent 44%),var(--op-bg);
+  color:var(--op-ink);color-scheme:light;
+}
+html[data-op-admin-theme="light"] .op-admin-theme-tools{
+  background:rgba(255,255,255,.97);border-color:rgba(84,128,204,.33);color:#24365a
+}
+html[data-op-admin-theme="light"] .op-admin-theme-caption{color:#48627d}
+html[data-op-admin-theme="light"] .op-admin-theme-tools .op-theme-option{color:#455a78}
+html[data-op-admin-theme="light"] .op-admin-theme-tools .op-theme-option.selected{color:white}
+html[data-op-admin-theme="light"] .op-admin-view > :is(main,div):not([class*="dashboard_dashboard"]){
+  background:transparent !important;color:var(--op-ink)
+}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+  [class*="visitors_page"],[class*="moderators_page"],
+  [class*="history_page"],[class*="players_page"],
+  .achievement-admin,.op-match-page
+){background:#edf4ff !important;color:#172744 !important}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+  [class*="visitors_panel"],[class*="visitors_metric"],
+  [class*="moderators_panel"],[class*="moderators_rosterEntry"],
+  [class*="history_hero"],[class*="history_archive"],[class*="history_stat"],
+  [class*="players_card"],[class*="players_panel"],
+  .aa-panel,.aa-card,.aa-gallery-panel,.aa-upload-panel,
+  .team-card,.tournament-card
+){background:#fff !important;color:#1a3152 !important;border-color:rgba(64,121,196,.30) !important;box-shadow:0 8px 26px rgba(49,97,154,.075)}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(h1,h2,h3,h4,strong,label){color:#193052}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(p,small){color:#4f6883}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(input,select,textarea){background:#fff;color:#152943;border-color:rgba(72,111,164,.33)}
+/* Legacy pages with inline style: keep functional markup and change visible surface only. */
+html[data-op-admin-theme="light"] .op-admin-view :is(.team-card,.tournament-card,.aa-card) :is(h2,h3,p,strong){color:#203957}
+.op-admin-view table{max-width:100%}
+.op-admin-view :is([class*="__table"],.aa-table){font-variant-numeric:tabular-nums}
+@media(max-width:900px){
+  .op-admin-theme-tools{top:10px;right:10px}
+  .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:58px}
+  .op-admin-view :is([class*="__panel"],[class*="__hero"]){min-width:0}
+}
+@media(max-width:560px){
+  .op-admin-theme-tools{gap:3px;padding:3px 4px;min-height:40px}
+  .op-admin-theme-caption{display:none}
+  .op-admin-theme-tools .op-theme-option{min-width:64px;padding:6px 8px}
+  .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:52px}
+  .op-admin-view :is(h1,h2,h3){overflow-wrap:anywhere}
+  .op-admin-view :is([class*="__stats"],[class*="__metrics"]){min-width:0}
+  .op-admin-view :is(.team-card,.tournament-card){max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .op-admin-system *, .op-admin-system *::before, .op-admin-system *::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important
+  }
+}
