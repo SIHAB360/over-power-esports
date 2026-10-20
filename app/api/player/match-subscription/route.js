@@ -15,10 +15,26 @@ export async function POST(req){
   if(role==='player')await playerFor(db,user.id);
   const b=await req.json().catch(()=>null);
   const sub=b?.subscription;
+  let pushUrl;
+  try{pushUrl=new URL(sub?.endpoint)}catch{}
+  const host=pushUrl?.hostname?.toLowerCase()||'';
+  const supportedHost=host==='fcm.googleapis.com'
+    || host==='updates.push.services.mozilla.com'
+    || host==='web.push.apple.com'
+    || host.endsWith('.notify.windows.com')
+    || host.endsWith('.push.services.mozilla.com')
+    || host.endsWith('.push.apple.com');
+  if(!supportedHost||pushUrl?.protocol!=='https:'||pushUrl?.port||pushUrl?.username||pushUrl?.password)
+   throw new HttpError('Unsupported browser push endpoint.');
   if(!sub?.endpoint?.startsWith('https://')||sub.endpoint.length>2048
       ||typeof sub.keys?.p256dh!=='string'||typeof sub.keys?.auth!=='string'
       ||sub.keys.p256dh.length>500||sub.keys.auth.length>500)
    throw new HttpError('Invalid browser push subscription.');
+  const {data:existing,error:ce}=await db.from('op_match_push_subscriptions')
+    .select('id,endpoint').eq('user_id',user.id).limit(6);
+  if(ce)throw new HttpError('Could not validate subscriptions.',503);
+  if((existing||[]).length>=5&&!(existing||[]).some(s=>s.endpoint===sub.endpoint))
+    throw new HttpError('Maximum five active devices. Disable alerts on an old device first.');
   const {error}=await db.from('op_match_push_subscriptions').upsert({
    user_id:user.id,endpoint:sub.endpoint,p256dh:sub.keys.p256dh,auth:sub.keys.auth,
    updated_at:new Date().toISOString()
