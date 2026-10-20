@@ -694,6 +694,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 No active, approved players are currently assigned to this squad.
               </div>
             ) : (
+              <>
               <p className="squad-picker-help">All active squad members are listed below. Tick exactly four to include in the match. Only selected players receive performance statistics and earnings.</p>
                <div className="player-grid">
                 {teamPlayers.map((player) => {
@@ -735,6 +736,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                   );
                 })}
               </div>
+              </>
             )}
           </section>
 
