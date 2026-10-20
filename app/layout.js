@@ -2,6 +2,7 @@ import "./globals.css";
 // Match page styles are scoped to .op-match-page, preserving the rest of the site.
 import "./admin/matches/match-premium.css";
 import PageTransition from "./components/PageTransition";
+import VisitorTracker from "./components/VisitorTracker";
 
 export const metadata = {
   title: "Over Power Esports",
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
         }}
       >
         <PageTransition />
+        <VisitorTracker />
         {children}
       </body>
     </html>

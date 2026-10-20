@@ -534,6 +534,7 @@ export default function AdminDashboard() {
             </nav>
             <div className={styles.navSeparator}/>
             <Link href="/admin/moderators" className={styles.navItem}><span className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
+            <Link href="/admin/visitors" className={styles.navItem} style={{border:"1px solid #b3ef6b70",background:"linear-gradient(110deg,#223a22,#172d30)",color:"#cfff9f",fontWeight:900}}><span className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
             <p className={styles.menuTitle}>QUICK ACCESS</p>
             <Link href="/" className={styles.navItem}>
               <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
