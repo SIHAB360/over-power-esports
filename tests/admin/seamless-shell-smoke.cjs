@@ -64,6 +64,7 @@ async function assertRightScroll(page,standalone){
    document.querySelector('[data-op-nav-scroll]');
   if(!e||!side||!nav)return null;
   const oldTop=side.getBoundingClientRect().top;
+  e.style.scrollBehavior='auto';
   e.scrollTop=Math.min(500,e.scrollHeight);
   return {height:e.getBoundingClientRect().height,scrollHeight:e.scrollHeight,
    top:side.getBoundingClientRect().top,oldTop,navOverflow:getComputedStyle(nav).overflowY,
@@ -92,6 +93,7 @@ async function assertMenuOnlyScroll(page,standalone,requireOverflow=false){
   const footer=document.querySelector(standalone?'.op-admin-route-bottom':'[data-op-sidebar-foot]');
   const brand=document.querySelector(standalone?'.op-admin-route-brand':'[data-op-sidebar-top]');
   const right=document.querySelector(standalone?'.op-admin-view':'[data-op-right-scroll]');
+  right.style.scrollBehavior='auto';right.scrollTop=0;
   nav.scrollTop=0;
   return {available:nav.scrollHeight-nav.clientHeight,brandTop:brand.getBoundingClientRect().top,
    footerTop:footer.getBoundingClientRect().top,railTop:rail.getBoundingClientRect().top,
