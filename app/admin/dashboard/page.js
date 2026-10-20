@@ -485,7 +485,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div data-op-dashboard className={[styles.dashboard, theme === "dark" ? styles.dark : styles.light].join(" ")}>
+    <div data-op-dashboard data-op-current-section={active} className={[styles.dashboard, theme === "dark" ? styles.dark : styles.light].join(" ")}>
       <div data-op-dashboard-layout className={styles.layout}>
         {mobileOpen && <button type="button" className={styles.overlay} aria-label="Close menu" onClick={() => setMobileOpen(false)}/>}
         <aside data-op-sidebar className={[styles.sidebar, mobileOpen ? styles.sidebarOpen : ""].join(" ")} aria-label="Admin navigation">
@@ -506,7 +506,7 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   key={key}
-                  data-op-admin-nav-item data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  data-op-admin-nav-item data-op-section={key} data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   key={key}
-                  data-op-admin-nav-item data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
+                  data-op-admin-nav-item data-op-section={key} data-op-active={active === key ? "true" : "false"} className={[styles.navItem, active === key ? styles.navActive : ""].join(" ")}
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
@@ -538,10 +538,10 @@ export default function AdminDashboard() {
               ))}
             </nav>
             <div data-op-nav-separator className={styles.navSeparator}/>
-            <Link href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
-            <Link data-op-visitors-link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
+            <Link data-op-section="moderators" href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
+            <Link data-op-visitors-link data-op-section="visitors" href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
             <p data-op-menu-title className={styles.menuTitle}>QUICK ACCESS</p>
-            <Link href="/" className={styles.navItem}>
+            <Link data-op-section="site" href="/" className={styles.navItem}>
               <span data-op-nav-icon className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
               <span className={styles.navText}>View Website</span>
             </Link>
@@ -578,7 +578,7 @@ export default function AdminDashboard() {
                   <span className={styles.heroSecure}><FiLock aria-hidden="true" /> ADMIN ACCESS</span>
                 </div>
               </div>
-
+              <div data-op-theme-slot className="op-admin-hero-theme-slot" />
             </header>
 
             <section data-op-stats className={styles.stats} aria-label="Live key performance indicators">

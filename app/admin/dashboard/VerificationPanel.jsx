@@ -128,8 +128,8 @@ export default function VerificationPanel({ refreshVersion = 0, moderatorMode = 
   }
 
   return (
-    <section className={styles.root} aria-label="Registration verification codes">
-      <div className={styles.hero}>
+    <section data-op-verification-shell className={styles.root} aria-label="Registration verification codes">
+      <div data-op-verification-hero className={styles.hero}>
         <div className={styles.heroTitle}>
           <span className={styles.heroIcon}><FiShield aria-hidden="true" /></span>
           <div>
@@ -152,24 +152,24 @@ export default function VerificationPanel({ refreshVersion = 0, moderatorMode = 
       </div>
 
       <div className={styles.stats}>
-        <div className={styles.statCard}>
+        <div data-op-verification-stat className={styles.statCard}>
           <span><FiDatabase /> TOTAL CODES</span>
           <strong>{loading ? "…" : codes.length}</strong>
           <small>Saved registration codes</small>
         </div>
-        <div className={styles.statCard}>
+        <div data-op-verification-stat className={styles.statCard}>
           <span><FiKey /> VALID CODES</span>
           <strong>{loading ? "…" : activeCount}</strong>
           <small>Passing the current expiry check</small>
         </div>
-        <div className={styles.statCard}>
+        <div data-op-verification-stat className={styles.statCard}>
           <span><FiClock /> EXPIRED CODES</span>
           <strong>{loading ? "…" : expiredCount}</strong>
           <small>Expired by database timestamp</small>
         </div>
       </div>
 
-      <div className={styles.listPanel}>
+      <div data-op-verification-panel className={styles.listPanel}>
         <div className={styles.listHeader}>
           <div>
             <h4>Live registration access codes</h4>

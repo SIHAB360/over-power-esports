@@ -88,6 +88,44 @@ async function checkHeading(page){
  }));
  assert.equal(a.align,'center',a.text+' should be horizontally centered');
 }
+
+async function checkImmersiveHeader(page,desktop=true){
+  const details=await page.evaluate(()=>{
+    const root=document.querySelector('.op-admin-route-layout');
+    const header=document.querySelector('[data-op-hero]');
+    const rail=document.querySelector('[data-op-sidebar]');
+    const main=document.querySelector('[data-op-right-scroll]');
+    const slot=document.querySelector('[data-op-theme-slot]');
+    const theme=document.querySelector('.op-admin-theme-tools');
+    const cards=[...document.querySelectorAll('[data-op-stat-card]')];
+    const navItems=[...document.querySelectorAll('[data-op-admin-nav-item]')];
+    if(!header||!rail||!main||!slot||!theme)return null;
+    const rb=x=>{let r=x.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom}};
+    return {
+      shell:rb(root),header:rb(header),rail:rb(rail),main:rb(main),
+      theme:rb(theme),inSlot:slot.contains(theme),
+      accents:navItems.map(x=>getComputedStyle(x).getPropertyValue('--op-item').trim()),
+      cardBeam:cards.length?getComputedStyle(cards[0],'::after').animationName:'',
+      navBeam:navItems.length?getComputedStyle(navItems[0],'::before').animationName:'',
+      xOverflow:document.documentElement.scrollWidth-innerWidth
+    };
+  });
+  assert(details,'Admin hero, sidebar or theme slot missing');
+  assert(details.inSlot,'Appearance switch must be docked inside the hero');
+  assert(details.theme.top>=details.header.top-2 && details.theme.bottom<=details.header.bottom+2,
+    'Appearance switch has escaped the hero and creates a top gutter');
+  assert(details.xOverflow<=3,'Immersive layout should not cause horizontal scrolling');
+  assert(new Set(details.accents).size>=5,'Sidebar must have at least five distinct lighting accent colors');
+  assert(details.cardBeam.includes('op-light-pass'),'Stat cards should contain a traveling inner light');
+  assert(details.navBeam.includes('op-beam-turn'),'Navigation should use a rotating multicolor border');
+  if(desktop){
+    assert(Math.abs(details.shell.top)<=2,'The shared shell must begin at top of viewport');
+    assert(Math.abs(details.rail.top)<=2,'Desktop sidebar must meet top of screen');
+    assert(Math.abs(details.rail.right-details.main.left)<=2,'Sidebar must directly touch right content');
+    assert(details.header.top<=40,'Main hero should not sit below an empty top strip');
+  }
+}
+
 async function run(){
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  let passed=0;
@@ -95,7 +133,8 @@ async function run(){
   for(const [width,height] of [[1536,864],[1024,768]]){
    const {context,page}=await createPage(browser,width,height);
    await ready(page,'/admin/dashboard','OVER POWER');
-   await assertRightScroll(page,false);await checkHeading(page);passed++;
+   await assertRightScroll(page,false);await checkHeading(page);
+   await checkImmersiveHeader(page,true);passed++;
    const button=page.getByRole('button',{name:'Activate light mode'});
    await button.click();
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
@@ -108,6 +147,7 @@ async function run(){
   const {context,page}=await createPage(browser,390,844);
   await ready(page,'/admin/dashboard','OVER POWER');
   await checkHeading(page);
+  await checkImmersiveHeader(page,false);
   await page.getByRole('button',{name:'Open admin menu'}).click();
   const nav=page.locator('[data-op-sidebar]');
   await nav.waitFor({state:'visible',timeout:20000});
