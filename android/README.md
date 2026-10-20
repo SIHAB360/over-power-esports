@@ -16,7 +16,7 @@ https://over-power-esports.vercel.app/
 ## 1. Build a test APK (no signing secrets needed)
 
 Open \`android/\` in Android Studio with JDK 17, or run in a configured
-Android SDK + Gradle 8.10.2 environment:
+Android SDK + Gradle 8.11.1 environment:
 
 \`\`\`sh
 cd android
