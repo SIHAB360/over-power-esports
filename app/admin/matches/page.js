@@ -216,6 +216,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       `
       )
       .eq("team_id", teamId)
+      .eq("is_active", true)
+      .in("status", ["approved", "active"])
       .order("full_name", { ascending: true });
 
     if (error) {
@@ -675,11 +677,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             <SectionTitle
               number="03"
               small="ACTIVE LINEUP"
-              title="SELECT EXACTLY 4 PLAYERS"
+              title="CHOOSE ANY 4 FROM THE FULL SQUAD"
             />
 
             <div className="selection-counter">
-              <span>SELECTED</span>
+              <span>SELECTED · {teamPlayers.length} AVAILABLE IN SQUAD</span>
               <strong>
                 {selectedPlayers.length} / 4
               </strong>
@@ -689,24 +691,24 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
               <div className="empty-state">Select your team first.</div>
             ) : teamPlayers.length === 0 ? (
               <div className="empty-state">
-                No players are connected to this team.
+                No active, approved players are currently assigned to this squad.
               </div>
             ) : (
-              <div className="player-grid">
+              <p className="squad-picker-help">All active squad members are listed below. Tick exactly four to include in the match. Only selected players receive performance statistics and earnings.</p>
+               <div className="player-grid">
                 {teamPlayers.map((player) => {
                   const selected = selectedPlayers.some(
                     (p) => p.id === player.id
                   );
 
                   return (
-                    <button
-                      type="button"
+                    <label
                       key={player.id}
                       className={
                         selected ? "player-card selected" : "player-card"
                       }
-                      onClick={() => togglePlayer(player)}
                     >
+                    <input type="checkbox" className="squad-player-checkbox" checked={selected} onChange={() => togglePlayer(player)} aria-label={"Pick "+(player.ign || player.full_name || "player")+" for match"} />
                       <div className="avatar">
                         {player.profile_image || player.avatar_url ? (
                           <img
@@ -729,7 +731,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                       </div>
 
                       <div className="check">{selected ? "✓" : "+"}</div>
-                    </button>
+                    </label>
                   );
                 })}
               </div>
@@ -1006,6 +1008,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         </section>
       </div>
 
+      <style jsx global>{`.op-match-page .squad-picker-help{color:#bde8fa;font-size:13px;line-height:1.55;margin:4px 0 14px}
+.op-match-page .player-grid .player-card{cursor:pointer;position:relative;display:flex;align-items:center;gap:12px;min-width:0}
+.op-match-page .squad-player-checkbox{width:20px!important;height:20px!important;min-width:20px;flex:none;appearance:auto!important;accent-color:#55efd1!important;cursor:pointer;border:1px solid #7ee6f6!important;background:transparent!important}
+.op-match-page .player-card:has(.squad-player-checkbox:focus-visible){outline:2px solid #6beafb!important;outline-offset:2px}
+`}</style>
       <style jsx global>{`
         .op-match-page,
         .op-match-page * {
