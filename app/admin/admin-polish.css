@@ -1,0 +1,474 @@
+/* OVER POWER ESPORTS · Unified admin skin
+   Scoped under /admin; player and public website remain untouched. */
+.op-admin-system {
+  --op-bg:#070e20;--op-panel:#111d33;--op-panel-2:#172742;
+  --op-ink:#f4f8ff;--op-muted:#abc1df;
+  --op-stroke:rgba(100,187,247,.31);--op-aqua:#4ce7ea;
+  --op-blue:#6998ff;--op-purple:#af85ff;--op-green:#56eac3;
+  --op-orange:#ffc28b;
+  isolation:isolate;
+  min-height:100vh;
+  background:radial-gradient(ellipse 920px 570px at 82% -7%,rgba(109,78,210,.14),transparent 70%),
+    radial-gradient(ellipse 830px 600px at 4% 26%,rgba(23,151,205,.10),transparent 72%),var(--op-bg);
+  color:var(--op-ink);
+  font-family:Inter,"Hind Siliguri",system-ui,sans-serif;
+}
+.op-admin-system,.op-admin-system *,.op-admin-system *::before,.op-admin-system *::after{box-sizing:border-box}
+.op-admin-view{width:100%;min-width:0}
+.op-admin-view > main,.op-admin-view > div{max-width:none}
+.op-admin-view > main{background-color:transparent;min-width:0}
+/* Theme is accessible on every standalone admin screen and embedded manager. */
+.op-admin-theme-tools{
+  position:fixed;z-index:90;top:13px;right:clamp(10px,2vw,30px);
+  min-height:43px;display:inline-flex;align-items:center;gap:4px;
+  padding:4px 5px 4px 11px;
+  border:1px solid rgba(91,190,240,.44);border-radius:15px;
+  background:rgba(12,26,48,.95);
+  color:#f8fcff;box-shadow:0 9px 26px rgba(0,0,0,.29),0 0 22px rgba(55,173,235,.11);
+  backdrop-filter:blur(18px);
+  font:800 12px/1.2 Inter,system-ui,sans-serif;
+}
+.op-admin-theme-caption{font-size:9px;color:#96bbd1;letter-spacing:.11em;margin-right:4px}
+.op-admin-theme-tools .op-theme-option{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:33px;min-width:73px;padding:6px 11px;
+  color:#c1d6ee;background:transparent;border:1px solid transparent;
+  border-radius:10px;cursor:pointer;font:inherit;
+  transition:background .2s,color .2s,transform .2s,border-color .2s,box-shadow .2s;
+}
+.op-admin-theme-tools .op-theme-option svg{font-size:15px}
+.op-admin-theme-tools .op-theme-option.selected{
+  color:#fff;background:linear-gradient(125deg,#23497a,#6244bd);
+  border-color:rgba(164,144,255,.63);box-shadow:0 0 14px rgba(104,116,255,.29);
+}
+.op-admin-theme-tools .op-theme-option:hover{transform:translateY(-1px);color:#fff}
+.op-admin-theme-tools .op-theme-option:focus-visible{
+  outline:3px solid #77edff;outline-offset:3px;
+}
+/* Leave room for utility strip on standalone detail pages; the command-center
+   hero already reserves its top-right corner for the same switch. */
+.op-admin-view:not(:has(> [class*="dashboard_dashboard"])) {padding-top:62px}
+.op-admin-view:has(> [class*="dashboard_dashboard"]) {padding-top:0}
+.op-admin-view > main,.op-admin-view > section{width:100%;max-width:none}
+.op-admin-system :is(button,a,input,select,textarea):focus-visible{
+  outline:2px solid var(--op-aqua);outline-offset:3px
+}
+.op-admin-system :is(button,a){-webkit-tap-highlight-color:transparent}
+.op-admin-system :is(input,select,textarea){max-width:100%}
+.op-admin-system :is(button,select){cursor:pointer}
+.op-admin-system :is(h1,h2,h3){text-wrap:balance}
+.op-admin-system :is(p,small){overflow-wrap:break-word}
+/* Consistent UI surfaces, aligned across legacy inline JSX and CSS modules. */
+.op-admin-view :is(
+  [class*="_panel__"],[class*="_metric__"],[class*="_card__"],
+  [class*="_stat__"],[class*="_hero__"],
+  .aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card,.finance-card
+){
+  border-radius:clamp(14px,1.2vw,22px);
+  transition:border-color .24s ease,box-shadow .3s ease,transform .24s ease,background .25s ease;
+}
+.op-admin-view :is(
+  [class*="_panel__"],[class*="_metric__"],[class*="_card__"],
+  [class*="_stat__"],.aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card
+):hover{
+  border-color:rgba(93,210,248,.57);
+  box-shadow:0 13px 32px rgba(1,10,30,.19),0 0 22px rgba(44,179,239,.11);
+}
+.op-admin-view :is(
+ [class*="_save__"],[class*="_refresh__"],[class*="_action__"],[class*="_button__"],
+ .create-btn,.manage-btn,.aa-primary,.op-save-button
+):not(:disabled){transition:transform .22s ease,box-shadow .22s ease,filter .22s ease}
+.op-admin-view :is(
+ [class*="_save__"],[class*="_refresh__"],[class*="_action__"],[class*="_button__"],
+ .create-btn,.manage-btn,.aa-primary,.op-save-button
+):not(:disabled):hover{
+  filter:brightness(1.12);box-shadow:0 0 24px rgba(82,199,248,.26);
+}
+/* Common section headers, readable sizes and no desktop-width caps. */
+.op-admin-view :is(
+ [class*="players_container"],[class*="history_container"],
+ [class*="visitors_shell"],[class*="moderators_wrap"],
+ .aa-shell,.container,.op-shell
+){width:100%;max-width:none;margin-inline:auto}
+.op-admin-view :is(
+ [class*="_page__"],.achievement-admin,.op-match-page
+){max-width:none}
+.op-admin-view :is([class*="_page__"]){min-width:0}
+.op-admin-view :is([class*="_heading__"] h1,[class*="_hero__"] h1,
+ [class*="_header__"] h1){line-height:1.15}
+/* Unified restrained neon edge aura for admin sections, not disruptive strobing. */
+@keyframes opAdminAmbient{
+  0%,100%{box-shadow:0 10px 27px rgba(1,12,29,.13),0 0 0 1px rgba(59,193,244,.09)}
+  50%{box-shadow:0 14px 35px rgba(1,12,29,.2),0 0 22px rgba(65,194,244,.14)}
+}
+.op-admin-view :is(
+ [class*="_hero__"],[class*="_metrics__"] > [class*="_metric__"],
+ [class*="_stats__"] > [class*="_stat__"],
+ .aa-header,.aa-upload-panel
+){animation:opAdminAmbient 6s ease-in-out infinite}
+/* Wide screens fill the available browser width rather than artificially capping content. */
+@media(min-width:1200px){
+  .op-admin-view :is([class*="visitors_shell"],[class*="moderators_wrap"],
+    [class*="history_container"],[class*="players_container"]){max-width:none}
+  .op-admin-view > main{width:100%}
+}
+/* Real light mode (not merely changing the switch label). */
+html[data-op-admin-theme="light"] .op-admin-system{
+  --op-bg:#edf4ff;--op-panel:#ffffff;--op-panel-2:#eaf1ff;
+  --op-ink:#172744;--op-muted:#526780;--op-stroke:rgba(56,100,165,.24);
+  background:radial-gradient(ellipse at 0 0,rgba(125,204,249,.19),transparent 47%),
+    radial-gradient(ellipse at 100% 0,rgba(168,151,255,.13),transparent 44%),var(--op-bg);
+  color:var(--op-ink);color-scheme:light;
+}
+html[data-op-admin-theme="light"] .op-admin-theme-tools{
+  background:rgba(255,255,255,.97);border-color:rgba(84,128,204,.33);color:#24365a
+}
+html[data-op-admin-theme="light"] .op-admin-theme-caption{color:#48627d}
+html[data-op-admin-theme="light"] .op-admin-theme-tools .op-theme-option{color:#455a78}
+html[data-op-admin-theme="light"] .op-admin-theme-tools .op-theme-option.selected{color:white}
+html[data-op-admin-theme="light"] .op-admin-view > :is(main,div):not([class*="dashboard_dashboard"]){
+  background:transparent !important;color:var(--op-ink)
+}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+  [class*="visitors_page"],[class*="moderators_page"],
+  [class*="history_page"],[class*="players_page"],
+  .achievement-admin,.op-match-page
+){background:#edf4ff !important;color:#172744 !important}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+  [class*="visitors_panel"],[class*="visitors_metric"],
+  [class*="moderators_panel"],[class*="moderators_rosterEntry"],
+  [class*="history_hero"],[class*="history_archive"],[class*="history_stat"],
+  [class*="players_card"],[class*="players_panel"],
+  .aa-panel,.aa-card,.aa-gallery-panel,.aa-upload-panel,
+  .team-card,.tournament-card
+){background:#fff !important;color:#1a3152 !important;border-color:rgba(64,121,196,.30) !important;box-shadow:0 8px 26px rgba(49,97,154,.075)}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(h1,h2,h3,h4,strong,label){color:#193052}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(p,small){color:#4f6883}
+html[data-op-admin-theme="light"] .op-admin-view :is(
+ [class*="visitors_page"],[class*="moderators_page"],[class*="history_page"],
+ [class*="players_page"],.achievement-admin,.op-match-page
+) :is(input,select,textarea){background:#fff;color:#152943;border-color:rgba(72,111,164,.33)}
+/* Legacy pages with inline style: keep functional markup and change visible surface only. */
+html[data-op-admin-theme="light"] .op-admin-view :is(.team-card,.tournament-card,.aa-card) :is(h2,h3,p,strong){color:#203957}
+.op-admin-view table{max-width:100%}
+.op-admin-view :is([class*="_table__"],.aa-table){font-variant-numeric:tabular-nums}
+@media(max-width:900px){
+  .op-admin-theme-tools{top:10px;right:10px}
+  .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:58px}
+  .op-admin-view :is([class*="_panel__"],[class*="_hero__"]){min-width:0}
+}
+@media(max-width:560px){
+  .op-admin-theme-tools{gap:3px;padding:3px 4px;min-height:40px}
+  .op-admin-theme-caption{display:none}
+  .op-admin-theme-tools .op-theme-option{min-width:64px;padding:6px 8px}
+  .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:52px}
+  .op-admin-view :is(h1,h2,h3){overflow-wrap:anywhere}
+  .op-admin-view :is([class*="_stats__"],[class*="_metrics__"]){min-width:0}
+  .op-admin-view :is(.team-card,.tournament-card){max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .op-admin-system *, .op-admin-system *::before, .op-admin-system *::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important
+  }
+}
+
+
+/* ===== Route-by-route alignment ===== */
+/* Players: remove the former centered desktop header + 1440px width ceilings. */
+.op-admin-view [class*="players_header"]{
+  max-width:none;grid-template-columns:minmax(0,1fr) auto;
+  justify-content:space-between;align-items:center;
+}
+.op-admin-view [class*="players_headerCopy"]{
+  grid-column:1;text-align:left;justify-self:start;
+}
+.op-admin-view [class*="players_headerCopy"] [class*="players_eyebrow"]{justify-content:flex-start}
+.op-admin-view [class*="players_headerCopy"] [class*="players_subtitle"]{
+  margin-left:0;margin-right:0;
+}
+.op-admin-view [class*="players_headerStat"]{grid-column:2}
+.op-admin-view [class*="players_toolbar"],
+.op-admin-view [class*="players_grid"]{max-width:none;width:100%}
+/* Matches, match history, moderator and visitors: allow the screen to breathe. */
+.op-admin-view .op-match-page.op-match-page .shell{max-width:none !important;width:100% !important}
+.op-admin-view .op-match-page.op-match-page .topbar{border-color:rgba(90,210,245,.49)!important}
+.op-admin-view .op-match-page.op-match-page .shell>form>.panel{
+  border-color:rgba(94,186,242,.39)!important;
+}
+.op-admin-view [class*="history_container"]{max-width:none}
+.op-admin-view [class*="history_page"]{padding:clamp(15px,2vw,32px)}
+.op-admin-view [class*="moderators_wrap"]{max-width:none}
+.op-admin-view [class*="moderators_page"]{padding:clamp(15px,2vw,32px)}
+.op-admin-view [class*="visitors_shell"]{max-width:none}
+.op-admin-view [class*="visitors_page"] [class*="visitors_hero"]{
+  border-color:rgba(83,223,207,.41);
+  background:radial-gradient(circle at 95% 0,rgba(101,95,224,.21),transparent 48%),
+    linear-gradient(110deg,#162c40,#12253a 60%,#132d38);
+}
+.op-admin-view [class*="visitors_page"] [class*="visitors_metric"]{
+  background:linear-gradient(140deg,#15283c,#102338);border-color:rgba(102,204,235,.32)
+}
+.op-admin-view [class*="visitors_page"] [class*="visitors_panel"]{
+  background:linear-gradient(145deg,#122438,#101e32);
+  border-color:rgba(91,184,231,.29)
+}
+.op-admin-view [class*="moderators_page"] [class*="moderators_panel"]{
+  background:linear-gradient(145deg,#15283e,#101e32);
+  border-color:rgba(105,199,234,.36)
+}
+/* Old standalone tournament, team and detail screens use styled-jsx class names.
+   Scope overrides within admin route only; do not touch public team/tournament pages. */
+.op-admin-view main.page{
+  max-width:none;width:100%;min-width:0;
+  padding:clamp(14px,2vw,34px)!important;
+  color:var(--op-ink);
+  background:radial-gradient(circle at 88% 0,rgba(114,86,228,.15),transparent 33%),
+    radial-gradient(circle at 0 23%,rgba(39,175,220,.10),transparent 43%),transparent !important;
+}
+.op-admin-view main.page > .container{max-width:none!important;width:100%!important;margin-inline:auto!important}
+.op-admin-view main.page .header{
+  border:1px solid rgba(91,193,241,.42);border-radius:22px;
+  padding:clamp(22px,3vw,42px);margin-bottom:20px;
+  background:radial-gradient(circle at 98% 0,rgba(128,94,239,.22),transparent 53%),
+    linear-gradient(118deg,#13293e,#161b39);
+  box-shadow:0 15px 35px rgba(2,8,26,.21);
+}
+.op-admin-view main.page .header h1{
+  font-size:clamp(28px,3.7vw,51px)!important;
+  letter-spacing:-.035em;line-height:1.17
+}
+.op-admin-view main.page .panel,.op-admin-view main.page .card,
+.op-admin-view main.page .team-card,.op-admin-view main.page .tournament-card,
+.op-admin-view main.page .registered-team,.op-admin-view main.page .team-option{
+  border:1px solid rgba(89,182,233,.36);
+  border-radius:18px;
+  background:linear-gradient(140deg,#13273d,#121e32);
+  box-shadow:0 10px 25px rgba(0,7,26,.17)
+}
+.op-admin-view main.page :is(.create-btn,.manage-btn,.back-btn,.team-option button,
+ .registered-team button):not(:disabled){
+  border-radius:11px;min-height:42px;
+  box-shadow:0 4px 17px rgba(23,159,206,.12);
+}
+.op-admin-view main.page :is(.create-btn,.manage-btn,.team-option button):hover:not(:disabled){
+  transform:translateY(-2px);
+  box-shadow:0 0 23px rgba(71,210,238,.23);
+}
+.op-admin-view main.page .glow{
+  pointer-events:none;max-width:50vw;opacity:.18!important;
+}
+/* Withdrawal and verification share the command-center blue/violet/green language. */
+.op-admin-view [class*="WithdrawalManagement_shell"]{
+  border-color:rgba(93,210,247,.46);
+}
+.op-admin-view [class*="verification_hero"],
+.op-admin-view [class*="verification_listPanel"],
+.op-admin-view [class*="verification_statCard"]{
+  border-color:rgba(106,173,249,.41)
+}
+/* Profit page JSX uses inline panels: layer on cohesive visible edges without changing forms. */
+.op-admin-view .op-admin-profit-page{
+  max-width:none;width:100%;background:radial-gradient(circle at 8% 0,rgba(50,187,219,.14),transparent 36%),
+    radial-gradient(circle at 95% 15%,rgba(118,91,230,.13),transparent 42%),#0b1629!important;
+  color:var(--op-ink)!important;padding:clamp(22px,2.5vw,43px)!important;
+}
+.op-admin-view .op-admin-profit-page :is(input,select,textarea){
+  border:1px solid rgba(105,195,243,.36)!important;border-radius:11px;
+}
+.op-admin-view .op-admin-profit-page :is(button,a):hover:not(:disabled){
+  box-shadow:0 0 19px rgba(74,194,241,.22)
+}
+/* Admin achievements already has a unique media grid. Bring its shell in line. */
+.op-admin-view .achievement-admin .aa-container{
+  max-width:none;width:100%;padding:clamp(18px,2.3vw,38px)
+}
+.op-admin-view .achievement-admin .aa-header{
+  border-color:rgba(91,205,244,.41)
+}
+.op-admin-view .achievement-admin :is(.aa-panel,.aa-gallery-panel,.aa-card){
+  border-color:rgba(91,173,236,.36)
+}
+/* Mobile keeps actual mobile geometry: no desktop width or forced wide fields. */
+@media(max-width:900px){
+  .op-admin-view [class*="players_header"]{
+    display:flex;flex-direction:column;align-items:stretch;
+  }
+  .op-admin-view [class*="players_headerCopy"]{text-align:center}
+  .op-admin-view [class*="players_headerCopy"] [class*="players_eyebrow"]{justify-content:center}
+  .op-admin-view [class*="players_headerCopy"] [class*="players_subtitle"]{margin-inline:auto}
+  .op-admin-view [class*="players_headerStat"]{align-self:center}
+  .op-admin-view main.page > .container{max-width:100%}
+  .op-admin-view main.page .header{padding:20px 17px}
+}
+@media(max-width:560px){
+  .op-admin-view main.page{padding:12px!important}
+  .op-admin-view main.page .header{padding:17px 14px}
+  .op-admin-view main.page :is(.team-card,.tournament-card,.registered-team,.team-option){
+    flex-direction:column;align-items:stretch;max-width:100%
+  }
+  .op-admin-view .op-admin-profit-page{padding:18px 12px!important}
+}
+/* Route-specific accessible light-mode overrides (including inline-style legacy pages). */
+html[data-op-admin-theme="light"] .op-admin-view main.page{
+  background:#eff5ff!important;color:#182f50!important;
+}
+html[data-op-admin-theme="light"] .op-admin-view main.page .header,
+html[data-op-admin-theme="light"] .op-admin-view main.page :is(.panel,.card,.team-card,
+ .tournament-card,.registered-team,.team-option){
+  background:linear-gradient(135deg,#fff,#eef6ff)!important;
+  color:#203954!important;border-color:rgba(77,135,195,.33)!important
+}
+html[data-op-admin-theme="light"] .op-admin-view main.page :is(h1,h2,h3,h4,p,label,strong){
+  color:#203954;
+}
+html[data-op-admin-theme="light"] .op-admin-view main.page :is(input,select,textarea){
+  background:#fff!important;color:#192e49!important;
+  border-color:rgba(66,121,173,.32)!important
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-admin-profit-page{
+  background:#edf4ff!important;color:#172b4a!important;
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-admin-profit-page
+  :is(input,select,textarea){
+  background:#fff!important;color:#19314d!important;
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-admin-profit-page
+  :is(h1,h2,h3,h4,p,span,label,strong){
+  color:#1c3454;
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-match-page.op-match-page{
+  background:#edf4ff!important;color:#163253!important;
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-match-page.op-match-page :is(
+ .topbar,.shell>form>.panel,.history,.finance-panel,.finance-card
+){
+  background:linear-gradient(145deg,#fff,#eef5ff)!important;
+  color:#223954!important;border-color:rgba(72,140,205,.30)!important
+}
+html[data-op-admin-theme="light"] .op-admin-view .op-match-page.op-match-page
+  :is(h2,h3,h4,label,strong,p){color:#213957}
+html[data-op-admin-theme="light"] .op-admin-view .op-match-page.op-match-page
+  :is(input,textarea,select){background:#fff!important;color:#183352!important}
+html[data-op-admin-theme="light"] .op-admin-view [class*="visitors_page"]
+  [class*="visitors_hero"]{background:linear-gradient(115deg,#fff,#e4f4fe)!important}
+html[data-op-admin-theme="light"] .op-admin-view [class*="visitors_page"]
+  [class*="visitors_metric"],html[data-op-admin-theme="light"] .op-admin-view
+  [class*="visitors_page"] [class*="visitors_panel"]{background:#fff!important}
+html[data-op-admin-theme="light"] .op-admin-view [class*="moderators_page"]
+  [class*="moderators_panel"]{background:#fff!important}
+
+
+/* ===== Shared sidebar for EVERY standalone admin screen ===== */
+.op-admin-route-layout{width:100%;min-width:0}
+.op-admin-route-layout:has(> .op-admin-route-navigator){
+  display:grid;grid-template-columns:clamp(250px,17vw,288px) minmax(0,1fr);
+  align-items:start;min-height:100dvh
+}
+.op-admin-route-navigator{
+  position:sticky;top:0;height:100vh;height:100dvh;min-width:0;z-index:32
+}
+.op-admin-route-sidebar{
+  display:flex;flex-direction:column;
+  height:100%;width:100%;min-width:0;
+  padding:21px 12px 16px;
+  color:#eaf5ff;background:linear-gradient(165deg,#111f37,#0a172a 80%,#101c32);
+  border-right:1px solid rgba(85,213,248,.42);
+  box-shadow:inset -1px 0 rgba(103,108,236,.14),7px 0 26px #030a1a37;
+}
+.op-admin-route-brand{display:flex;align-items:center;gap:12px;padding:4px 9px 20px;margin-bottom:12px;border-bottom:1px solid rgba(111,208,251,.23)}
+.op-admin-route-brand img{height:46px;width:46px;flex:none;border-radius:12px;object-fit:cover;box-shadow:0 0 19px rgba(65,204,244,.33)}
+.op-admin-route-brand strong{display:block;font-size:clamp(13px,1vw,17px);letter-spacing:.015em;line-height:1.4;color:#fff}
+.op-admin-route-brand span{display:block;margin-top:2px;font-size:10px;letter-spacing:.09em;color:#67e9ef;font-weight:850}
+.op-admin-route-group-label{font-size:11px;letter-spacing:.13em;font-weight:900;color:#a5c9ea;margin:12px 10px}
+.op-admin-route-links{display:grid;align-content:start;gap:5px;overflow-y:auto;min-height:0;flex:1;padding:2px 0 12px;scrollbar-width:thin;scrollbar-color:#285575 transparent}
+.op-admin-route-link{
+  display:flex;align-items:center;gap:12px;
+  min-height:46px;padding:7px 12px;border:1px solid rgba(93,162,220,.14);
+  border-radius:12px;color:#c9dff4;text-decoration:none;font-size:13px;font-weight:800;
+  transition:background .2s,box-shadow .2s,border-color .2s,transform .2s;
+}
+.op-admin-route-link:hover{
+  color:#fff;border-color:rgba(94,214,246,.53);
+  background:linear-gradient(100deg,rgba(37,179,219,.18),rgba(112,81,231,.10));
+  box-shadow:0 0 18px rgba(43,178,226,.11);transform:translateX(2px)
+}
+.op-admin-route-link.active{
+  color:#fff;border-color:rgba(100,230,242,.58);
+  background:linear-gradient(100deg,rgba(39,157,201,.32),rgba(106,90,220,.15));
+  box-shadow:inset 3px 0 #56efed,0 0 16px rgba(60,190,237,.14)
+}
+.op-admin-route-icon{
+  display:grid;place-items:center;flex:none;
+  width:32px;height:32px;border-radius:9px;
+  color:#71dff8;background:rgba(56,171,209,.15);font-size:17px
+}
+.op-admin-route-end{margin-left:auto;flex:none;color:#70f4fa}
+.op-admin-route-bottom{border-top:1px solid rgba(99,178,226,.23);display:grid;gap:10px;padding-top:14px}
+.op-admin-route-connected{
+  display:flex;gap:8px;align-items:center;padding:10px 12px;
+  border:1px solid rgba(75,220,186,.38);border-radius:11px;
+  background:rgba(38,125,115,.15);color:#91f8cf;font-weight:850;font-size:11px
+}
+.op-admin-route-site,.op-admin-route-logout{
+  min-height:42px;display:flex;align-items:center;justify-content:center;gap:9px;
+  border:1px solid rgba(90,161,218,.35);border-radius:11px;
+  background:rgba(40,81,121,.16);color:#d6edff;text-decoration:none;
+  font-size:12px;font-weight:900;cursor:pointer
+}
+.op-admin-route-logout{color:#ffa9bc;border-color:rgba(248,129,162,.4);background:rgba(142,55,79,.11)}
+.op-admin-route-site:hover{border-color:#67ebef;box-shadow:0 0 14px rgba(54,210,231,.17)}
+.op-admin-route-logout:hover{border-color:#ff96b3;box-shadow:0 0 14px rgba(243,96,142,.17)}
+.op-admin-route-open,.op-admin-route-close,.op-admin-route-shade{display:none}
+html[data-op-admin-theme="light"] .op-admin-route-sidebar{
+  background:linear-gradient(145deg,#fff,#e8f1ff);border-color:rgba(59,146,207,.32);color:#203957
+}
+html[data-op-admin-theme="light"] .op-admin-route-brand{border-color:rgba(71,145,202,.25)}
+html[data-op-admin-theme="light"] .op-admin-route-brand strong{color:#193756}
+html[data-op-admin-theme="light"] .op-admin-route-brand span{color:#08768b}
+html[data-op-admin-theme="light"] .op-admin-route-group-label{color:#59738d}
+html[data-op-admin-theme="light"] .op-admin-route-link{color:#29425f;border-color:rgba(65,125,183,.14)}
+html[data-op-admin-theme="light"] .op-admin-route-link.active{color:#173851;background:#d8f6fa}
+html[data-op-admin-theme="light"] .op-admin-route-icon{color:#147ea4;background:#dcefff}
+html[data-op-admin-theme="light"] .op-admin-route-site{color:#1e4161;background:#f0f7ff}
+html[data-op-admin-theme="light"] .op-admin-route-logout{color:#a62b58;background:#fff3f6}
+html[data-op-admin-theme="light"] .op-admin-route-connected{color:#157557;background:#e0f9ed}
+@media(max-width:900px){
+  .op-admin-route-layout:has(> .op-admin-route-navigator){display:block}
+  .op-admin-route-navigator{position:static;height:0;width:0;z-index:auto}
+  .op-admin-route-open{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    position:fixed;z-index:79;top:10px;left:10px;
+    min-height:40px;padding:7px 12px;border-radius:11px;
+    border:1px solid rgba(89,198,239,.56);background:#142c47;
+    color:#e7faff;font-weight:850;font-size:12px;
+    box-shadow:0 4px 19px rgba(2,14,27,.23)
+  }
+  .op-admin-route-shade{
+    display:block;position:fixed;inset:0;z-index:81;
+    background:rgba(2,11,26,.72);border:0;backdrop-filter:blur(5px)
+  }
+  .op-admin-route-sidebar{
+    position:fixed;z-index:82;top:0;left:0;bottom:0;
+    width:min(85vw,310px);height:100vh;height:100dvh;
+    transform:translateX(-102%);visibility:hidden;
+    transition:transform .25s ease,visibility .25s
+  }
+  .op-admin-route-sidebar.is-open{transform:translateX(0);visibility:visible}
+  .op-admin-route-close{
+    display:grid;place-items:center;margin-left:auto;width:34px;height:34px;
+    border:1px solid rgba(84,201,237,.4);background:#1b3351;color:#fff;
+    border-radius:10px;font-size:18px
+  }
+  .op-admin-route-navigator + .op-admin-view{min-width:0}
+  html[data-op-admin-theme="light"] .op-admin-route-open{background:#fff;color:#234465}
+}
+@media(prefers-reduced-motion:reduce){
+ .op-admin-route-sidebar{transition:none}
+}

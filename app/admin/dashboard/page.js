@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   FiGrid, FiUsers, FiTarget, FiLayers, FiAward, FiDollarSign,
-  FiCreditCard, FiShield, FiImage, FiLogOut, FiMoon, FiSun,
+  FiCreditCard, FiShield, FiImage, FiLogOut,
   FiMenu, FiX, FiRefreshCw, FiArrowUpRight, FiActivity,
   FiCalendar, FiSearch, FiBarChart2, FiTrendingUp, FiLock,
   FiClock, FiChevronRight, FiCheckCircle,
@@ -262,8 +262,20 @@ const COLUMNS = {
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
-  const [adminEmail, setAdminEmail] = useState("");
   const [theme, setTheme] = useState("dark");
+  // Shared appearance control in /admin/layout keeps every admin page in sync.
+  useEffect(() => {
+    const synchronize = () => {
+      try { setTheme(window.localStorage.getItem(THEME_KEY)==="light" ? "light" : "dark"); }
+      catch { setTheme("dark"); }
+    };
+    window.addEventListener("op-admin-theme-change", synchronize);
+    window.addEventListener("storage", synchronize);
+    return () => {
+      window.removeEventListener("op-admin-theme-change", synchronize);
+      window.removeEventListener("storage", synchronize);
+    };
+  }, []);
   const [active, setActive] = useState("overview");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -333,7 +345,6 @@ export default function AdminDashboard() {
         }
 
         if (!mounted) return;
-        setAdminEmail(profile.email || authData.user.email || "Administrator");
         // Deep links from Match History return to the exact dashboard section.
         const requestedSection = new URLSearchParams(window.location.search).get("section");
         if (NAV.some((item) => item.key === requestedSection)) {
@@ -348,12 +359,6 @@ export default function AdminDashboard() {
     init();
     return () => { mounted = false; };
   }, [refresh]);
-
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    window.localStorage.setItem(THEME_KEY, next);
-  };
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -534,7 +539,7 @@ export default function AdminDashboard() {
             </nav>
             <div className={styles.navSeparator}/>
             <Link href="/admin/moderators" className={styles.navItem}><span className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
-            <Link href="/admin/visitors" className={styles.navItem} style={{border:"1px solid #b3ef6b70",background:"linear-gradient(110deg,#223a22,#172d30)",color:"#cfff9f",fontWeight:900}}><span className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
+            <Link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
             <p className={styles.menuTitle}>QUICK ACCESS</p>
             <Link href="/" className={styles.navItem}>
               <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
@@ -549,7 +554,6 @@ export default function AdminDashboard() {
                 <small>Over Power · Secure admin</small>
               </div>
             </div>
-            <p className={styles.sidebarAdmin} title={adminEmail}>{adminEmail}</p>
             <button type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
           </div>
         </aside>
@@ -574,17 +578,7 @@ export default function AdminDashboard() {
                   <span className={styles.heroSecure}><FiLock aria-hidden="true" /> ADMIN ACCESS</span>
                 </div>
               </div>
-              <div className={styles.headerRight}>
-                <div className={styles.headerAdmin}>
-                  <span className={styles.headerAvatar}>{adminEmail.slice(0,1).toUpperCase()}</span>
-                  <span className={styles.headerEmail} title={adminEmail}>{adminEmail}</span>
-                </div>
-                <button type="button" className={styles.themeSwitch} onClick={toggleTheme} aria-label={"Switch to " + (theme==="dark" ? "light" : "dark") + " theme"} aria-pressed={theme==="dark"}>
-                  {theme==="dark" ? <FiMoon size={15} aria-hidden="true"/> : <FiSun size={15} aria-hidden="true"/>}
-                  <span>{theme==="dark" ? "Dark" : "Light"}</span>
-                  <i className={styles.switchTrack}><i className={styles.switchKnob}/></i>
-                </button>
-              </div>
+
             </header>
 
             <section className={styles.stats} aria-label="Live key performance indicators">

@@ -314,7 +314,7 @@ export default function ProfitPage({moderatorMode=false}={}) {
   }
 
   return (
-    <main
+    <main className="op-admin-profit-page"
       style={{
         minHeight: "100vh",
         padding: "60px 20px 120px",
