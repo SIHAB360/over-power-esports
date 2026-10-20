@@ -130,6 +130,26 @@ async function assertMenuOnlyScroll(page,standalone,requireOverflow=false){
  }
 }
 
+
+async function checkSidebarTypeface(page,standalone){
+ const style=await page.evaluate(standalone=>{
+  const root=document.querySelector(standalone?'.op-admin-route-sidebar':'[data-op-sidebar]');
+  const label=root?.querySelector('[data-op-nav-label]');
+  const brand=root?.querySelector(standalone?'.op-admin-route-brand strong':'[data-op-brand-title]');
+  if(!label||!brand)return null;
+  const labelCss=getComputedStyle(label),brandCss=getComputedStyle(brand);
+  return {labelFont:labelCss.fontFamily,brandFont:brandCss.fontFamily,
+    size:parseFloat(labelCss.fontSize),labelWidth:label.scrollWidth,
+    availableWidth:label.clientWidth};
+ },standalone);
+ assert(style,'Missing sidebar decorative font landmarks');
+ assert(style.labelFont.includes('Nauert')&&style.labelFont.includes('Jacques Francois Shadow'),
+  'Admin sidebar must use the requested Nauert style with a licensed engraved fallback');
+ assert(style.brandFont.includes('Nauert'),'Admin brand must use the matching display family');
+ assert(style.size>=14,'Small labels should be readable');
+ assert(style.labelWidth<=style.availableWidth+4,'Decorative menu text should wrap instead of clipping');
+}
+
 async function checkHeading(page){
  const a=await page.locator('main h1:visible').first().evaluate(n=>({
   text:n.textContent.trim(),align:getComputedStyle(n).textAlign
@@ -181,14 +201,16 @@ async function run(){
   for(const [width,height] of [[1536,864],[1024,670]]){
    const {context,page}=await createPage(browser,width,height);
    await ready(page,'/admin/dashboard','OVER POWER');
-   await assertRightScroll(page,false);await assertMenuOnlyScroll(page,false,width===1024);
+   await assertRightScroll(page,false);
+   await checkSidebarTypeface(page,false);await assertMenuOnlyScroll(page,false,width===1024);
    await checkHeading(page);
    await checkImmersiveHeader(page,true);passed++;
    const button=page.getByRole('button',{name:'Activate light mode'});
    await button.click();
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
    await ready(page,'/admin/players','PLAYER');
-   await assertRightScroll(page,true);await assertMenuOnlyScroll(page,true,width===1024);
+   await assertRightScroll(page,true);
+   await checkSidebarTypeface(page,true);await assertMenuOnlyScroll(page,true,width===1024);
    await checkHeading(page);
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
    passed++;
@@ -198,6 +220,7 @@ async function run(){
   await ready(page,'/admin/dashboard','OVER POWER');
   await checkHeading(page);
   await checkImmersiveHeader(page,false);
+  await checkSidebarTypeface(page,false);
   await page.getByRole('button',{name:'Open admin menu'}).click();
   const nav=page.locator('[data-op-sidebar]');
   await nav.waitFor({state:'visible',timeout:20000});
