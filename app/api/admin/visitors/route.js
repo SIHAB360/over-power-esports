@@ -20,8 +20,14 @@ export async function GET(request){
   }
   const hours=Number(query.get('hours')||24),page=Number(query.get('page')||1),search=(query.get('search')||'').trim();
   if(![24,168,720].includes(hours)||!Number.isInteger(page)||page<1||page>625||search.length>90)return respond({message:'Invalid report filter'},400);
-  const {data,error:dbError}=await visitorAdminClient().rpc('visitor_dashboard',{p_hours:hours,p_offset:(page-1)*40,p_search:search});
-  if(dbError){console.error('VISITOR_ANALYTICS_READ',dbError.code);return respond({message:'Analytics not available'},503)}
-  return respond(data||{});
+  const [report,signins]=await Promise.all([
+    visitorAdminClient().rpc('visitor_dashboard',{p_hours:hours,p_offset:(page-1)*40,p_search:search}),
+    visitorAdminClient().rpc('visitor_verified_signins')
+  ]);
+  if(report.error||signins.error){
+    console.error('VISITOR_ANALYTICS_READ',report.error?.code||signins.error?.code);
+    return respond({message:'Analytics not available'},503);
+  }
+  return respond({...report.data,signIns:signins.data||[]});
  }catch{return respond({message:'Analytics request failed'},503)}
 }
