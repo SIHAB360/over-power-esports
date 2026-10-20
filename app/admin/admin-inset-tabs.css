@@ -1,0 +1,147 @@
+/* Reference sidebar: the selected tab is a single continuous part of the
+   right content canvas, with concave corners above/below the join.
+   This overrides the older rectangular neon active border without
+   altering inactive-item lighting, scroll logic, permissions or route state. */
+.op-admin-system {
+  --op-inset-tab-bg:#0b1930;
+  --op-inset-tab-ink:#f2f9ff;
+  --op-inset-tab-radius:22px;
+}
+html[data-op-admin-theme="light"] .op-admin-system {
+  --op-inset-tab-bg:#eef5ff;
+  --op-inset-tab-ink:#203f7b;
+}
+@media (min-width:901px) {
+  /* The sidebar and content start flush. Only the middle menu has a
+     bounded native scroll; logo and logout remain stationary. */
+  .op-admin-system [data-op-sidebar],
+  .op-admin-system .op-admin-route-sidebar {
+    padding-right:0!important;
+    border-right:0!important;
+  }
+  .op-admin-system [data-op-nav-scroll],
+  .op-admin-system .op-admin-route-links {
+    padding-right:0!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    scrollbar-width:none!important;
+  }
+  .op-admin-system [data-op-nav-scroll]::-webkit-scrollbar,
+  .op-admin-system .op-admin-route-links::-webkit-scrollbar {
+    width:0!important;display:none!important;
+  }
+  .op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) {
+    gap:0!important;
+  }
+  .op-admin-system [data-op-dashboard-layout] {
+    gap:0!important;
+  }
+  .op-admin-system [data-op-right-scroll] {
+    border-left:0!important;
+  }
+  .op-admin-system :is(
+    [data-op-admin-nav-item][data-op-active="true"],
+    .op-admin-route-link.active
+  ) {
+    position:relative!important;
+    isolation:auto!important;
+    z-index:4!important;
+    overflow:visible!important;
+    box-sizing:border-box;
+    width:100%!important;
+    margin:0!important;
+    border:0!important;
+    border-radius:var(--op-inset-tab-radius) 0 0 var(--op-inset-tab-radius)!important;
+    background:var(--op-inset-tab-bg)!important;
+    color:var(--op-inset-tab-ink)!important;
+    box-shadow:none!important;
+    padding:9px 14px!important;
+    min-height:43px;
+    transform:none!important;
+  }
+  /* No second rectangle, illuminated outline, or colored slab floating on
+     top of the inset tab. Its base color MUST equal the right canvas. */
+  .op-admin-system :is(
+    [data-op-admin-nav-item][data-op-active="true"],
+    .op-admin-route-link.active
+  ):is(:hover,:focus-visible) {
+    background:var(--op-inset-tab-bg)!important;
+    color:var(--op-inset-tab-ink)!important;
+    box-shadow:none!important;
+  }
+  .op-admin-system :is(
+    [data-op-admin-nav-item][data-op-active="true"],
+    .op-admin-route-link.active
+  )::before,
+  .op-admin-system :is(
+    [data-op-admin-nav-item][data-op-active="true"],
+    .op-admin-route-link.active
+  )::after {
+    content:none!important;
+    animation:none!important;
+    display:none!important;
+  }
+  /* A CSS corner returns from the blue sidebar into the inset tab.
+     Only active tabs render these decorative (noninteractive) spans. */
+  .op-admin-system [data-op-inset-curve] {
+    display:block!important;
+    position:absolute!important;
+    right:0!important;
+    width:var(--op-inset-tab-radius)!important;
+    height:var(--op-inset-tab-radius)!important;
+    z-index:3!important;
+    background:transparent!important;
+    pointer-events:none!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    overflow:visible!important;
+    filter:none!important;
+  }
+  .op-admin-system [data-op-inset-curve="top"] {
+    top:calc(-1 * var(--op-inset-tab-radius))!important;
+    border-bottom-right-radius:var(--op-inset-tab-radius)!important;
+    box-shadow:0 11px 0 0 var(--op-inset-tab-bg)!important;
+  }
+  .op-admin-system [data-op-inset-curve="bottom"] {
+    bottom:calc(-1 * var(--op-inset-tab-radius))!important;
+    border-top-right-radius:var(--op-inset-tab-radius)!important;
+    box-shadow:0 -11px 0 0 var(--op-inset-tab-bg)!important;
+  }
+  .op-admin-system :is(
+    [data-op-admin-nav-item][data-op-active="true"],
+    .op-admin-route-link.active
+  ) :is([data-op-nav-label],.op-admin-route-icon) {
+    color:var(--op-inset-tab-ink)!important;
+    text-shadow:none!important;
+  }
+  .op-admin-system [data-op-admin-nav-item][data-op-active="true"] [data-op-nav-icon],
+  .op-admin-system .op-admin-route-link.active .op-admin-route-icon {
+    background:rgba(118,169,237,.13)!important;
+    color:var(--op-inset-tab-ink)!important;
+    border-color:transparent!important;
+    box-shadow:none!important;
+    filter:none!important;
+  }
+  .op-admin-system [data-op-admin-nav-item][data-op-active="true"] [data-op-nav-count] {
+    background:rgba(122,161,228,.13)!important;
+    color:var(--op-inset-tab-ink)!important;
+    border:1px solid rgba(139,170,225,.24)!important;
+  }
+}
+/* Drawer navigation cannot physically connect to an off-screen content pane.
+   Give the same selected item a complete rounded capsule on phone/tablet. */
+@media (max-width:900px) {
+  .op-admin-system [data-op-inset-curve] {display:none!important;}
+  .op-admin-system [data-op-admin-nav-item][data-op-active="true"],
+  .op-admin-system .op-admin-route-link.active {
+    margin-right:0!important;
+    border-radius:15px!important;
+    background:var(--op-inset-tab-bg)!important;
+    color:var(--op-inset-tab-ink)!important;
+  }
+  .op-admin-system [data-op-admin-nav-item][data-op-active="true"] [data-op-nav-label],
+  .op-admin-system .op-admin-route-link.active [data-op-nav-label] {
+    color:var(--op-inset-tab-ink)!important;
+  }
+}
