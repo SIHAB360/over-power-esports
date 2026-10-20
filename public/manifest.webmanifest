@@ -1,17 +1,45 @@
 {
-  "name": "OVER POWER ESPORTS Match Center",
-  "short_name": "OP Match Center",
-  "start_url": "/player/dashboard#match-schedule",
+  "name": "OVER POWER ESPORTS",
+  "short_name": "OVER POWER",
+  "description": "Free Fire esports matches, teams, tournaments and player dashboards.",
+  "id": "/",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
   "background_color": "#0c1731",
   "theme_color": "#5368db",
+  "lang": "en",
   "icons": [
     {
-      "src": "/contact-mascot.webp",
-      "sizes": "any",
-      "type": "image/webp",
-      "purpose": "any"
+      "src": "/pwa-icon/192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-icon/512",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Player Dashboard",
+      "short_name": "Players",
+      "url": "/player/dashboard",
+      "description": "View your player dashboard and match calendar"
+    },
+    {
+      "name": "Match Schedule",
+      "short_name": "Match Center",
+      "url": "/player/dashboard#match-schedule",
+      "description": "Upcoming lobbies and notifications"
     }
   ]
 }

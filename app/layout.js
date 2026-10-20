@@ -3,6 +3,7 @@ import "./globals.css";
 import "./admin/matches/match-premium.css";
 import PageTransition from "./components/PageTransition";
 import VisitorTracker from "./components/VisitorTracker";
+import PwaBootstrap from "./components/PwaBootstrap";
 
 export const metadata = {
   title: "Over Power Esports",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="theme-color" content="#5368db" />
+        <link rel="apple-touch-icon" href="/pwa-icon/192" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -40,6 +42,7 @@ export default function RootLayout({ children }) {
       >
         <PageTransition />
         <VisitorTracker />
+        <PwaBootstrap />
         {children}
       </body>
     </html>
