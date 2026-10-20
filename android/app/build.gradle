@@ -12,7 +12,7 @@ def canReleaseSign = [signFile, signPass, signAlias, signKeyPass].every { it != 
 
 android {
     namespace 'com.overpower.esports'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId 'com.overpower.esports'
