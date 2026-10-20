@@ -246,7 +246,9 @@ async function testRosterAndMatchLineup(browser){
   await page.getByRole('button',{name:'Hide Over Power Elite on homepage'}).click();
   await page.getByRole('button',{name:'Show Over Power Elite on homepage'}).waitFor();
   assert.equal(squads[1].show_on_homepage,false);
+  const transferSaved=page.waitForResponse(r=>r.url().endsWith('/api/admin/roster')&&r.request().method()==='POST'&&r.request().postDataJSON().action==='move_player');
   await page.getByRole('combobox',{name:'Assign QA Player 2 to squad'}).selectOption(t2);
+  await transferSaved;
   assert.equal(people[1].team_id,t2);
   await ready(page,'/admin/matches','MATCH');
   await page.locator('select[name="team1_id"]').selectOption(t1);
