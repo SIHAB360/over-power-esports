@@ -327,7 +327,7 @@ async function checkPremiumScheduleLighting(page,expectLight=false){
   const style=x=>getComputedStyle(x);
   return {
    width:innerWidth,rootOverflow:document.documentElement.scrollWidth-innerWidth,
-   canvasImage:style(root.closest('.op-admin-view')||root).backgroundImage,
+   canvasImage:style(root).backgroundImage,
    heroImage:style(hero).backgroundImage,
    heroHeight:hero.getBoundingClientRect().height,
    titleSize:parseFloat(style(root.querySelector('h1')).fontSize),
