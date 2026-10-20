@@ -44,7 +44,7 @@ export function scheduleInput(input){
  const wall=String(input?.local_time||'');
  if(!/^\d{4}-\d\d-\d\dT\d\d:\d\d$/.test(wall))throw new HttpError('Enter a valid Bangladesh date and time.');
  const dt=new Date(wall+':00+06:00');
- if(!Number.isFinite(dt.getTime())||dt.toISOString().slice(0,16)!==new Date(dt.getTime()+6*3600000).toISOString().slice(0,16))
+ if(!Number.isFinite(dt.getTime())||new Date(dt.getTime()+6*3600000).toISOString().slice(0,16)!==wall)
    throw new HttpError('Invalid Bangladesh date or time.');
  if(dt.getTime()<Date.now()+2*60000||dt.getTime()>Date.now()+365*86400000)
    throw new HttpError('Schedule matches at least 2 minutes ahead and within one year.');
