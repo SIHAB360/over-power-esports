@@ -174,7 +174,7 @@ async function checkImmersiveHeader(page,desktop=true){
       theme:rb(theme),inSlot:slot.contains(theme),
       accents:navItems.map(x=>getComputedStyle(x).getPropertyValue('--op-item').trim()),
       cardBeam:cards.length?getComputedStyle(cards[0],'::after').animationName:'',
-      navBeam:navItems.length?getComputedStyle(navItems[0],'::before').animationName:'',
+      navBeam:navItems.some(x=>x.getAttribute('data-op-active')==='false')?getComputedStyle(navItems.find(x=>x.getAttribute('data-op-active')==='false'),'::before').animationName:'',
       xOverflow:document.documentElement.scrollWidth-innerWidth
     };
   });
@@ -194,6 +194,42 @@ async function checkImmersiveHeader(page,desktop=true){
   }
 }
 
+
+
+async function checkReferenceInsetTab(page,standalone,desktop){
+ const state=await page.evaluate(standalone=>{
+  const active=document.querySelector(standalone?'.op-admin-route-link.active':'[data-op-admin-nav-item][data-op-active="true"]');
+  const rail=document.querySelector(standalone?'.op-admin-route-sidebar':'[data-op-sidebar]');
+  const top=active?.querySelector('[data-op-inset-curve="top"]');
+  const bottom=active?.querySelector('[data-op-inset-curve="bottom"]');
+  if(!active||!rail||!top||!bottom)return null;
+  const css=getComputedStyle(active),a=active.getBoundingClientRect(),r=rail.getBoundingClientRect();
+  const t=top.getBoundingClientRect(),b=bottom.getBoundingClientRect();
+  const curvesVisible=getComputedStyle(top).display!=='none'&&getComputedStyle(bottom).display!=='none';
+  return {
+   activeRight:a.right,railRight:r.right,
+   cornerStart:parseFloat(css.borderTopLeftRadius),cornerEnd:parseFloat(css.borderTopRightRadius),
+   surface:css.backgroundColor,themeBg:css.getPropertyValue('--op-inset-tab-bg').trim(),
+   topRight:t.right,bottomRight:b.right,topHeight:t.height,bottomHeight:b.height,
+   curvesVisible,docOverflow:document.documentElement.scrollWidth-innerWidth
+  };
+ },standalone);
+ assert(state,'Active admin tab and two curved joins must be rendered');
+ assert(state.cornerStart>=12,'Selected tab must have the reference rounded left edge');
+ assert(state.docOverflow<=3,'Curved tabs must not expand horizontal page width');
+ if(desktop){
+  assert(state.curvesVisible,'Desktop inset must show both concave joined corners');
+  assert(state.cornerEnd<=1,'Selected tab should have a flat edge meeting content');
+  assert(Math.abs(state.activeRight-state.railRight)<=3,
+   'Selected tab must finish flush with the main content boundary');
+  assert(Math.abs(state.topRight-state.activeRight)<=3&&Math.abs(state.bottomRight-state.activeRight)<=3,
+   'Both curved corners must attach to the active inset edge');
+  assert(state.topHeight>=16&&state.bottomHeight>=16,'Concave joins should be visible');
+ }else{
+  assert(!state.curvesVisible,'Mobile drawer should keep a simple rounded active tab');
+  assert(state.cornerEnd>=10,'Mobile active tab needs a complete capsule shape');
+ }
+}
 
 async function testRosterAndMatchLineup(browser){
  const {context,page}=await createPage(browser,1440,860);
@@ -283,7 +319,8 @@ async function run(){
    await assertRightScroll(page,false);
    await checkSidebarTypeface(page,false);await assertMenuOnlyScroll(page,false,width===1024);
    await checkHeading(page);
-   await checkImmersiveHeader(page,true);passed++;
+   await checkImmersiveHeader(page,true);
+    await checkReferenceInsetTab(page,false,true);passed++;
    const button=page.getByRole('button',{name:'Activate light mode'});
    await button.click();
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
