@@ -1,5 +1,5 @@
-import {identity,HttpError,errResponse,noStore,scheduleInput,sanitizeSchedule,goodUuid} from '../../../../lib/match-center-server';
-import {queueSchedule,flushPush} from '../../../../lib/match-push-server';
+import {identity,HttpError,errResponse,noStore,scheduleInput,sanitizeSchedule,goodUuid} from '../../../lib/match-center-server';
+import {queueSchedule,flushPush} from '../../../lib/match-push-server';
 export const dynamic='force-dynamic';
 export const runtime='nodejs';
 export async function GET(req){
