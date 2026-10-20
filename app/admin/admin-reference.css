@@ -1,0 +1,594 @@
+/* OVER POWER ESPORTS / seamless reference-inspired admin shell
+   All changes are presentation-only. Existing forms, permissions and data untouched. */
+
+/* 1. ONE scrollable content column, ONE stationary navigation rail. */
+@media (min-width:901px){
+  .op-admin-system{
+    height:100vh;height:100dvh;min-height:0;overflow:hidden;
+    overscroll-behavior:none;--op-cutout:#0b1930;
+    --op-rail-a:#315cbd;--op-rail-b:#243e97;
+  }
+  .op-admin-route-layout{
+    height:100vh;height:100dvh;min-height:0;overflow:hidden;
+  }
+  .op-admin-route-layout:has(> .op-admin-route-navigator){
+    grid-template-columns:clamp(240px,17.3vw,290px) minmax(0,1fr);
+    gap:0;height:100dvh;min-height:0;
+  }
+  .op-admin-route-navigator{height:100dvh;overflow:hidden;min-height:0}
+  .op-admin-view{height:100dvh;min-height:0;overflow-x:hidden;overflow-y:auto;
+    overscroll-behavior-y:contain;scrollbar-gutter:stable}
+  .op-admin-route-layout:not(:has(> .op-admin-route-navigator)) .op-admin-view{
+    overflow:hidden;scrollbar-gutter:auto;
+  }
+  .op-admin-system .op-admin-view > [class*="dashboard_dashboard"]{
+    height:100dvh;min-height:0;overflow:hidden;
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_layout"]{
+    height:100dvh;min-height:0;overflow:hidden;
+    grid-template-columns:clamp(240px,17.3vw,290px) minmax(0,1fr);
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_sidebar"]{
+    position:relative;top:auto;height:100dvh;max-height:100dvh;
+    overflow:hidden;
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_main"]{
+    height:100dvh;min-height:0;overflow-x:hidden;overflow-y:auto;
+    overscroll-behavior-y:contain;scrollbar-gutter:stable;
+  }
+  /* Menus never show their own scrollbar. When needed they are revealed by
+     synchronized scrolling of the right pane (AdminScrollCoordinator). */
+  .op-admin-system .op-admin-route-links,
+  .op-admin-system .op-admin-view [class*="dashboard_navScroll"]{
+    min-height:0;overflow:hidden!important;overscroll-behavior:none;
+    scrollbar-width:none!important;
+  }
+  .op-admin-system .op-admin-route-links::-webkit-scrollbar,
+  .op-admin-system .op-admin-view [class*="dashboard_navScroll"]::-webkit-scrollbar{
+    display:none!important;width:0;height:0;
+  }
+}
+
+/* 2. Blue rail wraps a light/dark inset active item, continuing the main canvas. */
+.op-admin-system{
+  --op-rail-a:#315cbd;--op-rail-b:#253d93;
+  --op-cutout:#0b1930;--op-nav-text:#f3f8ff;
+  --op-nav-line:rgba(216,239,255,.16);
+  --op-panel-radius:20px;
+}
+.op-admin-system .op-admin-route-sidebar,
+.op-admin-system .op-admin-view [class*="dashboard_sidebar"]{
+  border-right:0!important;
+  background:linear-gradient(174deg,var(--op-rail-a) 0%,#344b9f 52%,var(--op-rail-b) 100%)!important;
+  color:var(--op-nav-text)!important;
+  box-shadow:inset -2px 0 rgba(156,212,255,.17),0 4px 34px rgba(10,22,83,.15)!important;
+  padding-inline:clamp(10px,.9vw,16px);
+}
+.op-admin-system .op-admin-route-sidebar::before,
+.op-admin-system .op-admin-view [class*="dashboard_sidebar"]::before{
+  content:"";position:absolute;top:-120px;left:-100px;width:350px;height:350px;
+  border-radius:50%;background:radial-gradient(circle,#8a83ff68,transparent 70%);
+  pointer-events:none;
+}
+.op-admin-system .op-admin-route-brand,
+.op-admin-system .op-admin-view [class*="dashboard_sidebarTop"]{
+  min-height:65px;border-bottom:1px solid var(--op-nav-line)!important;
+  position:relative;
+}
+.op-admin-system .op-admin-route-brand strong,
+.op-admin-system .op-admin-view [class*="dashboard_brandTitle"]{
+  color:#fff!important;font-size:clamp(13px,1.1vw,17px);
+  text-shadow:0 1px 8px rgba(8,18,76,.25)
+}
+.op-admin-system .op-admin-route-brand span,
+.op-admin-system .op-admin-view [class*="dashboard_brandSub"]{
+  color:#bdfaff!important;font-size:11px
+}
+.op-admin-system .op-admin-route-group-label,
+.op-admin-system .op-admin-view [class*="dashboard_menuTitle"]{
+  color:#dcf3ff!important;letter-spacing:.1em;font-size:11px
+}
+.op-admin-system .op-admin-route-links{gap:clamp(2px,.55vh,7px)}
+.op-admin-system .op-admin-route-link,
+.op-admin-system .op-admin-view [class*="dashboard_navItem"]{
+  position:relative;isolation:isolate;
+  min-height:clamp(38px,4.9vh,49px);
+  border-radius:14px 0 0 14px;
+  border:1px solid transparent!important;
+  display:flex;align-items:center;gap:10px;
+  background:transparent!important;color:#f6fbff!important;
+  font-size:clamp(12px,.84vw,14px);font-weight:750;
+  box-shadow:none!important;
+  padding:7px 11px;line-height:1.35;
+  transform:none!important;transition:background .23s,color .23s,box-shadow .23s;
+}
+.op-admin-system .op-admin-route-link:hover:not(.active),
+.op-admin-system .op-admin-view [class*="dashboard_navItem"]:hover:not([class*="dashboard_navActive"]){
+  background:rgba(255,255,255,.13)!important;color:#fff!important;
+  box-shadow:inset 3px 0 rgba(122,241,255,.83)!important;
+}
+.op-admin-system .op-admin-route-link.active,
+.op-admin-system .op-admin-view [class*="dashboard_navActive"]{
+  background:var(--op-cutout)!important;color:#eef8ff!important;
+  border-color:rgba(255,255,255,.20)!important;
+  border-right:0!important;
+  border-radius:15px 0 0 15px!important;
+  margin-right:-16px;
+  padding-right:26px;
+  box-shadow:inset 3px 0 #6af1ec,0 8px 20px rgba(5,12,51,.10)!important;
+  font-weight:900;
+}
+.op-admin-system .op-admin-route-link.active::after,
+.op-admin-system .op-admin-view [class*="dashboard_navActive"]::after{
+  content:"";position:absolute;z-index:-1;
+  top:0;bottom:0;right:-3px;width:10px;background:var(--op-cutout);
+  pointer-events:none;
+}
+.op-admin-system .op-admin-route-icon,
+.op-admin-system .op-admin-view [class*="dashboard_navIcon"]{
+  flex:none;width:31px;height:31px;
+  border-radius:10px;
+  background:rgba(12,44,114,.29)!important;color:#bbf8ff!important;
+  font-size:17px;
+}
+.op-admin-system .op-admin-route-link.active .op-admin-route-icon,
+.op-admin-system .op-admin-view [class*="dashboard_navActive"] [class*="dashboard_navIcon"]{
+  color:#65f2eb!important;background:rgba(80,181,222,.14)!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_visitorLink"]{
+  border-color:transparent!important;background:transparent!important;color:#f4fbff!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_visitorLink"]:hover{
+  background:rgba(255,255,255,.13)!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_navCount"]{
+  background:rgba(18,53,121,.48);color:#fff;border-color:rgba(225,242,255,.38);
+}
+.op-admin-system .op-admin-route-bottom{
+  gap:7px;padding-top:9px;
+  border-color:var(--op-nav-line);
+}
+.op-admin-system .op-admin-route-connected,
+.op-admin-system .op-admin-view [class*="dashboard_sidebarStatus"]{
+  min-height:38px;color:#edfff9!important;background:rgba(14,62,126,.23)!important;
+  border-color:rgba(187,245,253,.31)!important;
+  box-shadow:none!important;
+}
+.op-admin-system .op-admin-route-site,
+.op-admin-system .op-admin-route-logout,
+.op-admin-system .op-admin-view [class*="dashboard_logout"]{
+  min-height:39px;font-size:12px;border-radius:11px;color:#fff!important;
+  border-color:rgba(213,242,255,.27)!important;background:rgba(16,55,123,.26)!important;
+}
+.op-admin-system .op-admin-route-logout,
+.op-admin-system .op-admin-view [class*="dashboard_logout"]{
+  color:#fff5fa!important;border-color:rgba(255,186,220,.44)!important;
+  background:rgba(172,57,107,.23)!important;
+}
+.op-admin-system .op-admin-view [class*="dashboard_navSeparator"]{
+  margin:9px 8px;border-color:var(--op-nav-line);
+  background:var(--op-nav-line);
+}
+.op-admin-system .op-admin-view [class*="dashboard_sidebarFoot"]{
+  border-color:var(--op-nav-line);
+  padding-top:10px;
+}
+
+/* 3. Content is flush against sidebar, full width, with a shared visual palette. */
+.op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+  padding:60px clamp(12px,1.8vw,30px) 35px!important;
+  background:radial-gradient(ellipse 650px 400px at 100% 0,rgba(105,93,243,.12),transparent 65%),
+   linear-gradient(145deg,#0b1930,#101b35 70%,#0b1930)!important;
+}
+.op-admin-system .op-admin-view [class*="dashboard_main"]{
+  background:radial-gradient(circle at 100% 0%,rgba(77,105,230,.10),transparent 32%),
+    #0b1930;
+  padding:18px clamp(12px,1.7vw,30px) 36px;
+}
+.op-admin-system .op-admin-view [class*="dashboard_dashboard"]{
+  background:#0b1930!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_mainInner"]{
+  max-width:none!important;width:100%;margin:0
+}
+.op-admin-system .op-admin-view [class*="dashboard_header"]{
+  margin-bottom:18px;min-height:225px;
+  border-color:rgba(103,197,245,.45);
+  background:radial-gradient(circle at 95% 0,rgba(124,93,245,.21),transparent 49%),
+    linear-gradient(115deg,#142b4d,#18233f)!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_headerCenter"]{
+  text-align:center!important;margin:0 auto;max-width:100%;
+}
+.op-admin-system .op-admin-view [class*="dashboard_eyebrow"]{
+  justify-content:center!important;color:#73eee9
+}
+.op-admin-system .op-admin-view [class*="dashboard_pageTitle"]{
+  text-align:center!important;font-size:clamp(29px,3vw,56px);
+}
+.op-admin-system .op-admin-view [class*="dashboard_pageSubtitle"]{
+  text-align:center!important;margin-inline:auto!important;
+  font-size:clamp(13px,1vw,16px)
+}
+.op-admin-system .op-admin-view [class*="dashboard_heroMeta"]{
+  justify-content:center!important
+}
+.op-admin-system .op-admin-view [class*="dashboard_sectionHeading"]{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;gap:12px;
+}
+.op-admin-system .op-admin-view [class*="dashboard_sectionHeading"] > div:first-child{
+  width:100%;max-width:100%;
+}
+.op-admin-system .op-admin-view [class*="dashboard_headingActions"]{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:9px;
+}
+.op-admin-system .op-admin-view [class*="dashboard_sectionOverline"]{
+  color:#7decf4;letter-spacing:.10em
+}
+.op-admin-system .op-admin-view [class*="dashboard_sectionHeading"] h2{
+  font-size:clamp(21px,1.8vw,30px);text-align:center
+}
+.op-admin-system .op-admin-view [class*="dashboard_stats"]{
+  grid-template-columns:repeat(4,minmax(0,1fr));gap:12px
+}
+.op-admin-system .op-admin-view [class*="dashboard_commandActions"]{
+  grid-template-columns:repeat(4,minmax(0,1fr));gap:12px
+}
+.op-admin-system .op-admin-view [class*="dashboard_stat"],
+.op-admin-system .op-admin-view [class*="dashboard_commandAction"],
+.op-admin-system .op-admin-view [class*="dashboard_panel"]{
+  border-radius:16px;border-color:rgba(102,171,255,.33);
+}
+.op-admin-system .op-admin-view [class*="dashboard_stat"]:hover,
+.op-admin-system .op-admin-view [class*="dashboard_commandAction"]:hover{
+  box-shadow:0 0 22px rgba(79,220,245,.20),0 12px 25px rgba(0,3,28,.21)
+}
+
+/* 4. Every admin PAGE title centered, without wrecking toolbar controls. */
+.op-admin-system .op-admin-view main h1,
+.op-admin-system .op-admin-view [class*="_page"] h1{
+  max-width:100%;text-align:center!important;text-wrap:balance;
+  overflow-wrap:anywhere;
+}
+.op-admin-system .op-admin-view main :is(header,.hero,.heading) h1{
+  margin-inline:auto!important;
+}
+.op-admin-system .op-admin-view main .header,
+.op-admin-system .op-admin-view main .aa-header{
+  text-align:center!important;
+}
+.op-admin-system .op-admin-view .op-match-page .topbar > div:first-child{
+  flex:1 1 500px;text-align:center!important;min-width:0;
+}
+.op-admin-system .op-admin-view .op-match-page .topbar .eyebrow{
+  display:block;text-align:center!important
+}
+.op-admin-system .op-admin-view .op-match-page .topbar h1{
+  text-align:center!important;margin-inline:auto
+}
+.op-admin-system .op-admin-view [class*="players_header"]{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:14px;max-width:none
+}
+.op-admin-system .op-admin-view [class*="players_headerCopy"]{
+  width:100%;text-align:center!important;margin:0 auto;
+}
+.op-admin-system .op-admin-view [class*="players_headerCopy"] [class*="players_eyebrow"]{
+  justify-content:center!important
+}
+.op-admin-system .op-admin-view [class*="players_headerCopy"] [class*="players_subtitle"]{
+  margin-inline:auto!important
+}
+.op-admin-system .op-admin-view [class*="players_headerStat"]{
+  margin-inline:auto;justify-self:center
+}
+.op-admin-system .op-admin-view [class*="moderators_heading"],
+.op-admin-system .op-admin-view [class*="moderators_header"],
+.op-admin-system .op-admin-view [class*="visitors_heading"]{
+  text-align:center!important;justify-content:center;
+}
+.op-admin-system .op-admin-view [class*="moderators_heading"]{
+  display:flex;flex-wrap:wrap;flex-direction:column;align-items:center
+}
+.op-admin-system .op-admin-view [class*="moderators_heading"] > div:first-child{
+  width:100%;text-align:center!important;
+}
+.op-admin-system .op-admin-view [class*="moderators_heading"] p{
+  margin-inline:auto
+}
+.op-admin-system .op-admin-view [class*="visitors_hero"]{
+  text-align:center!important;align-items:center;justify-content:center
+}
+.op-admin-system .op-admin-view [class*="visitors_hero"] > div:first-child{
+  flex:1 1 100%;min-width:0
+}
+.op-admin-system .op-admin-view [class*="visitors_hero"] p{
+  margin-inline:auto
+}
+.op-admin-system .op-admin-view [class*="visitors_heroTools"]{
+  margin-inline:auto
+}
+.op-admin-system .op-admin-view [class*="visitors_eyebrow"],
+.op-admin-system .op-admin-view [class*="visitors_heroTags"]{
+  justify-content:center
+}
+.op-admin-system .op-admin-view [class*="history_hero"]{
+  text-align:center!important;justify-content:center
+}
+.op-admin-system .op-admin-view [class*="history_hero"] > div:first-child{
+  text-align:center;flex:1 1 100%
+}
+.op-admin-system .op-admin-view main.page .header,
+.op-admin-system .op-admin-view main.page > .container > header{
+  text-align:center!important
+}
+.op-admin-system .op-admin-view main.page .header p{
+  margin-inline:auto
+}
+.op-admin-system .op-admin-view .op-admin-profit-page > h1{
+  text-align:center!important;margin-inline:auto
+}
+.op-admin-system .op-admin-view .achievement-admin .aa-header{
+  text-align:center!important
+}
+.op-admin-system .op-admin-view .achievement-admin .aa-header p{
+  margin-inline:auto
+}
+.op-admin-system .op-admin-view .admin-player-record-page .hero{
+  text-align:center!important
+}
+.op-admin-system .op-admin-view .admin-player-record-page .hero h1{
+  text-align:center!important
+}
+
+/* 5. A-Z consistent glow palette for each section, from soft cyan to purple and mint. */
+.op-admin-system .op-admin-view :is(
+  [class*="_panel__"],[class*="_card__"],[class*="_metric__"],
+  [class*="_stat__"],.panel,.card,.team-card,.tournament-card,
+  .aa-panel,.aa-card,.aa-gallery-panel,.op-v4-panel
+){
+  transition:border-color .25s ease,background .3s ease,
+    box-shadow .32s ease,transform .25s ease;
+}
+.op-admin-system .op-admin-view :is(
+ [class*="_panel__"],[class*="_card__"],[class*="_metric__"],
+ [class*="_stat__"],.panel,.card,.team-card,.tournament-card,.aa-panel,.aa-card
+):hover{
+  border-color:rgba(102,219,255,.65)!important;
+  box-shadow:0 0 24px rgba(52,199,255,.13),0 15px 26px rgba(2,10,36,.18);
+}
+@keyframes opFlowOutline{
+  0%,100%{filter:hue-rotate(0deg);opacity:.52}
+  50%{filter:hue-rotate(30deg);opacity:.92}
+}
+.op-admin-system .op-admin-view :is(
+  [class*="dashboard_stat"],[class*="dashboard_panel"],
+  [class*="visitors_metric"],[class*="moderators_panel"],
+  [class*="players_card"],.team-card,.tournament-card,.aa-card
+)::after{
+  pointer-events:none;z-index:0;
+}
+.op-admin-system .op-admin-view :is(
+  [class*="dashboard_stat"],[class*="dashboard_panel"],
+  [class*="visitors_metric"],[class*="moderators_panel"],
+  [class*="players_card"],.team-card,.tournament-card,.aa-card
+){outline:1px solid rgba(73,218,245,.12);outline-offset:-2px}
+.op-admin-system .op-admin-view :is(
+  [class*="dashboard_stat"],[class*="visitors_metric"],
+  [class*="moderators_panel"],[class*="players_card"],.team-card,
+  .tournament-card,.aa-card
+){animation:opFlowOutline 7s ease-in-out infinite alternate}
+.op-admin-system .op-admin-view :is(button,a):not(:disabled):hover{
+  transition:transform .2s ease,background .2s ease,box-shadow .25s ease;
+}
+.op-admin-system .op-admin-view :is(
+ [class*="_save"],[class*="_refresh"],[class*="_sectionAction"],
+ [class*="_create"],.create-btn,.manage-btn,.aa-primary,.save-button
+):not(:disabled):hover{
+  box-shadow:0 0 19px rgba(68,205,250,.23)
+}
+
+/* 6. Tight layouts and accessible tables on desktop, clean stacked mobile. */
+.op-admin-system .op-admin-view{
+  min-width:0;
+}
+.op-admin-system .op-admin-view :is(
+ [class*="visitors_shell"],[class*="moderators_wrap"],
+ [class*="players_toolbar"],[class*="players_grid"],
+ [class*="history_container"],.container,.aa-container,.shell
+){max-width:none;min-width:0}
+.op-admin-system .op-admin-view :is(
+ [class*="dashboard_tableWrap"],[class*="visitors_desktopTable"],
+ [class*="history_tableScroller"]
+){overflow-x:auto;-webkit-overflow-scrolling:touch}
+.op-admin-system .op-admin-theme-tools{
+  top:9px;right:clamp(12px,1.9vw,29px);
+  border-radius:12px;border-color:rgba(170,224,255,.40);
+  background:linear-gradient(140deg,#1a3574,#233f88);
+  box-shadow:0 8px 22px rgba(5,18,73,.15);
+  color:#fff
+}
+.op-admin-system .op-admin-theme-tools .op-theme-option.selected{
+  background:linear-gradient(115deg,#5c81f1,#9063d8);border-color:#bdd6ff6b
+}
+
+/* 7. Theme colors match the inset and rail on every page. */
+html[data-op-admin-theme="light"] .op-admin-system{
+  --op-cutout:#edf5ff;
+  --op-rail-a:#4c6dd1;--op-rail-b:#344cab;
+  --op-nav-text:#fff;
+}
+html[data-op-admin-theme="light"] .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+  background:linear-gradient(145deg,#edf5ff,#f5f9ff)!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-view [class*="dashboard_dashboard"]{
+  background:#edf5ff!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-view [class*="dashboard_main"]{
+  background:#edf5ff!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-sidebar,
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-view [class*="dashboard_sidebar"]{
+  background:linear-gradient(165deg,#4d73d4,#3755b9)!important;
+  color:#fff!important
+}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ .op-admin-route-brand strong,[class*="dashboard_brandTitle"],
+ .op-admin-route-brand span,[class*="dashboard_brandSub"]
+){color:#fff!important}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ .op-admin-route-link,[class*="dashboard_navItem"]
+){color:#fff!important}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ .op-admin-route-link.active,[class*="dashboard_navActive"]
+){color:#2b4693!important;background:var(--op-cutout)!important}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ .op-admin-route-link.active .op-admin-route-icon,
+ [class*="dashboard_navActive"] [class*="dashboard_navIcon"]
+){color:#406dd0!important;background:#e0eaff!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-view [class*="dashboard_navCount"]{
+  background:#324f9c;color:#fff
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-connected{
+  color:#fff!important;background:#325aab!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-site,
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-logout{
+  color:#fff!important;background:#3a56a9!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools{
+  background:#fff;color:#273f6e;border-color:#a6bfeb
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools .op-theme-option.selected{
+  background:#4e6fe1;color:#fff
+}
+
+/* Do not hide nav entries on phone; mobile drawer is independently usable. */
+@media(max-width:1100px) and (min-width:901px){
+  .op-admin-system .op-admin-view [class*="dashboard_stats"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_commandActions"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+}
+@media(max-height:790px) and (min-width:901px){
+  .op-admin-system .op-admin-route-brand,
+  .op-admin-system .op-admin-view [class*="dashboard_sidebarTop"]{
+    margin-bottom:7px!important;padding-bottom:9px!important;min-height:55px
+  }
+  .op-admin-system .op-admin-route-links{gap:2px}
+  .op-admin-system .op-admin-route-link,
+  .op-admin-system .op-admin-view [class*="dashboard_navItem"]{
+    min-height:35px;padding-block:4px
+  }
+  .op-admin-system .op-admin-route-icon,
+  .op-admin-system .op-admin-view [class*="dashboard_navIcon"]{
+    width:27px;height:27px;font-size:15px
+  }
+  .op-admin-system .op-admin-route-bottom{gap:5px;padding-top:7px}
+  .op-admin-system .op-admin-route-site,.op-admin-system .op-admin-route-logout{min-height:34px}
+  .op-admin-system .op-admin-view [class*="dashboard_menuTitle"]{margin-top:7px;margin-bottom:6px}
+}
+@media(max-width:900px){
+  .op-admin-system{min-height:100dvh;height:100dvh;overflow:hidden}
+  .op-admin-route-layout{height:100dvh;overflow:hidden}
+  .op-admin-system .op-admin-view{
+    width:100%;height:100dvh;min-height:0;
+    overflow-y:auto;overflow-x:hidden;
+    overscroll-behavior:contain;
+  }
+  .op-admin-route-layout:not(:has(> .op-admin-route-navigator)) .op-admin-view{
+    overflow:hidden;
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_dashboard"]{
+    height:100dvh;min-height:0;overflow:hidden
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_layout"]{
+    display:block;height:100dvh;min-height:0;overflow:hidden
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_main"]{
+    height:100dvh;overflow-y:auto;overflow-x:hidden;
+    padding:9px clamp(9px,2vw,15px) 25px
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_header"]{
+    padding-top:65px!important
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_headerCenter"]{
+    text-align:center!important
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_pageTitle"],
+  .op-admin-system .op-admin-view [class*="dashboard_pageSubtitle"]{
+    text-align:center!important
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_eyebrow"],
+  .op-admin-system .op-admin-view [class*="dashboard_heroMeta"]{
+    justify-content:center!important
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_commandActions"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_sidebar"]{
+    position:fixed;top:0;left:0;
+    width:min(86vw,310px);height:100dvh;min-height:0;
+    overflow:hidden;
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_navScroll"]{
+    overflow-y:auto!important;scrollbar-width:none!important
+  }
+  .op-admin-system .op-admin-route-sidebar{
+    overflow:hidden;
+  }
+  .op-admin-system .op-admin-route-links{
+    overflow-y:auto!important;scrollbar-width:none!important
+  }
+  .op-admin-system .op-admin-route-link.active,
+  .op-admin-system .op-admin-view [class*="dashboard_navActive"]{
+    margin-right:0;border-radius:12px!important;padding-right:11px
+  }
+  .op-admin-system .op-admin-route-link.active::after,
+  .op-admin-system .op-admin-view [class*="dashboard_navActive"]::after{
+    display:none
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_stats"]{
+    grid-template-columns:repeat(2,minmax(0,1fr))
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_contentGrid"]{
+    grid-template-columns:minmax(0,1fr)
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_sectionHeading"]{
+    text-align:center
+  }
+  .op-admin-system .op-admin-route-open{
+    border-color:rgba(157,226,255,.55);background:#3759ae;color:#fff
+  }
+}
+@media(max-width:640px){
+  .op-admin-system .op-admin-view [class*="dashboard_stats"]{gap:9px}
+  .op-admin-system .op-admin-view [class*="dashboard_stat"]{padding:14px;min-height:135px}
+  .op-admin-system .op-admin-view [class*="dashboard_commandActions"]{
+    grid-template-columns:minmax(0,1fr)
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_commandAction"]:last-child{
+    grid-column:auto
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_contentGrid"],
+  .op-admin-system .op-admin-view [class*="visitors_charts"],
+  .op-admin-system .op-admin-view [class*="visitors_breakdowns"]{
+    grid-template-columns:minmax(0,1fr)
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_header"]{min-height:0}
+  .op-admin-system .op-admin-view [class*="dashboard_pageTitle"]{
+    font-size:clamp(27px,7vw,40px)!important
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_sectionHeading"] h2{
+    font-size:22px
+  }
+  .op-admin-system .op-admin-view [class*="dashboard_main"]{
+    scrollbar-gutter:auto;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .op-admin-system .op-admin-view *{animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
