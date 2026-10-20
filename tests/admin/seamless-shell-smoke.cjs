@@ -311,6 +311,61 @@ async function testRosterAndMatchLineup(browser){
 }
 
 
+
+async function checkPremiumScheduleLighting(page,expectLight=false){
+ const result=await page.evaluate(()=>{
+  const root=document.querySelector('main.op-schedule-center');
+  const hero=root?.querySelector('.op-schedule-header');
+  const cards=[...root?.querySelectorAll('.op-schedule-kpis>div')||[]];
+  const form=root?.querySelector('.op-schedule-form');
+  const timeline=root?.querySelector('.op-schedule-card:nth-child(2)');
+  const formInner=form?.querySelector('form');
+  const date=root?.querySelector('input[type="datetime-local"]');
+  const label=root?.querySelector('label');
+  const submit=root?.querySelector('.op-schedule-form-actions button');
+  if(!root||!hero||cards.length!==3||!form||!timeline||!date||!label||!submit)return null;
+  const style=x=>getComputedStyle(x);
+  return {
+   width:innerWidth,rootOverflow:document.documentElement.scrollWidth-innerWidth,
+   canvasImage:style(root.parentElement).backgroundImage,
+   heroImage:style(hero).backgroundImage,
+   heroHeight:hero.getBoundingClientRect().height,
+   titleSize:parseFloat(style(root.querySelector('h1')).fontSize),
+   cardLighting:cards.map(x=>style(x).backgroundImage),
+   cardAccent:cards.map(x=>style(x).getPropertyValue('--ms-card-a').trim()),
+   formImage:style(form).backgroundImage,
+   formInnerBg:style(formInner).backgroundColor,
+   timelineImage:style(timeline).backgroundImage,
+   formHeight:form.getBoundingClientRect().height,timelineHeight:timeline.getBoundingClientRect().height,
+   labelSize:parseFloat(style(label).fontSize),
+   dateSize:parseFloat(style(date).fontSize),
+   submitSize:parseFloat(style(submit).fontSize),
+   insightVisible:!!root.querySelector('.op-schedule-insight-inner'),
+   buttonContrast:style(submit).color,
+   theme:document.documentElement.getAttribute('data-op-admin-theme')
+  };
+ });
+ assert(result,'Premium Match Center must render all panels and controls');
+ assert(result.heroImage.includes('radial-gradient'),'Hero should be fully illuminated, not flat');
+ assert(result.canvasImage.includes('radial-gradient'),'Match Center canvas must replace flat red/black empty space');
+ assert(result.cardAccent.filter((c,i,a)=>a.indexOf(c)===i).length===3,
+  'Three KPI surfaces must show different accent identities');
+ assert(result.cardLighting.every(s=>s.includes('gradient')),'All KPI cards need multiple lighting layers');
+ assert(result.insightVisible,'Timeline should contain a complete reminder sequence footer');
+ assert(result.titleSize>=28,'Main title must stay comfortably readable');
+ assert(result.labelSize>=12.5&&result.dateSize>=12.5&&result.submitSize>=12.5,
+  'Form typography must not become tiny');
+ assert(result.rootOverflow<=3,'Premium lighting must not cause horizontal overflow');
+ if(result.width>=1200){
+  assert(Math.abs(result.timelineHeight-result.formHeight)<8,
+   'Timeline should align and fill the full height alongside the form');
+ }
+ if(expectLight){
+  assert.equal(result.theme,'light','Light theme should be active');
+  assert(result.formImage.includes('gradient'),'Light mode keeps premium colored form surfaces');
+ }
+}
+
 async function testPremiumScheduleUI(browser){
  const {context,page}=await createPage(browser,1440,860);
  const teams=[{id:'aaaa1111-aaaa-4aaa-8aaa-aaaaaaaaaaaa',team_name:'Main Squad'}];
@@ -338,6 +393,7 @@ async function testPremiumScheduleUI(browser){
  });
  try{
   await ready(page,'/admin/match-schedule','MATCH SCHEDULE CENTER');
+  await checkPremiumScheduleLighting(page,false);
   assert.equal(await page.locator('.op-schedule-match').count(),2);
   const daily=await page.locator('.op-schedule-kpis>div').nth(1).locator('strong').innerText();
   assert(daily.includes('175'),'Only entry fees (75+100) must be added, not prizes: '+daily);
@@ -351,6 +407,10 @@ async function testPremiumScheduleUI(browser){
   const now=await page.locator('.op-schedule-kpis>div').nth(1).locator('strong').innerText();
   assert(now.includes('225'),'Entry fees should total 225 after publish: '+now);
   await page.getByText('9 player inbox alert(s) created').waitFor({state:'visible'});
+  await page.getByRole('button',{name:'Activate light mode'}).click();
+  await checkPremiumScheduleLighting(page,true);
+  await page.setViewportSize({width:390,height:844});
+  await checkPremiumScheduleLighting(page,true);
   assert(await page.locator('.op-schedule-reminder-badges span').count()===4,
     'Four schedule notifications (publish/60/30/15) must be shown');
   console.log('PASS premium schedule form, prize-is-text, daily entry fee sum, and four alerts');
