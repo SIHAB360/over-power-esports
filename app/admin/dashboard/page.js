@@ -512,7 +512,9 @@ export default function AdminDashboard() {
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
+                  {active === key && <span data-op-inset-curve="top" aria-hidden="true" />}
                   <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  {active === key && <span data-op-inset-curve="bottom" aria-hidden="true" />}
                   <span data-op-nav-label className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
                     <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
@@ -531,7 +533,9 @@ export default function AdminDashboard() {
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
+                  {active === key && <span data-op-inset-curve="top" aria-hidden="true" />}
                   <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  {active === key && <span data-op-inset-curve="bottom" aria-hidden="true" />}
                   <span data-op-nav-label className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
                     <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>

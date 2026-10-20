@@ -5,6 +5,7 @@ import './admin-polish.css';
 import './admin-reference.css';
 import './admin-immersive.css';
 import './admin-sidebar-font.css';
+import './admin-inset-tabs.css';
 
 // Admin-only design shell. Original database operations and roles are untouched.
 export default function AdminLayout({ children }) {

@@ -49,7 +49,9 @@ export default function AdminRouteSidebar(){
       className={'op-admin-route-link'+(href===active?' active':'')}
       aria-current={href===active?'page':undefined}
       onClick={()=>setOpen(false)}>
+       {href===active && <span data-op-inset-curve="top" aria-hidden="true"/>}
        <span className="op-admin-route-icon"><Icon aria-hidden="true"/></span>
+       {href===active && <span data-op-inset-curve="bottom" aria-hidden="true"/>}
        <span data-op-nav-label>{label}</span>
        {index===0?<FiArrowUpRight aria-hidden="true" className="op-admin-route-end"/>:null}
       </Link>)}
