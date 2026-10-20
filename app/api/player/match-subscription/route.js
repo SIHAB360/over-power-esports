@@ -1,4 +1,4 @@
-import {identity,playerFor,errResponse,noStore,HttpError} from '../../../../lib/match-center-server';
+import {identity,playerFor,errResponse,noStore,HttpError} from '../../../lib/match-center-server';
 export const dynamic='force-dynamic';
 export async function GET(req){
  try{
