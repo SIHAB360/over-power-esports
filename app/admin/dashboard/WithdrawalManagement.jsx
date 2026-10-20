@@ -206,7 +206,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
 
       <div className={styles.metricGrid}>
         {statuses.map(key => (
-          <article className={styles.metric} key={key}>
+          <article data-op-withdrawal-metric className={styles.metric} key={key}>
             <div className={styles.metricLabel}>
               <span className={[styles.dot,styles[key]].join(" ")}/>
               {key === "pending" ? "PENDING REVIEW" : key === "approved" ? "AWAITING PAYMENT" : key === "paid" ? "PAID RECORDS" : "REJECTED"}
@@ -218,7 +218,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
       </div>
 
       <div className={styles.panels}>
-        <div className={styles.listPanel}>
+        <div data-op-withdrawal-panel className={styles.listPanel}>
           <div className={styles.panelHead}>
             <h4>WITHDRAWAL REQUESTS</h4>
             <small>{loading ? "Syncing…" : `${requests.length} of ${total} in selected status`}</small>
@@ -267,7 +267,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
           </div>
         </div>
 
-        <div className={styles.detailPanel}>
+        <div data-op-withdrawal-panel className={styles.detailPanel}>
           <div className={styles.panelHead}><h4>REQUEST DETAILS</h4><FiFilter aria-hidden="true"/></div>
           {!selected ? <div className={styles.noSelection}>
             <span className={styles.noSelectionIcon} aria-hidden="true"><FiShield/></span>
