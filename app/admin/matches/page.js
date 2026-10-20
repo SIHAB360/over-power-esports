@@ -25,6 +25,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [sponsorSearch, setSponsorSearch] = useState("");
   const [tournaments, setTournaments] = useState([]);
   const [teamPlayers, setTeamPlayers] = useState([]);
+  const squadRequestId=useRef(0);
   const [recentMatches, setRecentMatches] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
@@ -193,6 +194,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   }
 
   async function loadTeamPlayers(teamId) {
+    const requestId=++squadRequestId.current;
     setSelectedPlayers([]);
     setTeamPlayers([]);
     setPlayerStats({});
@@ -220,6 +222,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       .in("status", ["approved", "active"])
       .order("full_name", { ascending: true });
 
+    if(requestId!==squadRequestId.current)return;
     if (error) {
       setMessage(error.message);
       setMessageType("error");
