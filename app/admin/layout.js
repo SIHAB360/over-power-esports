@@ -10,7 +10,7 @@ import './admin-sidebar-font.css';
 export default function AdminLayout({ children }) {
   return (
     <div className="op-admin-system">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" />
       <AdminScrollCoordinator />
       <div className="op-admin-route-layout">
         <AdminRouteSidebar />
