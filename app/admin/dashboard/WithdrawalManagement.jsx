@@ -185,8 +185,8 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
   }
 
   return (
-    <section className={styles.shell} aria-label="Admin player withdrawal management">
-      <div className={styles.heading}>
+    <section data-op-withdrawal-shell className={styles.shell} aria-label="Admin player withdrawal management">
+      <div data-op-withdrawal-heading className={styles.heading}>
         <div>
           <p className={styles.eyebrow}><FiShield aria-hidden="true"/> FINANCE OPERATIONS / ADMIN CONTROL</p>
           <h3>Withdrawal <span>Control Center</span></h3>
@@ -306,7 +306,7 @@ export default function WithdrawalManagement({ players = [], refreshVersion = 0,
                 {scopedRights.review&&<button type="button" className={styles.rejectBtn} onClick={() => setAction("reject")} disabled={busy}><FiXCircle/> Reject</button>}
               </div>}
 
-              {action && <div className={styles.actionPanel}>
+              {action && <div data-op-withdrawal-action className={styles.actionPanel}>
                 <div className={styles.actionHead}><strong>{action === "approve" ? "CONFIRM APPROVAL" : action === "reject" ? "REJECT WITHDRAWAL" : "MANUAL PAYMENT CONFIRMATION"}</strong>
                   <button type="button" onClick={clearAction} disabled={busy} aria-label="Close action"><FiX/></button></div>
                 {action === "approve" && <p className={styles.actionHelp}>Approve this request for {money(selected.amount)}? No transfer will occur. Request remains reserved until payment is confirmed or rejected.</p>}
