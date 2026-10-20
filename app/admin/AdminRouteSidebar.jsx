@@ -13,6 +13,7 @@ import logo from '../assets/logo.png';
 const menu=[
  {label:'Dashboard',href:'/admin/dashboard',Icon:FiGrid},
  {label:'Players',href:'/admin/players',Icon:FiUsers},
+ {label:'Roster Controls',href:'/admin/roster',Icon:FiActivity},
  {label:'Matches',href:'/admin/matches',Icon:FiTarget},
  {label:'Match History',href:'/admin/matches/history',Icon:FiClock},
  {label:'Teams',href:'/admin/teams',Icon:FiLayers},
