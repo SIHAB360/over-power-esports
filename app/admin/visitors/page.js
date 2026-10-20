@@ -14,7 +14,19 @@ function GraphBars({data,labelKey='name',valueKey='visits'}){
  const max=Math.max(1,...data.map(x=>Number(x[valueKey]||0)));
  return <div className={styles.bars}>{!data.length?<div className={styles.empty}>No data yet</div>:data.map((x,i)=><div className={styles.barLine} key={i}><div className={styles.barLabels}><span title={x[labelKey]}>{x[labelKey]||'Unknown'}</span><b>{number(x[valueKey])}</b></div><div className={styles.track}><span style={{width:`${Math.max(3,Number(x[valueKey]||0)/max*100)}%`}}/></div></div>)}</div>
 }
-function csv(rows){const cols=['started_at','last_seen_at','ended_at','account_email','current_path','first_path','page_views','country','region','city','device_type','browser','os_name','source','referrer_host','ip_group'];const quote=x=>'"'+String(x??'').replace(/"/g,'""')+'"';const text=[cols.map(quote).join(','),...rows.map(r=>cols.map(c=>quote(r[c])).join(','))].join('\r\n');const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='over-power-visitors-page.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+function csv(rows){
+ const cols=['started_at','last_seen_at','ended_at','account_email','current_path','first_path','page_views','country','region','city','device_type','browser','os_name','source','referrer_host','ip_group'];
+ // Quoting alone does not stop spreadsheet formula injection in imported CSV files.
+ const quote=value=>{
+  const raw=String(value??'');
+  const safe=/^[\x00-\x20]*[=+\-@]/.test(raw)?"'"+raw:raw;
+  return '"'+safe.replace(/"/g,'""')+'"';
+ };
+ const text=[cols.map(quote).join(','),...rows.map(r=>cols.map(c=>quote(r[c])).join(','))].join('\r\n');
+ const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));
+ const a=document.createElement('a');a.href=url;a.download='over-power-visitors-page.csv';a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
 export default function VisitorAnalytics(){
  const [data,setData]=useState(initial),[hours,setHours]=useState(24),[page,setPage]=useState(1),[filter,setFilter]=useState(''),[query,setQuery]=useState('');
  const [loading,setLoading]=useState(true),[error,setError]=useState(''),[denied,setDenied]=useState(false),[selected,setSelected]=useState(null),[timeline,setTimeline]=useState([]),[timelineLoading,setTimelineLoading]=useState(false);
