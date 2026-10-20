@@ -1,0 +1,110 @@
+/* Decorative engraved type inspired by the supplied "Nauert" specimen.
+   If the visitor has the actual Nauert face licensed and installed, use it.
+   Otherwise use the OFL-licensed Jacques Francois Shadow as an inline-serif
+   substitute. No proprietary font file is redistributed by this website. */
+.op-admin-system{
+  --op-sidebar-display:"Nauert","Jacques Francois Shadow",Georgia,serif;
+}
+/* Two matching sidebar implementations (dashboard + standalone routes). */
+.op-admin-system [data-op-sidebar] [data-op-nav-label],
+.op-admin-system .op-admin-route-link [data-op-nav-label]{
+  font-family:var(--op-sidebar-display)!important;
+  font-weight:400!important;
+  font-size:clamp(15px,1.12vw,18px)!important;
+  line-height:1.3!important;
+  letter-spacing:.012em!important;
+  white-space:normal;
+  overflow-wrap:normal;
+  word-break:normal;
+  text-overflow:clip;
+  color:#f9fdff!important;
+  text-shadow:0 1px 4px rgba(0,14,52,.38);
+}
+.op-admin-system [data-op-sidebar] [data-op-brand-title],
+.op-admin-system .op-admin-route-brand strong{
+  font-family:var(--op-sidebar-display)!important;
+  font-weight:400!important;
+  font-size:clamp(17px,1.35vw,21px)!important;
+  letter-spacing:.015em!important;
+  line-height:1.23!important;
+  text-transform:none;
+  color:#ffffff!important;
+  text-shadow:0 0 9px rgba(128,214,254,.35),0 2px 2px rgba(2,12,46,.44);
+}
+.op-admin-system [data-op-sidebar] [data-op-menu-title],
+.op-admin-system .op-admin-route-group-label{
+  font-family:var(--op-sidebar-display)!important;
+  font-weight:400!important;
+  font-size:clamp(13px,.95vw,16px)!important;
+  line-height:1.25!important;
+  letter-spacing:.018em!important;
+  text-align:center;
+  color:#edf7ff!important;
+}
+.op-admin-system [data-op-sidebar] [data-op-sidebar-status] strong,
+.op-admin-system .op-admin-route-connected{
+  font-family:var(--op-sidebar-display)!important;
+  font-weight:400!important;
+  font-size:clamp(13px,1vw,16px)!important;
+  line-height:1.2!important;
+  letter-spacing:.015em!important;
+}
+.op-admin-system [data-op-sidebar] [data-op-logout],
+.op-admin-system .op-admin-route-logout,
+.op-admin-system .op-admin-route-site{
+  font-family:var(--op-sidebar-display)!important;
+  font-weight:400!important;
+  font-size:clamp(13px,1vw,16px)!important;
+  letter-spacing:.018em!important;
+}
+/* Keep numeric counts and explanatory microcopy legible at small sizes. */
+.op-admin-system [data-op-sidebar] [data-op-nav-count],
+.op-admin-system [data-op-sidebar] [data-op-brand-sub],
+.op-admin-system [data-op-sidebar] [data-op-sidebar-status] small,
+.op-admin-system .op-admin-route-brand span{
+  font-family:Inter,system-ui,sans-serif!important;
+}
+/* Allow decorative, slightly wider menu labels to wrap inside the rail
+   rather than clipping against icons, badges or the content edge. */
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item],
+.op-admin-system [data-op-sidebar] [data-op-visitors-link],
+.op-admin-system [data-op-sidebar] a[data-op-section],
+.op-admin-system .op-admin-route-link{
+  min-height:43px;
+  gap:9px;
+  padding-top:8px;
+  padding-bottom:8px;
+}
+.op-admin-system [data-op-sidebar] [data-op-nav-label]{
+  min-width:0;flex:1 1 auto;
+}
+.op-admin-system .op-admin-route-link [data-op-nav-label]{
+  min-width:0;flex:1 1 auto;
+}
+.op-admin-system [data-op-sidebar] [data-op-nav-count]{
+  flex-shrink:0;
+}
+html[data-op-admin-theme="light"] .op-admin-system
+  [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"] [data-op-nav-label],
+html[data-op-admin-theme="light"] .op-admin-system
+  .op-admin-route-link.active [data-op-nav-label]{
+  color:#234285!important;text-shadow:none!important;
+}
+/* Very short laptop displays: do not hide lower links; the menu has its
+   own bounded scrolling area with the footer and brand stationary. */
+@media(min-width:901px) and (max-height:780px){
+  .op-admin-system [data-op-sidebar] [data-op-nav-label],
+  .op-admin-system .op-admin-route-link [data-op-nav-label]{
+    font-size:clamp(14px,1.1vw,16px)!important;
+  }
+  .op-admin-system [data-op-sidebar] [data-op-admin-nav-item],
+  .op-admin-system .op-admin-route-link{
+    min-height:37px;padding-top:5px;padding-bottom:5px;
+  }
+}
+@media(max-width:900px){
+  .op-admin-system [data-op-sidebar] [data-op-nav-label],
+  .op-admin-system .op-admin-route-link [data-op-nav-label]{
+    font-size:16px!important;
+  }
+}
