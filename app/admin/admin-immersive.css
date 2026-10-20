@@ -1,0 +1,448 @@
+/* OVER POWER ESPORTS • immersive admin refinement
+ * Theme dock lives INSIDE the content header; no independent top gutter.
+ * Six accents repeat intentionally so every navigation group and surface
+ * gets recognisable, legible lighting rather than a single blue glow.
+ */
+@property --op-beam-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes op-beam-turn{to{--op-beam-angle:360deg}}
+@keyframes op-light-pass{0%{left:-45%;opacity:0}12%{opacity:1}60%{opacity:1}100%{left:115%;opacity:0}}
+@keyframes op-spectrum-drift{
+  0%,100%{background-position:0% 42%}
+  50%{background-position:100% 58%}
+}
+@keyframes op-ambient-pulse{0%,100%{opacity:.68}50%{opacity:1}}
+.op-admin-system{
+  --op-spectrum-cyan:#45eeff;--op-spectrum-blue:#6f9eff;
+  --op-spectrum-purple:#bd85ff;--op-spectrum-pink:#ff70ca;
+  --op-spectrum-green:#62f1b7;--op-spectrum-gold:#ffd275;
+  --op-space:#0b1930;--op-surface:#102540;
+  --op-surface-2:#15264b;
+  --op-cutout:var(--op-space);
+  margin:0!important;padding:0!important;
+}
+.op-admin-system .op-admin-route-layout{
+  margin:0!important;padding:0!important;gap:0!important;
+}
+.op-admin-system .op-admin-view{padding-top:0!important;min-width:0}
+.op-admin-system [data-op-dashboard]{margin:0!important;padding:0!important}
+.op-admin-system [data-op-dashboard-layout]{gap:0!important;margin:0!important}
+.op-admin-system [data-op-right-scroll]{
+  padding:14px clamp(11px,1.4vw,26px) 40px!important;
+  margin:0!important;
+  background:radial-gradient(ellipse 900px 600px at 100% 4%,rgba(143,72,255,.17),transparent 70%),
+    radial-gradient(ellipse 660px 480px at 5% 63%,rgba(14,229,225,.12),transparent 69%),var(--op-space)!important;
+  border-left:0!important;
+}
+.op-admin-system [data-op-main-inner]{max-width:none!important;margin:0!important}
+.op-admin-system [data-op-dashboard-layout] [data-op-sidebar]{
+  border:0!important;border-radius:0!important;margin:0!important;
+}
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+  padding:13px clamp(12px,1.5vw,25px) 35px!important;
+  background:radial-gradient(ellipse at 100% 0,rgba(115,81,226,.16),transparent 51%),
+    radial-gradient(ellipse at 4% 74%,rgba(44,225,217,.07),transparent 50%),var(--op-space)!important;
+}
+/* No floating viewport dock. Dashboard portal attaches it inside the hero. */
+.op-admin-system .op-admin-theme-tools{
+  position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;
+  margin:0;z-index:6;
+  display:inline-flex;align-items:center;min-height:42px;
+  padding:4px 5px 4px 12px;
+  border-radius:14px;background:linear-gradient(110deg,rgba(25,54,110,.94),rgba(56,39,107,.96))!important;
+  border:1px solid rgba(169,225,255,.52)!important;
+  box-shadow:inset 0 1px 0 rgba(228,250,255,.20),0 0 22px rgba(116,112,250,.20)!important;
+  backdrop-filter:blur(12px);
+}
+.op-admin-system .op-admin-theme-caption{
+  color:#b0d9ff!important;font-size:9px;letter-spacing:.1em
+}
+.op-admin-system .op-admin-theme-tools .op-theme-option{
+  min-width:73px;min-height:33px;
+  color:#d7e6ff;background:transparent;
+}
+.op-admin-system .op-admin-theme-tools .op-theme-option.selected{
+  background:linear-gradient(105deg,#488dff,#8e62f7,#d36fcb)!important;
+  background-size:240% 240%!important;
+  animation:op-spectrum-drift 7s ease-in-out infinite;
+  color:#fff!important;border-color:rgba(221,236,255,.58)!important;
+  box-shadow:0 0 15px rgba(160,103,255,.32)!important;
+}
+.op-admin-system .op-admin-theme-tools .op-theme-option:hover{
+  background:rgba(129,165,255,.22)!important;
+}
+.op-admin-system .op-admin-hero-theme-slot{
+  position:absolute;top:16px;right:19px;z-index:10;
+  display:flex;justify-content:flex-end;align-items:center;
+  max-width:calc(100% - 110px)
+}
+/* Standalone admin pages: switch is in the right content surface, no full-width top bar */
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+  position:relative;
+}
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view > .op-admin-theme-tools{
+  position:sticky!important;top:7px!important;left:auto!important;
+  float:right;margin:0 0 -45px 0;
+  z-index:40;
+}
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view > main,
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view > [data-op-visitors-page],
+.op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view > [data-op-moderators-page]{
+  padding-top:clamp(56px,4vw,70px)!important;
+}
+/* Dashboard hero starts with the sidebar, rather than below an empty theme strip. */
+.op-admin-system [data-op-hero]{
+  min-height:265px!important;
+  margin:0 0 15px!important;
+  padding:58px clamp(18px,3vw,42px) 32px!important;
+  display:flex!important;justify-content:center!important;align-items:center!important;
+  border:1px solid rgba(120,204,255,.47)!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 7% 100%,rgba(19,217,224,.22),transparent 34%),
+    radial-gradient(circle at 94% 5%,rgba(211,93,246,.22),transparent 48%),
+    linear-gradient(115deg,#172e53,#20234c 57%,#202041)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.21),0 15px 36px #040c2f4d,
+    0 0 0 1px rgba(67,192,255,.09)!important;
+}
+.op-admin-system [data-op-hero]::before{
+  content:"";position:absolute;z-index:0;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#55f4e5,#65a6ff,#d779ff,#ff8fbc,#ffd177,#57fac0,#55f4e5);
+  background-size:300% 100%;animation:op-spectrum-drift 7s ease-in-out infinite;
+  box-shadow:0 0 16px rgba(132,185,255,.48);
+}
+.op-admin-system [data-op-hero-copy]{margin:0 auto!important;width:100%!important;max-width:900px!important;text-align:center!important;position:relative;z-index:1}
+.op-admin-system [data-op-hero-eyebrow]{justify-content:center!important;color:#8afbf3!important}
+.op-admin-system [data-op-hero-title]{
+  text-align:center!important;color:#fff!important;
+  font-size:clamp(32px,3.4vw,59px)!important;
+  text-shadow:0 0 25px rgba(149,204,255,.31);
+}
+.op-admin-system [data-op-hero-title] span{
+  background:linear-gradient(100deg,#79faff,#7faaff,#df9cff,#ff95cf,#74f3c1)!important;
+  background-size:250% 250%!important;background-clip:text!important;
+  -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;
+  animation:op-spectrum-drift 8s ease-in-out infinite;
+}
+.op-admin-system [data-op-hero-subtitle]{
+  text-align:center!important;color:#dceaff!important;margin-inline:auto!important;
+  font-size:clamp(13px,1.05vw,16px)!important;
+}
+.op-admin-system [data-op-hero-meta]{justify-content:center!important}
+.op-admin-system [data-op-section-heading]{text-align:center!important;align-items:center!important}
+.op-admin-system [data-op-section-heading] h2{
+  color:#f8fcff!important;
+  text-shadow:0 0 21px rgba(101,206,254,.33)
+}
+.op-admin-system [data-op-section-overline]{
+  color:#88f3ec!important;text-shadow:0 0 14px rgba(76,226,227,.45)
+}
+/* Sidebar: layered blue/indigo base with six distinct light sources. */
+.op-admin-system :is([data-op-sidebar],.op-admin-route-sidebar){
+  --op-rail-a:#344da6;--op-rail-b:#313a86;
+  background:
+    radial-gradient(ellipse 190px 240px at -12% 1%,rgba(70,238,255,.36),transparent 80%),
+    radial-gradient(ellipse 240px 300px at 110% 28%,rgba(205,91,247,.31),transparent 77%),
+    radial-gradient(ellipse 230px 300px at -12% 57%,rgba(63,225,155,.26),transparent 73%),
+    radial-gradient(ellipse 230px 280px at 105% 86%,rgba(252,129,156,.23),transparent 77%),
+    linear-gradient(167deg,#3358b2 0%,#39449a 46%,#292f75 100%)!important;
+  box-shadow:inset -2px 0 rgba(190,225,255,.14),6px 0 25px rgba(17,32,100,.10)!important;
+}
+/* Assigned colors follow the menu item, not a single color for all options. */
+.op-admin-system [data-op-admin-nav-item][data-op-section="overview"],
+.op-admin-system .op-admin-route-link:nth-child(1){--op-item:#67efff;--op-item2:#5a9dff}
+.op-admin-system [data-op-admin-nav-item][data-op-section="players"],
+.op-admin-system .op-admin-route-link:nth-child(2){--op-item:#58f5c7;--op-item2:#5bc8ff}
+.op-admin-system [data-op-admin-nav-item][data-op-section="matches"],
+.op-admin-system .op-admin-route-link:nth-child(3){--op-item:#f5a2ff;--op-item2:#816aff}
+.op-admin-system [data-op-admin-nav-item][data-op-section="teams"],
+.op-admin-system .op-admin-route-link:nth-child(5){--op-item:#ffc46b;--op-item2:#ff81a5}
+.op-admin-system [data-op-admin-nav-item][data-op-section="tournaments"],
+.op-admin-system .op-admin-route-link:nth-child(6){--op-item:#fc87bf;--op-item2:#a37dff}
+.op-admin-system [data-op-admin-nav-item][data-op-section="profit"],
+.op-admin-system .op-admin-route-link:nth-child(7){--op-item:#79f0af;--op-item2:#ffcd73}
+.op-admin-system [data-op-admin-nav-item][data-op-section="salary"],
+.op-admin-system .op-admin-route-link:nth-child(8){--op-item:#ffd078;--op-item2:#ff93bd}
+.op-admin-system [data-op-admin-nav-item][data-op-section="verification"],
+.op-admin-system .op-admin-route-link:nth-child(9){--op-item:#75c8ff;--op-item2:#a181ff}
+.op-admin-system [data-op-admin-nav-item][data-op-section="achievements"],
+.op-admin-system .op-admin-route-link:nth-child(10){--op-item:#e8a1ff;--op-item2:#ffc788}
+.op-admin-system [data-op-section="moderators"],
+.op-admin-system .op-admin-route-link:nth-child(11){--op-item:#93f6f3;--op-item2:#b99eff}
+.op-admin-system [data-op-section="visitors"],
+.op-admin-system .op-admin-route-link:nth-child(12){--op-item:#c0ff80;--op-item2:#4ae7ef}
+.op-admin-system .op-admin-route-link:nth-child(4){--op-item:#84a5ff;--op-item2:#fa8aca}
+.op-admin-system .op-admin-route-link{
+  --op-item:#75e5ff;--op-item2:#b08dff;
+}
+.op-admin-system [data-op-admin-nav-item]{
+  --op-item:#75e5ff;--op-item2:#b08dff;
+}
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item],
+.op-admin-system .op-admin-route-link{
+  position:relative;isolation:isolate;overflow:hidden;
+  border-radius:12px 0 0 12px!important;
+  border:1px solid rgba(247,251,255,.12)!important;
+  border-left:2px solid var(--op-item)!important;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--op-item) 14%,transparent),rgba(27,35,112,.05))!important;
+  color:#f8fbff!important;
+  min-height:40px;
+  margin-bottom:2px;transform:none!important;
+}
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item]::before,
+.op-admin-system .op-admin-route-link::before{
+  content:"";position:absolute;inset:-1px;z-index:0;pointer-events:none;
+  border-radius:inherit;padding:1px;
+  background:conic-gradient(from var(--op-beam-angle),
+    transparent 0deg,var(--op-item) 65deg,transparent 110deg,
+    var(--op-item2) 200deg,transparent 252deg,var(--op-item) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:op-beam-turn 9s linear infinite;
+  opacity:.72;
+}
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item] > *,
+.op-admin-system .op-admin-route-link > *{position:relative;z-index:1}
+.op-admin-system [data-op-sidebar] [data-op-nav-icon],
+.op-admin-system .op-admin-route-icon{
+  color:var(--op-item)!important;
+  background:color-mix(in srgb,var(--op-item) 21%,rgba(18,34,104,.4))!important;
+  border:1px solid color-mix(in srgb,var(--op-item) 32%,transparent);
+  box-shadow:0 0 11px color-mix(in srgb,var(--op-item) 22%,transparent);
+}
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item]:hover,
+.op-admin-system .op-admin-route-link:hover{
+  border-color:color-mix(in srgb,var(--op-item) 65%,white)!important;
+  background:linear-gradient(105deg,color-mix(in srgb,var(--op-item) 29%,#263774),
+    color-mix(in srgb,var(--op-item2) 23%,#2c3077))!important;
+  box-shadow:0 0 19px color-mix(in srgb,var(--op-item) 30%,transparent)!important;
+}
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"],
+.op-admin-system .op-admin-route-link.active{
+  background:var(--op-cutout)!important;
+  color:#f7fdff!important;
+  border-left:3px solid var(--op-item)!important;
+  border-top:1px solid color-mix(in srgb,var(--op-item) 65%,white)!important;
+  border-bottom:1px solid color-mix(in srgb,var(--op-item2) 60%,white)!important;
+  border-right:0!important;
+  margin-right:-16px;padding-right:25px;
+  box-shadow:inset 0 0 19px color-mix(in srgb,var(--op-item) 13%,transparent),
+    -4px 0 19px color-mix(in srgb,var(--op-item) 18%,transparent)!important;
+}
+.op-admin-system .op-admin-route-link.active::after,
+.op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"]::after{
+  content:"";position:absolute;right:-1px;top:0;bottom:0;width:13px;
+  background:var(--op-cutout)!important;pointer-events:none;display:block;
+}
+.op-admin-system .op-admin-route-link.active [class*="icon"],
+.op-admin-system [data-op-admin-nav-item][data-op-active="true"] [data-op-nav-icon]{
+  filter:drop-shadow(0 0 8px var(--op-item))
+}
+/* Main panels: actual moving light beams, an illuminated inner lip and color accents. */
+.op-admin-system :is([data-op-stat-card],[data-op-panel],[data-op-command-action],
+ [data-op-visitors-panel],[data-op-visitors-metric],[data-op-moderators-panel],
+ [data-op-players-card],.team-card,.tournament-card,.aa-card,.aa-panel){
+  --op-card-a:#66edff;--op-card-b:#9886ff;
+  position:relative;isolation:isolate;
+  overflow:hidden;
+  border-radius:17px!important;
+  border:1px solid color-mix(in srgb,var(--op-card-a) 43%,#35527c)!important;
+  background:
+    radial-gradient(circle at 0% 0%,color-mix(in srgb,var(--op-card-a) 15%,transparent),transparent 50%),
+    radial-gradient(circle at 100% 100%,color-mix(in srgb,var(--op-card-b) 11%,transparent),transparent 48%),
+    linear-gradient(140deg,#152941,#13203b)!important;
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--op-card-a) 35%,transparent),
+    0 11px 25px rgba(0,7,30,.23),0 0 17px color-mix(in srgb,var(--op-card-a) 11%,transparent)!important;
+}
+.op-admin-system :is([data-op-stat-card],[data-op-panel],[data-op-command-action],
+ [data-op-visitors-panel],[data-op-visitors-metric],[data-op-moderators-panel],
+ [data-op-players-card],.team-card,.tournament-card,.aa-card,.aa-panel)::before{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  border-radius:inherit;padding:1.5px;
+  background:conic-gradient(from var(--op-beam-angle),
+    color-mix(in srgb,var(--op-card-a) 12%,transparent) 0deg,var(--op-card-a) 54deg,
+    transparent 108deg,var(--op-card-b) 175deg,transparent 233deg,
+    #77f9c3 298deg,var(--op-card-a) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:op-beam-turn 12s linear infinite;
+  opacity:.85;
+}
+.op-admin-system [data-op-stat-card]::after,
+.op-admin-system [data-op-panel]::after,
+.op-admin-system [data-op-command-action]::after{
+  content:"";position:absolute;top:0;left:-45%;width:35%;height:3px;z-index:4;
+  pointer-events:none;border:0!important;border-radius:50%;
+  background:linear-gradient(90deg,transparent,#fff,var(--op-card-a),transparent)!important;
+  box-shadow:0 0 15px 3px color-mix(in srgb,var(--op-card-a) 55%,transparent)!important;
+  animation:op-light-pass 8s ease-in-out infinite!important;
+}
+.op-admin-system [data-op-stat-card]:nth-child(1){--op-card-a:#54f7ec;--op-card-b:#76abff}
+.op-admin-system [data-op-stat-card]:nth-child(2){--op-card-a:#8395ff;--op-card-b:#c598ff}
+.op-admin-system [data-op-stat-card]:nth-child(3){--op-card-a:#ffb46b;--op-card-b:#ff7eb7}
+.op-admin-system [data-op-stat-card]:nth-child(4){--op-card-a:#6af7aa;--op-card-b:#70ccff}
+.op-admin-system [data-op-command-action]:nth-child(1){--op-card-a:#59e8fb;--op-card-b:#8799ff}
+.op-admin-system [data-op-command-action]:nth-child(2){--op-card-a:#be8aff;--op-card-b:#739dff}
+.op-admin-system [data-op-command-action]:nth-child(3){--op-card-a:#ffb96a;--op-card-b:#ff88b6}
+.op-admin-system [data-op-command-action]:nth-child(4){--op-card-a:#7cf2bd;--op-card-b:#56caf5}
+.op-admin-system [data-op-panel]:nth-child(6n + 1),
+.op-admin-system .team-card:nth-child(6n + 1),
+.op-admin-system .aa-card:nth-child(6n + 1){--op-card-a:#59e9ff;--op-card-b:#8182ff}
+.op-admin-system [data-op-panel]:nth-child(6n + 2),
+.op-admin-system .team-card:nth-child(6n + 2),
+.op-admin-system .aa-card:nth-child(6n + 2){--op-card-a:#c187ff;--op-card-b:#ff82c5}
+.op-admin-system [data-op-panel]:nth-child(6n + 3),
+.op-admin-system .team-card:nth-child(6n + 3),
+.op-admin-system .aa-card:nth-child(6n + 3){--op-card-a:#74f3bd;--op-card-b:#70c9ff}
+.op-admin-system [data-op-panel]:nth-child(6n + 4),
+.op-admin-system .team-card:nth-child(6n + 4){--op-card-a:#ffc877;--op-card-b:#ff91c5}
+.op-admin-system [data-op-panel]:nth-child(6n + 5){--op-card-a:#fa8fd7;--op-card-b:#8ca5ff}
+.op-admin-system [data-op-panel]:nth-child(6n){--op-card-a:#73eafb;--op-card-b:#61efb7}
+.op-admin-system :is([data-op-stat-card],[data-op-panel],[data-op-command-action],
+ [data-op-visitors-panel],[data-op-visitors-metric],[data-op-moderators-panel],
+ [data-op-players-card],.team-card,.tournament-card,.aa-card,.aa-panel):hover{
+  transform:translateY(-2px);
+  border-color:var(--op-card-a)!important;
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--op-card-a) 55%,transparent),
+    0 14px 28px #01081960,0 0 25px color-mix(in srgb,var(--op-card-a) 27%,transparent)!important
+}
+.op-admin-system [data-op-panel] h3,
+.op-admin-system :is([data-op-visitors-panel],[data-op-moderators-panel],.team-card,.tournament-card,.aa-panel) h2{
+  color:#f2faff!important;
+  text-shadow:0 0 15px color-mix(in srgb,var(--op-card-a) 52%,transparent)!important;
+}
+.op-admin-system [data-op-panel] [class*="panelHeading"]{
+  font-size:clamp(16px,1.2vw,21px)!important;
+}
+.op-admin-system :is([data-op-stat-card],[data-op-command-action]) svg{
+  filter:drop-shadow(0 0 7px color-mix(in srgb,var(--op-card-a) 38%,transparent));
+}
+.op-admin-system [data-op-command-action]{min-height:90px!important}
+/* Standalone management: per-route accents. */
+.op-admin-system :is([data-op-players-card],.team-card){--op-card-a:#56eecb;--op-card-b:#6a9bff}
+.op-admin-system .tournament-card{--op-card-a:#ffb36f;--op-card-b:#e18dff}
+.op-admin-system .aa-card{--op-card-a:#ef99ff;--op-card-b:#78b8ff}
+.op-admin-system [data-op-visitors-panel]{--op-card-a:#b3fa75;--op-card-b:#54e4ff}
+.op-admin-system [data-op-visitors-metric]{--op-card-a:#81f7cf;--op-card-b:#7bb1ff}
+.op-admin-system [data-op-moderators-panel]{--op-card-a:#ffc97d;--op-card-b:#8bd7ff}
+.op-admin-system :is(.op-match-page .topbar,.op-match-page .panel,
+ .op-match-page .history,[data-op-history-hero]){
+  box-shadow:inset 0 2px rgba(95,234,239,.43),0 0 20px rgba(105,155,248,.12)!important;
+  border-color:rgba(107,204,245,.48)!important
+}
+.op-admin-system .op-match-page .topbar h1{
+  background:linear-gradient(110deg,#7afaf2,#a1adff,#f4a0fb,#ffc282)!important;
+  background-size:220% 220%!important;background-clip:text!important;-webkit-background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;animation:op-spectrum-drift 7s ease-in-out infinite;
+}
+.op-admin-system :is(.achievement-admin .aa-header,.op-match-page .topbar,
+ [data-op-players-header],[data-op-visitors-hero],[data-op-history-hero],
+ [data-op-moderators-heading],main.page > .container > .header){
+  box-shadow:inset 0 2px rgba(105,232,243,.45),0 0 22px rgba(143,127,250,.16)!important;
+  border-color:rgba(105,211,241,.44)!important;
+}
+.op-admin-system .op-admin-view :is(
+ [data-op-players-header] h1,[data-op-visitors-hero] h1,[data-op-history-hero] h1,
+ [data-op-moderators-heading] h1,main.page .header h1,.achievement-admin .aa-header h1
+){
+  text-align:center!important;
+  text-shadow:0 0 24px rgba(110,222,252,.25);
+}
+/* Accessible true light mode — colored lights, readable ink and inset matching. */
+html[data-op-admin-theme="light"] .op-admin-system{
+  --op-space:#eef5ff;--op-surface:#fff;--op-cutout:#eef5ff;
+}
+html[data-op-admin-theme="light"] .op-admin-system :is([data-op-right-scroll],[data-op-dashboard]){
+  background:#eef5ff!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+  background:#eef5ff!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-hero]{
+  background:radial-gradient(circle at 95% 0,rgba(156,116,248,.14),transparent 50%),
+    linear-gradient(135deg,#fff,#eaf6ff)!important;
+  border-color:#84c9e6!important;box-shadow:0 10px 28px #245c9930!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-hero-title]{
+  color:#173154!important;text-shadow:none
+}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-hero-title] span{
+  background:linear-gradient(105deg,#1c91a8,#6b63c6,#9c56ab)!important;
+  background-clip:text!important;-webkit-background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-hero-subtitle]{color:#4d6887!important}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-section-heading] h2{
+  color:#173154!important;text-shadow:0 0 14px #8cc6ff4a
+}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ [data-op-stat-card],[data-op-panel],[data-op-command-action],
+ [data-op-visitors-panel],[data-op-visitors-metric],[data-op-moderators-panel],
+ [data-op-players-card],.team-card,.tournament-card,.aa-card,.aa-panel
+){
+  background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--op-card-a) 13%,transparent),transparent 48%),#fff!important;
+  border-color:color-mix(in srgb,var(--op-card-a) 38%,#bdd1e8)!important;
+  box-shadow:0 9px 22px #2a66a719,inset 0 1px #fff!important;
+  color:#173154!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system :is(
+ [data-op-stat-card],[data-op-panel],[data-op-command-action],
+ [data-op-visitors-panel],[data-op-visitors-metric],[data-op-moderators-panel],
+ [data-op-players-card],.team-card,.tournament-card,.aa-card,.aa-panel
+) :is(h2,h3,h4,strong){color:#193657!important;text-shadow:none!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools{
+  background:linear-gradient(115deg,#e4edff,#fff)!important;
+  border-color:#a0bce5!important;color:#28487a!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-caption{color:#445b80!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools .op-theme-option{color:#334f77}
+html[data-op-admin-theme="light"] .op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"],
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-link.active{
+  color:#25418b!important;background:#eef5ff!important
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-route-link.active::after,
+html[data-op-admin-theme="light"] .op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"]::after{
+  background:#eef5ff!important
+}
+/* Tablet and phone: theme INSIDE header, never a separate top strip. */
+@media(max-width:900px){
+  .op-admin-system .op-admin-view{padding-top:0!important}
+  .op-admin-system [data-op-right-scroll]{padding:9px 10px 27px!important}
+  .op-admin-system [data-op-hero]{
+    min-height:225px!important;padding:68px 18px 25px!important
+  }
+  .op-admin-system .op-admin-hero-theme-slot{top:11px;right:11px;max-width:calc(100% - 85px)}
+  .op-admin-system [data-op-sidebar]{
+    z-index:110;
+  }
+  .op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view{
+    padding:12px 10px 24px!important;
+  }
+  .op-admin-system .op-admin-route-layout:has(> .op-admin-route-navigator) .op-admin-view > main{
+    padding-top:64px!important
+  }
+  .op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"],
+  .op-admin-system .op-admin-route-link.active{
+    margin-right:0;padding-right:11px;border-radius:13px!important;
+  }
+  .op-admin-system .op-admin-route-link.active::after,
+  .op-admin-system [data-op-sidebar] [data-op-admin-nav-item][data-op-active="true"]::after{display:none}
+}
+@media(max-width:560px){
+  .op-admin-system .op-admin-theme-caption{display:none}
+  .op-admin-system .op-admin-theme-tools{padding:3px;gap:3px;min-height:39px}
+  .op-admin-system .op-admin-theme-tools .op-theme-option{
+    min-width:56px;padding:5px 7px;min-height:32px;font-size:11px
+  }
+  .op-admin-system [data-op-hero]{min-height:235px!important;padding:65px 12px 23px!important}
+  .op-admin-system [data-op-hero-title]{font-size:clamp(25px,7vw,38px)!important}
+  .op-admin-system [data-op-panel] h3{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .op-admin-system *,
+  .op-admin-system *::before,
+  .op-admin-system *::after{animation:none!important;transition-duration:.01ms!important}
+}
