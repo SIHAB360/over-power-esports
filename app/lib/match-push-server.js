@@ -40,6 +40,7 @@ export async function flushPush(db,limit=180){
  for(const note of pending){
   const s=scheduleMap.get(note.schedule_id);
   // Canceled schedules are not sent; old messages remain visible as history.
+  let retryLater=false;
   if(ready&&s?.status==='published'){
    const payload=JSON.stringify({
     title:EVENT_LABEL[note.event_key]||'Upcoming match',
@@ -54,13 +55,13 @@ export async function flushPush(db,limit=180){
     catch(e){
      if([404,410].includes(Number(e.statusCode))){
       await db.from('op_match_push_subscriptions').delete().eq('id',sub.id);
-     }else console.warn('Match push delivery error',e.statusCode||'transient');
+     }else{retryLater=true;console.warn('Match push delivery error',e.statusCode||'transient')}
     }
    }
   }
   // Mark attempt finished, including users who declined push. The inbox row
   // remains unread until the player opens it. No silent permission requests.
-  await db.from('op_match_notifications').update({push_sent_at:new Date().toISOString()}).eq('id',note.id);
+  if(!retryLater)await db.from('op_match_notifications').update({push_sent_at:new Date().toISOString()}).eq('id',note.id);
  }
  return {processed:pending.length,pushed,enabled:ready};
 }
