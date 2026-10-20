@@ -1,0 +1,53 @@
+.op-schedule-center{width:100%;max-width:none;min-width:0;min-height:100%;padding:4px clamp(12px,2vw,30px) 40px;color:#eaf7ff;font:500 14px/1.55 Inter,system-ui,sans-serif}
+.op-schedule-center *{box-sizing:border-box}
+.op-schedule-header{text-align:center;padding:30px 21px 28px;border:1px solid #8fc8ff55;border-radius:24px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 0 85%,#3be6e82e,transparent 47%),radial-gradient(ellipse at 97% 0,#dd66fe32,transparent 48%),linear-gradient(130deg,#162b4a,#1d2143);box-shadow:0 15px 42px #03102a44}
+.op-schedule-header:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#66f2ff,#9e85ff,#fd8dc5,#f5c478,#6af4b8)}
+.op-schedule-kicker{display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.12em;color:#7df9e5;font-size:11px;font-weight:900}
+.op-schedule-header h1{color:#fff!important;text-align:center!important;font-size:clamp(27px,3vw,45px);font-weight:950;margin:10px 0 9px;line-height:1.15}
+.op-schedule-header p{max-width:810px;margin:0 auto 17px;color:#c2d8f0}
+.op-schedule-reminder-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.op-schedule-reminder-badges span{display:inline-flex;gap:5px;align-items:center;padding:6px 11px;border:1px solid #7ba3d375;border-radius:25px;font-size:11px;background:#1c3b61;color:#d0edff}
+.op-schedule-reminder-badges span:nth-child(2){border-color:#68ddc777}.op-schedule-reminder-badges span:nth-child(3){border-color:#d58cf077}.op-schedule-reminder-badges span:nth-child(4){border-color:#f4bf7d77}
+.op-schedule-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:17px 0}
+.op-schedule-kpis>div{display:flex;flex-direction:column;align-items:flex-start;padding:19px 18px;gap:5px;border:1px solid #72daf36a;border-radius:16px;background:linear-gradient(140deg,#193048,#171f3b);box-shadow:inset 0 2px #67ddfa33}
+.op-schedule-kpis>div:nth-child(2){border-color:#6eeec36e}.op-schedule-kpis>div:nth-child(3){border-color:#da8ff26e}
+.op-schedule-kpis svg{color:#72e5f2;font-size:21px}.op-schedule-kpis span{font-size:12px;color:#b7d4ee}.op-schedule-kpis strong{font-size:clamp(16px,1.8vw,29px);font-weight:900;line-height:1.25;color:#fff}
+.op-schedule-columns{display:grid;grid-template-columns:minmax(295px,.86fr) minmax(0,1.5fr);align-items:start;gap:16px}
+.op-schedule-card{border:1px solid #6f9bde68;border-radius:20px;background:linear-gradient(140deg,#152740,#14203a);padding:clamp(14px,1.6vw,23px);min-width:0;box-shadow:inset 0 2px #65e8f01f,0 12px 35px #06132d45}
+.op-schedule-heading{display:flex;gap:9px;align-items:center;justify-content:center;color:#7cecf3;margin-bottom:16px}
+.op-schedule-heading h2{margin:0;font-size:clamp(17px,1.45vw,21px);color:#f2f9ff!important;text-align:center}
+.op-schedule-form form{display:grid;gap:12px}
+.op-schedule-center label{display:grid;min-width:0;gap:5px;color:#c7e0ef;font-size:12px;font-weight:800;letter-spacing:.01em}
+.op-schedule-center :is(input,select,textarea){width:100%;min-width:0;max-width:100%;min-height:42px;padding:10px 12px;border:1px solid #81b7e087;border-radius:10px;background:#0c1a33;color:#eefaff;font:500 13px/1.4 Inter,system-ui,sans-serif;color-scheme:dark}
+.op-schedule-center textarea{resize:vertical}.op-schedule-center :is(input,select,textarea):focus-visible,.op-schedule-center button:focus-visible{outline:2px solid #6ef6eb;outline-offset:2px}
+.op-schedule-form-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.op-schedule-center button{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #7cbbfc9c;border-radius:10px;padding:10px 14px;background:linear-gradient(110deg,#3964bc,#8751b9);font-size:12px;font-weight:850;min-height:40px;color:#fff;transition:transform .2s,box-shadow .2s}
+.op-schedule-center button:not(:disabled):hover{box-shadow:0 0 17px #74c8ff55;transform:translateY(-1px)}
+.op-schedule-center button:disabled{opacity:.55;cursor:wait}
+.op-schedule-center button.op-schedule-secondary{background:#1b3655;border-color:#6985bb77;color:#d9e8fa}
+.op-schedule-form-actions{display:flex;gap:8px;flex-wrap:wrap}
+.op-schedule-filters{display:flex;align-items:end;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.op-schedule-filters label{max-width:260px}
+.op-schedule-day{margin:17px 0;border:1px solid #6787be54;border-radius:15px;padding:11px;background:#11213a}
+.op-schedule-day-title{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between;margin:4px 2px 13px;color:#80f1e6}
+.op-schedule-day-title strong{font-size:15px}.op-schedule-day-title span{color:#fbd58a;font-size:12px}
+.op-schedule-match{display:grid;grid-template-columns:95px minmax(0,1fr) auto;gap:11px;align-items:start;padding:13px 8px;border-top:1px solid #6b91ca3d}
+.op-schedule-match-time{display:grid;gap:5px;color:#8eeef7;font-weight:900}.op-schedule-match-time small{color:#acb3da}
+.op-schedule-match-main{min-width:0}.op-schedule-match-main h3{color:#fff!important;font-size:15px;margin:0 0 6px}.op-schedule-match-main>div{display:flex;flex-wrap:wrap;gap:7px}
+.op-schedule-match-main>div span{padding:3px 9px;border-radius:9px;color:#abf4f2;background:#25516a66;font-size:12px}.op-schedule-match-main>div span+span{color:#f6c8fb;background:#563a6866}
+.op-schedule-match-main small{display:block;margin-top:7px;color:#b4cadd;overflow-wrap:anywhere}.op-schedule-match-main p{color:#cbdaed;font-size:12px;margin:8px 0 0;overflow-wrap:anywhere}
+.op-schedule-match-buttons{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}.op-schedule-match-buttons button{padding:7px;font-size:11px;min-height:33px}
+.op-schedule-match.is-cancelled{opacity:.56}.op-schedule-cancelled{font-size:12px;color:#ffbdcc}
+.op-schedule-empty{text-align:center;color:#bad3e9;padding:20px}.op-schedule-success,.op-schedule-error{margin:12px auto;padding:13px;border:1px solid #63dcb876;border-radius:12px;color:#b5ffdf;background:#1b584c66;display:flex;align-items:center;gap:10px}.op-schedule-error{color:#ffc3d3;border-color:#f57fa06e;background:#602d4a55}
+.op-schedule-modal-backdrop{position:fixed;inset:0;background:#000a;z-index:300;display:grid;place-items:center;padding:20px}
+.op-schedule-modal{border:1px solid #9c9ffb;background:#132440;border-radius:19px;padding:24px;max-width:460px;width:100%;box-shadow:0 18px 55px #0008}.op-schedule-modal h3{color:#fff}.op-schedule-modal p{color:#b4cee2}.op-schedule-modal>div{display:flex;gap:8px;flex-wrap:wrap}
+html[data-op-admin-theme="light"] .op-schedule-center{color:#1f3a60}
+html[data-op-admin-theme="light"] .op-schedule-center :is(.op-schedule-header,.op-schedule-card,.op-schedule-kpis>div,.op-schedule-day){background:linear-gradient(135deg,#fff,#eff5ff);color:#1b375b;border-color:#90b6e3}
+html[data-op-admin-theme="light"] .op-schedule-center :is(h1,h2,h3,strong){color:#1b375b!important}
+html[data-op-admin-theme="light"] .op-schedule-center :is(p,label,small){color:#506a8c}
+html[data-op-admin-theme="light"] .op-schedule-center :is(input,select,textarea){background:#fff;color:#233c63;color-scheme:light}
+html[data-op-admin-theme="light"] .op-schedule-center .op-schedule-reminder-badges span{color:#25436b;background:#e6f2ff}
+@media(max-width:1150px){.op-schedule-columns{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.op-schedule-kpis{grid-template-columns:1fr 1fr}.op-schedule-kpis>div:last-child{grid-column:1/-1}.op-schedule-match{grid-template-columns:minmax(80px,95px) minmax(0,1fr)}.op-schedule-match-buttons{grid-column:2;justify-content:flex-start}}
+@media(max-width:480px){.op-schedule-center{padding:0 8px 26px}.op-schedule-form-pair{grid-template-columns:1fr}.op-schedule-kpis{grid-template-columns:1fr}.op-schedule-kpis>div:last-child{grid-column:auto}.op-schedule-day-title{display:grid}.op-schedule-match{grid-template-columns:1fr}.op-schedule-match-buttons{grid-column:auto}.op-schedule-match-time{display:flex;gap:10px}}
+@media(prefers-reduced-motion:reduce){.op-schedule-center *{transition:none!important}}

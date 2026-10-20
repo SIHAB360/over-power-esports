@@ -1,0 +1,17 @@
+{
+  "name": "OVER POWER ESPORTS Match Center",
+  "short_name": "OP Match Center",
+  "start_url": "/player/dashboard#match-schedule",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0c1731",
+  "theme_color": "#5368db",
+  "icons": [
+    {
+      "src": "/contact-mascot.webp",
+      "sizes": "any",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

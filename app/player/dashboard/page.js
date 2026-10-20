@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 import ModeratorShortcut from "./ModeratorShortcut";
+import MatchCenterWidget from "./MatchCenterWidget";
 import { useRouter } from "next/navigation";
 
 export default function PlayerDashboard() {
@@ -651,6 +652,7 @@ const bestPlacement =
         <div className="dashboard-layout">
 
           <div className="dashboard-content">
+             <MatchCenterWidget />
         {/* Hero */}
         <section className="hero" id="overview">
           <div className="avatar">
