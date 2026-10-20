@@ -143,11 +143,11 @@ async function checkSidebarTypeface(page,standalone){
     availableWidth:label.clientWidth};
  },standalone);
  assert(style,'Missing sidebar decorative font landmarks');
- assert(style.labelFont.includes('Nauert')&&style.labelFont.includes('Jacques Francois Shadow'),
-  'Admin sidebar must use the requested Nauert style with a licensed engraved fallback');
- assert(style.brandFont.includes('Nauert'),'Admin brand must use the matching display family');
- assert(style.size>=14,'Small labels should be readable');
- assert(style.labelWidth<=style.availableWidth+4,'Decorative menu text should wrap instead of clipping');
+ assert(style.labelFont.includes('Varesco')&&style.labelFont.includes('Archivo Black'),
+  'Admin sidebar must use Varesco-style heavy sans with an OFL fallback');
+ assert(style.brandFont.includes('Varesco'),'Admin brand must use the matching heavy display family');
+ assert(style.size>=11,'Small heavy sans labels should remain readable');
+ assert(style.labelWidth<=style.availableWidth+4,'Bold menu text should wrap instead of clipping');
 }
 
 async function checkHeading(page){
