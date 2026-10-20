@@ -169,7 +169,7 @@ export default function VerificationPanel({ refreshVersion = 0, moderatorMode = 
         </div>
       </div>
 
-      <div className={styles.listPanel}>
+      <div data-op-verification-panel className={styles.listPanel}>
         <div className={styles.listHeader}>
           <div>
             <h4>Live registration access codes</h4>
