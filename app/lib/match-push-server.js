@@ -31,7 +31,7 @@ export async function flushPush(db,limit=180){
   db.from('op_match_push_subscriptions').select('id,user_id,endpoint,p256dh,auth').in('user_id',[...new Set(pending.map(p=>p.user_id))])
  ]);
  const ready=Boolean(process.env.VAPID_PUBLIC_KEY&&process.env.VAPID_PRIVATE_KEY);
- if(ready)webpush.default.setVapidDetails('mailto:admin@over-power-esports.example',
+ if(ready)webpush.default.setVapidDetails('https://over-power-esports.vercel.app',
   process.env.VAPID_PUBLIC_KEY,process.env.VAPID_PRIVATE_KEY);
  const scheduleMap=new Map((schedules||[]).map(s=>[s.id,s]));
  const subMap=new Map();
