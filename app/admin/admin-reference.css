@@ -592,3 +592,46 @@ html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools .op-the
 @media(prefers-reduced-motion:reduce){
   .op-admin-system .op-admin-view *{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
+
+
+/* Gentle moving multi-color perimeter light, never a strobing flash.
+   Honors reduced-motion and does not cover interactive content. */
+@property --op-orbit-angle{
+  syntax:"<angle>";
+  inherits:false;
+  initial-value:0deg;
+}
+@keyframes opOrbitLight{
+  to{--op-orbit-angle:360deg}
+}
+.op-admin-system :is(
+ .op-admin-route-link.active,[data-op-admin-nav-item][data-op-active="true"],
+ [data-op-panel],[data-op-stat-card]
+){position:relative}
+.op-admin-system :is(
+ .op-admin-route-link.active,[data-op-admin-nav-item][data-op-active="true"],
+ [data-op-panel],[data-op-stat-card]
+)::before{
+  content:"";position:absolute;inset:0;z-index:2;
+  pointer-events:none;border:1.4px solid transparent;
+  border-radius:inherit;
+  background:conic-gradient(from var(--op-orbit-angle),
+    rgba(67,212,246,.06),rgba(89,227,248,.80),rgba(146,114,255,.62),
+    rgba(82,240,187,.70),rgba(67,212,246,.06)) border-box;
+  -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:opOrbitLight 9s linear infinite;
+  opacity:.76;
+}
+.op-admin-system .op-admin-route-link.active::before,
+.op-admin-system [data-op-admin-nav-item][data-op-active="true"]::before{
+  border-radius:14px 0 0 14px;
+}
+@media(prefers-reduced-motion:reduce){
+ .op-admin-system :is(
+  .op-admin-route-link.active,[data-op-admin-nav-item][data-op-active="true"],
+  [data-op-panel],[data-op-stat-card]
+ )::before{animation:none}
+}
