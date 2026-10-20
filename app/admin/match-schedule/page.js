@@ -3,6 +3,7 @@ import {useEffect,useMemo,useState} from 'react';
 import {supabase} from '../../lib/supabase';
 import {FiCalendar,FiClock,FiPlus,FiBell,FiRefreshCw,FiEdit2,FiXCircle,FiCheckCircle,FiDollarSign,FiAward} from 'react-icons/fi';
 import './schedule-center.css';
+import './schedule-premium-lighting.css';
 
 const fmtTime=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'2-digit',minute:'2-digit',hour12:true});
 const fmtDay=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',weekday:'long',month:'short',day:'2-digit',year:'numeric'});
@@ -142,6 +143,16 @@ export default function AdminMatchScheduleCenter(){
       </div>:<span className="op-schedule-cancelled">Cancelled</span>}
      </article>)}
     </div>)}
+    <aside className="op-schedule-insight" aria-label="Match notification timing">
+     <div className="op-schedule-insight-inner">
+      <div className="op-schedule-insight-title"><FiBell aria-hidden="true"/> Automatic reminder sequence</div>
+      <p>Players receive an in-app alert when a match is published and before kickoff. Phone push alerts are sent only to players who enable them.</p>
+      <div className="op-schedule-insight-steps" aria-label="Four match notification milestones">
+       <span>Published</span><span>60 minutes</span><span>30 minutes</span><span>15 minutes</span>
+      </div>
+      <p className="op-schedule-insight-note">Entry fees count toward the schedule total. Prize pools remain informational only.</p>
+     </div>
+    </aside>
    </section>
   </div>
   {pendingCancel&&<div className="op-schedule-modal-backdrop" role="presentation"><div role="dialog" aria-modal="true" aria-label="Confirm schedule cancellation" className="op-schedule-modal">
