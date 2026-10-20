@@ -49,7 +49,7 @@ export function scheduleInput(input){
  if(dt.getTime()<Date.now()+2*60000||dt.getTime()>Date.now()+365*86400000)
    throw new HttpError('Schedule matches at least 2 minutes ahead and within one year.');
  const fee=Number(input?.entry_fee);
- if(!Number.isFinite(fee)||fee<0||fee>1000000||Math.round(fee*100)!==fee*100)throw new HttpError('Enter a valid entry fee.');
+ if(!Number.isFinite(fee)||fee<0||fee>1000000||Math.abs(Math.round(fee*100)-fee*100)>0.000001)throw new HttpError('Enter a valid entry fee.');
  if(title.length<3||title.length>120||prize.length>160||details.length>500||notes.length>1000)
    throw new HttpError('Match title, prize or notes exceed allowed length.');
  if(input.team_id!=null&&!goodUuid(input.team_id))throw new HttpError('Invalid squad.');
