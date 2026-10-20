@@ -46,7 +46,7 @@ FOR EACH ROW EXECUTE FUNCTION public.op_protect_roster_switches();
 DO $$
 DECLARE v_main uuid;
 BEGIN
- SELECT min(id) INTO v_main FROM public.teams
+ SELECT (array_agg(id))[1] INTO v_main FROM public.teams
  WHERE lower(team_name)='over power main team'
  HAVING count(*)=1;
  IF v_main IS NOT NULL THEN
@@ -58,3 +58,25 @@ BEGIN
  END IF;
 END;
 $$;
+
+-- Protect new match lineups without rewriting old results or finance:
+-- historic rows are unchanged; all four newly inserted participants must be
+-- currently active, approved, and assigned to the chosen squad.
+CREATE OR REPLACE FUNCTION public.op_check_match_lineup_visibility()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
+BEGIN
+ IF NOT EXISTS(
+   SELECT 1 FROM public.players p
+   WHERE p.id=NEW.player_id AND p.team_id=NEW.team_id
+     AND p.is_active AND lower(coalesce(p.status,'')) IN ('approved','active')
+ ) THEN
+   RAISE EXCEPTION 'Only active approved players belonging to the squad can enter a new match'
+     USING errcode='23514';
+ END IF;
+ RETURN NEW;
+END;
+$$;
+DROP TRIGGER IF EXISTS op_check_match_lineup_visibility ON public.match_players;
+CREATE TRIGGER op_check_match_lineup_visibility
+ BEFORE INSERT ON public.match_players
+ FOR EACH ROW EXECUTE FUNCTION public.op_check_match_lineup_visibility();
