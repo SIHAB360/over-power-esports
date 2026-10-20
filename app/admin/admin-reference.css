@@ -267,56 +267,56 @@
 .op-admin-system .op-admin-view .op-match-page .topbar h1{
   text-align:center!important;margin-inline:auto
 }
-.op-admin-system .op-admin-view [class*="players_header__"]{
+.op-admin-system .op-admin-view [data-op-players-header]{
   display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
   gap:14px;max-width:none
 }
-.op-admin-system .op-admin-view [class*="players_headerCopy__"]{
+.op-admin-system .op-admin-view [data-op-players-header-copy]{
   width:100%;text-align:center!important;margin:0 auto;
 }
-.op-admin-system .op-admin-view [class*="players_headerCopy__"] [class*="players_eyebrow__"]{
+.op-admin-system .op-admin-view [data-op-players-header-copy] [data-op-players-eyebrow]{
   justify-content:center!important
 }
-.op-admin-system .op-admin-view [class*="players_headerCopy__"] [class*="players_subtitle__"]{
+.op-admin-system .op-admin-view [data-op-players-header-copy] [data-op-players-subtitle]{
   margin-inline:auto!important
 }
-.op-admin-system .op-admin-view [class*="players_headerStat__"]{
+.op-admin-system .op-admin-view [data-op-players-header-stat]{
   margin-inline:auto;justify-self:center
 }
-.op-admin-system .op-admin-view [class*="moderators_heading__"],
-.op-admin-system .op-admin-view [class*="moderators_header__"],
-.op-admin-system .op-admin-view [class*="visitors_heading__"]{
+.op-admin-system .op-admin-view [data-op-moderators-heading],
+.op-admin-system .op-admin-view [data-op-moderators-header],
+.op-admin-system .op-admin-view [data-op-visitors-heading]{
   text-align:center!important;justify-content:center;
 }
-.op-admin-system .op-admin-view [class*="moderators_heading__"]{
+.op-admin-system .op-admin-view [data-op-moderators-heading]{
   display:flex;flex-wrap:wrap;flex-direction:column;align-items:center
 }
-.op-admin-system .op-admin-view [class*="moderators_heading__"] > div:first-child{
+.op-admin-system .op-admin-view [data-op-moderators-heading] > div:first-child{
   width:100%;text-align:center!important;
 }
-.op-admin-system .op-admin-view [class*="moderators_heading__"] p{
+.op-admin-system .op-admin-view [data-op-moderators-heading] p{
   margin-inline:auto
 }
-.op-admin-system .op-admin-view [class*="visitors_hero__"]{
+.op-admin-system .op-admin-view [data-op-visitors-hero]{
   text-align:center!important;align-items:center;justify-content:center
 }
-.op-admin-system .op-admin-view [class*="visitors_hero__"] > div:first-child{
+.op-admin-system .op-admin-view [data-op-visitors-hero] > div:first-child{
   flex:1 1 100%;min-width:0
 }
-.op-admin-system .op-admin-view [class*="visitors_hero__"] p{
+.op-admin-system .op-admin-view [data-op-visitors-hero] p{
   margin-inline:auto
 }
-.op-admin-system .op-admin-view [class*="visitors_heroTools__"]{
+.op-admin-system .op-admin-view [data-op-visitors-hero-tools]{
   margin-inline:auto
 }
-.op-admin-system .op-admin-view [class*="visitors_eyebrow__"],
-.op-admin-system .op-admin-view [class*="visitors_heroTags__"]{
+.op-admin-system .op-admin-view [data-op-visitors-eyebrow],
+.op-admin-system .op-admin-view [data-op-visitors-hero-tags]{
   justify-content:center
 }
-.op-admin-system .op-admin-view [class*="history_hero__"]{
+.op-admin-system .op-admin-view [data-op-history-hero]{
   text-align:center!important;justify-content:center
 }
-.op-admin-system .op-admin-view [class*="history_hero__"] > div:first-child{
+.op-admin-system .op-admin-view [data-op-history-hero] > div:first-child{
   text-align:center;flex:1 1 100%
 }
 .op-admin-system .op-admin-view main.page .header,
@@ -364,19 +364,19 @@
 }
 .op-admin-system .op-admin-view :is(
   [data-op-stat-card],[data-op-panel],
-  [class*="visitors_metric__"],[class*="moderators_panel__"],
-  [class*="players_card__"],.team-card,.tournament-card,.aa-card
+  [data-op-visitors-metric],[data-op-moderators-panel],
+  [data-op-players-card],.team-card,.tournament-card,.aa-card
 )::after{
   pointer-events:none;z-index:0;
 }
 .op-admin-system .op-admin-view :is(
   [data-op-stat-card],[data-op-panel],
-  [class*="visitors_metric__"],[class*="moderators_panel__"],
-  [class*="players_card__"],.team-card,.tournament-card,.aa-card
+  [data-op-visitors-metric],[data-op-moderators-panel],
+  [data-op-players-card],.team-card,.tournament-card,.aa-card
 ){outline:1px solid rgba(73,218,245,.12);outline-offset:-2px}
 .op-admin-system .op-admin-view :is(
-  [data-op-stat-card],[class*="visitors_metric__"],
-  [class*="moderators_panel__"],[class*="players_card__"],.team-card,
+  [data-op-stat-card],[data-op-visitors-metric],
+  [data-op-moderators-panel],[data-op-players-card],.team-card,
   .tournament-card,.aa-card
 ){animation:opFlowOutline 7s ease-in-out infinite alternate}
 .op-admin-system .op-admin-view :is(button,a):not(:disabled):hover{
@@ -394,13 +394,13 @@
   min-width:0;
 }
 .op-admin-system .op-admin-view :is(
- [class*="visitors_shell__"],[class*="moderators_wrap__"],
- [class*="players_toolbar__"],[class*="players_grid__"],
- [class*="history_container__"],.container,.aa-container,.shell
+ [data-op-visitors-shell],[data-op-moderators-wrap],
+ [data-op-players-toolbar],[data-op-players-grid],
+ [data-op-history-container],.container,.aa-container,.shell
 ){max-width:none;min-width:0}
 .op-admin-system .op-admin-view :is(
- [data-op-table-scroll],[class*="visitors_desktopTable__"],
- [class*="history_tableScroller__"]
+ [data-op-table-scroll],[data-op-visitors-table],
+ [data-op-history-table-scroll]
 ){overflow-x:auto;-webkit-overflow-scrolling:touch}
 .op-admin-system .op-admin-theme-tools{
   top:9px;right:clamp(12px,1.9vw,29px);
@@ -574,8 +574,8 @@ html[data-op-admin-theme="light"] .op-admin-system .op-admin-theme-tools .op-the
     grid-column:auto
   }
   .op-admin-system .op-admin-view [data-op-content-grid],
-  .op-admin-system .op-admin-view [class*="visitors_charts__"],
-  .op-admin-system .op-admin-view [class*="visitors_breakdowns__"]{
+  .op-admin-system .op-admin-view [data-op-visitors-charts],
+  .op-admin-system .op-admin-view [data-op-visitors-breakdowns]{
     grid-template-columns:minmax(0,1fr)
   }
   .op-admin-system .op-admin-view [data-op-hero]{min-height:0}
