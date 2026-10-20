@@ -1,0 +1,537 @@
+/*
+ * PREMIUM SPECTRUM • real Match Schedule Center styling
+ * Scoped to this feature: no financial/notification logic or other screens altered.
+ * Atmospheric color lives in the right content pane, never a black/red body gutter.
+ */
+@keyframes op-ms-ambient{
+  0%,100%{filter:saturate(1);opacity:.7;transform:translate3d(0,0,0)}
+  50%{filter:saturate(1.25);opacity:1;transform:translate3d(-1.5%,1%,0)}
+}
+@keyframes op-ms-sheen{
+  0%,8%{transform:translateX(-135%);opacity:0}
+  22%{opacity:.65}
+  45%,100%{transform:translateX(245%);opacity:0}
+}
+@keyframes op-ms-glow{
+  0%,100%{box-shadow:0 12px 32px #030b2173,inset 0 1px #efffff22,0 0 17px #4be8fc22}
+  50%{box-shadow:0 18px 38px #030b2175,inset 0 1px #efffff3b,0 0 24px #a682f633}
+}
+.op-admin-system .op-admin-view:has(.op-schedule-center){
+  background:
+    radial-gradient(ellipse 78% 57% at 100% 9%,rgba(148,87,252,.22),transparent 69%),
+    radial-gradient(ellipse 68% 67% at 4% 65%,rgba(15,216,229,.16),transparent 70%),
+    radial-gradient(ellipse 56% 40% at 66% 98%,rgba(251,88,157,.10),transparent 72%),
+    linear-gradient(150deg,#081229,#101a36 46%,#11132e 100%)!important;
+  color:#eff8ff;
+}
+.op-admin-system .op-admin-view:has(> .op-schedule-center){
+  padding-inline:clamp(10px,1.3vw,26px)!important;
+}
+.op-admin-system main.op-schedule-center{
+  --ms-cyan:#65f5ff;--ms-blue:#6faeff;--ms-purple:#b18bff;
+  --ms-pink:#fa8dcd;--ms-mint:#66f7c9;--ms-gold:#ffdb91;
+  position:relative;isolation:isolate;overflow:hidden;
+  box-sizing:border-box;width:100%;max-width:none!important;
+  min-width:0;min-height:calc(100dvh - 80px);
+  padding:4px clamp(8px,1.15vw,22px) clamp(38px,4vw,70px);
+  margin:0!important;
+  color:#f1f8ff!important;
+  background:
+    radial-gradient(ellipse 36% 27% at 4% 23%,rgba(35,157,245,.11),transparent 90%),
+    radial-gradient(ellipse 42% 37% at 100% 82%,rgba(183,76,250,.12),transparent 95%),
+    linear-gradient(180deg,rgba(9,21,42,.30),rgba(11,17,43,.2))!important;
+  font:500 clamp(14px,.87vw,16px)/1.6 Inter,"Hind Siliguri",system-ui,sans-serif;
+}
+.op-admin-system main.op-schedule-center::before,
+.op-admin-system main.op-schedule-center::after{
+  content:"";position:absolute;display:block;z-index:-1;
+  width:min(65vw,800px);aspect-ratio:1;border-radius:50%;
+  pointer-events:none;filter:blur(54px);opacity:.55;
+  animation:op-ms-ambient 16s ease-in-out infinite;
+}
+.op-admin-system main.op-schedule-center::before{
+  left:-30%;top:17%;background:radial-gradient(circle,#1379bf55 0%,#24f5e019 34%,transparent 67%);
+}
+.op-admin-system main.op-schedule-center::after{
+  right:-26%;top:37%;background:radial-gradient(circle,#ad56fc4b 0%,#fb72be15 38%,transparent 70%);
+  animation-delay:-7s;
+}
+
+/* HERO — full-surface aurora with an illuminated perimeter and restrained moving beam */
+.op-admin-system .op-schedule-center .op-schedule-header{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:208px;padding:clamp(30px,3.2vw,52px) clamp(22px,3vw,60px)!important;
+  margin:0 0 clamp(16px,1.6vw,25px);
+  position:relative;isolation:isolate;overflow:hidden;border:1px solid transparent!important;
+  border-radius:clamp(20px,1.7vw,28px)!important;
+  background:
+    radial-gradient(ellipse at 12% 87%,rgba(46,225,236,.30),transparent 52%),
+    radial-gradient(ellipse at 94% 13%,rgba(193,99,255,.33),transparent 54%),
+    radial-gradient(ellipse at 52% 0%,rgba(77,129,247,.18),transparent 68%),
+    linear-gradient(110deg,#132a4d,#1b2248 58%,#261d47) padding-box,
+    linear-gradient(98deg,var(--ms-cyan),var(--ms-blue),var(--ms-purple),var(--ms-pink),var(--ms-mint)) border-box!important;
+  box-shadow:0 21px 62px #03091778,0 0 45px #6f8eff20,inset 0 1px #d3faff39!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-header::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:100%;height:100%;border:0;border-radius:inherit;
+  background:radial-gradient(ellipse 45% 95% at 53% -10%,#83abff40,transparent 85%)!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-header::after{
+  content:"";position:absolute;inset:0 auto auto 0;
+  height:2px;width:45%;border-radius:100px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#dfffff,#ad98ff,transparent);
+  box-shadow:0 0 24px #86e9ff91,0 0 12px #fda9e1;
+  animation:op-ms-sheen 11s ease-in-out infinite;
+}
+.op-admin-system .op-schedule-center .op-schedule-kicker{
+  gap:9px;color:var(--ms-mint)!important;
+  font-size:clamp(11px,.76vw,13px)!important;font-weight:900;letter-spacing:.17em;
+  text-shadow:0 0 15px #40ebca55;
+}
+.op-admin-system .op-schedule-center .op-schedule-kicker svg{font-size:16px;filter:drop-shadow(0 0 8px #5cf7df88)}
+.op-admin-system .op-schedule-center .op-schedule-header h1{
+  margin:11px 0 12px!important;color:#fff!important;
+  text-align:center!important;font-size:clamp(30px,3vw,53px)!important;
+  line-height:1.13!important;font-weight:950;letter-spacing:-.035em;
+  text-shadow:0 4px 16px #020617c7,0 0 35px #7aafff77!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-header p{
+  max-width:910px;margin:0 auto 20px!important;color:#d6eaff!important;
+  text-align:center;font-size:clamp(13px,.9vw,16px)!important;line-height:1.65;
+}
+.op-admin-system .op-schedule-center .op-schedule-reminder-badges{gap:9px;position:relative;z-index:2}
+.op-admin-system .op-schedule-center .op-schedule-reminder-badges span{
+  border:1px solid #7acaf590!important;border-radius:100px;
+  color:#dcfaff!important;background:linear-gradient(115deg,#23537eb8,#29406db0)!important;
+  padding:8px 15px;font-size:clamp(11px,.75vw,13px)!important;font-weight:850;
+  box-shadow:inset 0 1px #d6ffff28,0 0 17px #5b9cf02b;backdrop-filter:blur(9px)
+}
+.op-admin-system .op-schedule-center .op-schedule-reminder-badges span:nth-child(2){border-color:#68e8b8aa!important;box-shadow:0 0 18px #42eac03b,inset 0 1px #ceffea35}
+.op-admin-system .op-schedule-center .op-schedule-reminder-badges span:nth-child(3){border-color:#bc92f4af!important;box-shadow:0 0 18px #be80ec39,inset 0 1px #e5d1ff33}
+.op-admin-system .op-schedule-center .op-schedule-reminder-badges span:nth-child(4){border-color:#ffbf8ab3!important;box-shadow:0 0 18px #ffa87538,inset 0 1px #fff3d433}
+
+/* KPI surfaces — six-accent design language, three clearly distinct identities */
+.op-admin-system .op-schedule-center .op-schedule-kpis{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,1.2vw,21px);margin:0 0 clamp(17px,1.5vw,24px);
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div{
+  --ms-card-a:#62ecff;--ms-card-b:#6b9eff;--ms-wash:#47e9ff24;
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:clamp(19px,1.5vw,27px)!important;
+  min-height:139px;border:1px solid transparent!important;border-radius:19px!important;
+  background:
+    radial-gradient(ellipse at 6% 0%,var(--ms-wash),transparent 76%),
+    linear-gradient(130deg,#1a304f,#182445 66%,#1a2040) padding-box,
+    linear-gradient(125deg,var(--ms-card-a),#8193e178,var(--ms-card-b)) border-box!important;
+  box-shadow:0 12px 32px #020a2082,inset 0 1px #e3faff20,0 0 24px var(--ms-wash)!important;
+  gap:6px;transition:transform .23s ease,box-shadow .3s ease;
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div:nth-child(2){--ms-card-a:#72f3c2;--ms-card-b:#51c2f3;--ms-wash:#5dffd42c}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div:nth-child(3){--ms-card-a:#df91ff;--ms-card-b:#f1a5d1;--ms-wash:#d57dff27}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div::after{
+  content:"";position:absolute;inset:auto 13% -1px 13%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--ms-card-a),var(--ms-card-b),transparent);
+  box-shadow:0 0 20px var(--ms-card-a);pointer-events:none;
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div:hover{
+  transform:translateY(-3px);box-shadow:0 18px 38px #020a2099,0 0 30px var(--ms-wash)!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div svg{
+  color:var(--ms-card-a)!important;font-size:26px;filter:drop-shadow(0 0 9px var(--ms-card-a));
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div>span{
+  color:#c8e0f5!important;font-size:clamp(12px,.83vw,14px)!important;font-weight:750;
+}
+.op-admin-system .op-schedule-center .op-schedule-kpis>div>strong{
+  margin-top:1px;color:#fff!important;font-size:clamp(25px,1.8vw,34px)!important;
+  font-weight:950;letter-spacing:-.025em;overflow-wrap:anywhere;text-shadow:0 2px 14px #0311269e;
+}
+
+/* Stretch both desktop columns evenly. The timeline no longer ends half-way
+   down beside an oversized form when just one match is scheduled. */
+.op-admin-system .op-schedule-center .op-schedule-columns{
+  display:grid;grid-template-columns:minmax(350px,.98fr) minmax(0,1.55fr);
+  gap:clamp(15px,1.35vw,25px);align-items:stretch;
+  width:100%;min-width:0;
+}
+.op-admin-system .op-schedule-center .op-schedule-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-width:0;height:100%;border:1px solid transparent!important;
+  border-radius:clamp(19px,1.5vw,27px)!important;
+  padding:clamp(20px,1.8vw,32px)!important;
+  background:
+    radial-gradient(ellipse 87% 43% at 6% -6%,rgba(50,181,246,.18),transparent 76%),
+    radial-gradient(ellipse 68% 54% at 98% 108%,rgba(157,87,249,.18),transparent 87%),
+    linear-gradient(148deg,#172a4a,#17223f 49%,#181d3d) padding-box,
+    linear-gradient(140deg,#76dfffbd,#7b8ef95c 40%,#cb85fe94 78%,#69f6d88c) border-box!important;
+  box-shadow:0 20px 48px #03091f8c,inset 0 1px #d8f9ff23,0 0 25px #8788ff24!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-card:nth-child(2){
+  display:flex;flex-direction:column;
+  background:
+    radial-gradient(ellipse 87% 53% at 90% -5%,rgba(168,95,252,.19),transparent 73%),
+    radial-gradient(ellipse 45% 65% at 0% 87%,rgba(57,216,222,.13),transparent 91%),
+    linear-gradient(140deg,#162747,#17233e 60%,#1c2044) padding-box,
+    linear-gradient(135deg,#b788ffb8,#62a8ff78 53%,#61ebd9bd) border-box!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-card::before{
+  content:"";position:absolute;z-index:-1;pointer-events:none;
+  inset:0;border-radius:inherit;
+  background:radial-gradient(circle 350px at 100% 0%,rgba(110,93,236,.16),transparent 71%);
+}
+.op-admin-system .op-schedule-center .op-schedule-card::after{
+  content:"";position:absolute;inset:0 auto auto 0;z-index:2;pointer-events:none;
+  height:2px;width:42%;
+  background:linear-gradient(90deg,transparent,#d6fbff,#8fd5ff,transparent);
+  box-shadow:0 0 24px #8aeaffac;
+  animation:op-ms-sheen 13s ease-in-out infinite;
+}
+.op-admin-system .op-schedule-center .op-schedule-card:nth-child(2)::after{
+  background:linear-gradient(90deg,transparent,#e5c4ff,#9beee7,transparent);
+  animation-delay:-5s;
+}
+.op-admin-system .op-schedule-center .op-schedule-heading{
+  justify-content:flex-start;gap:11px;
+  padding-bottom:clamp(13px,1.05vw,20px);margin-bottom:clamp(14px,1.1vw,21px);
+  border-bottom:1px solid #95c5f527;
+}
+.op-admin-system .op-schedule-center .op-schedule-heading>svg{
+  font-size:22px;color:#72f2f9;filter:drop-shadow(0 0 11px #69dffa8c);
+}
+.op-admin-system .op-schedule-center .op-schedule-card:nth-child(2) .op-schedule-heading>svg{
+  color:#ce9eff;filter:drop-shadow(0 0 11px #b28dffa0);
+}
+.op-admin-system .op-schedule-center .op-schedule-heading h2{
+  text-align:left!important;color:#fff!important;font-size:clamp(20px,1.5vw,27px)!important;
+  font-weight:900;letter-spacing:-.03em;
+  text-shadow:0 0 15px #94bfff29;
+}
+/* Remove any inherited black legacy form island. */
+.op-admin-system .op-schedule-center .op-schedule-form form{
+  display:grid;gap:clamp(14px,1vw,20px);
+  padding:0!important;margin:0!important;
+  background:transparent!important;background-color:transparent!important;
+  border:0!important;box-shadow:none!important;outline:none!important;
+  width:100%;max-width:none!important;
+}
+.op-admin-system .op-schedule-center label{
+  display:grid;gap:7px;
+  color:#deebff!important;font-size:clamp(13px,.85vw,15px)!important;
+  font-weight:850;letter-spacing:.005em;line-height:1.48;
+}
+.op-admin-system .op-schedule-center :is(input,select,textarea){
+  min-height:49px;width:100%;max-width:100%;padding:12px 14px;
+  font:600 clamp(13px,.83vw,15px)/1.4 Inter,"Hind Siliguri",system-ui,sans-serif;
+  color:#f5faff!important;color-scheme:dark;
+  border:1px solid #78bafa78!important;border-radius:13px!important;
+  background:linear-gradient(110deg,#10213bcf,#102441eb)!important;
+  box-shadow:inset 0 1px #c2eeff0d,0 4px 12px #030c233b;
+  transition:border-color .22s ease,box-shadow .22s ease,background .22s ease;
+}
+.op-admin-system .op-schedule-center :is(input,select,textarea)::placeholder{
+  color:#9ab4d1!important;opacity:1;
+}
+.op-admin-system .op-schedule-center :is(input,select,textarea):hover{
+  border-color:#9dcaefc2!important;
+}
+.op-admin-system .op-schedule-center :is(input,select,textarea):focus{
+  border-color:#83eefd!important;
+  outline:2px solid #7aeafb6b;outline-offset:1px;
+  box-shadow:0 0 0 4px #59e1ec15,0 0 22px #64d9ff42!important;
+}
+.op-admin-system .op-schedule-center textarea{resize:vertical;min-height:92px}
+.op-admin-system .op-schedule-center .op-schedule-form-pair{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(12px,1vw,18px);
+}
+.op-admin-system .op-schedule-center button{
+  min-height:46px;padding:11px 17px;
+  border:1px solid #a1c4fd9c!important;border-radius:12px!important;
+  font:850 clamp(13px,.82vw,15px)/1.35 Inter,system-ui,sans-serif;
+  color:#fff!important;
+  background:linear-gradient(108deg,#3c7de5,#645de3 51%,#a351d2)!important;
+  box-shadow:inset 0 1px #edf4ff4d,0 8px 22px #3c46b853,0 0 16px #7898e831!important;
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+}
+.op-admin-system .op-schedule-center button:disabled{opacity:.56;cursor:wait}
+.op-admin-system .op-schedule-center button:not(:disabled):hover{
+  transform:translateY(-2px);filter:brightness(1.12);
+  box-shadow:inset 0 1px #effaff8c,0 12px 30px #755bd481,0 0 23px #93c0ff56!important;
+}
+.op-admin-system .op-schedule-center button:focus-visible{
+  outline:3px solid var(--ms-mint)!important;outline-offset:3px!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-form-actions{gap:10px;margin-top:5px}
+.op-admin-system .op-schedule-center .op-schedule-form-actions button:first-child{
+  flex:1 1 auto;min-width:200px;
+  border-color:#9fa9ffbd!important;
+  background:linear-gradient(105deg,#397ef1,#715ae4,#a34fcb)!important;
+  background-size:240% 100%!important;
+  box-shadow:0 10px 30px #6366ed54,0 0 20px #71a0f74b!important;
+}
+.op-admin-system .op-schedule-center button.op-schedule-secondary{
+  color:#d9f1ff!important;background:linear-gradient(110deg,#26425ecf,#304778bb)!important;
+  box-shadow:inset 0 1px #ffffff13,0 4px 10px #07142b3c!important;
+  border-color:#7aa5d483!important;
+}
+
+/* TIMELINE — distinct date islands, proper breathing space and light rails */
+.op-admin-system .op-schedule-center .op-schedule-filters{
+  align-items:end;gap:12px;margin-bottom:clamp(14px,1.2vw,20px);
+}
+.op-admin-system .op-schedule-center .op-schedule-filters label{max-width:280px}
+.op-admin-system .op-schedule-center .op-schedule-filters button{min-height:45px}
+.op-admin-system .op-schedule-center .op-schedule-day{
+  margin:0 0 15px;padding:clamp(13px,1.2vw,20px);
+  border:1px solid #83b8f87c!important;border-radius:17px!important;
+  background:linear-gradient(140deg,#122a47d9,#192b4cdd)!important;
+  box-shadow:inset 0 1px #e4faff14,0 6px 19px #040d234a,0 0 20px #5aaffd0e;
+}
+.op-admin-system .op-schedule-center .op-schedule-day-title{
+  gap:13px;margin:1px 1px 12px;padding-bottom:12px;
+  border-bottom:1px solid #8bbee542;
+}
+.op-admin-system .op-schedule-center .op-schedule-day-title strong{
+  color:#93fce9!important;font-size:clamp(15px,1.01vw,18px)!important;
+  text-shadow:0 0 13px #6cf7dd32;
+}
+.op-admin-system .op-schedule-center .op-schedule-day-title span{
+  display:inline-flex;align-items:center;line-height:1.5;
+  color:#ffe4ab!important;font-size:clamp(12px,.81vw,14px)!important;
+  font-weight:850;padding:6px 11px;border:1px solid #f8c78647;
+  border-radius:9px;background:#56452838;
+}
+.op-admin-system .op-schedule-center .op-schedule-match{
+  display:grid;grid-template-columns:minmax(105px,145px) minmax(0,1fr) auto;
+  gap:clamp(10px,1vw,16px);align-items:start;
+  position:relative;padding:clamp(14px,1.1vw,19px) 4px;
+  border-top:1px solid #80b1e02e;
+}
+.op-admin-system .op-schedule-center .op-schedule-match:first-of-type{border-top:0}
+.op-admin-system .op-schedule-center .op-schedule-match-time{
+  display:grid;gap:5px;align-content:start;padding-left:12px;
+  border-left:3px solid #75dffb;color:#a4faff!important;
+  text-shadow:0 0 15px #50ddf154;
+  font-size:clamp(13px,.91vw,16px)!important;font-weight:900;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-time small{color:#aec6f3!important;font-size:12px}
+.op-admin-system .op-schedule-center .op-schedule-match-main h3{
+  color:#fff!important;font-size:clamp(17px,1.1vw,20px)!important;
+  font-weight:950;margin:0 0 9px;text-shadow:0 1px 13px #80bafd28;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-main>div{gap:8px}
+.op-admin-system .op-schedule-center .op-schedule-match-main>div span{
+  display:inline-flex;padding:5px 11px;
+  font-size:clamp(12px,.79vw,14px)!important;font-weight:850;
+  border:1px solid #6ee9d56d;border-radius:10px!important;
+  background:linear-gradient(110deg,#186d6c8c,#1d535ab3)!important;
+  color:#c7fff4!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-main>div span+span{
+  border-color:#d393ff82;color:#fbd8ff!important;
+  background:linear-gradient(110deg,#614277a1,#50315cb6)!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-main small,
+.op-admin-system .op-schedule-center .op-schedule-match-main p{
+  color:#cbdcf2!important;font-size:clamp(12px,.82vw,14px)!important;
+  line-height:1.65;overflow-wrap:anywhere;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-buttons{gap:8px}
+.op-admin-system .op-schedule-center .op-schedule-match-buttons button{
+  min-height:37px;padding:8px 12px;font-size:12px!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-match-buttons button:nth-child(2){
+  background:linear-gradient(110deg,#734281,#ad5592)!important;
+  border-color:#faa8e0a1!important;box-shadow:0 0 14px #e378b524!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-match.is-cancelled{
+  opacity:.68;filter:grayscale(.35);
+}
+.op-admin-system .op-schedule-center .op-schedule-empty{
+  font-size:15px!important;color:#c8def2!important;
+  padding:35px 18px;margin:0 auto;text-align:center;
+}
+
+/* A genuine, informational reminder process card supports the otherwise
+   empty half-height column. It does not claim delivery to opted-out devices. */
+.op-admin-system .op-schedule-center .op-schedule-insight{
+  margin-top:auto;padding-top:clamp(18px,2vw,32px);
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-inner{
+  position:relative;overflow:hidden;
+  border:1px solid #8b91f06f;border-radius:16px;
+  padding:clamp(17px,1.3vw,24px);
+  background:
+    radial-gradient(ellipse at 100% 0%,#ae74f12d,transparent 63%),
+    linear-gradient(130deg,#233355b3,#232449ae);
+  box-shadow:inset 0 1px #dfeaff28,0 0 25px #a17beb20;
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-title{
+  display:flex;align-items:center;gap:9px;margin:0 0 6px;
+  color:#e7f5ff;font-size:clamp(15px,1vw,18px);font-weight:900;
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-title svg{
+  color:#ddafff;filter:drop-shadow(0 0 9px #ca96ff75)
+}
+.op-admin-system .op-schedule-center .op-schedule-insight p{
+  margin:0 0 15px;color:#c5d8ef!important;font-size:clamp(12px,.85vw,14px);line-height:1.6;
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-steps{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-steps span{
+  display:flex;align-items:center;justify-content:center;
+  min-width:0;min-height:39px;
+  font-size:clamp(11px,.74vw,13px);font-weight:850;text-align:center;
+  color:#ddf9ff;border:1px solid #7cbbfa78;border-radius:11px;
+  background:#29537a70;box-shadow:inset 0 1px #fff2;
+}
+.op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(2){color:#b6ffe8;border-color:#74e4b393;background:#17645d53}
+.op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(3){color:#ead2ff;border-color:#c09bfc95;background:#5d3e7960}
+.op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(4){color:#ffe9c8;border-color:#ffbd8a88;background:#65475759}
+.op-admin-system .op-schedule-center .op-schedule-insight .op-schedule-insight-note{
+  margin:13px 0 0!important;font-size:12px!important;color:#aac7e2!important;
+}
+
+/* Confirmation dialog and feedback keep legible, stronger separation. */
+.op-admin-system .op-schedule-center .op-schedule-success{
+  border:1px solid #74f3c597!important;border-radius:13px;
+  background:linear-gradient(105deg,#184f4d,#25486a)!important;color:#d3ffe9!important;
+  padding:14px 18px;font-size:14px;box-shadow:0 0 21px #5eecc328;
+}
+.op-admin-system .op-schedule-center .op-schedule-error{
+  border:1px solid #ffa5bb9b!important;border-radius:13px;
+  background:linear-gradient(105deg,#5d324b,#483159)!important;color:#ffe0e7!important;
+  padding:14px 18px;font-size:14px;
+}
+.op-admin-system .op-schedule-center .op-schedule-modal{
+  border:1px solid #a8aafa!important;
+  background:radial-gradient(ellipse at 100% 0,#7d65f83a,transparent 65%),#162743!important;
+  box-shadow:0 26px 85px #010817dd,0 0 34px #867bfa35!important;
+}
+.op-admin-system .op-schedule-center .op-schedule-modal :is(h3,p){font-size:clamp(14px,1vw,19px)}
+
+/* White theme retains color/light but genuinely high-contrast ink. */
+html[data-op-admin-theme="light"] .op-admin-system .op-admin-view:has(.op-schedule-center){
+  background:radial-gradient(ellipse at 100% 2%,#c7a8f05e,transparent 55%),
+    radial-gradient(ellipse at 0% 85%,#86d8f356,transparent 61%),#edf5ff!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system main.op-schedule-center{
+  color:#173454!important;
+  background:radial-gradient(ellipse at 100% 0,#d6ccfa66,transparent 59%),
+    radial-gradient(ellipse at 0 76%,#bcecf26b,transparent 64%),transparent!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-header{
+  background:radial-gradient(ellipse at 5% 98%,#a4e4f573,transparent 57%),
+    radial-gradient(ellipse at 95% 0%,#e3c3fa9c,transparent 58%),
+    linear-gradient(135deg,#fff,#eef4ff) padding-box,
+    linear-gradient(95deg,#3cb1d5,#7a93ea,#bb80d3,#3bc8ab) border-box!important;
+  box-shadow:0 15px 35px #3e6f9f34,0 0 24px #b49dee24!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-header h1{
+  color:#1b3158!important;text-shadow:0 0 14px #ffffffbc!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-kicker{color:#12647b!important;text-shadow:none}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-header p{color:#425c7e!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-reminder-badges span{
+  background:linear-gradient(110deg,#e8f4fe,#f1e8fa)!important;color:#25446d!important;
+  border-color:#6a9fdcab!important;box-shadow:0 0 12px #9fb8e438;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-kpis>div{
+  background:radial-gradient(ellipse at 6% 0%,var(--ms-wash),transparent 74%),
+    linear-gradient(130deg,#fff,#edf5ff) padding-box,
+    linear-gradient(125deg,var(--ms-card-a),#7b9ee783,var(--ms-card-b)) border-box!important;
+  box-shadow:0 9px 28px #5079a827,0 0 20px var(--ms-wash)!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-kpis>div>strong,
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-main h3,
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-heading h2{color:#17365d!important;text-shadow:none!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-kpis>div>span{color:#486383!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-card{
+  background:radial-gradient(ellipse at 0 0,#b9d9fb66,transparent 70%),
+    linear-gradient(140deg,#fff,#eff4fe) padding-box,
+    linear-gradient(135deg,#7bbdecb7,#ae8fe590,#5cd1c8a2) border-box!important;
+  box-shadow:0 15px 34px #4d719c2f,0 0 22px #998ce32a!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-card:nth-child(2){
+  background:radial-gradient(ellipse at 100% 0,#dec2fc85,transparent 66%),
+    linear-gradient(140deg,#fff,#f2f1ff) padding-box,
+    linear-gradient(135deg,#ae87efc8,#85b4f1c7,#5bc7b2a8) border-box!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center label{color:#314f73!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center :is(input,select,textarea){
+  color:#213c60!important;color-scheme:light;
+  background:linear-gradient(110deg,#fff,#f2f7ff)!important;
+  border-color:#759ed5bb!important;
+  box-shadow:0 3px 9px #3258800a;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center :is(input,select,textarea)::placeholder{color:#647d9d!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-day{
+  background:linear-gradient(140deg,#f9fdff,#eef2ff)!important;
+  border-color:#83b1e0a6!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-day-title strong{color:#16677a!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-day-title span{
+  color:#8a5616!important;background:#ffebc772;border-color:#d9ad68a3;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-time{color:#176e82!important;text-shadow:none}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-time small{color:#687ea1!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-main>div span{
+  background:#d2f9ed!important;color:#14624e!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-main>div span+span{
+  background:#f3dafa!important;color:#693879!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-match-main :is(small,p){color:#4e6486!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-inner{
+  background:linear-gradient(130deg,#f5f9ff,#eeeefe);border-color:#a1abe8;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-title{color:#1c3e65}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight p{color:#516c8a!important}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(1){color:#185879;background:#d4eefc}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(2){color:#17684e;background:#d8f9ea}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(3){color:#6b388c;background:#eddefa}
+html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-schedule-insight-steps span:nth-child(4){color:#8b541e;background:#fff0d8}
+
+/* Fit neatly from a wide display down to 390px without tiny fonts or empty
+   horizontal bands. Keep input focus, cards and actions reachable. */
+@media(max-width:1200px){
+  .op-admin-system .op-schedule-center .op-schedule-columns{grid-template-columns:minmax(0,1fr)}
+  .op-admin-system .op-schedule-center .op-schedule-card{height:auto}
+  .op-admin-system .op-schedule-center .op-schedule-insight{margin-top:20px}
+}
+@media(max-width:750px){
+  .op-admin-system .op-schedule-center .op-schedule-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .op-admin-system .op-schedule-center .op-schedule-kpis>div:last-child{grid-column:1/-1}
+  .op-admin-system .op-schedule-center .op-schedule-match{grid-template-columns:minmax(0,1fr) auto}
+  .op-admin-system .op-schedule-center .op-schedule-match-time{grid-column:1/-1;display:flex;gap:13px;align-items:center}
+  .op-admin-system .op-schedule-center .op-schedule-match-buttons{grid-column:2}
+  .op-admin-system .op-schedule-center .op-schedule-insight-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:550px){
+  .op-admin-system main.op-schedule-center{padding:2px 2px 30px;min-height:100dvh}
+  .op-admin-system .op-schedule-center .op-schedule-header{padding:29px 17px!important;min-height:0}
+  .op-admin-system .op-schedule-center .op-schedule-header h1{font-size:clamp(26px,7vw,34px)!important}
+  .op-admin-system .op-schedule-center .op-schedule-kicker{font-size:10px!important;letter-spacing:.11em}
+  .op-admin-system .op-schedule-center .op-schedule-reminder-badges{gap:6px}
+  .op-admin-system .op-schedule-center .op-schedule-reminder-badges span{padding:7px 10px;font-size:11px!important}
+  .op-admin-system .op-schedule-center .op-schedule-kpis{grid-template-columns:1fr}
+  .op-admin-system .op-schedule-center .op-schedule-kpis>div:last-child{grid-column:auto}
+  .op-admin-system .op-schedule-center .op-schedule-kpis>div{min-height:105px}
+  .op-admin-system .op-schedule-center .op-schedule-form-pair{grid-template-columns:1fr}
+  .op-admin-system .op-schedule-center .op-schedule-card{padding:19px 15px!important}
+  .op-admin-system .op-schedule-center .op-schedule-match{grid-template-columns:1fr}
+  .op-admin-system .op-schedule-center .op-schedule-match-buttons{grid-column:auto;justify-content:flex-start}
+  .op-admin-system .op-schedule-center .op-schedule-filters{align-items:stretch}
+  .op-admin-system .op-schedule-center .op-schedule-filters label{max-width:none}
+  .op-admin-system .op-schedule-center .op-schedule-form-actions button:first-child{min-width:0;width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  .op-admin-system .op-schedule-center::before,.op-admin-system .op-schedule-center::after,
+  .op-admin-system .op-schedule-center :is(.op-schedule-header,.op-schedule-card)::after{
+    animation:none!important;
+  }
+  .op-admin-system .op-schedule-center *, .op-admin-system .op-schedule-center *::before,
+  .op-admin-system .op-schedule-center *::after{transition:none!important}
+}
