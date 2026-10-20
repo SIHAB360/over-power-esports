@@ -1,231 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useEffect,useState} from "react";
 import Link from "next/link";
-
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaYoutube,
-  FaTiktok,
-} from "react-icons/fa";
-
-import { supabase } from "../lib/supabase";
-
-
-function resolveTeamName(teamName) {
-
-  const value =
-    String(teamName || "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "");
-
-
-  if (!value) {
-    return "OVER POWER ESPORTS";
-  }
-
-
-  if (value.includes("elite")) {
-    return "OVER POWER ELITE";
-  }
-
-
-  if (
-    value.includes("main") ||
-    value === "overpower"
-  ) {
-    return "OVER POWER MAIN TEAM";
-  }
-
-
-  return String(teamName)
-    .trim()
-    .toUpperCase();
-
-}
-
-
-
-function canShowPublicly(player) {
-
-  const status =
-    String(player.status || "")
-      .toLowerCase()
-      .trim();
-
-
-  return ![
-    "pending",
-    "rejected",
-    "inactive",
-    "suspended",
-  ].includes(status);
-
-}
-
-
-
-export default function Teams() {
-
-
-  const [teams,setTeams] = useState([]);
-
-
-
-  useEffect(()=>{
-
-    loadRegisteredPlayers();
-
-  },[]);
-
-
-
-
-  async function loadRegisteredPlayers(){
-
-
-    const {
-      data,
-      error
-    } =
-    await supabase
-      .from("players")
-      .select(`
-        id,
-        full_name,
-        ign,
-        profile_image,
-        avatar_url,
-        primary_role,
-        team_name,
-        facebook_link,
-        instagram_link,
-        youtube_link,
-        tiktok_link,
-        status
-      `)
-      .order(
-        "created_at",
-        {
-          ascending:true
-        }
-      );
-
-
-
-    if(error){
-
-      console.error(
-        "PLAYER LOAD ERROR:",
-        error
-      );
-
-      return;
-
-    }
-
-
-
-    const grouped={};
-
-
-
-    (data || [])
-    .filter(canShowPublicly)
-    .forEach(player=>{
-
-
-      const teamName =
-        resolveTeamName(
-          player.team_name
-        );
-
-
-
-      if(!grouped[teamName]){
-
-
-        grouped[teamName]={
-
-          name:teamName,
-
-          slogan:
-          "আমাদের (অরা) একটু বেশি",
-
-          players:[]
-
-        };
-
-
-      }
-
-
-
-
-      grouped[teamName]
-      .players
-      .push({
-
-        id:
-        player.id,
-
-
-        name:
-        player.ign ||
-        player.full_name ||
-        "PLAYER",
-
-
-        role:
-        player.primary_role ||
-        "PLAYER",
-
-
-        image:
-        player.profile_image ||
-        player.avatar_url ||
-        "/players/default.png",
-
-
-        social:{
-
-
-          facebook:
-          player.facebook_link || "",
-
-
-          instagram:
-          player.instagram_link || "",
-
-
-          youtube:
-          player.youtube_link || "",
-
-
-          tiktok:
-          player.tiktok_link || "",
-
-
-        }
-
-
-      });
-
-
-
-    });
-
-
-
-    setTeams(
-      Object.values(grouped)
-    );
-
-
-  }
-
-
+import {FaFacebookF,FaInstagram,FaYoutube,FaTiktok} from "react-icons/fa";
+
+export default function Teams(){
+ const [teams,setTeams]=useState([]);
+ const [loading,setLoading]=useState(true);
+ useEffect(()=>{
+  let alive=true;
+  const load=async()=>{
+   try{
+    const result=await fetch('/api/public/squads',{cache:'no-store'});
+    if(!result.ok)throw Error('Public squads temporarily unavailable');
+    const data=await result.json();
+    if(alive)setTeams((data.teams||[]).map(team=>({
+     ...team,slogan:'আমাদের (অরা) একটু বেশি'
+    })));
+   }catch(e){console.warn('Squad display refresh unavailable',e.message)}
+   finally{if(alive)setLoading(false)}
+  };
+  load();
+  const refresh=()=>{if(document.visibilityState==='visible')void load()};
+  const timer=setInterval(refresh,30000);
+  window.addEventListener('focus',refresh);
+  return()=>{alive=false;clearInterval(timer);window.removeEventListener('focus',refresh)};
+ },[]);
 
   return (
 
@@ -248,6 +48,7 @@ OUR TEAMS
 
 
 </div>
+  {loading && <p role="status" style={{textAlign:"center",color:"#bfeafa"}}>Loading squad roster…</p>}
   {
   teams.map(
     (team,index)=>(
