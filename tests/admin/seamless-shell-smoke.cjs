@@ -382,6 +382,8 @@ async function testPremiumScheduleUI(browser){
  await page.route(BASE+'/api/admin/match-schedules',route=>{
   const req=route.request();
   if(req.method()==='GET')return route.fulfill(json({schedules:fixtures,teams}));
+  if(req.method()==='PATCH'&&req.postDataJSON()?.action==='retry_notifications')
+   return route.fulfill(json({ok:true,notified:0,push:{processed:0,pushed:0}}));
   if(req.method()==='POST'){
    const b=req.postDataJSON();
    const created={...b,id:'77777777-7777-4777-8777-777777777773',
@@ -407,7 +409,9 @@ async function testPremiumScheduleUI(browser){
   assert.equal(await page.locator('.op-schedule-match').count(),3);
   const now=await page.locator('.op-schedule-kpis>div').nth(1).locator('strong').innerText();
   assert(now.includes('225'),'Entry fees should total 225 after publish: '+now);
-  await page.getByText('9 player inbox alert(s) created').waitFor({state:'visible'});
+  await page.getByText('9 approved-player inbox alert(s) added').waitFor({state:'visible'});
+  await page.getByRole('button',{name:'Sync alerts for Lobby Alpha'}).click();
+  await page.getByText('0 new approved-player inbox alert(s) added').waitFor({state:'visible'});
   await page.getByRole('button',{name:'Activate light mode'}).click();
   await checkPremiumScheduleLighting(page,true);
   await page.setViewportSize({width:390,height:844});
@@ -443,7 +447,9 @@ async function testPlayerMatchInbox(browser){
   await page.getByRole('heading',{name:'Lobby Alpha'}).waitFor();
   assert((await page.locator('.op-player-match-summary').innerText()).includes('৳70'),
    'Player fixture entry fee must appear separate from prize');
-  await page.getByRole('button',{name:/Notifications 1/}).click();
+  await page.getByRole('button',{name:/1 new match notification/}).waitFor({state:'visible'});
+  assert.equal(await page.locator('.op-player-match-bell').getAttribute('aria-expanded'),'true',
+   'New fixture alerts should open automatically for logged-in approved players');
   await page.getByText('New match published').waitFor({state:'visible'});
   await page.locator('.op-player-match-inbox button').first().click();
   await page.locator('.op-player-match-inbox button.is-read').waitFor({state:'visible',timeout:10000});
