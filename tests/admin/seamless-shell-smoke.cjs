@@ -255,13 +255,14 @@ async function testRosterAndMatchLineup(browser){
   await page.locator('.squad-player-checkbox').first().waitFor({state:'visible'});
   const boxes=page.locator('.squad-player-checkbox');
   assert.equal(await boxes.count(),4,'Remaining active main squad players should all appear');
-  // Transfer one player back, allowing a full five-player squad, then
-  // verify exactly four of five are manually selected.
+  // Return the transferred member and reactivate the original one: six
+  // available squad members, of whom only four can be chosen.
   people[1].team_id=t1;
+  people[0].is_active=true;
   await page.locator('select[name="team1_id"]').selectOption(t2);
   await page.locator('select[name="team1_id"]').selectOption(t1);
   await page.waitForTimeout(350);
-  assert.equal(await boxes.count(),5,'All five current squad members should appear');
+  assert.equal(await boxes.count(),6,'All six current squad members should appear');
   for(let i=0;i<4;i++)await boxes.nth(i).check();
   assert.equal(await page.locator('.squad-player-checkbox:checked').count(),4);
   assert.equal(await page.locator('.performance-row').count(),4);
