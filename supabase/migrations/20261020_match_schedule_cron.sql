@@ -11,6 +11,16 @@ select cron.schedule('op-match-schedule-push-dispatch-v1','* * * * *',
   ),
   body:='{}'::jsonb,
   timeout_milliseconds:=15000
+ )
+ where exists(
+   select 1 from public.op_match_schedules s
+   where s.status='published'
+     and s.starts_at > now()
+     and s.starts_at <= now()+interval '61 minutes'
+ ) or exists(
+   select 1 from public.op_match_notifications n
+   where n.push_sent_at is null
+     and n.created_at >= now()-interval '10 minutes'
  );
  $cron$
 );
