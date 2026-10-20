@@ -18,7 +18,7 @@ const json=(body,headers={})=>({status:200,contentType:'application/json',
  headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*',
  'access-control-expose-headers':'content-range',...headers},
  body:JSON.stringify(body)});
-async function createPage(browser,width,height){
+async function createPage(browser,width,height,roleType='admin'){
  const context=await browser.newContext({viewport:{width,height}});
  const page=await context.newPage();
  page.on('pageerror',error=>console.error('BROWSER ERROR',error.message));
@@ -35,8 +35,9 @@ async function createPage(browser,width,height){
   if(url.pathname.startsWith('/auth/v1/'))return route.fulfill(json({}));
   if(url.pathname.startsWith('/rest/v1/')){
    const table=url.pathname.split('/').pop();
-   if(table==='profiles')return route.fulfill(json({id:UID,role:'admin',email:user.email},
+   if(table==='profiles')return route.fulfill(json({id:UID,role:roleType,email:user.email},
     {'content-range':'0-0/1'}));
+   if(table==='players'&&roleType==='player')return route.fulfill(json({id:'11111111-1111-4111-8111-111111111111',user_id:UID,full_name:'Fixture Player',ign:'Fixture One',status:'approved',team_name:'Main Squad',team_id:null,primary_role:'Rusher'}, {'content-range':'0-0/1'}));
    return route.fulfill(json([],
     {'content-range':'*/0'}));
   }
@@ -356,6 +357,41 @@ async function testPremiumScheduleUI(browser){
  }finally{await context.close()}
 }
 
+
+async function testPlayerMatchInbox(browser){
+ const {context,page}=await createPage(browser,390,844,'player');
+ const scheduled=new Date(Date.now()+86400000).toISOString();
+ const fixture={id:'77777777-7777-4777-8777-777777777781',title:'Lobby Alpha',
+  starts_at:scheduled,entry_fee:70,prize_pool:'৳2000 display only',
+  lobby_details:'Bermuda BR',notes:'Join 10 min early',team_id:null,status:'published'};
+ const notifications=[{id:'99999999-9999-4999-8999-999999999991',schedule_id:fixture.id,
+  event_key:'created',created_at:new Date().toISOString(),read_at:null}];
+ await page.route(BASE+'/api/player/match-schedules',async route=>{
+  if(route.request().method()==='PATCH'){
+   notifications[0].read_at=new Date().toISOString();
+   return route.fulfill(json({ok:true}));
+  }
+  return route.fulfill(json({schedules:[fixture],inbox:notifications,
+   unread:notifications.filter(n=>!n.read_at).length}));
+ });
+ await page.route(BASE+'/api/player/match-subscription',route=>route.fulfill(json({
+  subscribed:false,vapidPublicKey:'synthetic-not-for-push'})));
+ try{
+  await page.goto(BASE+'/player/dashboard',{waitUntil:'domcontentloaded'});
+  await page.getByRole('heading',{name:'My Match Center'}).waitFor({timeout:50000});
+  await page.getByRole('heading',{name:'Lobby Alpha'}).waitFor();
+  assert((await page.locator('.op-player-match-summary').innerText()).includes('৳70'),
+   'Player fixture entry fee must appear separate from prize');
+  await page.getByRole('button',{name:/Notifications 1/}).click();
+  await page.getByText('New match published').waitFor({state:'visible'});
+  await page.locator('.op-player-match-inbox button').first().click();
+  await page.getByRole('button',{name:'Notifications'}).waitFor();
+  assert.equal(await page.locator('.op-player-match-inbox button.is-read').count(),1);
+  assert.equal(await page.locator('.op-player-match-alertbar button').innerText().then(x=>x.includes('Enable alerts')),true);
+  console.log('PASS player schedule display, in-app inbox, read action and opt-in-only alerts');
+ }finally{await context.close()}
+}
+
 async function run(){
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  let passed=0;
@@ -397,6 +433,7 @@ async function run(){
   await context.close();
   await testRosterAndMatchLineup(browser);
   await testPremiumScheduleUI(browser);
+  await testPlayerMatchInbox(browser);
   console.log('PASS '+passed+' responsive admin assertions (desktop, compact PC and mobile)');
  }finally{await browser.close()}
 }
