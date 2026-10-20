@@ -1,0 +1,19 @@
+.op-install{font:500 15px/1.7 system-ui,sans-serif;color:#f3faff;min-height:100dvh;padding:22px clamp(14px,4vw,48px) 75px;background:radial-gradient(ellipse at 8% 22%,#116eb653,transparent 45%),radial-gradient(ellipse at 96% 8%,#b05deb5c,transparent 47%),linear-gradient(150deg,#08142c,#161f43 57%,#211333);box-sizing:border-box}
+.op-install *{box-sizing:border-box}.op-install a{color:inherit;text-decoration:none}
+.op-install-nav{max-width:1050px;display:flex;justify-content:space-between;margin:0 auto 28px;gap:20px;font-size:12px;font-weight:900;letter-spacing:.05em}.op-install-nav a:hover{color:#9af9e9}
+.op-install-hero{max-width:1050px;margin:auto;text-align:center;padding:clamp(30px,5vw,58px) clamp(16px,3vw,44px);border:1px solid transparent;border-radius:26px;background:radial-gradient(circle at 5% 85%,#45f0e82c,transparent 55%),radial-gradient(circle at 97% 3%,#bf6ffb4c,transparent 57%),linear-gradient(120deg,#142b50,#251c54) padding-box,linear-gradient(120deg,#68eaff,#987cff,#f090d8,#68edcb) border-box;box-shadow:0 20px 60px #0009,0 0 38px #6f8dff33}
+.op-install-logo{margin:0 auto 15px;display:grid;place-items:center;height:83px;width:83px;border-radius:22px;font-size:30px;font-weight:950;color:#fff;background:linear-gradient(135deg,#209fc7,#6152e4 60%,#ab67dc);box-shadow:0 0 30px #9d8cfc70}
+.op-install-eyebrow{color:#7bf0e0;font-weight:900;letter-spacing:.18em;font-size:11px}
+.op-install h1{font-size:clamp(28px,4vw,51px);font-weight:950;line-height:1.14;margin:12px 0;color:#fff!important;letter-spacing:-.03em}
+.op-install-hero>p:not(.op-install-eyebrow){max-width:680px;margin:12px auto 21px;color:#d2e6fa}
+.op-install-action{cursor:pointer;padding:14px 23px;border-radius:13px;border:1px solid #b1e6ffa1;background:linear-gradient(120deg,#3b83d5,#7755de,#b05bc7);font-weight:900;color:#fff;box-shadow:0 0 24px #75a2ff7a;font-size:15px}
+.op-install-state{color:#d1efff;border:1px solid #9be3fa76;border-radius:12px;padding:10px 18px;display:inline-block;background:#1a487a89;font-size:13px}
+.op-install-status{color:#b2ffe7;margin:12px 0 0}
+.op-install-devices{display:flex;max-width:1050px;margin:22px auto;gap:10px;flex-wrap:wrap;justify-content:center}
+.op-install-devices button{cursor:pointer;font:850 13px system-ui,sans-serif;padding:13px 17px;border-radius:11px;color:#cde9fb;border:1px solid #7f9bda80;background:#223158}
+.op-install-devices button[aria-pressed="true"]{color:#122d4f;background:linear-gradient(105deg,#69ecf3,#aab6ff);border-color:#b9f8ff;box-shadow:0 0 20px #9ae8f96e}
+.op-install-guide{max-width:1050px;margin:0 auto;border:1px solid #8aaef17d;background:linear-gradient(145deg,#172845,#1c2144);padding:clamp(22px,4vw,38px);border-radius:22px;box-shadow:0 16px 46px #02061686}
+.op-install-guide h2{font-size:clamp(20px,3vw,29px);color:#fff!important;margin:0 0 12px}
+.op-install-guide>p{color:#c5d8ef;max-width:830px}.op-install-guide strong{color:#f2fcff}
+.op-install-note{background:#2743668e;border:1px solid #8dcef388;border-radius:14px;padding:17px 19px;margin-top:27px}.op-install-note strong{color:#92ffe0}.op-install-note p{margin:5px 0;color:#d0e7f4;font-size:13px}
+@media(max-width:530px){.op-install{padding:16px 13px 55px}.op-install-devices{display:grid;grid-template-columns:1fr 1fr}.op-install-devices button{padding:12px 6px}.op-install-nav{font-size:10px}}

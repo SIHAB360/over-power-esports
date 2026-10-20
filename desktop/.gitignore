@@ -1,0 +1,6 @@
+node_modules/
+dist/
+assets/icon.png
+*.exe
+*.dmg
+*.blockmap

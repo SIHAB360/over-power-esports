@@ -1,0 +1,62 @@
+name: PWA and Cross-Platform App Smoke
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "app/install/**"
+      - "app/pwa-icon/**"
+      - "app/layout.js"
+      - "app/page.js"
+      - "app/components/PwaBootstrap.jsx"
+      - "app/.well-known/**"
+      - "public/manifest.webmanifest"
+      - "public/match-notifications-sw.js"
+      - "public/offline.html"
+      - "tests/app/**"
+      - ".github/workflows/pwa-app-qa.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "app/install/**"
+      - "app/pwa-icon/**"
+      - "public/manifest.webmanifest"
+      - ".github/workflows/pwa-app-qa.yml"
+permissions:
+  contents: read
+jobs:
+  browser-app:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://op-app-qa.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: synthetic-anon-client-only
+      NEXT_TELEMETRY_DISABLED: "1"
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install website dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build real Next.js website with synthetic public environment
+        run: npm run build
+      - name: Start test server
+        run: |
+          set -euo pipefail
+          npm run start -- --hostname 127.0.0.1 --port 3158 > "$RUNNER_TEMP/app.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/app.pid"
+          for i in $(seq 1 80); do
+            if curl --max-time 2 -fsS -o /dev/null http://127.0.0.1:3158/login; then exit 0; fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/app.log"
+          exit 1
+      - name: Verify PWA install, safe cache and Android app link defaults
+        run: node tests/app/pwa-smoke.cjs
+      - name: Stop test server
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/app.pid" ]; then
+            kill "$(cat "$RUNNER_TEMP/app.pid")" || true
+          fi
