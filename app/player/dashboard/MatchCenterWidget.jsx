@@ -1,5 +1,5 @@
 'use client';
-import {useCallback,useEffect,useMemo,useState} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {supabase} from '../../lib/supabase';
 import {FiBell,FiBellOff,FiCalendar,FiClock,FiCheck,FiRefreshCw} from 'react-icons/fi';
 import './match-center-widget.css';
@@ -17,6 +17,7 @@ export default function PlayerMatchCenter(){
  const [loading,setLoading]=useState(true),[working,setWorking]=useState(false);
  const [message,setMessage]=useState(''),[enabled,setEnabled]=useState(false),[supported,setSupported]=useState(false);
  const [showInbox,setShowInbox]=useState(false);
+ const lastUnread=useRef(0);
  const api=useCallback(async(path,method='GET',body)=>{
   const {data:{session}}=await supabase.auth.getSession();
   if(!session?.access_token)throw Error('Please sign in again.');
@@ -30,7 +31,11 @@ export default function PlayerMatchCenter(){
  const refresh=useCallback(async()=>{
   try{
    const d=await api('/api/player/match-schedules');
-   setData(d);setMessage('');
+   setData(d);
+   const count=Number(d.unread||0);
+   if(count>lastUnread.current)setShowInbox(true);
+   lastUnread.current=count;
+   setMessage('');
   }catch(e){setMessage(e.message)}
   finally{setLoading(false)}
  },[api]);
@@ -70,6 +75,7 @@ export default function PlayerMatchCenter(){
  };
  const markRead=async(note)=>{
   try{await api('/api/player/match-schedules','PATCH',{id:note.id});
+   if(!note.read_at)lastUnread.current=Math.max(0,lastUnread.current-1);
    setData(current=>({...current,
     unread:Math.max(0,current.unread-(note.read_at?0:1)),
     inbox:current.inbox.map(n=>n.id===note.id?{...n,read_at:new Date().toISOString()}:n)
@@ -107,6 +113,7 @@ export default function PlayerMatchCenter(){
    </button>
   </div>
   {message&&<p className="op-player-match-status" role="status">{message}</p>}
+  {data.unread>0&&<button type="button" className="op-player-match-new" onClick={()=>setShowInbox(true)}><FiBell/> {data.unread} new match notification{data.unread===1?'':'s'} — view your upcoming matches</button>}
   {showInbox&&<div className="op-player-match-inbox">
     <h3>Notification inbox</h3>
     {data.inbox.length===0?<p>No match notifications yet.</p>:data.inbox.map(n=><button type="button" key={n.id}
@@ -132,6 +139,6 @@ export default function PlayerMatchCenter(){
      </div>
     </div>)}
    </div>)}
-  <p className="op-player-match-footnote">Reminder times use Bangladesh Standard Time (UTC+6). Phone alerts require permission and supported browser/PWA installation. You can always read alerts here.</p>
+  <p className="op-player-match-footnote">Approved players can see matches assigned to their squad (or all squads). Inactive roster status only affects match lineup eligibility. Reminder times use Bangladesh Standard Time (UTC+6). Phone alerts require permission and supported browser/PWA installation. You can always read alerts here.</p>
  </section>;
 }
