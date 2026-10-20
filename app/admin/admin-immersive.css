@@ -171,10 +171,8 @@
 .op-admin-system [data-op-section="visitors"],
 .op-admin-system .op-admin-route-link:nth-child(12){--op-item:#c0ff80;--op-item2:#4ae7ef}
 .op-admin-system .op-admin-route-link:nth-child(4){--op-item:#84a5ff;--op-item2:#fa8aca}
-.op-admin-system .op-admin-route-link{
-  --op-item:#75e5ff;--op-item2:#b08dff;
-}
-.op-admin-system [data-op-admin-nav-item]{
+.op-admin-system .op-admin-route-links,
+.op-admin-system [data-op-nav-scroll]{
   --op-item:#75e5ff;--op-item2:#b08dff;
 }
 .op-admin-system [data-op-sidebar] [data-op-admin-nav-item],
