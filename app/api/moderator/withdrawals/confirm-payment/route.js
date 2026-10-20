@@ -5,7 +5,7 @@ export async function POST(request){
   const {id,requestId,transferFee,reference,transactionReference,note,confirmed}=await request.json().catch(()=>({}));
   const target=id||requestId, transaction=reference||transactionReference;
   if(!MODERATOR_ID.test(String(target||''))||!confirmed||!Number.isFinite(Number(transferFee))||Number(transferFee)<0||
-    String(transaction||'').trim().length<5||String(reference||'').trim().length>100)
+    String(transaction||'').trim().length<5||String(transaction||'').trim().length>100)
    return moderatorJson({message:'Manual payout requires confirmed transfer and reference'},400);
   const db=await moderatorJwtClient(request);
   const {data,error}=await db.rpc('moderator_confirm_manual_withdrawal',{
