@@ -21,6 +21,7 @@ const json=(body,headers={})=>({status:200,contentType:'application/json',
 async function createPage(browser,width,height){
  const context=await browser.newContext({viewport:{width,height}});
  const page=await context.newPage();
+ page.on('pageerror',error=>console.error('BROWSER ERROR',error.message));
  await page.addInitScript(({key,session})=>{
   localStorage.setItem(key,JSON.stringify(session));
   localStorage.setItem('op-analytics-consent-v1','no');
@@ -65,7 +66,14 @@ async function assertRightScroll(page,standalone){
    top:side.getBoundingClientRect().top,oldTop,navOverflow:getComputedStyle(nav).overflowY,
    leftScrollbar:nav.scrollWidth-nav.clientWidth,bodyOverflow:document.documentElement.scrollWidth-innerWidth};
  },standalone);
- assert(s,'Could not locate app pane, sidebar and nav');
+ if(!s){
+   console.error('DIAGNOSTIC',await page.evaluate(()=>({
+    url:location.href,title:document.title,body:document.body?.innerText.slice(0,1000),
+    dashboardElements:[...document.querySelectorAll('[class*="dashboard_"]')].slice(0,20).map(x=>x.className),
+    html:document.documentElement.outerHTML.slice(0,500)
+   })));
+   throw Error('Could not locate app pane, sidebar and nav');
+ }
  assert.equal(s.navOverflow,'hidden','Desktop sidebar must not have independent scrolling');
  assert(Math.abs(s.top-s.oldTop)<1,'Left rail should not move when right side scrolls');
  assert(s.height>200,'Right scroll pane must remain visible');
