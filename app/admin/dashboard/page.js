@@ -511,7 +511,7 @@ export default function AdminDashboard() {
                   aria-current={active === key ? "page" : undefined}
                 >
                   <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
-                  <span className={styles.navText}>{name}</span>
+                  <span data-op-nav-label className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
                     <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
@@ -530,7 +530,7 @@ export default function AdminDashboard() {
                   aria-current={active === key ? "page" : undefined}
                 >
                   <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
-                  <span className={styles.navText}>{name}</span>
+                  <span data-op-nav-label className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
                     <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
@@ -538,12 +538,12 @@ export default function AdminDashboard() {
               ))}
             </nav>
             <div data-op-nav-separator className={styles.navSeparator}/>
-            <Link data-op-section="moderators" href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
-            <Link data-op-visitors-link data-op-section="visitors" href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
+            <Link data-op-section="moderators" href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span data-op-nav-label className={styles.navText}>Moderator Management</span></Link>
+            <Link data-op-visitors-link data-op-section="visitors" href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span data-op-nav-label className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
             <p data-op-menu-title className={styles.menuTitle}>QUICK ACCESS</p>
             <Link data-op-section="site" href="/" className={styles.navItem}>
               <span data-op-nav-icon className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
-              <span className={styles.navText}>View Website</span>
+              <span data-op-nav-label className={styles.navText}>View Website</span>
             </Link>
           </div>
           <div data-op-sidebar-foot className={styles.sidebarFoot}>
