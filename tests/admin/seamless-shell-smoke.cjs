@@ -54,11 +54,11 @@ async function ready(page,path,pattern){
 async function assertRightScroll(page,standalone){
  const s=await page.evaluate(standalone=>{
   const e=standalone?document.querySelector('.op-admin-view'):
-   document.querySelector('[class*="dashboard_main__"]');
+   document.querySelector('[data-op-right-scroll]');
   const side=standalone?document.querySelector('.op-admin-route-sidebar'):
-   document.querySelector('[class*="dashboard_sidebar__"]');
+   document.querySelector('[data-op-sidebar]');
   const nav=standalone?document.querySelector('.op-admin-route-links'):
-   document.querySelector('[class*="dashboard_navScroll__"]');
+   document.querySelector('[data-op-nav-scroll]');
   if(!e||!side||!nav)return null;
   const oldTop=side.getBoundingClientRect().top;
   e.scrollTop=Math.min(500,e.scrollHeight);
@@ -106,8 +106,9 @@ async function run(){
   await ready(page,'/admin/dashboard','OVER POWER');
   await checkHeading(page);
   await page.getByRole('button',{name:'Open admin menu'}).click();
-  const nav=page.locator('[class*="dashboard_sidebarOpen__"]');
+  const nav=page.locator('[data-op-sidebar]');
   await nav.waitFor({state:'visible',timeout:20000});
+  assert.equal(await nav.evaluate(el=>getComputedStyle(el).visibility),'visible');
   assert.equal(await page.locator('html').evaluate(el=>el.scrollWidth-innerWidth)<=3,true);
   passed++;
   await ready(page,'/admin/players','PLAYER');
