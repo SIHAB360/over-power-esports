@@ -385,6 +385,7 @@ async function testPlayerMatchInbox(browser){
   await page.getByRole('button',{name:/Notifications 1/}).click();
   await page.getByText('New match published').waitFor({state:'visible'});
   await page.locator('.op-player-match-inbox button').first().click();
+  await page.locator('.op-player-match-inbox button.is-read').waitFor({state:'visible',timeout:10000});
   await page.getByRole('button',{name:'Notifications'}).waitFor();
   assert.equal(await page.locator('.op-player-match-inbox button.is-read').count(),1);
   assert.equal(await page.locator('.op-player-match-alertbar button').innerText().then(x=>x.includes('Enable alerts')),true);
