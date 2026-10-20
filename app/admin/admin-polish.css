@@ -363,3 +363,112 @@ html[data-op-admin-theme="light"] .op-admin-view [class*="visitors_page"]
   [class*="visitors_page"] [class*="visitors_panel"]{background:#fff!important}
 html[data-op-admin-theme="light"] .op-admin-view [class*="moderators_page"]
   [class*="moderators_panel"]{background:#fff!important}
+
+
+/* ===== Shared sidebar for EVERY standalone admin screen ===== */
+.op-admin-route-layout{width:100%;min-width:0}
+.op-admin-route-layout:has(> .op-admin-route-navigator){
+  display:grid;grid-template-columns:clamp(250px,17vw,288px) minmax(0,1fr);
+  align-items:start;min-height:100dvh
+}
+.op-admin-route-navigator{
+  position:sticky;top:0;height:100vh;height:100dvh;min-width:0;z-index:32
+}
+.op-admin-route-sidebar{
+  display:flex;flex-direction:column;
+  height:100%;width:100%;min-width:0;
+  padding:21px 12px 16px;
+  color:#eaf5ff;background:linear-gradient(165deg,#111f37,#0a172a 80%,#101c32);
+  border-right:1px solid rgba(85,213,248,.42);
+  box-shadow:inset -1px 0 rgba(103,108,236,.14),7px 0 26px #030a1a37;
+}
+.op-admin-route-brand{display:flex;align-items:center;gap:12px;padding:4px 9px 20px;margin-bottom:12px;border-bottom:1px solid rgba(111,208,251,.23)}
+.op-admin-route-brand img{height:46px;width:46px;flex:none;border-radius:12px;object-fit:cover;box-shadow:0 0 19px rgba(65,204,244,.33)}
+.op-admin-route-brand strong{display:block;font-size:clamp(13px,1vw,17px);letter-spacing:.015em;line-height:1.4;color:#fff}
+.op-admin-route-brand span{display:block;margin-top:2px;font-size:10px;letter-spacing:.09em;color:#67e9ef;font-weight:850}
+.op-admin-route-group-label{font-size:11px;letter-spacing:.13em;font-weight:900;color:#a5c9ea;margin:12px 10px}
+.op-admin-route-links{display:grid;align-content:start;gap:5px;overflow-y:auto;min-height:0;flex:1;padding:2px 0 12px;scrollbar-width:thin;scrollbar-color:#285575 transparent}
+.op-admin-route-link{
+  display:flex;align-items:center;gap:12px;
+  min-height:46px;padding:7px 12px;border:1px solid rgba(93,162,220,.14);
+  border-radius:12px;color:#c9dff4;text-decoration:none;font-size:13px;font-weight:800;
+  transition:background .2s,box-shadow .2s,border-color .2s,transform .2s;
+}
+.op-admin-route-link:hover{
+  color:#fff;border-color:rgba(94,214,246,.53);
+  background:linear-gradient(100deg,rgba(37,179,219,.18),rgba(112,81,231,.10));
+  box-shadow:0 0 18px rgba(43,178,226,.11);transform:translateX(2px)
+}
+.op-admin-route-link.active{
+  color:#fff;border-color:rgba(100,230,242,.58);
+  background:linear-gradient(100deg,rgba(39,157,201,.32),rgba(106,90,220,.15));
+  box-shadow:inset 3px 0 #56efed,0 0 16px rgba(60,190,237,.14)
+}
+.op-admin-route-icon{
+  display:grid;place-items:center;flex:none;
+  width:32px;height:32px;border-radius:9px;
+  color:#71dff8;background:rgba(56,171,209,.15);font-size:17px
+}
+.op-admin-route-end{margin-left:auto;flex:none;color:#70f4fa}
+.op-admin-route-bottom{border-top:1px solid rgba(99,178,226,.23);display:grid;gap:10px;padding-top:14px}
+.op-admin-route-connected{
+  display:flex;gap:8px;align-items:center;padding:10px 12px;
+  border:1px solid rgba(75,220,186,.38);border-radius:11px;
+  background:rgba(38,125,115,.15);color:#91f8cf;font-weight:850;font-size:11px
+}
+.op-admin-route-site,.op-admin-route-logout{
+  min-height:42px;display:flex;align-items:center;justify-content:center;gap:9px;
+  border:1px solid rgba(90,161,218,.35);border-radius:11px;
+  background:rgba(40,81,121,.16);color:#d6edff;text-decoration:none;
+  font-size:12px;font-weight:900;cursor:pointer
+}
+.op-admin-route-logout{color:#ffa9bc;border-color:rgba(248,129,162,.4);background:rgba(142,55,79,.11)}
+.op-admin-route-site:hover{border-color:#67ebef;box-shadow:0 0 14px rgba(54,210,231,.17)}
+.op-admin-route-logout:hover{border-color:#ff96b3;box-shadow:0 0 14px rgba(243,96,142,.17)}
+.op-admin-route-open,.op-admin-route-close,.op-admin-route-shade{display:none}
+html[data-op-admin-theme="light"] .op-admin-route-sidebar{
+  background:linear-gradient(145deg,#fff,#e8f1ff);border-color:rgba(59,146,207,.32);color:#203957
+}
+html[data-op-admin-theme="light"] .op-admin-route-brand{border-color:rgba(71,145,202,.25)}
+html[data-op-admin-theme="light"] .op-admin-route-brand strong{color:#193756}
+html[data-op-admin-theme="light"] .op-admin-route-brand span{color:#08768b}
+html[data-op-admin-theme="light"] .op-admin-route-group-label{color:#59738d}
+html[data-op-admin-theme="light"] .op-admin-route-link{color:#29425f;border-color:rgba(65,125,183,.14)}
+html[data-op-admin-theme="light"] .op-admin-route-link.active{color:#173851;background:#d8f6fa}
+html[data-op-admin-theme="light"] .op-admin-route-icon{color:#147ea4;background:#dcefff}
+html[data-op-admin-theme="light"] .op-admin-route-site{color:#1e4161;background:#f0f7ff}
+html[data-op-admin-theme="light"] .op-admin-route-logout{color:#a62b58;background:#fff3f6}
+html[data-op-admin-theme="light"] .op-admin-route-connected{color:#157557;background:#e0f9ed}
+@media(max-width:900px){
+  .op-admin-route-layout:has(> .op-admin-route-navigator){display:block}
+  .op-admin-route-navigator{position:static;height:0;width:0;z-index:auto}
+  .op-admin-route-open{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    position:fixed;z-index:79;top:10px;left:10px;
+    min-height:40px;padding:7px 12px;border-radius:11px;
+    border:1px solid rgba(89,198,239,.56);background:#142c47;
+    color:#e7faff;font-weight:850;font-size:12px;
+    box-shadow:0 4px 19px rgba(2,14,27,.23)
+  }
+  .op-admin-route-shade{
+    display:block;position:fixed;inset:0;z-index:81;
+    background:rgba(2,11,26,.72);border:0;backdrop-filter:blur(5px)
+  }
+  .op-admin-route-sidebar{
+    position:fixed;z-index:82;top:0;left:0;bottom:0;
+    width:min(85vw,310px);height:100vh;height:100dvh;
+    transform:translateX(-102%);visibility:hidden;
+    transition:transform .25s ease,visibility .25s
+  }
+  .op-admin-route-sidebar.is-open{transform:translateX(0);visibility:visible}
+  .op-admin-route-close{
+    display:grid;place-items:center;margin-left:auto;width:34px;height:34px;
+    border:1px solid rgba(84,201,237,.4);background:#1b3351;color:#fff;
+    border-radius:10px;font-size:18px
+  }
+  .op-admin-route-navigator + .op-admin-view{min-width:0}
+  html[data-op-admin-theme="light"] .op-admin-route-open{background:#fff;color:#234465}
+}
+@media(prefers-reduced-motion:reduce){
+ .op-admin-route-sidebar{transition:none}
+}
