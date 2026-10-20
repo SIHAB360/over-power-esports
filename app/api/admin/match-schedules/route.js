@@ -20,12 +20,18 @@ export async function POST(req){
   const payload=scheduleInput(b);
   const {data,error}=await db.from('op_match_schedules').insert({...payload,created_by:user.id}).select('*').single();
   if(error)throw new HttpError(error.message,400);
-  let notified=0,delivered=null;
+  let notified=0,delivered=null,notificationWarning=false;
   try{
    notified=await queueSchedule(db,data);
    delivered=await flushPush(db);
-  }catch(e){console.warn('Match schedule alert queue failed',e.message)}
-  return Response.json({schedule:sanitizeSchedule(data),notified,push:delivered},{status:201,headers:noStore});
+  }catch(e){
+   notificationWarning=true;
+   console.warn('Match schedule alert queue failed',e.message);
+  }
+  // Never claim 0 successful alerts means all recipients were reached.
+  // The saved match can be retried idempotently without creating a duplicate.
+  return Response.json({schedule:sanitizeSchedule(data),notified,push:delivered,
+   notificationWarning},{status:201,headers:noStore});
  }catch(e){return errResponse(e)}
 }
 export async function PATCH(req){
@@ -35,6 +41,17 @@ export async function PATCH(req){
   if(!goodUuid(b?.id))throw new HttpError('Invalid schedule ID.');
   const {data:old,error:oldError}=await db.from('op_match_schedules').select('id,status,starts_at,team_id').eq('id',b.id).maybeSingle();
   if(oldError||!old)throw new HttpError('Schedule not found.',404);
+  if(b.action==='retry_notifications'){
+   if(old.status!=='published')throw new HttpError('Cancelled match cannot send alerts.');
+   const {data:schedule,error:se}=await db.from('op_match_schedules')
+    .select('*').eq('id',b.id).single();
+   if(se||!schedule)throw new HttpError('Schedule unavailable.',503);
+   const notified=await queueSchedule(db,schedule,'created');
+   let delivery=null;
+   try{delivery=await flushPush(db)}
+   catch(e){console.warn('Push deferred (inbox alerts saved)',e.message)}
+   return Response.json({notified,push:delivery,ok:true},{headers:noStore});
+  }
   if(b.action==='cancel'){
    const {data,error}=await db.from('op_match_schedules').update({status:'cancelled',updated_at:new Date().toISOString()}).eq('id',b.id).select('*').single();
    if(error)throw new HttpError(error.message,400);

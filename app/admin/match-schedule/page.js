@@ -56,8 +56,17 @@ export default function AdminMatchScheduleCenter(){
   try{
    const payload={...form,entry_fee:Number(form.entry_fee),team_id:form.team_id||null};
    const d=await request(editing?'PATCH':'POST',editing?{...payload,id:editing,action:'edit'}:payload);
-   setNotice(editing?'Match schedule updated.':'Match published. '+d.notified+' player inbox alert(s) created. Push delivered to subscribers where supported.');
+   setNotice(editing?'Match schedule updated.':d.notificationWarning?'Match saved, but player alerts could not be queued. Use Sync alerts for this match.':'Match published! '+d.notified+' approved-player inbox alert(s) added. Phone push requires player opt-in.');
    setEditing(null);setForm(blank());await load();
+  }catch(e){setErr(e.message)}
+  finally{setSaving(false)}
+ };
+ const syncAlerts=async(row)=>{
+  setSaving(true);setErr('');setNotice('');
+  try{
+   const result=await request('PATCH',{action:'retry_notifications',id:row.id});
+   setNotice('Notification sync complete for '+row.title+'. '+result.notified+
+    ' new approved-player inbox alert(s) added; existing alerts were not duplicated.');
   }catch(e){setErr(e.message)}
   finally{setSaving(false)}
  };
@@ -104,8 +113,8 @@ export default function AdminMatchScheduleCenter(){
       <label>Prize pool (text, not calculated)<input value={form.prize_pool} maxLength={160}
        onChange={e=>update('prize_pool',e.target.value)} placeholder="৳2,000 + bonus"/></label>
      </div>
-     <label>Notify which squad?<select value={form.team_id} onChange={e=>update('team_id',e.target.value)}>
-      <option value="">All approved, active players</option>
+     <label>Notify which squad? (select All for every approved player)<select value={form.team_id} onChange={e=>update('team_id',e.target.value)}>
+      <option value="">All approved players (both squads)</option>
       {teams.map(t=><option key={t.id} value={t.id}>{t.team_name}</option>)}
      </select></label>
      <label>Lobby / room details<input maxLength={500} value={form.lobby_details}
@@ -138,6 +147,7 @@ export default function AdminMatchScheduleCenter(){
        {s.notes&&<p>{s.notes}</p>}
       </div>
       {s.status==='published'?<div className="op-schedule-match-buttons">
+       <button type="button" aria-label={'Sync alerts for '+s.title} disabled={saving} onClick={()=>syncAlerts(s)}><FiBell/> Sync alerts</button>
        <button type="button" aria-label={'Edit '+s.title} onClick={()=>edit(s)}><FiEdit2/> Edit</button>
        <button type="button" aria-label={'Cancel '+s.title} onClick={()=>setPendingCancel(s)}><FiXCircle/> Cancel</button>
       </div>:<span className="op-schedule-cancelled">Cancelled</span>}

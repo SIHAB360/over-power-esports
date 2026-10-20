@@ -1,20 +1,14 @@
-import {recipients,HttpError} from './match-center-server';
+import {HttpError} from './match-center-server';
 
 const EVENT_LABEL={created:'New match published', '60m':'Match starts in 1 hour',
  '30m':'Match starts in 30 minutes', '15m':'Match starts in 15 minutes'};
-const chunks=(arr,n)=>Array.from({length:Math.ceil(arr.length/n)},(_,i)=>arr.slice(i*n,i*n+n));
 export async function queueSchedule(db,schedule,eventKey='created'){
- const users=await recipients(db,schedule.team_id);
- let created=0;
- for(const group of chunks(users,100)){
-  const {data,error}=await db.from('op_match_notifications')
-   .upsert(group.map(user_id=>({schedule_id:schedule.id,user_id,event_key:eventKey})),
-    {onConflict:'schedule_id,user_id,event_key',ignoreDuplicates:true})
-   .select('id');
-  if(error)throw new HttpError('Could not enqueue notifications.',503);
-  created+=(data||[]).length;
- }
- return created;
+ // The privileged SQL function chooses approved, authenticated recipients and
+ // enforces uniqueness; an orphan roster record cannot fail the whole send.
+ if(eventKey!=='created')throw new HttpError('Unsupported publication event.');
+ const {data,error}=await db.rpc('op_enqueue_match_publication',{p_schedule_id:schedule.id});
+ if(error)throw new HttpError('Could not enqueue approved-player notifications.',503);
+ return Number(data||0);
 }
 export async function flushPush(db,limit=180){
  const {data:pending,error}=await db.from('op_match_notifications')

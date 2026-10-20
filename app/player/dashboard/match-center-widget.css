@@ -29,3 +29,17 @@
 .op-player-match-empty{padding:20px;text-align:center;color:#c1d7ed}.op-player-match-footnote{font-size:11px!important;line-height:1.6;color:#a5bdd9!important;margin:12px 0 0}
 @media(max-width:580px){.op-player-match-fixture{grid-template-columns:1fr;gap:8px}.op-player-match-time{display:flex;align-items:center;gap:8px}.op-player-match-header-actions{width:100%}.op-player-match-center{padding:13px}.op-player-match-date{display:grid}}
 @media(prefers-reduced-motion:reduce){.op-player-match-center *{transition:none!important}}
+
+/* Clearly surface new approved-player fixture announcements; the inbox opens
+   automatically for new unread events, even without phone push permission. */
+.op-player-match-center .op-player-match-new{
+ display:flex!important;align-items:center;justify-content:flex-start;gap:11px;
+ width:100%;min-height:49px;margin:11px 0 15px;padding:12px 16px;
+ border:1px solid #80ffded2!important;border-radius:13px!important;
+ background:linear-gradient(105deg,#11675daa,#275389c9,#55438da8)!important;
+ color:#e9fffc!important;font-size:clamp(13px,1vw,16px)!important;font-weight:900!important;
+ text-align:left;box-shadow:0 0 23px #60efd04a,inset 0 1px #d7fff743!important;
+}
+.op-player-match-center .op-player-match-new svg{flex:none;font-size:20px;filter:drop-shadow(0 0 9px #a9ffec)}
+.op-player-match-center .op-player-match-inbox{border-color:#8ee8efb2;box-shadow:0 0 20px #84c2fd1c}
+@media(max-width:580px){.op-player-match-center .op-player-match-new{font-size:13px!important}}
