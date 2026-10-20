@@ -194,6 +194,85 @@ async function checkImmersiveHeader(page,desktop=true){
   }
 }
 
+
+async function testRosterAndMatchLineup(browser){
+ const {context,page}=await createPage(browser,1440,860);
+ const t1='aaaa1111-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+ const t2='bbbb2222-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+ const squads=[
+  {id:t1,team_name:'Over Power Main Team',status:'active',show_on_homepage:true},
+  {id:t2,team_name:'Over Power Elite',status:'active',show_on_homepage:true}
+ ];
+ const people=Array.from({length:9},(_,i)=>({
+  id:'0000000'+(i+1)+'-0000-4000-8000-00000000000'+(i+1),
+  user_id:'a000000'+(i+1)+'-0000-4000-8000-00000000000'+(i+1),
+  full_name:'Player '+(i+1),ign:'QA Player '+(i+1),
+  team_id:i<6?t1:t2,team_name:i<6?squads[0].team_name:squads[1].team_name,
+  is_active:true,status:'approved',primary_role:'Rusher',
+  profile_image:null,avatar_url:null
+ }));
+ const send=(r,body)=>r.fulfill(json(body));
+ await page.route(BASE+'/api/admin/roster',async route=>{
+  const req=route.request();
+  if(req.method()==='GET')return send(route,{teams:squads,players:people});
+  const body=req.postDataJSON();
+  if(body.action==='player_active'){
+   let p=people.find(p=>p.id===body.playerId);p.is_active=body.active;
+   return send(route,{updated:{id:p.id,is_active:p.is_active}});
+  }
+  if(body.action==='squad_visibility'){
+   let t=squads.find(t=>t.id===body.teamId);t.show_on_homepage=body.visible;
+   return send(route,{updated:{id:t.id,show_on_homepage:t.show_on_homepage}});
+  }
+  if(body.action==='move_player'){
+   let p=people.find(p=>p.id===body.playerId);
+   p.team_id=body.teamId;p.team_name=squads.find(t=>t.id===body.teamId)?.team_name||null;
+   return send(route,{updated:{id:p.id,team_id:p.team_id,team_name:p.team_name}});
+  }
+  return route.fulfill(json({message:'Invalid fixture action'}));
+ });
+ await page.route(API+'/rest/v1/teams*',r=>send(r,squads));
+ await page.route(API+'/rest/v1/players*',r=>{
+  const url=new URL(r.request().url());
+  const team=url.searchParams.get('team_id')?.replace(/^eq\./,'');
+  return send(r,team?people.filter(p=>p.team_id===team&&p.is_active):people);
+ });
+ try{
+  await ready(page,'/admin/roster','PLAYER ACTIVITY');
+  assert.equal(await page.locator('.op-roster-player').count(),9);
+  await page.getByRole('button',{name:'Deactivate QA Player 1'}).click();
+  await page.getByRole('button',{name:'Activate QA Player 1'}).waitFor();
+  assert.equal(people[0].is_active,false);
+  await page.getByRole('button',{name:'Hide Over Power Elite on homepage'}).click();
+  await page.getByRole('button',{name:'Show Over Power Elite on homepage'}).waitFor();
+  assert.equal(squads[1].show_on_homepage,false);
+  const transferSaved=page.waitForResponse(r=>r.url().endsWith('/api/admin/roster')&&r.request().method()==='POST'&&r.request().postDataJSON().action==='move_player');
+  await page.getByRole('combobox',{name:'Assign QA Player 2 to squad'}).selectOption(t2);
+  await transferSaved;
+  assert.equal(people[1].team_id,t2);
+  await ready(page,'/admin/matches','MATCH');
+  await page.locator('select[name="team1_id"]').selectOption(t1);
+  await page.locator('.squad-player-checkbox').first().waitFor({state:'visible'});
+  const boxes=page.locator('.squad-player-checkbox');
+  assert.equal(await boxes.count(),4,'Remaining active main squad players should all appear');
+  // Return the transferred member and reactivate the original one: six
+  // available squad members, of whom only four can be chosen.
+  people[1].team_id=t1;
+  people[0].is_active=true;
+  await page.locator('select[name="team1_id"]').selectOption(t2);
+  await page.locator('select[name="team1_id"]').selectOption(t1);
+  await page.waitForTimeout(350);
+  assert.equal(await boxes.count(),6,'All six current squad members should appear');
+  for(let i=0;i<4;i++)await boxes.nth(i).check();
+  assert.equal(await page.locator('.squad-player-checkbox:checked').count(),4);
+  assert.equal(await page.locator('.performance-row').count(),4);
+  await boxes.nth(4).click(); // deliberately rejected: four are already selected
+  assert.equal(await page.locator('.squad-player-checkbox:checked').count(),4,
+   'Fifth player must not replace the selected four');
+  console.log('PASS admin roster toggles, squad transfers, full roster and checked lineup');
+ }finally{await context.close()}
+}
+
 async function run(){
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  let passed=0;
@@ -232,6 +311,7 @@ async function run(){
   await page.locator('.op-admin-route-sidebar.is-open').waitFor({state:'visible'});
   await checkHeading(page);passed++;
   await context.close();
+  await testRosterAndMatchLineup(browser);
   console.log('PASS '+passed+' responsive admin assertions (desktop, compact PC and mobile)');
  }finally{await browser.close()}
 }

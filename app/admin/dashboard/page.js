@@ -21,6 +21,7 @@ const WithdrawalManagement = dynamic(() => import("./WithdrawalManagement"), { s
 // This preserves every existing form, field, validation, database write and record view.
 const ADMIN_MANAGERS = {
   players: dynamic(() => import("../players/page"), { ssr: false }),
+  roster: dynamic(() => import("../roster/page"), { ssr: false }),
   matches: dynamic(() => import("../matches/page"), { ssr: false }),
   teams: dynamic(() => import("../teams/page"), { ssr: false }),
   tournaments: dynamic(() => import("../tournaments/page"), { ssr: false }),
@@ -35,6 +36,7 @@ const LIMIT = 500;
 const NAV = [
   { key: "overview", name: "Overview", Icon: FiGrid, description: "Esports operations at a glance" },
   { key: "players", name: "Players", Icon: FiUsers, href: "/admin/players", description: "Player accounts and approvals" },
+  { key: "roster", name: "Roster Controls", Icon: FiActivity, href: "/admin/roster", description: "Activate players, show or hide squads, and move players" },
   { key: "matches", name: "Matches", Icon: FiTarget, href: "/admin/matches", description: "Match history and management" },
   { key: "teams", name: "Teams", Icon: FiLayers, href: "/admin/teams", description: "Team roster and team management" },
   { key: "tournaments", name: "Tournaments", Icon: FiAward, href: "/admin/tournaments", description: "Tournaments and competitions" },
@@ -502,7 +504,7 @@ export default function AdminDashboard() {
           <div data-op-nav-scroll className={styles.navScroll} tabIndex={0} aria-label="Scrollable admin menu">
             <p data-op-menu-title className={styles.menuTitle}>OPERATIONS</p>
             <nav className={styles.navGroup} aria-label="Dashboard sections">
-              {NAV.slice(0, 5).map(({ key,name,Icon }) => (
+              {NAV.slice(0, 6).map(({ key,name,Icon }) => (
                 <button
                   type="button"
                   key={key}
@@ -521,7 +523,7 @@ export default function AdminDashboard() {
             <div data-op-nav-separator className={styles.navSeparator}/>
             <p data-op-menu-title className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
             <nav className={styles.navGroup} aria-label="Management and access sections">
-              {NAV.slice(5).map(({ key,name,Icon }) => (
+              {NAV.slice(6).map(({ key,name,Icon }) => (
                 <button
                   type="button"
                   key={key}
