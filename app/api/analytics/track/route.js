@@ -1,6 +1,6 @@
 import { createHmac, randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '../../../lib/supabase-admin';
+import {visitorAdminClient} from '../../../lib/visitor-server';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -36,13 +36,13 @@ export async function POST(request){
   const device=identifyDevice(ua);
   let verified=null;
   const jwt=request.headers.get('authorization')?.match(/^Bearer\s+(\S+)$/i)?.[1];
-  if(jwt&&jwt.length<2400){const {data:{user},error}=await supabaseAdmin.auth.getUser(jwt);if(!error&&user)verified=user}
+  if(jwt&&jwt.length<2400){const {data:{user},error}=await visitorAdminClient().auth.getUser(jwt);if(!error&&user)verified=user}
   const country=limit(request.headers.get('x-vercel-ip-country')||'',70);
   const region=limit(request.headers.get('x-vercel-ip-country-region')||'',90);
   const city=limit(decodeURIComponent(request.headers.get('x-vercel-ip-city')||''),100);
   const refer=referrerHost(body.referrer);
   const source=!refer||refer===host.split(':')[0]?'Direct / Internal':/google|bing|duckduckgo|yahoo/i.test(refer)?'Organic Search':/facebook|instagram|tiktok|youtube|twitter|x\.com/i.test(refer)?'Social':'Referral';
-  const {error}=await supabaseAdmin.rpc('visitor_record',{p_session:body.sessionId,p_event:body.eventId,p_kind:body.kind,
+  const {error}=await visitorAdminClient().rpc('visitor_record',{p_session:body.sessionId,p_event:body.eventId,p_kind:body.kind,
    p_data:{path:rawPath,ip_group:ipGroup,country,region,city,referrer_host:refer,source,
       account_id:verified?.id||null,account_email:verified?.email||null,
       language_code:limit(body.language,32),...device}});
