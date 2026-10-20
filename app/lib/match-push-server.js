@@ -49,7 +49,7 @@ export async function flushPush(db,limit=180){
    for(const sub of subMap.get(note.user_id)||[]){
     try{await webpush.default.sendNotification({
      endpoint:sub.endpoint,keys:{p256dh:sub.p256dh,auth:sub.auth}
-    },payload,{TTL:Math.max(60,Math.floor((new Date(s.starts_at)-Date.now())/1000)),
+    },payload,{TTL:Math.max(60,Math.min(86400,Math.floor((new Date(s.starts_at)-Date.now())/1000))),
       urgency:'high'});pushed++}
     catch(e){
      if([404,410].includes(Number(e.statusCode))){
