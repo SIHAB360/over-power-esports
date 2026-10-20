@@ -266,7 +266,7 @@ async function testRosterAndMatchLineup(browser){
   for(let i=0;i<4;i++)await boxes.nth(i).check();
   assert.equal(await page.locator('.squad-player-checkbox:checked').count(),4);
   assert.equal(await page.locator('.performance-row').count(),4);
-  await boxes.nth(4).check();
+  await boxes.nth(4).click(); // deliberately rejected: four are already selected
   assert.equal(await page.locator('.squad-player-checkbox:checked').count(),4,
    'Fifth player must not replace the selected four');
   console.log('PASS admin roster toggles, squad transfers, full roster and checked lineup');
