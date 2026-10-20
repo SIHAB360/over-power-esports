@@ -1,0 +1,66 @@
+{
+  "name": "over-power-esports-desktop",
+  "productName": "OVER POWER ESPORTS",
+  "version": "1.0.0",
+  "description": "OVER POWER ESPORTS secure live Windows and macOS desktop app",
+  "private": true,
+  "main": "main.cjs",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "prepare:icons": "node scripts/create-icons.cjs",
+    "dist:windows": "npm run prepare:icons && electron-builder --win portable --x64 --publish never",
+    "dist:mac:x64": "npm run prepare:icons && electron-builder --mac dmg --x64 --publish never",
+    "dist:mac:arm64": "npm run prepare:icons && electron-builder --mac dmg --arm64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "sharp": "^0.33.5"
+  },
+  "build": {
+    "appId": "com.overpower.esports.desktop",
+    "productName": "OVER POWER ESPORTS",
+    "artifactName": "OVER-POWER-ESPORTS-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.cjs",
+      "offline.html",
+      "assets/icon.png",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "public.app-category.games",
+      "identity": null,
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "sign": false
+    }
+  }
+}

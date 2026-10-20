@@ -1,0 +1,59 @@
+name: Desktop Apps — Windows and macOS Test Builds
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "desktop/**"
+      - ".github/workflows/desktop-app-build.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "desktop/**"
+      - ".github/workflows/desktop-app-build.yml"
+permissions:
+  contents: read
+jobs:
+  desktop:
+    name: Build ${{ matrix.platform }} desktop app
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+            script: dist:windows
+            artifact: windows-portable-exe
+          - os: macos-15
+            platform: macos-intel
+            script: dist:mac:x64
+            artifact: macos-intel-dmg
+          - os: macos-15
+            platform: macos-apple-silicon
+            script: dist:mac:arm64
+            artifact: macos-apple-silicon-dmg
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      npm_config_fund: "false"
+      npm_config_audit: "false"
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install desktop package dependencies
+        run: npm install
+      - name: Compile desktop package
+        run: npm run ${{ matrix.script }}
+      - name: Upload test installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: over-power-${{ matrix.artifact }}
+          path: desktop/dist/*.${{ matrix.platform == 'windows' && 'exe' || 'dmg' }}
+          if-no-files-found: error
+          retention-days: 7
