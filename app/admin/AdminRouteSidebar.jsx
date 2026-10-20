@@ -43,7 +43,7 @@ export default function AdminRouteSidebar(){
     <button type="button" className="op-admin-route-close" aria-label="Close admin menu" onClick={()=>setOpen(false)}><FiX/></button>
    </div>
    <p className="op-admin-route-group-label">ADMIN OPERATIONS</p>
-   <nav className="op-admin-route-links">
+   <nav className="op-admin-route-links" tabIndex={0} aria-label="Scrollable admin menu">
     {menu.map(({label,href,Icon},index)=><Link key={href} href={href}
       className={'op-admin-route-link'+(href===active?' active':'')}
       aria-current={href===active?'page':undefined}

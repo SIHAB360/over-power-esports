@@ -36,12 +36,14 @@
     height:100dvh;min-height:0;overflow-x:hidden;overflow-y:auto;
     overscroll-behavior-y:contain;scrollbar-gutter:stable;
   }
-  /* Menus never show their own scrollbar. When needed they are revealed by
-     synchronized scrolling of the right pane (AdminScrollCoordinator). */
+  /* Only the middle links scroll when they exceed the available height.
+     Brand and connection/logout footer stay fixed; no whole-page left scroll. */
   .op-admin-system .op-admin-route-links,
   .op-admin-system .op-admin-view [data-op-nav-scroll]{
-    min-height:0;overflow:hidden!important;overscroll-behavior:none;
-    scrollbar-width:none!important;
+    flex:1 1 auto;min-height:0;max-height:100%;
+    overflow-x:hidden!important;overflow-y:auto!important;
+    overscroll-behavior-y:contain;scrollbar-width:none!important;
+    scroll-behavior:auto!important;-webkit-overflow-scrolling:touch;
   }
   .op-admin-system .op-admin-route-links::-webkit-scrollbar,
   .op-admin-system .op-admin-view [data-op-nav-scroll]::-webkit-scrollbar{

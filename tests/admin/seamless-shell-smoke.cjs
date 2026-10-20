@@ -64,6 +64,7 @@ async function assertRightScroll(page,standalone){
    document.querySelector('[data-op-nav-scroll]');
   if(!e||!side||!nav)return null;
   const oldTop=side.getBoundingClientRect().top;
+  e.style.scrollBehavior='auto';
   e.scrollTop=Math.min(500,e.scrollHeight);
   return {height:e.getBoundingClientRect().height,scrollHeight:e.scrollHeight,
    top:side.getBoundingClientRect().top,oldTop,navOverflow:getComputedStyle(nav).overflowY,
@@ -77,11 +78,58 @@ async function assertRightScroll(page,standalone){
    })));
    throw Error('Could not locate app pane, sidebar and nav');
  }
- assert.equal(s.navOverflow,'hidden','Desktop sidebar must not have independent scrolling');
+ assert.equal(s.navOverflow,'auto','Only the middle nav must allow native, bounded scrolling');
  assert(Math.abs(s.top-s.oldTop)<1,'Left rail should not move when right side scrolls');
  assert(s.height>200,'Right scroll pane must remain visible');
  assert(s.bodyOverflow<=3,'No page-wide horizontal overflow');
 }
+
+async function assertMenuOnlyScroll(page,standalone,requireOverflow=false){
+ const navSelector=standalone?'.op-admin-route-links':'[data-op-nav-scroll]';
+ const menu=page.locator(navSelector);
+ const before=await page.evaluate(standalone=>{
+  const nav=document.querySelector(standalone?'.op-admin-route-links':'[data-op-nav-scroll]');
+  const rail=document.querySelector(standalone?'.op-admin-route-sidebar':'[data-op-sidebar]');
+  const footer=document.querySelector(standalone?'.op-admin-route-bottom':'[data-op-sidebar-foot]');
+  const brand=document.querySelector(standalone?'.op-admin-route-brand':'[data-op-sidebar-top]');
+  const right=document.querySelector(standalone?'.op-admin-view':'[data-op-right-scroll]');
+  right.style.scrollBehavior='auto';right.scrollTop=0;
+  nav.scrollTop=0;
+  return {available:nav.scrollHeight-nav.clientHeight,brandTop:brand.getBoundingClientRect().top,
+   footerTop:footer.getBoundingClientRect().top,railTop:rail.getBoundingClientRect().top,
+   rightTop:right.scrollTop,navTop:nav.getBoundingClientRect().top};
+ },standalone);
+ if(requireOverflow)assert(before.available>20,'Short desktop must contain overflowed menu options');
+ if(before.available>3){
+  await menu.hover();
+  await page.mouse.wheel(0,540);
+  await page.waitForTimeout(200);
+  const after=await page.evaluate(standalone=>{
+   const nav=document.querySelector(standalone?'.op-admin-route-links':'[data-op-nav-scroll]');
+   const rail=document.querySelector(standalone?'.op-admin-route-sidebar':'[data-op-sidebar]');
+   const footer=document.querySelector(standalone?'.op-admin-route-bottom':'[data-op-sidebar-foot]');
+   const brand=document.querySelector(standalone?'.op-admin-route-brand':'[data-op-sidebar-top]');
+   const right=document.querySelector(standalone?'.op-admin-view':'[data-op-right-scroll]');
+   return {menuScroll:nav.scrollTop,rightScroll:right.scrollTop,
+    brandTop:brand.getBoundingClientRect().top,footerTop:footer.getBoundingClientRect().top,
+    railTop:rail.getBoundingClientRect().top,navTop:nav.getBoundingClientRect().top};
+  },standalone);
+  assert(after.menuScroll>3,'Wheel on menu must reveal lower menu options');
+  assert.equal(after.rightScroll,before.rightTop,'Scrolling menu must not move the right pane');
+  for(const key of ['brandTop','footerTop','railTop','navTop'])
+   assert(Math.abs(before[key]-after[key])<=1,key+' must remain stationary');
+  await menu.evaluate(nav=>{nav.scrollTop=nav.scrollHeight});
+  const lastVisible=await page.evaluate(standalone=>{
+   const menu=document.querySelector(standalone?'.op-admin-route-links':'[data-op-nav-scroll]');
+   const label=standalone?'.op-admin-route-link:last-child':'[data-op-visitors-link]';
+   const link=menu.querySelector(label),linkBox=link?.getBoundingClientRect();
+   const navBox=menu.getBoundingClientRect();
+   return !!linkBox && linkBox.bottom<=navBox.bottom+5 && linkBox.top>=navBox.top-5;
+  },standalone);
+  assert(lastVisible,'Visitor Analytics / final menu option must be fully reachable');
+ }
+}
+
 async function checkHeading(page){
  const a=await page.locator('main h1:visible').first().evaluate(n=>({
   text:n.textContent.trim(),align:getComputedStyle(n).textAlign
@@ -130,16 +178,18 @@ async function run(){
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  let passed=0;
  try{
-  for(const [width,height] of [[1536,864],[1024,768]]){
+  for(const [width,height] of [[1536,864],[1024,670]]){
    const {context,page}=await createPage(browser,width,height);
    await ready(page,'/admin/dashboard','OVER POWER');
-   await assertRightScroll(page,false);await checkHeading(page);
+   await assertRightScroll(page,false);await assertMenuOnlyScroll(page,false,width===1024);
+   await checkHeading(page);
    await checkImmersiveHeader(page,true);passed++;
    const button=page.getByRole('button',{name:'Activate light mode'});
    await button.click();
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
    await ready(page,'/admin/players','PLAYER');
-   await assertRightScroll(page,true);await checkHeading(page);
+   await assertRightScroll(page,true);await assertMenuOnlyScroll(page,true,width===1024);
+   await checkHeading(page);
    assert.equal(await page.locator('html').getAttribute('data-op-admin-theme'),'light');
    passed++;
    await context.close();
