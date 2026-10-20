@@ -21,7 +21,10 @@ export async function identity(req,admin=false){
 }
 export async function playerFor(db,userId){
  const {data,error}=await db.from('players').select('id,team_id,status,is_active').eq('user_id',userId).maybeSingle();
- if(error||!data||data.status!=='approved'||!data.is_active)throw new HttpError('Approved active player account required.',403);
+ // Roster activity controls competitive lineup eligibility, NOT access to
+ // announcements. Any signed-in, approved player can read their squad fixtures.
+ if(error||!data||String(data.status).toLowerCase()!=='approved')
+  throw new HttpError('Approved player account required.',403);
  return data;
 }
 export const goodUuid=v=>typeof v==='string'&&uuid.test(v);
