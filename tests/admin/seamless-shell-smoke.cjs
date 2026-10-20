@@ -309,6 +309,53 @@ async function testRosterAndMatchLineup(browser){
  }finally{await context.close()}
 }
 
+
+async function testPremiumScheduleUI(browser){
+ const {context,page}=await createPage(browser,1440,860);
+ const teams=[{id:'aaaa1111-aaaa-4aaa-8aaa-aaaaaaaaaaaa',team_name:'Main Squad'}];
+ const timestamp=new Date(Date.now()+86400000).toISOString();
+ const fixtures=[
+  {id:'77777777-7777-4777-8777-777777777771',title:'Lobby Alpha',
+   starts_at:timestamp,entry_fee:75,prize_pool:'৳2,500 display only',
+   lobby_details:'Bermuda BR',notes:'Be ready early',team_id:null,status:'published',created_at:timestamp},
+  {id:'77777777-7777-4777-8777-777777777772',title:'Lobby Bravo',
+   starts_at:new Date(Date.now()+87000000).toISOString(),entry_fee:100,prize_pool:'৳50,000 display only',
+   lobby_details:'Clash Squad',notes:'',team_id:null,status:'published',created_at:timestamp}
+ ];
+ await page.route(BASE+'/api/admin/match-schedules',route=>{
+  const req=route.request();
+  if(req.method()==='GET')return route.fulfill(json({schedules:fixtures,teams}));
+  if(req.method()==='POST'){
+   const b=req.postDataJSON();
+   const created={...b,id:'77777777-7777-4777-8777-777777777773',
+    starts_at:new Date(Date.now()+88400000).toISOString(),status:'published',
+    created_at:new Date().toISOString()};
+   fixtures.push(created);
+   return route.fulfill({status:201,...json({schedule:created,notified:9,push:{processed:9,pushed:0}})});
+  }
+  return route.fulfill(json({message:'invalid fixture request'}));
+ });
+ try{
+  await ready(page,'/admin/match-schedule','MATCH SCHEDULE CENTER');
+  assert.equal(await page.locator('.op-schedule-match').count(),2);
+  const daily=await page.locator('.op-schedule-kpis>div').nth(1).locator('strong').innerText();
+  assert(daily.includes('175'),'Only entry fees (75+100) must be added, not prizes: '+daily);
+  assert((await page.getByText('৳50,000 display only').count())>=1,'Prize pool should remain displayed as text');
+  await page.getByRole('textbox',{name:'Match name / lobby number'}).fill('New Friday lobby');
+  await page.getByRole('spinbutton',{name:'Lobby entry fee (৳)'}).fill('50');
+  await page.getByRole('textbox',{name:'Prize pool (text, not calculated)'}).fill('৳10,000 informational');
+  await page.getByRole('button',{name:'Publish & notify players'}).click();
+  await page.getByText('New Friday lobby').first().waitFor({state:'visible'});
+  assert.equal(await page.locator('.op-schedule-match').count(),3);
+  const now=await page.locator('.op-schedule-kpis>div').nth(1).locator('strong').innerText();
+  assert(now.includes('225'),'Entry fees should total 225 after publish: '+now);
+  await page.getByText('9 player inbox alert(s) created').waitFor({state:'visible'});
+  assert(await page.locator('.op-schedule-reminder-badges span').count()===4,
+    'Four schedule notifications (publish/60/30/15) must be shown');
+  console.log('PASS premium schedule form, prize-is-text, daily entry fee sum, and four alerts');
+ }finally{await context.close()}
+}
+
 async function run(){
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
  let passed=0;
@@ -349,6 +396,7 @@ async function run(){
   await checkHeading(page);passed++;
   await context.close();
   await testRosterAndMatchLineup(browser);
+  await testPremiumScheduleUI(browser);
   console.log('PASS '+passed+' responsive admin assertions (desktop, compact PC and mobile)');
  }finally{await browser.close()}
 }
