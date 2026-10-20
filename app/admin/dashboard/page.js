@@ -499,7 +499,7 @@ export default function AdminDashboard() {
               <FiX aria-hidden="true" />
             </button>
           </div>
-          <div data-op-nav-scroll className={styles.navScroll}>
+          <div data-op-nav-scroll className={styles.navScroll} tabIndex={0} aria-label="Scrollable admin menu">
             <p data-op-menu-title className={styles.menuTitle}>OPERATIONS</p>
             <nav className={styles.navGroup} aria-label="Dashboard sections">
               {NAV.slice(0, 5).map(({ key,name,Icon }) => (
