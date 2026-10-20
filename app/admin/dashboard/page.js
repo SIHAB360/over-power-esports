@@ -492,15 +492,15 @@ export default function AdminDashboard() {
           <div data-op-sidebar-top className={styles.sidebarTop}>
             <Image className={styles.brandLogo} src={logo} alt="Over Power Esports" width={54} height={54} />
             <div className={styles.brandCopy}>
-              <p className={styles.brandTitle}>OVER POWER</p>
-              <p className={styles.brandSub}>ESPORTS ADMIN</p>
+              <p data-op-brand-title className={styles.brandTitle}>OVER POWER</p>
+              <p data-op-brand-sub className={styles.brandSub}>ESPORTS ADMIN</p>
             </div>
             <button type="button" className={styles.sidebarClose} aria-label="Close admin menu" onClick={() => setMobileOpen(false)}>
               <FiX aria-hidden="true" />
             </button>
           </div>
           <div data-op-nav-scroll className={styles.navScroll}>
-            <p className={styles.menuTitle}>OPERATIONS</p>
+            <p data-op-menu-title className={styles.menuTitle}>OPERATIONS</p>
             <nav className={styles.navGroup} aria-label="Dashboard sections">
               {NAV.slice(0, 5).map(({ key,name,Icon }) => (
                 <button
@@ -510,16 +510,16 @@ export default function AdminDashboard() {
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
-                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
                   <span className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
-                    <span className={styles.navCount}>{number(counts[key])}</span>
+                    <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
                 </button>
               ))}
             </nav>
-            <div className={styles.navSeparator}/>
-            <p className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
+            <div data-op-nav-separator className={styles.navSeparator}/>
+            <p data-op-menu-title className={styles.menuTitle}>MANAGEMENT & ACCESS</p>
             <nav className={styles.navGroup} aria-label="Management and access sections">
               {NAV.slice(5).map(({ key,name,Icon }) => (
                 <button
@@ -529,20 +529,20 @@ export default function AdminDashboard() {
                   onClick={() => goTo(key)}
                   aria-current={active === key ? "page" : undefined}
                 >
-                  <span className={styles.navIcon}><Icon aria-hidden="true" /></span>
+                  <span data-op-nav-icon className={styles.navIcon}><Icon aria-hidden="true" /></span>
                   <span className={styles.navText}>{name}</span>
                   {!loadingData && counts[key] !== undefined && !sourceErrors[key] && (
-                    <span className={styles.navCount}>{number(counts[key])}</span>
+                    <span data-op-nav-count className={styles.navCount}>{number(counts[key])}</span>
                   )}
                 </button>
               ))}
             </nav>
-            <div className={styles.navSeparator}/>
-            <Link href="/admin/moderators" className={styles.navItem}><span className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
-            <Link data-op-visitors-link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
-            <p className={styles.menuTitle}>QUICK ACCESS</p>
+            <div data-op-nav-separator className={styles.navSeparator}/>
+            <Link href="/admin/moderators" className={styles.navItem}><span data-op-nav-icon className={styles.navIcon}><FiShield aria-hidden="true"/></span><span className={styles.navText}>Moderator Management</span></Link>
+            <Link data-op-visitors-link href="/admin/visitors" className={[styles.navItem,styles.visitorLink].join(" ")}><span data-op-nav-icon className={styles.navIcon}><FiActivity aria-hidden="true"/></span><span className={styles.navText}>Visitor Analytics</span><span aria-hidden="true" style={{color:"#ffbd68",fontSize:11,marginLeft:"auto"}}>↗</span></Link>
+            <p data-op-menu-title className={styles.menuTitle}>QUICK ACCESS</p>
             <Link href="/" className={styles.navItem}>
-              <span className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
+              <span data-op-nav-icon className={styles.navIcon}><FiArrowUpRight aria-hidden="true"/></span>
               <span className={styles.navText}>View Website</span>
             </Link>
           </div>
@@ -554,7 +554,7 @@ export default function AdminDashboard() {
                 <small>Over Power · Secure admin</small>
               </div>
             </div>
-            <button type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
+            <button data-op-logout type="button" className={styles.logout} onClick={logout}><FiLogOut aria-hidden="true"/> LOG OUT</button>
           </div>
         </aside>
 
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
 
             <div data-op-section-heading className={styles.sectionHeading}>
               <div>
-                <span className={styles.sectionOverline}>CONTROL ROOM / {active === "salary" ? "WITHDRAWALS" : active.toUpperCase()}</span>
+                <span data-op-section-overline className={styles.sectionOverline}>CONTROL ROOM / {active === "salary" ? "WITHDRAWALS" : active.toUpperCase()}</span>
                 <h2>{active === "overview" ? "Operations Overview" : activeNav.name + " Overview"}</h2>
                 <p>{activeNav.description}</p>
               </div>
@@ -668,7 +668,7 @@ export default function AdminDashboard() {
                   {tournaments.length===0 && !sourceErrors.tournaments && <p className={styles.infoStrip}>No tournaments added yet.</p>}
                 </Panel>
                 <Panel title="Latest Matches" subtitle="Recently recorded matches" className={styles.panelFull}>
-                  <div className={styles.tableWrap}>
+                  <div data-op-table-scroll className={styles.tableWrap}>
                     {sourceErrors.matches ? <div className={styles.empty}>Match data unavailable.</div> :
                       matches.length === 0 ? <div className={styles.empty}>No match records yet.</div> :
                         <table className={styles.dataTable}>
@@ -714,7 +714,7 @@ export default function AdminDashboard() {
                       <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder={"Search " + activeNav.name.toLowerCase()} aria-label={"Search " + activeNav.name}/>
                     </label>
                   </div>
-                  <div className={styles.tableWrap}>
+                  <div data-op-table-scroll className={styles.tableWrap}>
                     {loadingData ? <div className={styles.empty}>Loading records…</div> :
                       sourceErrors[active] ? <div className={styles.empty}>No records can be displayed until data is available.</div> :
                       !filtered.length ? <div className={styles.empty}>{search ? "No records match your search." : "No records created yet."}</div> :
