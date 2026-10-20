@@ -60,26 +60,26 @@
 .op-admin-system :is(p,small){overflow-wrap:break-word}
 /* Consistent UI surfaces, aligned across legacy inline JSX and CSS modules. */
 .op-admin-view :is(
-  [class*="__panel"],[class*="__metric"],[class*="__card"],
-  [class*="__stat"],[class*="__hero"],
+  [class*="_panel__"],[class*="_metric__"],[class*="_card__"],
+  [class*="_stat__"],[class*="_hero__"],
   .aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card,.finance-card
 ){
   border-radius:clamp(14px,1.2vw,22px);
   transition:border-color .24s ease,box-shadow .3s ease,transform .24s ease,background .25s ease;
 }
 .op-admin-view :is(
-  [class*="__panel"],[class*="__metric"],[class*="__card"],
-  [class*="__stat"],.aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card
+  [class*="_panel__"],[class*="_metric__"],[class*="_card__"],
+  [class*="_stat__"],.aa-panel,.aa-card,.aa-gallery-panel,.team-card,.tournament-card
 ):hover{
   border-color:rgba(93,210,248,.57);
   box-shadow:0 13px 32px rgba(1,10,30,.19),0 0 22px rgba(44,179,239,.11);
 }
 .op-admin-view :is(
- [class*="__save"],[class*="__refresh"],[class*="__action"],[class*="__button"],
+ [class*="_save__"],[class*="_refresh__"],[class*="_action__"],[class*="_button__"],
  .create-btn,.manage-btn,.aa-primary,.op-save-button
 ):not(:disabled){transition:transform .22s ease,box-shadow .22s ease,filter .22s ease}
 .op-admin-view :is(
- [class*="__save"],[class*="__refresh"],[class*="__action"],[class*="__button"],
+ [class*="_save__"],[class*="_refresh__"],[class*="_action__"],[class*="_button__"],
  .create-btn,.manage-btn,.aa-primary,.op-save-button
 ):not(:disabled):hover{
   filter:brightness(1.12);box-shadow:0 0 24px rgba(82,199,248,.26);
@@ -91,19 +91,19 @@
  .aa-shell,.container,.op-shell
 ){width:100%;max-width:none;margin-inline:auto}
 .op-admin-view :is(
- [class*="__page"],.achievement-admin,.op-match-page
+ [class*="_page__"],.achievement-admin,.op-match-page
 ){max-width:none}
-.op-admin-view :is([class*="__page"]){min-width:0}
-.op-admin-view :is([class*="__heading"] h1,[class*="__hero"] h1,
- [class*="__header"] h1){line-height:1.15}
+.op-admin-view :is([class*="_page__"]){min-width:0}
+.op-admin-view :is([class*="_heading__"] h1,[class*="_hero__"] h1,
+ [class*="_header__"] h1){line-height:1.15}
 /* Unified restrained neon edge aura for admin sections, not disruptive strobing. */
 @keyframes opAdminAmbient{
   0%,100%{box-shadow:0 10px 27px rgba(1,12,29,.13),0 0 0 1px rgba(59,193,244,.09)}
   50%{box-shadow:0 14px 35px rgba(1,12,29,.2),0 0 22px rgba(65,194,244,.14)}
 }
 .op-admin-view :is(
- [class*="__hero"],[class*="__metrics"] > [class*="__metric"],
- [class*="__stats"] > [class*="__stat"],
+ [class*="_hero__"],[class*="_metrics__"] > [class*="_metric__"],
+ [class*="_stats__"] > [class*="_stat__"],
  .aa-header,.aa-upload-panel
 ){animation:opAdminAmbient 6s ease-in-out infinite}
 /* Wide screens fill the available browser width rather than artificially capping content. */
@@ -157,11 +157,11 @@ html[data-op-admin-theme="light"] .op-admin-view :is(
 /* Legacy pages with inline style: keep functional markup and change visible surface only. */
 html[data-op-admin-theme="light"] .op-admin-view :is(.team-card,.tournament-card,.aa-card) :is(h2,h3,p,strong){color:#203957}
 .op-admin-view table{max-width:100%}
-.op-admin-view :is([class*="__table"],.aa-table){font-variant-numeric:tabular-nums}
+.op-admin-view :is([class*="_table__"],.aa-table){font-variant-numeric:tabular-nums}
 @media(max-width:900px){
   .op-admin-theme-tools{top:10px;right:10px}
   .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:58px}
-  .op-admin-view :is([class*="__panel"],[class*="__hero"]){min-width:0}
+  .op-admin-view :is([class*="_panel__"],[class*="_hero__"]){min-width:0}
 }
 @media(max-width:560px){
   .op-admin-theme-tools{gap:3px;padding:3px 4px;min-height:40px}
@@ -169,7 +169,7 @@ html[data-op-admin-theme="light"] .op-admin-view :is(.team-card,.tournament-card
   .op-admin-theme-tools .op-theme-option{min-width:64px;padding:6px 8px}
   .op-admin-view:not(:has(> [class*="dashboard_dashboard"])){padding-top:52px}
   .op-admin-view :is(h1,h2,h3){overflow-wrap:anywhere}
-  .op-admin-view :is([class*="__stats"],[class*="__metrics"]){min-width:0}
+  .op-admin-view :is([class*="_stats__"],[class*="_metrics__"]){min-width:0}
   .op-admin-view :is(.team-card,.tournament-card){max-width:100%}
 }
 @media(prefers-reduced-motion:reduce){
