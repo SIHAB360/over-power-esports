@@ -13,13 +13,13 @@ export default function AdminScrollCoordinator(){
     if(!root)return;
     const dashboard=pathname==='/admin/dashboard';
     const scroller=dashboard
-      ? root.querySelector('[class*="dashboard_main__"]')
+      ? root.querySelector('[data-op-right-scroll]')
       : root.querySelector('.op-admin-view');
     const sidebar=dashboard
-      ? root.querySelector('[class*="dashboard_sidebar__"]')
+      ? root.querySelector('[data-op-sidebar]')
       : root.querySelector('.op-admin-route-sidebar');
     const menu=dashboard
-      ? root.querySelector('[class*="dashboard_navScroll__"]')
+      ? root.querySelector('[data-op-nav-scroll]')
       : root.querySelector('.op-admin-route-links');
     if(!scroller||!sidebar||!menu)return;
     let frame=0;
