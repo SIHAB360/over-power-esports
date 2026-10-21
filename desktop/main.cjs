@@ -1,7 +1,7 @@
 'use strict';
 const {app,BrowserWindow,session,shell,Menu}=require('electron');
 const path=require('node:path');
-const HOME='https://over-power-esports.vercel.app/';
+const HOME='https://over-power-esports.vercel.app/app';
 const ORIGIN=new URL(HOME).origin;
 let mainWindow;
 function isOfficialUrl(raw){

@@ -1,9 +1,9 @@
 {
   "name": "OVER POWER ESPORTS",
   "short_name": "OVER POWER",
-  "description": "Free Fire esports matches, teams, tournaments and player dashboards.",
+  "description": "OVER POWER ESPORTS secure app with native-style login, player and admin tabs, matches, wallet and alerts.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/app",
   "scope": "/",
   "display": "standalone",
   "display_override": [
@@ -30,16 +30,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Player Dashboard",
-      "short_name": "Players",
-      "url": "/player/dashboard",
-      "description": "View your player dashboard and match calendar"
+      "name": "Open App Home",
+      "short_name": "App Home",
+      "url": "/app",
+      "description": "Open your OVER POWER ESPORTS software"
     },
     {
-      "name": "Match Schedule",
-      "short_name": "Match Center",
-      "url": "/player/dashboard#match-schedule",
-      "description": "Upcoming lobbies and notifications"
+      "name": "Match Center",
+      "short_name": "Matches",
+      "url": "/app",
+      "description": "Sign in to your own match dashboard"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # OVER POWER ESPORTS — Native Desktop Software
 
-This folder packages a desktop application for https://over-power-esports.vercel.app/
+This folder packages an app for https://over-power-esports.vercel.app/app with a dedicated login/home/matches/wallet/alerts/profile interface; the public website stays separate.
 
 Target systems:
 - Windows 10/11 x64: Portable .exe (sign for trusted public distribution)
