@@ -14,7 +14,7 @@ The new app contains a real native Android \`MainActivity\` with:
 - HTTPS-only on-domain app navigation; external HTTPS links open the normal browser.
 - Strict TLS validation, safe browsing, no JavaScript-to-Android bridge, no
   silent camera, location or microphone permissions.
-- Separate debug package \`com.overpower.esports.debug\` for test builds.
+- Separate debug package \`com.overpower.esports.v2test\` for test builds.
 
 All app content comes live from the existing Next.js/Supabase deployment:
 https://over-power-esports.vercel.app/app
@@ -63,3 +63,5 @@ do not claim this test APK already supports background pushes.
 ## iPhone / PC
 The iPhone native SwiftUI project, Electron Windows/Mac builds and PWA
 use exactly the same authenticated /app feature screens and live backend.
+
+**Version 2 test package:** The old browser-based debug build was signed on a different ephemeral CI runner. The new `.v2test` identifier installs separately, avoiding the Android `INSTALL_FAILED_UPDATE_INCOMPATIBLE` signature error with the broken old `.debug` APK. Remove the old icon/app after verifying the new version. Future test builds may still need uninstall/reinstall because CI debug signing keys are ephemeral.
