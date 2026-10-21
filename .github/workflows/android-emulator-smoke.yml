@@ -40,9 +40,8 @@ jobs:
           emulator-boot-timeout: 600
           script: |
             set -eu
-            cd android
-            gradle :app:assembleDebug --no-daemon
-            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            gradle -p android :app:assembleDebug --no-daemon
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
             adb shell am start -W -n com.overpower.esports.v2test/com.overpower.esports.MainActivity
             sleep 12
             adb shell dumpsys activity activities | grep -E 'com.overpower.esports.v2test|MainActivity'
