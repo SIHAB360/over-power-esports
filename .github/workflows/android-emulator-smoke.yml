@@ -47,12 +47,9 @@ jobs:
             adb shell dumpsys activity activities | grep -E 'com.overpower.esports.v2test|MainActivity'
             adb shell uiautomator dump /sdcard/overpower-ui.xml || true
             adb shell screencap -p /sdcard/overpower-app.png
-            adb pull /sdcard/overpower-app.png ../android-emulator-screen.png
-            adb logcat -d -s AndroidRuntime:E > ../android-crashes.log
-            if grep -q "FATAL EXCEPTION" ../android-crashes.log; then
-              cat ../android-crashes.log
-              exit 1
-            fi
+            adb pull /sdcard/overpower-app.png android-emulator-screen.png
+            adb logcat -d -s AndroidRuntime:E > android-crashes.log
+            ! grep -q "FATAL EXCEPTION" android-crashes.log
             adb shell pidof com.overpower.esports.v2test
             echo "PASS Android native MainActivity installed, launched and stayed alive"
       - name: Upload emulator evidence
