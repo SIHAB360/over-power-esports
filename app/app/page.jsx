@@ -1,10 +1,11 @@
 'use client';
-import {useCallback,useEffect,useMemo,useState} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {supabase} from '../lib/supabase';
 import Image from 'next/image';
 import officialLogo from '../assets/logo.png';
 import {AdminModule,PlayerWallet} from './SoftwareModules';
 import PlayerMatchCenter from '../player/dashboard/MatchCenterWidget';
+import NativePushSetup from './NativePushSetup';
 import {
  FiHome,FiCalendar,FiCreditCard,FiBell,FiUser,FiGrid,FiUsers,FiLayers,
  FiAward,FiActivity,FiTarget,FiDollarSign,FiShield,FiImage,FiLogOut,
@@ -61,6 +62,8 @@ export default function SoftwareApp(){
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
  const [matchError,setMatchError]=useState('');
+ const [matchBanner,setMatchBanner]=useState(null);
+ const knownAlerts=useRef(null);
  const [busy,setBusy]=useState(false);
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
@@ -87,6 +90,16 @@ export default function SoftwareApp(){
  const loadMatches=useCallback(async()=>{
   try{
    const data=await authenticatedFetch('/api/player/match-schedules');
+   const unreadNotes=(data.inbox||[]).filter(x=>!x.read_at);
+   const newNotes=knownAlerts.current===null?unreadNotes:
+    unreadNotes.filter(x=>!knownAlerts.current.has(x.id));
+   if(newNotes.length){
+    const note=newNotes[0];
+    const match=(data.schedules||[]).find(x=>x.id===note.schedule_id);
+    setMatchBanner({id:note.id,title:note.event_key==='created'?'New Match Published':'Upcoming Match Reminder',
+     subtitle:match?.title||'Your squad has a match alert'});
+   }
+   knownAlerts.current=new Set((data.inbox||[]).map(x=>x.id));
    setFixtures(data);setMatchError('');
   }catch(err){setMatchError(err.message)}
  },[authenticatedFetch]);
@@ -113,13 +126,14 @@ export default function SoftwareApp(){
    if(event==='SIGNED_OUT'&&live){
     setUserData(null);setTab('home');setModule(null);setStage('login');
     setFixtures({schedules:[],inbox:[],unread:0});
+    knownAlerts.current=null;setMatchBanner(null);
    }
   });
   return()=>{live=false;subscription.unsubscribe()};
  },[loadAccount]);
  useEffect(()=>{
   if(stage!=='ready')return;
-  const t=setInterval(()=>{if(document.visibilityState==='visible'&&(admin||approved))loadMatches()},45000);
+  const t=setInterval(()=>{if(document.visibilityState==='visible'&&(admin||approved))loadMatches()},15000);
   const focus=()=>{if(admin||approved)loadMatches()};
   window.addEventListener('focus',focus);
   return()=>{clearInterval(t);window.removeEventListener('focus',focus)};
@@ -247,6 +261,12 @@ export default function SoftwareApp(){
      <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{welcomeName.slice(0,2).toUpperCase()}</button>
     </div>
    </header>
+   {matchBanner&&<div className="op-app-push-banner" role="alert">
+    <span className="op-app-push-banner-icon"><FiBell/></span>
+    <div><strong>{matchBanner.title}</strong><small>{matchBanner.subtitle}</small></div>
+    <button type="button" onClick={()=>{go('alerts');setMatchBanner(null)}}>View</button>
+    <button type="button" onClick={()=>setMatchBanner(null)} aria-label="Dismiss notification"><FiX/></button>
+   </div>}
    <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
     {tab==='home'&&<div className="op-app-view">
      <section className="op-app-welcome">
@@ -279,7 +299,7 @@ export default function SoftwareApp(){
       {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
-       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches ও লবি" accent="cyan" onClick={()=>go('matches')}/>
+       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches and Lobbies" accent="cyan" onClick={()=>go('matches')}/>
        <FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>
        <FeatureCard icon={FiBell} title="Notifications" sub="Match reminders and inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
        <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squad details'} accent="mint" onClick={()=>go('team')}/>
@@ -293,7 +313,7 @@ export default function SoftwareApp(){
      </div><MatchCard match={upcoming[0]}/></section>}
     </div>}
     {tab==='matches'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="YOUR LIVE FIXTURES" title="আমার Match Center" subtitle="Published match schedules for your approved squad appear here."/>
+     <SectionHead overline="YOUR LIVE FIXTURES" title="My Match Center" subtitle="Published match schedules for your approved squad appear here."/>
      {matchError&&<p className="op-app-error" role="alert">{matchError}</p>}
      <div className="op-app-inline"><span><FiClock/> Bangladesh Time (UTC+6)</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
      {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Your player account must be approved to view schedules."/>:
@@ -322,7 +342,8 @@ export default function SoftwareApp(){
        {!note.read_at&&<i/>}
       </button>;
      })}</div>}
-     {!admin&&approved&&<details className="op-app-push-settings"><summary><FiSmartphone/> Enable Phone Push Notifications</summary>
+     {!admin&&approved&&<details className="op-app-push-settings" open><summary><FiSmartphone/> Enable Phone Push Notifications</summary>
+      <NativePushSetup/>
       <PlayerMatchCenter/>
      </details>}
     </div>}
@@ -344,7 +365,7 @@ export default function SoftwareApp(){
       </article>)}</div>}
     </div>}
     {tab==='performance'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="আপনার রেকর্ডে সংরক্ষিত Matches, wins and kills।"/>
+     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="Your saved matches, wins and kills."/>
      <div className="op-app-stats"><div><FiCalendar/><span>Total Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
       <div><FiAward/><span>Total Wins</span><strong>{userData.player?.wins??0}</strong></div>
       <div><FiTarget/><span>Total Kills</span><strong>{userData.player?.total_kills??0}</strong></div></div>
