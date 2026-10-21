@@ -1,4 +1,5 @@
 import {identity,playerFor,errResponse,HttpError,noStore} from '../../../lib/match-center-server';
+import {nativeMessaging} from '../../../lib/match-native-push-server';
 export const dynamic='force-dynamic';
 export const runtime='nodejs';
 const validToken=t=>typeof t==='string' && t.length>=40 && t.length<=4096 &&
@@ -21,7 +22,7 @@ export async function POST(req){
   if(devices.length>5){
    await db.from('op_match_native_push_tokens').delete().in('id',devices.slice(5).map(x=>x.id)).eq('user_id',user.id);
   }
-  return Response.json({ok:true},{headers:noStore});
+  return Response.json({ok:true,deliveryConfigured:!!nativeMessaging()},{headers:noStore});
  }catch(e){return errResponse(e)}
 }
 export async function DELETE(req){

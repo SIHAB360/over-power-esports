@@ -95,8 +95,14 @@ public class MainActivity extends Activity {
             WebViewCompat.addWebMessageListener(webView,"OverPowerNative",
                 Collections.singleton(ROOT),(view,message,sourceOrigin,isMainFrame,replyProxy)->{
                     if(!isMainFrame||!ROOT.equals(sourceOrigin.toString()))return;
-                    if(!"enable-push".equals(message.getData()))return;
-                    runOnUiThread(()->enableNativePush(replyProxy));
+                    String command=message.getData();
+                    if("enable-push".equals(command)){
+                        runOnUiThread(()->enableNativePush(replyProxy,false));
+                    }else if("refresh-push".equals(command)){
+                        runOnUiThread(()->enableNativePush(replyProxy,true));
+                    }else if("disable-push".equals(command)){
+                        runOnUiThread(()->disableNativePush(replyProxy));
+                    }
                 });
         }
         webView.setWebViewClient(new WebViewClient() {
@@ -211,20 +217,37 @@ public class MainActivity extends Activity {
         try{reply.postMessage("{\"type\":\"push-error\",\"message\":"+JSONObject.quote(message)+"}");}
         catch(Exception ignored){}
     }
-    private void enableNativePush(JavaScriptReplyProxy reply){
+    private void enableNativePush(JavaScriptReplyProxy reply,boolean silentRefresh){
         if(!firebaseReady){
             replyError(reply,"Firebase is not yet configured for this APK. Contact the app administrator.");
             return;
         }
         pendingPushReply=reply;
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         if(Build.VERSION.SDK_INT>=33 &&
             ContextCompat.checkSelfPermission(this,Manifest.permission.POST_NOTIFICATIONS)
                 !=PackageManager.PERMISSION_GRANTED){
+            if(silentRefresh){
+                replyError(reply,"Notifications are disabled in Android Settings.");
+                pendingPushReply=null;
+                return;
+            }
             ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},NOTIFICATION_PERMISSION_REQUEST);
             return;
         }
         requestFcmToken();
+    }
+    private void disableNativePush(JavaScriptReplyProxy reply){
+        if(!firebaseReady){
+            replyError(reply,"Firebase is not configured.");
+            return;
+        }
+        FirebaseMessaging.getInstance().setAutoInitEnabled(false);
+        FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(task->{
+            try{reply.postMessage("{\\"type\\":\\"push-disabled\\"}");}
+            catch(Exception ignored){}
+        });
     }
     private void requestFcmToken(){
         final JavaScriptReplyProxy reply=pendingPushReply;
