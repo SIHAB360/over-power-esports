@@ -42,6 +42,9 @@ async function contextFor(browser,role,viewport){
  const alerts=[{id:'88888888-8888-4888-8888-888888888881',schedule_id:fixture.id,
   event_key:'created',created_at:new Date().toISOString(),read_at:null}];
  let marked=0;
+ await page.route(BASE+'/api/**',route=>route.fulfill(json({rows:[],wallet:{
+  available_balance:0,total_earnings:0,pending_withdrawals:0
+ },history:[],success:true})));
  await page.route(BASE+'/api/software/overview',route=>{
   if(!role)return route.fulfill({status:401,...json({message:'Please sign in'})});
   return route.fulfill(json(role==='admin'?{
@@ -70,9 +73,6 @@ async function contextFor(browser,role,viewport){
  await page.route(BASE+'/api/admin/match-schedules',route=>route.fulfill(json({
   schedules:[],teams:[],notified:0
  })));
- await page.route(BASE+'/api/**',route=>route.fulfill(json({rows:[],wallet:{
-  available_balance:0,total_earnings:0,pending_withdrawals:0
- },history:[],success:true})));
  return {ctx,page,errors,marked:()=>marked};
 }
 async function testSignedOut(browser){
