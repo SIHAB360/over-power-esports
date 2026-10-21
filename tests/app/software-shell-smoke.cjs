@@ -99,15 +99,15 @@ async function testPlayer(browser){
   assert(await page.getByText('Main Squad', {exact:false}).first().isVisible());
   assert(await page.getByText('QA Main Squad Lobby').first().isVisible());
   await page.locator('.op-app-bottom').getByRole('button',{name:'Matches'}).click();
-  await page.getByRole('heading',{name:'আমার Matches সেন্টার'}).waitFor();
+  await page.getByRole('heading',{name:'My Match Center'}).waitFor();
   assert(await page.getByText('৳8,000 DISPLAY ONLY').first().isVisible());
   await page.locator('.op-app-bottom').getByRole('button',{name:'Inbox'}).click();
-  await page.getByRole('heading',{name:'নোটিফিকেশন Inbox'}).waitFor();
-  await page.getByText('নতুন Matches প্রকাশিত').first().click();
-  await page.getByRole('heading',{name:'আমার Matches সেন্টার'}).waitFor();
+  await page.getByRole('heading',{name:'Notification Inbox'}).waitFor();
+  await page.getByText('New Match Published').first().click();
+  await page.getByRole('heading',{name:'My Match Center'}).waitFor();
   assert.equal(marked(),1,'Reading a match alert must use authenticated PATCH');
   await page.locator('.op-app-bottom').getByRole('button',{name:'Wallet'}).click();
-  await page.getByRole('heading',{name:'আমার Wallet'}).waitFor();
+  await page.getByRole('heading',{name:'My Wallet'}).waitFor();
   await page.locator('.op-software-wallet').waitFor({state:'visible',timeout:15000});
   assert(await page.locator('.op-software-wallet').isVisible(),
    'Real existing withdrawal component should mount inside app shell');
@@ -128,7 +128,7 @@ async function testAdmin(browser){
   assert(await page.locator('.op-app-sidebar').isVisible());
   await page.locator('.op-app-side-links').getByRole('button',{name:'Modules'}).click();
   await page.getByRole('heading',{name:'Software Management'}).waitFor();
-  await page.locator('.op-app-feature-grid').getByRole('button',{name:/Matches শিডিউল/}).click();
+  await page.locator('.op-app-feature-grid').getByRole('button',{name:/Match Schedule/}).click();
   await page.getByRole('heading',{name:'Match Schedule Center'}).waitFor({timeout:45000});
   assert.equal(errors.length,0,errors.join('\n'));
   console.log('PASS desktop: admin role home and actual management module rendered INSIDE app');
