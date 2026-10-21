@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
             startActivity(new Intent(Intent.ACTION_VIEW, uri)
                     .addCategory(Intent.CATEGORY_BROWSABLE));
         } catch (ActivityNotFoundException ignored) {
-            showError("এই লিংক খোলার জন্য ব্রাউজার পাওয়া যায়নি।");
+            showError("No browser available to open this link.");
         }
         return true;
     }
@@ -119,15 +119,15 @@ public class MainActivity extends Activity {
                 }
             }
             @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
-                if (req.isForMainFrame()) showError("ইন্টারনেট সংযোগ নেই। সংযোগ ঠিক করে আবার চেষ্টা করুন।");
+                if (req.isForMainFrame()) showError("ইন্টারনেট সংযোগ নেই। সংযোগ ঠিক করে Try Again।");
             }
             @Override public void onReceivedHttpError(WebView view, WebResourceRequest req, android.webkit.WebResourceResponse response) {
                 if (req.isForMainFrame() && response.getStatusCode() >= 500)
-                    showError("সার্ভারে সাময়িক সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+                    showError("সার্ভারে সাময়িক সমস্যা হয়েছে। Try Again।");
             }
             @Override public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.cancel(); // NEVER bypass certificate errors.
-                showError("নিরাপদ সংযোগ যাচাই করা যায়নি।");
+                showError("Secure connection could not be verified.");
             }
         });
         browser.setWebChromeClient(new WebChromeClient() {
@@ -192,7 +192,7 @@ public class MainActivity extends Activity {
         center.addView(subtitle, subParams);
 
         status = new TextView(this);
-        status.setText("সফটওয়্যার চালু হচ্ছে…");
+        status.setText("Opening your app…");
         status.setTextSize(14);
         status.setTextColor(0xffcadcf7);
         status.setGravity(Gravity.CENTER);
@@ -201,11 +201,11 @@ public class MainActivity extends Activity {
         center.addView(status, statusParams);
 
         retry = new Button(this);
-        retry.setText("আবার চেষ্টা করুন");
+        retry.setText("Try Again");
         retry.setAllCaps(false);
         retry.setVisibility(View.GONE);
         retry.setOnClickListener(v -> {
-            status.setText("সফটওয়্যার চালু হচ্ছে…");
+            status.setText("Opening your app…");
             retry.setVisibility(View.GONE);
             progress.setVisibility(View.VISIBLE);
             browser.loadUrl(START_URL);
@@ -240,9 +240,9 @@ public class MainActivity extends Activity {
     @Override public void onBackPressed() {
         if (browser != null && browser.canGoBack() && firstPageLoaded) browser.goBack();
         else new AlertDialog.Builder(this).setTitle("OVER POWER ESPORTS")
-                .setMessage("অ্যাপ বন্ধ করতে চান?")
-                .setNegativeButton("না", (d,w) -> d.dismiss())
-                .setPositiveButton("বন্ধ করুন", (d,w) -> finish())
+                .setMessage("Do you want to close the app?")
+                .setNegativeButton("No", (d,w) -> d.dismiss())
+                .setPositiveButton("Exit", (d,w) -> finish())
                 .show();
     }
     @Override protected void onPause() {

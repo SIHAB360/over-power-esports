@@ -22,7 +22,7 @@ function discover(kind,excluded){
 const admins=discover('admin',manualAdmin);
 const players=discover('player',manualPlayer);
 const entry=m=>JSON.stringify(m.id)+":dynamic(()=>import('../"+m.kind+"/"+m.section+"/page'),{ssr:false})";
-const data=m=>JSON.stringify({id:m.id,title:m.title,sub:'নতুন সফটওয়্যার সেকশন',tone:'blue'});
+const data=m=>JSON.stringify({id:m.id,title:m.title,sub:'New Software Module',tone:'blue'});
 const lines=[
  "'use client';",
  "import dynamic from 'next/dynamic';",

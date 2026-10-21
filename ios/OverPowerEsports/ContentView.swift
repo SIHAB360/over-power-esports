@@ -68,7 +68,7 @@ struct SoftwareBrowser: UIViewRepresentable {
             let ns = error as NSError
             if ns.code == NSURLErrorCancelled {return}
             DispatchQueue.main.async {
-                self.state.errorMessage="ইন্টারনেট বা সার্ভার সংযোগ পাওয়া যাচ্ছে না।"
+                self.state.errorMessage="ইন্টারনেট বা সার্ভার সংযোগ পাওয়া যাচ্ছে No।"
                 self.state.isLoading=false
             }
         }
@@ -105,7 +105,7 @@ struct ContentView: View {
                     if let message=state.errorMessage {
                         Text(message).foregroundColor(.white.opacity(0.86))
                             .multilineTextAlignment(.center).padding(.top,20)
-                        Button("আবার চেষ্টা করুন"){state.refresh()}
+                        Button("Try Again"){state.refresh()}
                             .padding(.horizontal,30).padding(.vertical,13)
                             .background(Color(red:0.35,green:0.45,blue:0.91))
                             .foregroundColor(.white).clipShape(RoundedRectangle(cornerRadius:13))
