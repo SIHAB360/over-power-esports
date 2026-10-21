@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node scripts/generate-software-modules.cjs && next dev",
+    "build": "node scripts/generate-software-modules.cjs && next build",
     "start": "next start"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ import {useCallback,useEffect,useMemo,useState} from 'react';
 import {supabase} from '../lib/supabase';
 import Image from 'next/image';
 import brandLogo from '../assets/logo.png';
-import {AdminModule,PlayerWallet} from './SoftwareModules';
+import {AdminModule,PlayerWallet,PlayerExtraModule} from './SoftwareModules';
 import PlayerMatchCenter from '../player/dashboard/MatchCenterWidget';
 import {
  FiHome,FiCalendar,FiCreditCard,FiBell,FiUser,FiGrid,FiUsers,FiLayers,
@@ -12,6 +12,7 @@ import {
  FiZap,FiCheckCircle,FiClock,FiMenu,FiX,FiTrendingUp,FiSmartphone
 } from 'react-icons/fi';
 import './software.css';
+import {EXTRA_ADMIN_MODULES,EXTRA_PLAYER_MODULES} from './generated-software-modules';
 
 const currency=value=>'৳'+Number(value||0).toLocaleString('en-BD',{maximumFractionDigits:2});
 const dateTime=new Intl.DateTimeFormat('bn-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',hour:'numeric',minute:'2-digit',hour12:true});
@@ -29,6 +30,8 @@ const MODULES=[
  {id:'visitors',title:'ভিজিটর অ্যানালিটিক্স',sub:'সাইট ট্রাফিক ও কার্যক্রম',icon:FiActivity,tone:'cyan'},
  {id:'moderators',title:'মডারেটর',sub:'অনুমতি ও মডারেশন',icon:FiShield,tone:'blue'}
 ];
+const ALL_MODULES=[...MODULES,...EXTRA_ADMIN_MODULES.map(x=>({...x,icon:FiGrid,tone:'blue'}))];
+const NEW_PLAYER_MODULES=EXTRA_PLAYER_MODULES.map(x=>({...x,icon:FiGrid,tone:'blue'}));
 const PLAYER_TABS=[
  {id:'home',text:'হোম',icon:FiHome},{id:'matches',text:'ম্যাচ',icon:FiCalendar},
  {id:'wallet',text:'ওয়ালেট',icon:FiCreditCard},{id:'alerts',text:'ইনবক্স',icon:FiBell},
@@ -71,7 +74,7 @@ export default function SoftwareApp(){
  const admin=role==='admin';
  const approved=String(userData?.player?.status||'').toLowerCase()==='approved';
  const tabs=admin?ADMIN_TABS:PLAYER_TABS;
- const activeModule=MODULES.find(x=>x.id===module);
+ const activeModule=ALL_MODULES.find(x=>x.id===module)||NEW_PLAYER_MODULES.find(x=>x.id===module);
  const upcoming=useMemo(()=>fixtures.schedules.filter(x=>x.status==='published'&&new Date(x.starts_at).getTime()>Date.now()),[fixtures.schedules]);
 
  const authenticatedFetch=useCallback(async(path,method='GET',body)=>{
@@ -276,7 +279,7 @@ export default function SoftwareApp(){
      </button>}
      <div className="op-app-section-title"><div><span className="op-app-overline">QUICK ACCESS</span><h2>আপনার সেকশনগুলো</h2></div><FiGrid/></div>
      <section className="op-app-feature-grid">
-      {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
+      {admin?ALL_MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
        <FeatureCard icon={FiCalendar} title="ম্যাচ সেন্টার" sub="আসন্ন ম্যাচ ও লবি" accent="cyan" onClick={()=>go('matches')}/>
@@ -285,6 +288,7 @@ export default function SoftwareApp(){
        <FeatureCard icon={FiLayers} title="আমার টিম" sub={userData?.team?.name||'স্কোয়াড তথ্য'} accent="mint" onClick={()=>go('team')}/>
        <FeatureCard icon={FiAward} title="টুর্নামেন্ট" sub="প্রতিযোগিতা ও শিডিউল" accent="gold" onClick={()=>go('tournaments')}/>
        <FeatureCard icon={FiTrendingUp} title="আমার পারফরম্যান্স" sub="ম্যাচ, জয় ও কিলস" accent="blue" onClick={()=>go('performance')}/>
+       {NEW_PLAYER_MODULES.map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub} accent={x.tone} onClick={()=>go('extra',x.id)}/>)}
       </>}
      </section>
      {upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
@@ -349,6 +353,11 @@ export default function SoftwareApp(){
       <div><FiAward/><span>মোট জয়</span><strong>{userData.player?.wins??0}</strong></div>
       <div><FiTarget/><span>মোট কিলস</span><strong>{userData.player?.total_kills??0}</strong></div></div>
     </div>}
+    {tab==='extra'&&!admin&&module&&NEW_PLAYER_MODULES.some(x=>x.id===module)&&<div className="op-app-view op-app-management-view">
+     <button className="op-app-back" type="button" onClick={()=>go('home')}><FiArrowLeft/> হোম</button>
+     <SectionHead overline="PLAYER MODULE" title={activeModule?.title||'Player'} subtitle="নতুন সফটওয়্যার সেকশন"/>
+     <PlayerExtraModule module={module}/>
+    </div>}
     {tab==='profile'&&<div className="op-app-view">
      <SectionHead overline="ACCOUNT CENTER" title="আমার প্রোফাইল" subtitle="আপনার বর্তমান যাচাইকৃত অ্যাকাউন্ট।"/>
      <div className="op-app-profile">
@@ -365,7 +374,7 @@ export default function SoftwareApp(){
     </div>}
     {tab==='manage'&&admin&&!module&&<div className="op-app-view">
      <SectionHead overline="ADMIN OPERATIONS" title="সফটওয়্যার ম্যানেজমেন্ট" subtitle="যে সেকশনটি খুলবেন, সেটির কার্যকর কন্ট্রোল এই অ্যাপের ভেতরেই চলবে।"/>
-     <div className="op-app-feature-grid">{MODULES.map(x=><FeatureCard key={x.id} title={x.title} sub={x.sub}
+     <div className="op-app-feature-grid">{ALL_MODULES.map(x=><FeatureCard key={x.id} title={x.title} sub={x.sub}
       icon={x.icon} accent={x.tone} onClick={()=>go('manage',x.id)}/>)}</div>
     </div>}
     {showAdminComponent&&<div className="op-app-view op-app-management-view">

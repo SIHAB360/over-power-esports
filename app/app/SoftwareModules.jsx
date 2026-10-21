@@ -1,5 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
+import {EXTRA_ADMIN_COMPONENTS,EXTRA_PLAYER_COMPONENTS} from './generated-software-modules';
 
 const panels={
  schedule:dynamic(()=>import('../admin/match-schedule/page'),{ssr:false}),
@@ -16,10 +17,16 @@ const panels={
 };
 const Wallet=dynamic(()=>import('../player/dashboard/PlayerWithdrawal'),{ssr:false});
 export function AdminModule({module}){
- const Component=panels[module];
+ const Component=panels[module]||EXTRA_ADMIN_COMPONENTS[module];
  if(!Component)return <div role="alert">এই মডিউলটি পাওয়া যায়নি।</div>;
  return <div className="op-software-module" data-module={module}><Component/></div>;
 }
 export function PlayerWallet(){
  return <div className="op-software-wallet" aria-label="Secure player wallet and withdrawals"><Wallet/></div>;
+}
+
+export function PlayerExtraModule({module}){
+ const Component=EXTRA_PLAYER_COMPONENTS[module];
+ if(!Component)return <div role="alert">সেকশন পাওয়া যায়নি।</div>;
+ return <div className="op-software-module" data-module={module}><Component/></div>;
 }
