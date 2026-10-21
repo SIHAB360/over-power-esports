@@ -159,7 +159,7 @@ export default function PlayerWithdrawal() {
         <article className={[styles.stat, styles.primaryStat].join(" ")}>
           <span>Available Balance</span>
           <strong>{enabled ? money(available) : "—"}</strong>
-          <small>অনিষ্পন্ন ও Paid উত্তোলন বাদ দেওয়ার পর</small>
+          <small>After unsettled and paid withdrawals</small>
         </article>
         <article className={styles.stat}>
           <span>Total Net Earnings</span>
@@ -169,10 +169,10 @@ export default function PlayerWithdrawal() {
         <article className={styles.stat}>
           <span>Pending Amount</span>
           <strong>{enabled ? money(reserved) : "—"}</strong>
-          <small>অনুমোদনের অপেক্ষায় বা Approved অনুরোধ</small>
+          <small>Requests pending or awaiting payment</small>
         </article>
         <article className={styles.stat}>
-          <span>মোট Paid টাকা</span>
+          <span>Total Amount Paid</span>
           <strong>{enabled ? money(wallet?.paid_withdrawals) : "—"}</strong>
           <small>Confirmed payouts</small>
         </article>
@@ -184,7 +184,7 @@ export default function PlayerWithdrawal() {
             <span className={styles.step}>01</span>
             <div><h3>Request Withdrawal</h3><p>Choose your preferred mobile wallet.</p></div>
           </div>
-          {hasActive && <div className={styles.info} role="status">আপনার একটি অনুরোধ সক্রিয় রয়েছে। সেটি পরিশোধ বা Rejected হওয়ার পর নতুন অনুরোধ করুন।</div>}
+          {hasActive && <div className={styles.info} role="status">You already have an active request. Wait until it is paid or rejected before submitting another.</div>}
 
           <fieldset disabled={!enabled || busy || hasActive} className={styles.methods}>
             <legend>Select Payment Method</legend>
