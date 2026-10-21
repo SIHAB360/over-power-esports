@@ -99,12 +99,12 @@ async function testPlayer(browser){
   assert(await page.getByText('Main Squad', {exact:false}).first().isVisible());
   assert(await page.getByText('QA Main Squad Lobby').first().isVisible());
   await page.locator('.op-app-bottom').getByRole('button',{name:'Matches'}).click();
-  await page.getByRole('heading',{name:'আমার Match Center'}).waitFor();
+  await page.getByRole('heading',{name:'My Match Center'}).waitFor();
   assert(await page.getByText('৳8,000 DISPLAY ONLY').first().isVisible());
   await page.locator('.op-app-bottom').getByRole('button',{name:'Inbox'}).click();
   await page.getByRole('heading',{name:'Notifications Inbox'}).waitFor();
   await page.locator('.op-app-inbox .op-app-notice').first().click();
-  await page.getByRole('heading',{name:'আমার Match Center'}).waitFor();
+  await page.getByRole('heading',{name:'My Match Center'}).waitFor();
   assert.equal(marked(),1,'Reading a match alert must use authenticated PATCH');
   await page.locator('.op-app-bottom').getByRole('button',{name:'Wallet'}).click();
   await page.getByRole('heading',{name:'My Wallet'}).waitFor();
