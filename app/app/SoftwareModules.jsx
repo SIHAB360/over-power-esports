@@ -15,7 +15,7 @@ const panels={
  visitors:dynamic(()=>import('../admin/visitors/page'),{ssr:false}),
  moderators:dynamic(()=>import('../admin/moderators/page'),{ssr:false}),
 };
-const Wallet=dynamic(()=>import('../player/dashboard/PlayerWithdrawal'),{ssr:false});
+const Wallet=dynamic(()=>import('./PlayerWithdrawalEnglish'),{ssr:false});
 export function AdminModule({module}){
  const Component=panels[module]||EXTRA_ADMIN_COMPONENTS[module];
  if(!Component)return <div role="alert">Module not found.</div>;
