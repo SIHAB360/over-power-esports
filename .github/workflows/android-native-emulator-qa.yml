@@ -17,8 +17,12 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      - name: Android toolchain
-        uses: android-actions/setup-android@v3
+      - name: Use GitHub runner Android SDK
+        shell: bash
+        run: |
+          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
       - name: Build debug Android software
         uses: gradle/actions/setup-gradle@v4
         with:
