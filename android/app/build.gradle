@@ -23,6 +23,12 @@ android {
         resValue 'string','op_firebase_api_key',(System.getenv('OP_FIREBASE_API_KEY') ?: '')
         resValue 'string','op_firebase_project_id',(System.getenv('OP_FIREBASE_PROJECT_ID') ?: '')
         resValue 'string','op_firebase_sender_id',(System.getenv('OP_FIREBASE_SENDER_ID') ?: '')
+        // FirebaseInitProvider reads these standard Android resources during
+        // cold-start push delivery when MainActivity is NOT running.
+        resValue 'string','google_app_id',(System.getenv('OP_FIREBASE_APP_ID') ?: '')
+        resValue 'string','google_api_key',(System.getenv('OP_FIREBASE_API_KEY') ?: '')
+        resValue 'string','gcm_defaultSenderId',(System.getenv('OP_FIREBASE_SENDER_ID') ?: '')
+        resValue 'string','project_id',(System.getenv('OP_FIREBASE_PROJECT_ID') ?: '')
         versionName '1.2.0'
     }
 
