@@ -357,3 +357,19 @@
  font-size:12px;font-weight:900}
 .op-app-native-push button:disabled{opacity:.6}
 @media(max-width:480px){.op-app-native-push{flex-wrap:wrap}.op-app-native-push button{margin-left:53px}}
+
+/* Native-app style foreground heads-up banner, without requiring OS permission. */
+.op-app-toast{position:fixed;top:clamp(79px,9vh,104px);right:clamp(12px,3vw,35px);
+ z-index:80;display:flex;align-items:center;gap:12px;max-width:min(420px,calc(100vw - 22px));
+ width:100%;padding:14px;border:1px solid #8affe9c4;border-radius:18px;
+ background:linear-gradient(110deg,#195e65,#275188,#513b83);
+ box-shadow:0 16px 45px #000b,0 0 27px #92ece866;color:#fff;
+ animation:op-app-soft-in .24s ease-out both}
+.op-app-toast>svg{font-size:27px;flex:none;color:#90fff0}
+.op-app-toast-body{border:0!important;background:transparent!important;flex:1;
+ color:#fff!important;text-align:left;display:grid;gap:3px;min-width:0}
+.op-app-toast-body strong{font-size:14px;font-weight:950}
+.op-app-toast-body small{font-size:12px;color:#d2eef5}
+.op-app-toast-dismiss{border:0!important;color:#f5fcff!important;
+ background:#ffffff20!important;border-radius:9px;width:32px;height:32px;flex:none;display:grid;place-items:center}
+@media(max-width:780px){.op-app-toast{top:77px;right:11px;width:calc(100vw - 22px)}}

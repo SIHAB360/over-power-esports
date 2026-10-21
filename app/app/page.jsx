@@ -1,5 +1,5 @@
 'use client';
-import {useCallback,useEffect,useMemo,useState} from 'react';
+import {useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {supabase} from '../lib/supabase';
 import Image from 'next/image';
 import brandLogo from '../assets/logo.png';
@@ -65,6 +65,8 @@ export default function SoftwareApp(){
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
  const [matchError,setMatchError]=useState('');
+ const [toast,setToast]=useState(null);
+ const lastUnread=useRef(0);
  const [busy,setBusy]=useState(false);
  const [email,setEmail]=useState('');
  const [password,setPassword]=useState('');
@@ -123,11 +125,26 @@ export default function SoftwareApp(){
  },[loadAccount]);
  useEffect(()=>{
   if(stage!=='ready')return;
-  const t=setInterval(()=>{if(document.visibilityState==='visible'&&(admin||approved))loadMatches()},45000);
+  const t=setInterval(()=>{if(document.visibilityState==='visible'&&(admin||approved))loadMatches()},15000);
   const focus=()=>{if(admin||approved)loadMatches()};
   window.addEventListener('focus',focus);
   return()=>{clearInterval(t);window.removeEventListener('focus',focus)};
  },[stage,admin,approved,loadMatches]);
+ useEffect(()=>{
+  if(stage!=='ready'||admin||!approved)return;
+  const count=Number(fixtures.unread||0);
+  if(count>lastUnread.current){
+   const latest=fixtures.inbox.find(item=>!item.read_at);
+   setToast({count,title:latest?.event_key==='created'?'New Match Published':'Match Reminder',
+    message:'You have '+count+' unread match alert'+(count===1?'':'s')+'. Tap to view.'});
+  }
+  lastUnread.current=count;
+ },[stage,admin,approved,fixtures.unread,fixtures.inbox]);
+ useEffect(()=>{
+  if(!toast)return;
+  const timer=setTimeout(()=>setToast(null),9000);
+  return()=>clearTimeout(timer);
+ },[toast]);
  const signIn=async(event)=>{
   event.preventDefault();setBusy(true);setError('');
   try{
@@ -269,6 +286,11 @@ export default function SoftwareApp(){
      <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{welcomeName.slice(0,2).toUpperCase()}</button>
     </div>
    </header>
+   {toast&&<div className="op-app-toast" role="status">
+    <FiBell/><button type="button" className="op-app-toast-body" onClick={()=>{setToast(null);go('alerts')}}>
+      <strong>{toast.title}</strong><small>{toast.message}</small>
+    </button><button type="button" aria-label="Dismiss alert" className="op-app-toast-dismiss" onClick={()=>setToast(null)}><FiX/></button>
+   </div>}
    <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
     {!admin&&approved&&<NativePushManager/>}
     {tab==='home'&&<div className="op-app-view">
