@@ -7,7 +7,9 @@ def signAlias = System.getenv('OP_ANDROID_KEY_ALIAS')
 def signKeyPass = System.getenv('OP_ANDROID_KEY_PASSWORD')
 def canReleaseSign = [signFile,signPass,signAlias,signKeyPass].every{it!=null&&!it.isEmpty()}
 
+def firebaseConfig = { key -> (System.getenv(key) ?: '').replaceAll('[^A-Za-z0-9_:\\-]', '') }
 android {
+ buildFeatures { buildConfig true }
  namespace 'com.overpower.esports'
  compileSdk 36
  defaultConfig {
@@ -15,7 +17,11 @@ android {
   minSdk 26
   targetSdk 35
   versionCode 2
-  versionName '2.0.0'
+  versionName '2.1.0'
+  buildConfigField 'String','FCM_API_KEY','"'+firebaseConfig('OP_FIREBASE_API_KEY')+'"'
+  buildConfigField 'String','FCM_APP_ID','"'+firebaseConfig('OP_FIREBASE_APP_ID')+'"'
+  buildConfigField 'String','FCM_SENDER_ID','"'+firebaseConfig('OP_FIREBASE_SENDER_ID')+'"'
+  buildConfigField 'String','FCM_PROJECT_ID','"'+firebaseConfig('OP_FIREBASE_PROJECT_ID')+'"'
  }
  signingConfigs {
   if(canReleaseSign) {
@@ -41,4 +47,10 @@ android {
   sourceCompatibility JavaVersion.VERSION_17
   targetCompatibility JavaVersion.VERSION_17
  }
+}
+
+dependencies {
+ implementation 'com.google.firebase:firebase-messaging:24.1.2'
+ implementation 'androidx.webkit:webkit:1.12.1'
+ implementation 'androidx.core:core:1.15.0'
 }
