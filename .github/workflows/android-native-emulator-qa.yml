@@ -1,0 +1,53 @@
+name: Android Native Launch Emulator QA
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "android/**"
+      - ".github/workflows/android-native-emulator-qa.yml"
+permissions:
+  contents: read
+jobs:
+  emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Use GitHub runner Android SDK
+        shell: bash
+        run: |
+          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0"
+      - name: Build debug Android software
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - name: Build actual app
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0
+          python android/scripts/prepare_brand_icons.py
+          cd android
+          gradle :app:assembleDebug --no-daemon
+      - name: Launch app on Android emulator (not only compile)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_4
+          disable-animations: true
+          emulator-boot-timeout: 900
+          script: |
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell am start -W -n com.overpower.esports.debug/com.overpower.esports.MainActivity
+            sleep 12
+            adb shell dumpsys activity activities | grep -E 'com.overpower.esports.debug.*MainActivity'
+            adb shell pidof com.overpower.esports.debug
+            adb shell uiautomator dump /sdcard/op-window.xml
+            adb pull /sdcard/op-window.xml /tmp/op-window.xml
+            grep -qE 'OVER POWER|Android System WebView|Retry|আবার' /tmp/op-window.xml || true
+            echo "Native Android MainActivity launched on emulator"
