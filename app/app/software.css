@@ -331,6 +331,45 @@
  .op-app-root *{animation:none!important;transition:none!important}
 }
 
-/* Official website logo is the SAME source asset in mobile and desktop app. */
-.op-app-brand-icon img,.op-app-top-logo img,.op-app-sidebar-logo>span img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:inherit}
-.op-app-welcome-art img{max-width:100%;height:auto;object-fit:contain}
+/* Reuse the exact existing public website branding in the application. */
+.op-app-root .op-app-brand-icon,.op-app-root .op-app-top-logo,
+.op-app-root .op-app-sidebar-logo>span{
+ background:radial-gradient(ellipse at 95% 0%,#819cff50,transparent 70%),#15234b;
+ border:1px solid #7faff383;overflow:hidden;padding:2px;
+}
+.op-app-root .op-app-brand-icon img,.op-app-root .op-app-top-logo img,
+.op-app-root .op-app-sidebar-logo>span img{
+ display:block;width:100%;height:100%;object-fit:contain;
+}
+
+/* Dedicated permission opt-in for heads-up Android FCM notifications. */
+.op-app-native-push{display:flex;align-items:center;gap:11px;margin:0 0 17px;
+ background:linear-gradient(106deg,#174866,#25427e,#362a69);
+ border:1px solid #75e5eebb;border-radius:16px;padding:12px 14px;
+ box-shadow:0 0 20px #7bc1fd35;color:#f4fbff}
+.op-app-native-push-icon{width:42px;height:42px;display:grid;place-items:center;flex:none;
+ border-radius:13px;background:#316d9caa;color:#93ffee;font-size:22px}
+.op-app-native-push-copy{display:grid;gap:4px;flex:1;min-width:0}
+.op-app-native-push-copy strong{font-size:13px;font-weight:900}
+.op-app-native-push-copy small{font-size:11px;color:#c4dff4;overflow-wrap:anywhere}
+.op-app-native-push button{white-space:nowrap;padding:10px 12px;border:1px solid #b3ffffb4;
+ border-radius:11px;color:#072645;background:linear-gradient(130deg,#82f8e9,#a0cdff);
+ font-size:12px;font-weight:900}
+.op-app-native-push button:disabled{opacity:.6}
+@media(max-width:480px){.op-app-native-push{flex-wrap:wrap}.op-app-native-push button{margin-left:53px}}
+
+/* Native-app style foreground heads-up banner, without requiring OS permission. */
+.op-app-toast{position:fixed;top:clamp(79px,9vh,104px);right:clamp(12px,3vw,35px);
+ z-index:80;display:flex;align-items:center;gap:12px;max-width:min(420px,calc(100vw - 22px));
+ width:100%;padding:14px;border:1px solid #8affe9c4;border-radius:18px;
+ background:linear-gradient(110deg,#195e65,#275188,#513b83);
+ box-shadow:0 16px 45px #000b,0 0 27px #92ece866;color:#fff;
+ animation:op-app-soft-in .24s ease-out both}
+.op-app-toast>svg{font-size:27px;flex:none;color:#90fff0}
+.op-app-toast-body{border:0!important;background:transparent!important;flex:1;
+ color:#fff!important;text-align:left;display:grid;gap:3px;min-width:0}
+.op-app-toast-body strong{font-size:14px;font-weight:950}
+.op-app-toast-body small{font-size:12px;color:#d2eef5}
+.op-app-toast-dismiss{border:0!important;color:#f5fcff!important;
+ background:#ffffff20!important;border-radius:9px;width:32px;height:32px;flex:none;display:grid;place-items:center}
+@media(max-width:780px){.op-app-toast{top:77px;right:11px;width:calc(100vw - 22px)}}
