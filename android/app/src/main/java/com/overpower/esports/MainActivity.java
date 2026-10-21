@@ -30,6 +30,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.webkit.WebView;
+import android.os.Handler;
+import android.os.Looper;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+import androidx.webkit.JavaScriptReplyProxy;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import org.json.JSONObject;
+import java.util.Collections;
 
 public class MainActivity extends Activity {
     private static final String START_URL = "https://over-power-esports.vercel.app/app";
@@ -42,6 +55,9 @@ public class MainActivity extends Activity {
     private ProgressBar progress;
     private ValueCallback<Uri[]> fileCallback;
     private boolean firstPageLoaded = false;
+    private static final int NOTIFICATION_PERMISSION_REQUEST = 2401;
+    private JavaScriptReplyProxy pendingNativeReply;
+    private boolean pushConfigured = false;
 
     private int dp(float v) {
         return Math.round(getResources().getDisplayMetrics().density * v);
@@ -75,6 +91,106 @@ public class MainActivity extends Activity {
         browser.setVisibility(View.VISIBLE);
         splash.setVisibility(View.GONE);
     }
+
+    private void configureNativeMessaging(){
+        // Firebase public app identifiers are injected at CI build time.
+        // Credentials/service-account key NEVER ship in the APK.
+        String key=BuildConfig.FCM_API_KEY;
+        String appId=BuildConfig.FCM_APP_ID;
+        String sender=BuildConfig.FCM_SENDER_ID;
+        String project=BuildConfig.FCM_PROJECT_ID;
+        if(key.isEmpty()||appId.isEmpty()||sender.isEmpty()||project.isEmpty())return;
+        try{
+            if(FirebaseApp.getApps(this).isEmpty()){
+                FirebaseOptions options=new FirebaseOptions.Builder()
+                  .setApiKey(key).setApplicationId(appId).setGcmSenderId(sender)
+                  .setProjectId(project).build();
+                FirebaseApp.initializeApp(this,options);
+            }
+            MatchFirebaseMessagingService.ensureChannel(this);
+            pushConfigured=true;
+        }catch(RuntimeException ignored){pushConfigured=false;}
+    }
+    private void nativeReply(JavaScriptReplyProxy proxy, String type, String detail){
+        try {
+            JSONObject json=new JSONObject();
+            json.put("type",type);
+            json.put("message",detail);
+            proxy.postMessage(json.toString());
+        }catch(Exception ignored){}
+    }
+    private void pushToken(JavaScriptReplyProxy reply){
+        if(!pushConfigured){nativeReply(reply,"error","Phone push requires Firebase setup. Please contact Admin.");return;}
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token->{
+            try{
+                JSONObject json=new JSONObject();
+                json.put("type","token");
+                json.put("token",token);
+                json.put("version",BuildConfig.VERSION_NAME);
+                reply.postMessage(json.toString());
+            }catch(Exception ignored){}
+        }).addOnFailureListener(e->nativeReply(reply,"error","Could not initialize phone notifications. Please retry."));
+    }
+    private void setupNativeBridge(){
+        if(!WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER))return;
+        WebViewCompat.addWebMessageListener(browser,"OverPowerNative",
+          Collections.singleton("https://"+ALLOWED_HOST),
+          (view,message,sourceOrigin,isMainFrame,reply)->{
+            if(!isMainFrame||!isOfficial(sourceOrigin))return;
+            try{
+                JSONObject msg=new JSONObject(message.getData());
+                String action=msg.optString("action","");
+                if("sync".equals(action)){
+                    boolean enabled=getSharedPreferences("overpower_push",MODE_PRIVATE).getBoolean("enabled",false);
+                    if(!enabled){nativeReply(reply,"disabled","Notifications are off on this device.");return;}
+                    if(Build.VERSION.SDK_INT>=33&&checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED){
+                        nativeReply(reply,"disabled","Notifications permission is not granted.");return;
+                    }
+                    pushToken(reply);
+                }else if("enable".equals(action)){
+                    if(!pushConfigured){nativeReply(reply,"error","Android push is not yet configured. Contact Admin.");return;}
+                    pendingNativeReply=reply;
+                    if(Build.VERSION.SDK_INT>=33&&checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED)
+                        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},NOTIFICATION_PERMISSION_REQUEST);
+                    else{
+                        getSharedPreferences("overpower_push",MODE_PRIVATE).edit().putBoolean("enabled",true).apply();
+                        pushToken(reply);
+                    }
+                }else if("disable".equals(action)){
+                    getSharedPreferences("overpower_push",MODE_PRIVATE).edit().putBoolean("enabled",false).apply();
+                    if(pushConfigured)pushToken(reply);
+                    else nativeReply(reply,"disabled","Phone notifications disabled.");
+                }else if("status".equals(action)){
+                    nativeReply(reply,"status",pushConfigured?"ready":"unconfigured");
+                }
+            }catch(Exception ignored){
+                nativeReply(reply,"error","Invalid notification request.");
+            }
+          });
+    }
+    @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(requestCode!=NOTIFICATION_PERMISSION_REQUEST||pendingNativeReply==null)return;
+        JavaScriptReplyProxy reply=pendingNativeReply;
+        pendingNativeReply=null;
+        boolean granted=grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED;
+        if(granted){
+            getSharedPreferences("overpower_push",MODE_PRIVATE).edit().putBoolean("enabled",true).apply();
+            pushToken(reply);
+        }else nativeReply(reply,"error","Allow notifications in your Android app settings to receive match alerts.");
+    }
+    @Override protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        setIntent(intent);
+        openPushDestination(intent);
+    }
+    private void openPushDestination(Intent intent){
+        if(browser==null||intent==null)return;
+        String path=intent.getStringExtra("app_url");
+        if(path!=null&&path.startsWith("/app")&&!path.startsWith("//"))
+            browser.loadUrl("https://"+ALLOWED_HOST+path);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +221,8 @@ public class MainActivity extends Activity {
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(browser, false);
 
+        configureNativeMessaging();
+        setupNativeBridge();
         browser.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
@@ -229,6 +347,7 @@ public class MainActivity extends Activity {
 
         // Always load the *separate app UI*; never launch Chrome or the website home.
         browser.loadUrl(START_URL);
+        openPushDestination(getIntent());
     }
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
