@@ -16,7 +16,7 @@ import './software.css';
 
 const currency=value=>'৳'+Number(value||0).toLocaleString('en-BD',{maximumFractionDigits:2});
 const dateTime=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',hour:'numeric',minute:'2-digit',hour12:true});
-const shortDate=new Intl.DateTimeFormat('bn-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',year:'numeric'});
+const shortDate=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',year:'numeric'});
 const MODULES=[
  {id:'schedule',title:'Match Schedule',sub:'Create matches and alert players',icon:FiCalendar,tone:'cyan'},
  {id:'players',title:'Player Management',sub:'Accounts and approvals',icon:FiUsers,tone:'blue'},
