@@ -245,7 +245,7 @@ public class MainActivity extends Activity {
         }
         FirebaseMessaging.getInstance().setAutoInitEnabled(false);
         FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(task->{
-            try{reply.postMessage("{\\"type\\":\\"push-disabled\\"}");}
+            try{reply.postMessage("{\"type\":\"push-disabled\"}");}
             catch(Exception ignored){}
         });
     }
