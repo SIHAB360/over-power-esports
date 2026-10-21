@@ -157,8 +157,26 @@ export default function SoftwareApp(){
  };
  const go=(destination,submodule=null)=>{
   setTab(destination);setModule(submodule);setSideOpen(false);
+  const next=new URL(window.location.href);
+  next.searchParams.set('tab',destination);
+  if(submodule)next.searchParams.set('module',submodule);
+  else next.searchParams.delete('module');
+  window.history.pushState({opSoftware:true,tab:destination,module:submodule},'',next.pathname+next.search);
   window.scrollTo({top:0,behavior:'instant'});
  };
+ useEffect(()=>{
+  const navigate=()=>{
+   const url=new URL(window.location.href);
+   const target=url.searchParams.get('tab')||'home';
+   const valid=admin?new Set(['home','schedule','manage','alerts','profile']):
+    new Set(['home','matches','wallet','alerts','profile','team','tournaments','performance','extra']);
+   setTab(valid.has(target)?target:'home');
+   setModule(url.searchParams.get('module')||null);
+  };
+  if(stage==='ready')navigate();
+  window.addEventListener('popstate',navigate);
+  return()=>window.removeEventListener('popstate',navigate);
+ },[stage,admin]);
  const markRead=async(id)=>{
   try{
    await authenticatedFetch('/api/player/match-schedules','PATCH',{id});

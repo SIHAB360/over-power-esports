@@ -20,6 +20,10 @@ async function get(path){
   const bytes=new Uint8Array(await image.arrayBuffer());
   assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10],'Icon needs a real PNG header');
  }
+ const officialLogo=await get('/over-power-logo.png');
+ assert.equal(officialLogo.status,200,'Original homepage brand logo must be served');
+ const brandBytes=new Uint8Array(await officialLogo.arrayBuffer());
+ assert.deepEqual([...brandBytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);
  const offline=await get('/offline.html');
  assert.equal(offline.status,200);
  assert((await offline.text()).includes('offline'));

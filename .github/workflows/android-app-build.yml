@@ -1,4 +1,4 @@
-name: Android App — Test APK
+name: Android App — Native Fullscreen Test APK
 on:
   workflow_dispatch:
   pull_request:
@@ -18,7 +18,7 @@ permissions:
   contents: read
 jobs:
   debug-apk:
-    name: Build Android TWA Debug APK
+    name: Build Native Android Fullscreen Debug APK
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:

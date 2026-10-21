@@ -251,7 +251,10 @@ public class MainActivity extends Activity {
     }
     @Override protected void onResume() {
         super.onResume();
-        if (browser != null) browser.onResume();
+        if (browser != null) {
+            browser.onResume();
+            if (firstPageLoaded) browser.evaluateJavascript("window.dispatchEvent(new Event('focus'))", null);
+        }
     }
     @Override protected void onDestroy() {
         if (fileCallback != null) {fileCallback.onReceiveValue(null);fileCallback=null;}

@@ -1,104 +1,65 @@
-# OVER POWER ESPORTS — Android APK / AAB foundation
+# OVER POWER ESPORTS — Native Android Software 2.0
 
-This is the **real Android Trusted Web Activity (TWA) application** for:
-https://over-power-esports.vercel.app/
+## What changed after the failed TWA APK
+The old Android build was a Chrome-dependent Trusted Web Activity (TWA).
+Without a correctly signed and verified Digital Asset Link, it could launch
+as a browser tab. That is **no longer** the mechanism.
 
-- App name: **OVER POWER ESPORTS**
-- Android package: \`com.overpower.esports\`
-- Entry screen: dedicated **/app software Login and Dashboard UI** (not the website Home)
-- Player / moderator / admin login, dashboards, match schedule, Supabase data and
-  Vercel website updates use the **same existing web app**, not a duplicate database.
-- Push permission and actual push subscription are managed by the existing
-  logged-in Player Match Center. The Android wrapper does not bypass consent.
-- Not a standalone offline copy; accounts, match schedules and financial balances
-  require the internet. The service worker caches only public assets.
+The new app contains a real native Android \`MainActivity\` with:
+- A full-screen WebView **inside the APK**, no Chrome launch or browser bar.
+- The website's genuine homepage logo in app launcher and native Splash Screen.
+- The dedicated bank-app-style \`/app\` login/Home/Match/Wallet/Inbox/Profile.
+- Native retry and connection error handling.
+- User-initiated photo/document picker (for website registration and forms).
+- HTTPS-only on-domain app navigation; external HTTPS links open the normal browser.
+- Strict TLS validation, safe browsing, no JavaScript-to-Android bridge, no
+  silent camera, location or microphone permissions.
+- Separate debug package \`com.overpower.esports.debug\` for test builds.
 
-## 1. Build a test APK (no signing secrets needed)
+All app content comes live from the existing Next.js/Supabase deployment:
+https://over-power-esports.vercel.app/app
 
-Open \`android/\` in Android Studio with JDK 17, or run in a configured
-Android SDK + Gradle 8.11.1 environment:
+**Website updates and newly created Admin/Player pages:** Website UI and
+data changes appear inside the installed app after Vercel deploy/reload,
+without a new APK. Adding a new top-level \`app/admin/<section>/page.js\`
+or \`app/player/<section>/page.js\` auto-registers it as a software button
+on the next web build. Native Android-only code/icon/permissions updates
+still require a new APK/AAB.
 
-\`\`\`sh
-cd android
-gradle :app:assembleDebug
-\`\`\`
+## Debug build
+Install JDK 17, Android SDK 36 and Gradle 8.11.1, then:
+
+    cd android
+    gradle :app:assembleDebug --no-daemon
 
 Output: \`android/app/build/outputs/apk/debug/app-debug.apk\`.
 
-The connected **Android App CI** GitHub Action also produces this file
-as a downloadable **GitHub Actions artifact**. Debug uses
-\`com.overpower.esports.debug\`, separate from the real release app.
+GitHub Actions "Android App — Test APK" uploads the compiled test APK,
+and "Android App — Real Emulator Launch Test" runs the APK in an Android
+emulator, verifies the native Activity stays alive and records screenshots.
 
-Because the debug certificate is not the website's configured release signer,
-the TEST APK can open as a Chrome Custom Tab WITH a browser address bar.
-This is expected; it does not mean the Play Store production TWA is broken.
+The debug APK is NOT a production-signed Play Store release and may prompt a
+standard "Install unknown apps" warning. Only install builds from this
+verified repository; do not disable device-wide security protections.
 
-## 2. Sign for release — never commit your keystore
+## Production release
+Package name: \`com.overpower.esports\`. Create your personal release
+keystore securely, and provide signing variables locally/through secured CI:
+\`OP_ANDROID_KEYSTORE_PATH\`, \`OP_ANDROID_STORE_PASSWORD\`,
+\`OP_ANDROID_KEY_ALIAS\`, \`OP_ANDROID_KEY_PASSWORD\`.
+Never send keystore/passwords to ChatGPT or commit them to GitHub.
+Build \`gradle :app:bundleRelease\` and publish via your own Play Console.
 
-Before distributing a release APK/AAB, create and securely back up a long-lived
-upload key using Android Studio's Generate Signed Bundle / APK workflow or
-\`keytool\`. Do not share the keystore/passwords with ChatGPT or commit them.
+Digital Asset Links are optional for Android App Links and no longer
+required for the app to open fullscreen.
 
-For a locally signed build provide:
-- \`OP_ANDROID_KEYSTORE_PATH\`
-- \`OP_ANDROID_STORE_PASSWORD\`
-- \`OP_ANDROID_KEY_ALIAS\`
-- \`OP_ANDROID_KEY_PASSWORD\`
+## Push notifications
+The **in-app** Match Notification Inbox and 60/30/15-minute reminder
+records still function as part of Next.js. Native **background OS push**
+for Android WebView when the app is fully closed requires a separate
+Firebase Cloud Messaging implementation with your Firebase project;
+do not claim this test APK already supports background pushes.
 
-Then run \`gradle :app:assembleRelease :app:bundleRelease\`.
-Do not distribute or upload an unsigned release.
-
-## 3. Verify the web ↔ Android relationship (mandatory for fullscreen TWA)
-
-Get the **SHA-256 app-signing certificate fingerprint** that corresponds to the
-ACTUAL distributed APK. If using Google Play App Signing, get the **App signing
-key certificate** fingerprint from Play Console > Release > Setup > App integrity.
-The upload key fingerprint by itself might be insufficient for Play-distributed
-apps; both can be supplied when appropriate.
-
-Set Vercel **Production** environment variable
-\`ANDROID_TWA_SHA256_FINGERPRINTS\` to the genuine colon-separated SHA-256
-certificate fingerprints. Multiple values are comma-separated.
-Redeploy the site, then confirm this returns the JSON containing your actual
-package name and fingerprints:
-
-\`\`\`
-https://over-power-esports.vercel.app/.well-known/assetlinks.json
-\`\`\`
-
-Until a real fingerprint has been configured, that endpoint intentionally
-returns **404**. It does not publish fake fingerprints.
-
-The site's generated \`assetlinks.json\` binds \`com.overpower.esports\` to
-the genuine certificate and the Android manifest declares the corresponding
-web \`asset_statements\`. Fullscreen TWA works once the browser verifies both.
-
-## 4. App icon / PWA readiness
-
-The PWA manifest now uses correctly sized PNG URLs:
-\`/pwa-icon/192\` and \`/pwa-icon/512\`, with a mask-safe icon.
-The site registers \`/match-notifications-sw.js\` on first load, preserving
-existing opt-in 60/30/15-minute match push handling and providing a private-safe
-offline fallback. Supabase data is **never cached offline**.
-
-Users can also install the PWA directly from supported mobile browsers
-before the signed Android APK is published.
-
-## 5. Release QA checklist
-
-1. Test Player and Admin sign-in from Home.
-2. Test a real approved player viewing their squad's upcoming matches.
-3. After explicitly enabling browser notifications, test push in a controlled
-   test account only (never send unsolicited push to all players).
-4. Verify links to another website open safely in normal browser context.
-5. Verify \`assetlinks.json\` returns the correct release signing fingerprint.
-6. Confirm in Android App Links settings the domain is verified.
-7. Build a signed \`.aab\` for Google Play and use its internal testing track.
-8. Confirm website changes propagate after a new Vercel Production deployment.
-9. Do not bundle Supabase service-role/VAPID private keys in Android artifacts.
-
-### Important
-
-An APK/AAB is **not** automatically a verified release application merely
-because the source code builds. Domain verification requires real signing
-certificates, and Play Store publication requires the user's Play Console account.
+## iPhone / PC
+The iPhone native SwiftUI project, Electron Windows/Mac builds and PWA
+use exactly the same authenticated /app feature screens and live backend.

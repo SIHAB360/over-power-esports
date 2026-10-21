@@ -7,7 +7,7 @@ Target systems:
 - MacBook Intel: .dmg x64 (Apple Developer ID signing and notarization needed)
 - MacBook Apple Silicon: .dmg arm64 (signing and notarization needed)
 
-The desktop wrapper opens the live Vercel website. Player, Admin, matches and earnings share the SAME website and Supabase data, with no separate account store.
+The desktop program opens the dedicated /app software screens in its own Electron window, never a new browser tab. Player, Admin, matches and earnings share the SAME website and Supabase data, with no separate account store.
 
 ## Development
 

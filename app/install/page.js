@@ -57,7 +57,7 @@ export default function InstallApp(){
    {platform==='android'&&<>
     <h2>Install on Android</h2>
     <p>Open this page in Chrome on your Android phone. Use the Install button when shown, or open the Chrome menu and choose <strong>Install app</strong> / <strong>Add to Home screen</strong>.</p>
-    <p>The Android test APK and future signed Android release are managed through the project’s GitHub Android App builds.</p>
+    <p>The Android 2.0 test APK is a full-screen native Android WebView app (no Chrome tab). It opens the separate /app software login and features. A signed Play Store build needs your publisher certificate.</p>
    </>}
    {platform==='ios'&&<>
     <h2>Install on iPhone or iPad</h2>
