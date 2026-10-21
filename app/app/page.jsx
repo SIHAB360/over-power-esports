@@ -16,7 +16,7 @@ import './software.css';
 
 const currency=value=>'৳'+Number(value||0).toLocaleString('en-BD',{maximumFractionDigits:2});
 const dateTime=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',hour:'numeric',minute:'2-digit',hour12:true});
-const shortDate=new Intl.DateTimeFormat('bn-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',year:'numeric'});
+const shortDate=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',year:'numeric'});
 const MODULES=[
  {id:'schedule',title:'Match Schedule',sub:'Create matches and alert players',icon:FiCalendar,tone:'cyan'},
  {id:'players',title:'Player Management',sub:'Accounts and approvals',icon:FiUsers,tone:'blue'},
@@ -163,8 +163,25 @@ export default function SoftwareApp(){
  };
  const signOut=async()=>{
   setBusy(true);
-  try{const {error:outError}=await supabase.auth.signOut();if(outError)throw outError}
-  catch(err){setError(err.message)}finally{setBusy(false)}
+  try{
+   // Never keep sending private squad alerts to a device after user logout.
+   const token=window.localStorage.getItem('op-native-push-token');
+   const owner=window.localStorage.getItem('op-native-push-user-id');
+   const {data:{session}}=await supabase.auth.getSession();
+   if(token&&session?.access_token&&owner===session.user?.id){
+    try{
+     await fetch('/api/player/native-push',{method:'DELETE',keepalive:true,
+      headers:{Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},
+      body:JSON.stringify({token})});
+    }catch(e){console.warn('Push registration cleanup deferred',e?.message)}
+   }
+   window.OverPowerNative?.postMessage?.('disable-push');
+   window.localStorage.removeItem('op-native-push-opted-in');
+   window.localStorage.removeItem('op-native-push-token');
+   window.localStorage.removeItem('op-native-push-user-id');
+   const {error:outError}=await supabase.auth.signOut();
+   if(outError)throw outError;
+  }catch(err){setError(err.message)}finally{setBusy(false)}
  };
  const go=(destination,submodule=null)=>{
   setTab(destination);setModule(submodule);setSideOpen(false);
