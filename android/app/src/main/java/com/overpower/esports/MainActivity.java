@@ -119,11 +119,11 @@ public class MainActivity extends Activity {
                 }
             }
             @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
-                if (req.isForMainFrame()) showError("ইন্টারনেট সংযোগ নেই। সংযোগ ঠিক করে Try Again।");
+                if (req.isForMainFrame()) showError("No internet connection. Reconnect and retry.");
             }
             @Override public void onReceivedHttpError(WebView view, WebResourceRequest req, android.webkit.WebResourceResponse response) {
                 if (req.isForMainFrame() && response.getStatusCode() >= 500)
-                    showError("সার্ভারে সাময়িক সমস্যা হয়েছে। Try Again।");
+                    showError("The server is temporarily unavailable. Please retry.");
             }
             @Override public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.cancel(); // NEVER bypass certificate errors.

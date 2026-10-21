@@ -68,7 +68,7 @@ struct SoftwareBrowser: UIViewRepresentable {
             let ns = error as NSError
             if ns.code == NSURLErrorCancelled {return}
             DispatchQueue.main.async {
-                self.state.errorMessage="ইন্টারনেট বা সার্ভার সংযোগ পাওয়া যাচ্ছে No।"
+                self.state.errorMessage="Internet or server connection unavailable."
                 self.state.isLoading=false
             }
         }

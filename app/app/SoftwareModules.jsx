@@ -18,7 +18,7 @@ const panels={
 const Wallet=dynamic(()=>import('../player/dashboard/PlayerWithdrawal'),{ssr:false});
 export function AdminModule({module}){
  const Component=panels[module]||EXTRA_ADMIN_COMPONENTS[module];
- if(!Component)return <div role="alert">এই Modulesটি পাওয়া যায়নি।</div>;
+ if(!Component)return <div role="alert">Module not found.</div>;
  return <div className="op-software-module" data-module={module}><Component/></div>;
 }
 export function PlayerWallet(){
