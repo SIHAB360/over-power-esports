@@ -10,7 +10,7 @@ async function get(path){
  assert.equal(manifest.status,200,'PWA manifest must be served');
  const m=await manifest.json();
  assert.equal(m.name,'OVER POWER ESPORTS');
- assert.equal(m.start_url,'/');
+ assert.equal(m.start_url,'/app');
  assert.equal(m.display,'standalone');
  assert(m.icons?.some(i=>i.sizes==='192x192'&&i.type==='image/png'));
  assert(m.icons?.some(i=>i.sizes==='512x512'&&i.type==='image/png'));
@@ -30,6 +30,12 @@ async function get(path){
  assert(sw.includes('caches.open'),'PWA offline fallback is provided');
  assert(sw.includes("request.mode==='navigate'"),'Navigation must stay network-first');
  assert(sw.includes("url.pathname.startsWith('/api/')"),'Sensitive APIs must never be cached');
+ const software=await get('/app');
+ assert.equal(software.status,200,'Dedicated software home should exist');
+ const appHtml=await software.text();
+ assert(appHtml.includes('OVER POWER')||appHtml.includes('অ্যাকাউন্ট'),'App has its own branded view');
+ const unauth=await get('/api/software/overview');
+ assert.equal(unauth.status,401,'Private software overview must require login');
  const install=await get('/install');
  assert.equal(install.status,200,'Cross-device install route');
  const installHtml=await install.text();

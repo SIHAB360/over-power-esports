@@ -5,7 +5,7 @@ https://over-power-esports.vercel.app/
 
 - App name: **OVER POWER ESPORTS**
 - Android package: \`com.overpower.esports\`
-- Entry screen: website **Home** (not private Player Dashboard)
+- Entry screen: dedicated **/app software Login and Dashboard UI** (not the website Home)
 - Player / moderator / admin login, dashboards, match schedule, Supabase data and
   Vercel website updates use the **same existing web app**, not a duplicate database.
 - Push permission and actual push subscription are managed by the existing
