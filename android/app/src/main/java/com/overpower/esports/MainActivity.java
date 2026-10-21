@@ -138,7 +138,7 @@ public class MainActivity extends Activity {
         title.setPadding(0,24,0,24);
         errorView.addView(title);
         Button retry=new Button(this);
-        retry.setText("আবার চেষ্টা করুন");
+        retry.setText("Try Again");
         retry.setOnClickListener(v -> webView.loadUrl(START));
         errorView.addView(retry);
         FrameLayout.LayoutParams errParams=new FrameLayout.LayoutParams(-1,-1);
