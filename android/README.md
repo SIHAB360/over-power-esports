@@ -1,104 +1,25 @@
-# OVER POWER ESPORTS — Android APK / AAB foundation
+# OVER POWER ESPORTS — Android Notifications
 
-This is the **real Android Trusted Web Activity (TWA) application** for:
-https://over-power-esports.vercel.app/
+## English application
+The standalone Android app opens the dedicated English app at https://over-power-esports.vercel.app/app. It displays Login, Home, Matches, Wallet, Inbox and Profile in one native full-screen window. Admins receive the role-restricted management interface. The public website remains separate. Match schedules and feature changes deployed to the web automatically appear in the installed app after a reload; native code changes require a new APK.
 
-- App name: **OVER POWER ESPORTS**
-- Android package: \`com.overpower.esports\`
-- Entry screen: dedicated **/app software Login and Dashboard UI** (not the website Home)
-- Player / moderator / admin login, dashboards, match schedule, Supabase data and
-  Vercel website updates use the **same existing web app**, not a duplicate database.
-- Push permission and actual push subscription are managed by the existing
-  logged-in Player Match Center. The Android wrapper does not bypass consent.
-- Not a standalone offline copy; accounts, match schedules and financial balances
-  require the internet. The service worker caches only public assets.
+## Background push notification prerequisites
+1. Create your own Firebase project in Firebase Console, add Android app package `com.overpower.esports` (release) and `com.overpower.esports.debug` (test). Enable Firebase Cloud Messaging API.
+2. In GitHub repository Actions secrets, configure the **public Firebase Android client values** `OP_FIREBASE_APP_ID`, `OP_FIREBASE_API_KEY`, `OP_FIREBASE_PROJECT_ID`, `OP_FIREBASE_SENDER_ID`. They are injected during APK builds and are not service-account credentials.
+3. Create a server-side Firebase service account with FCM send permissions. Set its complete JSON as **Vercel Production environment variable `FIREBASE_SERVICE_ACCOUNT_JSON`**; never commit it, put it into an APK, or paste it into chat. Redeploy the website once the variable is saved.
+4. Install the APK built after those values are configured. Log in as an approved player, open Inbox, tap **Enable Android Notifications**, and approve Android 13+ notification permission. The app registers its device token with an authenticated API.
+5. From an administrator test environment, publish one match assigned to that test player's team. Verify Android's system notification banner with the app in the background and completely closed. Then verify the 60m/30m/15m reminders. Never use live player accounts for unsolicited tests.
 
-## 1. Build a test APK (no signing secrets needed)
+If Firebase is not configured, the APK can launch and the in-app Match Inbox will work, but **Android system push will not work**. This is a deliberate fail-safe, not a silent promise of delivery.
 
-Open \`android/\` in Android Studio with JDK 17, or run in a configured
-Android SDK + Gradle 8.11.1 environment:
+## How it works
+The Android native FirebaseMessagingService receives FCM data messages while the app is open, backgrounded or closed (subject to Android background/network restrictions), creates a `Match Announcements & Reminders` notification channel with high importance and shows a tappable banner pointing back to the in-app match screen. The server sends high-priority notifications only to explicitly opted-in, approved recipients, respecting the squad scope, and retains the existing web-push and unread inbox record.
 
-\`\`\`sh
-cd android
-gradle :app:assembleDebug
-\`\`\`
+Notifications are not guaranteed immediately if permission is denied, Android battery restrictions intervene, the network is offline or Google's FCM transport delays a message. iOS requires APNs or an installed Safari PWA with permitted Web Push; Android FCM setup alone does not enable iPhone native push.
 
-Output: \`android/app/build/outputs/apk/debug/app-debug.apk\`.
+## Build
+JDK 17, Android SDK 36 and Gradle 8.11.1:
+    cd android
+    gradle :app:assembleDebug
 
-The connected **Android App CI** GitHub Action also produces this file
-as a downloadable **GitHub Actions artifact**. Debug uses
-\`com.overpower.esports.debug\`, separate from the real release app.
-
-Because the debug certificate is not the website's configured release signer,
-the TEST APK can open as a Chrome Custom Tab WITH a browser address bar.
-This is expected; it does not mean the Play Store production TWA is broken.
-
-## 2. Sign for release — never commit your keystore
-
-Before distributing a release APK/AAB, create and securely back up a long-lived
-upload key using Android Studio's Generate Signed Bundle / APK workflow or
-\`keytool\`. Do not share the keystore/passwords with ChatGPT or commit them.
-
-For a locally signed build provide:
-- \`OP_ANDROID_KEYSTORE_PATH\`
-- \`OP_ANDROID_STORE_PASSWORD\`
-- \`OP_ANDROID_KEY_ALIAS\`
-- \`OP_ANDROID_KEY_PASSWORD\`
-
-Then run \`gradle :app:assembleRelease :app:bundleRelease\`.
-Do not distribute or upload an unsigned release.
-
-## 3. Verify the web ↔ Android relationship (mandatory for fullscreen TWA)
-
-Get the **SHA-256 app-signing certificate fingerprint** that corresponds to the
-ACTUAL distributed APK. If using Google Play App Signing, get the **App signing
-key certificate** fingerprint from Play Console > Release > Setup > App integrity.
-The upload key fingerprint by itself might be insufficient for Play-distributed
-apps; both can be supplied when appropriate.
-
-Set Vercel **Production** environment variable
-\`ANDROID_TWA_SHA256_FINGERPRINTS\` to the genuine colon-separated SHA-256
-certificate fingerprints. Multiple values are comma-separated.
-Redeploy the site, then confirm this returns the JSON containing your actual
-package name and fingerprints:
-
-\`\`\`
-https://over-power-esports.vercel.app/.well-known/assetlinks.json
-\`\`\`
-
-Until a real fingerprint has been configured, that endpoint intentionally
-returns **404**. It does not publish fake fingerprints.
-
-The site's generated \`assetlinks.json\` binds \`com.overpower.esports\` to
-the genuine certificate and the Android manifest declares the corresponding
-web \`asset_statements\`. Fullscreen TWA works once the browser verifies both.
-
-## 4. App icon / PWA readiness
-
-The PWA manifest now uses correctly sized PNG URLs:
-\`/pwa-icon/192\` and \`/pwa-icon/512\`, with a mask-safe icon.
-The site registers \`/match-notifications-sw.js\` on first load, preserving
-existing opt-in 60/30/15-minute match push handling and providing a private-safe
-offline fallback. Supabase data is **never cached offline**.
-
-Users can also install the PWA directly from supported mobile browsers
-before the signed Android APK is published.
-
-## 5. Release QA checklist
-
-1. Test Player and Admin sign-in from Home.
-2. Test a real approved player viewing their squad's upcoming matches.
-3. After explicitly enabling browser notifications, test push in a controlled
-   test account only (never send unsolicited push to all players).
-4. Verify links to another website open safely in normal browser context.
-5. Verify \`assetlinks.json\` returns the correct release signing fingerprint.
-6. Confirm in Android App Links settings the domain is verified.
-7. Build a signed \`.aab\` for Google Play and use its internal testing track.
-8. Confirm website changes propagate after a new Vercel Production deployment.
-9. Do not bundle Supabase service-role/VAPID private keys in Android artifacts.
-
-### Important
-
-An APK/AAB is **not** automatically a verified release application merely
-because the source code builds. Domain verification requires real signing
-certificates, and Play Store publication requires the user's Play Console account.
+Debug APK: `android/app/build/outputs/apk/debug/app-debug.apk`. To build a signed Play Store release you must provide your own release signing certificate; do not put private keys in GitHub source. Debug build certificates may change across CI runners, so updating an earlier debug APK can require uninstall/reinstall.
