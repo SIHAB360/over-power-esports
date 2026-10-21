@@ -18,8 +18,12 @@ android {
         applicationId 'com.overpower.esports'
         minSdk 26
         targetSdk 35
-        versionCode 2
-        versionName '1.1.0'
+        versionCode 3
+        resValue 'string','op_firebase_app_id',(System.getenv('OP_FIREBASE_APP_ID') ?: '')
+        resValue 'string','op_firebase_api_key',(System.getenv('OP_FIREBASE_API_KEY') ?: '')
+        resValue 'string','op_firebase_project_id',(System.getenv('OP_FIREBASE_PROJECT_ID') ?: '')
+        resValue 'string','op_firebase_sender_id',(System.getenv('OP_FIREBASE_SENDER_ID') ?: '')
+        versionName '1.2.0'
     }
 
     signingConfigs {
@@ -54,5 +58,7 @@ android {
 }
 
 dependencies {
-    // Android system WebView: no unverified TWA / Chrome installation dependency.
+    implementation 'androidx.webkit:webkit:1.13.0'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'com.google.firebase:firebase-messaging:24.1.2'
 }
