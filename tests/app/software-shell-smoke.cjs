@@ -79,9 +79,9 @@ async function testSignedOut(browser){
  const {ctx,page,errors}=await contextFor(browser,null,{width:390,height:844});
  try{
   await page.goto(BASE+'/app',{waitUntil:'domcontentloaded'});
-  await page.getByRole('heading',{name:'আপনার অ্যাকাউন্টে লগইন'}).waitFor({timeout:45000});
-  assert(await page.getByLabel('ইমেইল অ্যাড্রেস').isVisible());
-  assert(await page.getByRole('button',{name:/নিরাপদ লগইন করুন/}).isVisible());
+  await page.getByRole('heading',{name:'Sign in to your account'}).waitFor({timeout:45000});
+  assert(await page.getByLabel('Email Address').isVisible());
+  assert(await page.getByRole('button',{name:/Sign In Securely/}).isVisible());
   assert.equal(await page.getByText('WE ARE OVER POWER').count(),0,
    'App entry screen must not show website landing content');
   assert.equal(await page.locator('.op-app-bottom').count(),0,
@@ -98,20 +98,20 @@ async function testPlayer(browser){
   assert.equal(await page.locator('.op-app-bottom button').count(),5);
   assert(await page.getByText('Main Squad', {exact:false}).first().isVisible());
   assert(await page.getByText('QA Main Squad Lobby').first().isVisible());
-  await page.locator('.op-app-bottom').getByRole('button',{name:'ম্যাচ'}).click();
-  await page.getByRole('heading',{name:'আমার ম্যাচ সেন্টার'}).waitFor();
+  await page.locator('.op-app-bottom').getByRole('button',{name:'Matches'}).click();
+  await page.getByRole('heading',{name:'আমার Matches সেন্টার'}).waitFor();
   assert(await page.getByText('৳8,000 DISPLAY ONLY').first().isVisible());
-  await page.locator('.op-app-bottom').getByRole('button',{name:'ইনবক্স'}).click();
-  await page.getByRole('heading',{name:'নোটিফিকেশন ইনবক্স'}).waitFor();
-  await page.getByText('নতুন ম্যাচ প্রকাশিত').first().click();
-  await page.getByRole('heading',{name:'আমার ম্যাচ সেন্টার'}).waitFor();
+  await page.locator('.op-app-bottom').getByRole('button',{name:'Inbox'}).click();
+  await page.getByRole('heading',{name:'নোটিফিকেশন Inbox'}).waitFor();
+  await page.getByText('নতুন Matches প্রকাশিত').first().click();
+  await page.getByRole('heading',{name:'আমার Matches সেন্টার'}).waitFor();
   assert.equal(marked(),1,'Reading a match alert must use authenticated PATCH');
-  await page.locator('.op-app-bottom').getByRole('button',{name:'ওয়ালেট'}).click();
-  await page.getByRole('heading',{name:'আমার ওয়ালেট'}).waitFor();
+  await page.locator('.op-app-bottom').getByRole('button',{name:'Wallet'}).click();
+  await page.getByRole('heading',{name:'আমার Wallet'}).waitFor();
   await page.locator('.op-software-wallet').waitFor({state:'visible',timeout:15000});
   assert(await page.locator('.op-software-wallet').isVisible(),
    'Real existing withdrawal component should mount inside app shell');
-  await page.locator('.op-app-bottom').getByRole('button',{name:'প্রোফাইল'}).click();
+  await page.locator('.op-app-bottom').getByRole('button',{name:'Profile'}).click();
   assert(await page.getByText('qa-user@fixture.invalid').isVisible());
   const over=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
   assert(over<=3,'Mobile app must not overflow horizontally: '+over);
@@ -124,11 +124,11 @@ async function testAdmin(browser){
  try{
   await page.goto(BASE+'/app',{waitUntil:'domcontentloaded'});
   await page.getByRole('heading',{name:'ADMIN'}).waitFor({timeout:45000});
-  assert(await page.getByText('২৬',{exact:true}).count()===0 || await page.getByText('26',{exact:true}).count()>0);
+  assert(await page.getByText('26',{exact:true}).count()>0);
   assert(await page.locator('.op-app-sidebar').isVisible());
-  await page.locator('.op-app-side-links').getByRole('button',{name:'মডিউল'}).click();
-  await page.getByRole('heading',{name:'সফটওয়্যার ম্যানেজমেন্ট'}).waitFor();
-  await page.locator('.op-app-feature-grid').getByRole('button',{name:/ম্যাচ শিডিউল/}).click();
+  await page.locator('.op-app-side-links').getByRole('button',{name:'Modules'}).click();
+  await page.getByRole('heading',{name:'Software Management'}).waitFor();
+  await page.locator('.op-app-feature-grid').getByRole('button',{name:/Matches শিডিউল/}).click();
   await page.getByRole('heading',{name:'Match Schedule Center'}).waitFor({timeout:45000});
   assert.equal(errors.length,0,errors.join('\n'));
   console.log('PASS desktop: admin role home and actual management module rendered INSIDE app');

@@ -37,7 +37,7 @@ async function get(path){
  const software=await get('/app');
  assert.equal(software.status,200,'Dedicated software home should exist');
  const appHtml=await software.text();
- assert(appHtml.includes('OVER POWER')||appHtml.includes('অ্যাকাউন্ট'),'App has its own branded view');
+ assert(appHtml.includes('OVER POWER')||appHtml.includes('account'),'App has its own branded view');
  const unauth=await get('/api/software/overview');
  assert.equal(unauth.status,401,'Private software overview must require login');
  const install=await get('/install');
