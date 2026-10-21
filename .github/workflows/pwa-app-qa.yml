@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "app/install/**"
+      - "app/app/**"
       - "app/pwa-icon/**"
       - "app/layout.js"
       - "app/page.js"
@@ -18,6 +19,7 @@ on:
     branches: ["main"]
     paths:
       - "app/install/**"
+      - "app/app/**"
       - "app/pwa-icon/**"
       - "public/manifest.webmanifest"
       - ".github/workflows/pwa-app-qa.yml"
