@@ -43,9 +43,9 @@ jobs:
             cd android
             gradle :app:assembleDebug --no-daemon
             adb install -r app/build/outputs/apk/debug/app-debug.apk
-            adb shell am start -W -n com.overpower.esports.debug/com.overpower.esports.MainActivity
+            adb shell am start -W -n com.overpower.esports.v2test/com.overpower.esports.MainActivity
             sleep 12
-            adb shell dumpsys activity activities | grep -E 'com.overpower.esports.debug|MainActivity'
+            adb shell dumpsys activity activities | grep -E 'com.overpower.esports.v2test|MainActivity'
             adb shell uiautomator dump /sdcard/overpower-ui.xml || true
             adb shell screencap -p /sdcard/overpower-app.png
             adb pull /sdcard/overpower-app.png ../android-emulator-screen.png
@@ -54,7 +54,7 @@ jobs:
               cat ../android-crashes.log
               exit 1
             fi
-            adb shell pidof com.overpower.esports.debug
+            adb shell pidof com.overpower.esports.v2test
             echo "PASS Android native MainActivity installed, launched and stayed alive"
       - name: Upload emulator evidence
         if: always()
