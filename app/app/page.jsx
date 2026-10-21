@@ -1,6 +1,8 @@
 'use client';
 import {useCallback,useEffect,useMemo,useState} from 'react';
 import {supabase} from '../lib/supabase';
+import Image from 'next/image';
+import brandLogo from '../assets/logo.png';
 import {AdminModule,PlayerWallet} from './SoftwareModules';
 import PlayerMatchCenter from '../player/dashboard/MatchCenterWidget';
 import {
@@ -161,10 +163,10 @@ export default function SoftwareApp(){
     unread:Math.max(0,old.unread-1)}));
   }catch(err){setMatchError(err.message)}
  };
- if(stage==='checking')return <main className="op-app-root op-app-gate"><div className="op-app-splash"><div className="op-app-brand-icon"><FiZap/></div><strong>OVER POWER</strong><small>ESPORTS APP</small><p role="status">অ্যাকাউন্ট যাচাই হচ্ছে…</p></div></main>;
+ if(stage==='checking')return <main className="op-app-root op-app-gate"><div className="op-app-splash"><div className="op-app-brand-icon"><Image src={brandLogo} alt="OVER POWER ESPORTS" width={100} height={100} priority/></div><strong>OVER POWER</strong><small>ESPORTS APP</small><p role="status">অ্যাকাউন্ট যাচাই হচ্ছে…</p></div></main>;
  if(stage==='login')return <main className="op-app-root op-app-gate">
   <section className="op-app-login" aria-label="OVER POWER ESPORTS software login">
-   <div className="op-app-login-hero"><div className="op-app-brand-icon"><FiZap/></div>
+   <div className="op-app-login-hero"><div className="op-app-brand-icon"><Image src={brandLogo} alt="OVER POWER ESPORTS" width={100} height={100} priority/></div>
     <span className="op-app-overline">OFFICIAL ESPORTS APPLICATION</span>
     <h1>OVER POWER <em>ESPORTS</em></h1>
     <p>আপনার টিম, ম্যাচ, ইনবক্স ও ওয়ালেট—সব এখন একটি অ্যাপের ভেতর।</p>
@@ -211,7 +213,7 @@ export default function SoftwareApp(){
  return <div className="op-app-root" data-app-role={role}>
   {sideOpen&&<button className="op-app-scrim" type="button" onClick={()=>setSideOpen(false)} aria-label="Close application menu"/>}
   <aside className={'op-app-sidebar'+(sideOpen?' is-open':'')} aria-label="Software navigation">
-   <div className="op-app-sidebar-logo"><span><FiZap/></span><div><strong>OVER POWER</strong><small>ESPORTS</small></div>
+   <div className="op-app-sidebar-logo"><span><Image src={brandLogo} alt="OVER POWER ESPORTS" width={46} height={46}/></span><div><strong>OVER POWER</strong><small>ESPORTS</small></div>
     <button className="op-app-side-close" aria-label="Close navigation" onClick={()=>setSideOpen(false)}><FiX/></button>
    </div>
    <div className="op-app-sidebar-tag">{admin?'ADMIN COMMAND':'PLAYER APPLICATION'}</div>
@@ -234,7 +236,7 @@ export default function SoftwareApp(){
    <header className="op-app-topbar">
     <div className="op-app-top-left">
      <button className="op-app-hamburger" aria-label="Open application menu" onClick={()=>setSideOpen(true)}><FiMenu/></button>
-     <div className="op-app-top-logo"><FiZap/></div>
+     <div className="op-app-top-logo"><Image src={brandLogo} alt="OVER POWER" width={38} height={38}/></div>
      <div><b>OVER POWER</b><small>ESPORTS APP</small></div>
     </div>
     <div className="op-app-top-actions">

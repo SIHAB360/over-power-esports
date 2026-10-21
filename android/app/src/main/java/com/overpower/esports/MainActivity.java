@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
         settings.setDomStorageEnabled(true); // Supabase manages signed-in sessions.
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(false);
-        settings.setAllowContentAccess(false);
+        settings.setAllowContentAccess(true); // Only the user-chosen file picker URI is readable.
         settings.setAllowFileAccessFromFileURLs(false);
         settings.setAllowUniversalAccessFromFileURLs(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);

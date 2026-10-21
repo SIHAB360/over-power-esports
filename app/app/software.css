@@ -330,3 +330,14 @@
 @media(prefers-reduced-motion:reduce){
  .op-app-root *{animation:none!important;transition:none!important}
 }
+
+/* Reuse the exact existing public website branding in the application. */
+.op-app-root .op-app-brand-icon,.op-app-root .op-app-top-logo,
+.op-app-root .op-app-sidebar-logo>span{
+ background:radial-gradient(ellipse at 95% 0%,#819cff50,transparent 70%),#15234b;
+ border:1px solid #7faff383;overflow:hidden;padding:2px;
+}
+.op-app-root .op-app-brand-icon img,.op-app-root .op-app-top-logo img,
+.op-app-root .op-app-sidebar-logo>span img{
+ display:block;width:100%;height:100%;object-fit:contain;
+}
