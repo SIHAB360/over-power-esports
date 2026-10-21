@@ -139,12 +139,12 @@ export default function SoftwareApp(){
  const resetPassword=async(event)=>{
   event.preventDefault();setBusy(true);setError('');
   try{
-   if(!email.trim())throw Error('Email লিখুন।');
+   if(!email.trim())throw Error('Enter your email address.');
    const {error:resetError}=await supabase.auth.resetPasswordForEmail(email.trim(),{
     redirectTo:window.location.origin+'/reset-password'
    });
    if(resetError)throw resetError;
-   setError('Send reset linkোর অনুরোধ গ্রহণ করা হয়েছে। Email দেখুন।');
+   setError('If the email is registered, check your inbox for a password reset link.');
   }catch(err){setError(err.message)}finally{setBusy(false)}
  };
  const signOut=async()=>{
@@ -169,7 +169,7 @@ export default function SoftwareApp(){
    <div className="op-app-login-hero"><div className="op-app-brand-icon"><FiZap/></div>
     <span className="op-app-overline">OFFICIAL ESPORTS APPLICATION</span>
     <h1>OVER POWER <em>ESPORTS</em></h1>
-    <p>আপনার টিম, Matches, Inbox ও Wallet—সব এখন একটি অ্যাপের ভেতর।</p>
+    <p>Your team, matches, inbox and wallet in one app.</p>
     <div className="op-app-login-dots"><span/> <span/> <span/></div>
    </div>
    <div className="op-app-login-form">
@@ -184,7 +184,7 @@ export default function SoftwareApp(){
       <div className="op-app-password">
        <input id="op-app-password" type={showPassword?'text':'password'} required minLength={1}
         value={password} onChange={e=>setPassword(e.target.value)} autoComplete="current-password"
-        placeholder="আপনার Password লিখুন"/>
+        placeholder="Enter your password"/>
        <button type="button" aria-label={showPassword?'Hide password':'Show password'} onClick={()=>setShowPassword(!showPassword)}>
         {showPassword?<FiEyeOff/>:<FiEye/>}</button>
       </div></>}
@@ -194,7 +194,7 @@ export default function SoftwareApp(){
      </button>
     </form>
     <button className="op-app-link" type="button" onClick={()=>{setForgot(!forgot);setError('')}}>
-     {forgot?'← Back to Sign In':'Password ভুলে গেছেন?'}
+     {forgot?'← Back to Sign In':'Forgot your password?'}
     </button>
     <p className="op-app-login-safe"><FiLock/> Your credentials are verified securely through Supabase Authentication.</p>
    </div>
@@ -253,8 +253,8 @@ export default function SoftwareApp(){
       <div className="op-app-welcome-copy"><span className="op-app-overline"><FiZap/> OVER POWER COMMAND CENTER</span>
        <p className="op-app-greet">{greetings()},</p>
        <h1>{welcomeName}</h1>
-       <p>{admin?'আপনার সব Management সেকশন, Matches ও প্লেয়ার অপারেশন এখন এই সফটওয়্যারে।':
-        'আপনার পরবর্তী Matches, Notifications ও Squads আপডেট এক জায়গায়।'}</p>
+       <p>{admin?'Manage your teams, matches, players and finance inside the app.':
+        'Your upcoming matches, notifications and squad updates in one place.'}</p>
        <span className="op-app-live"><i/> LIVE DATABASE CONNECTED</span>
       </div><div className="op-app-welcome-art" aria-hidden="true"><Image src={officialLogo} alt="" width={190} height={190}/></div>
      </section>
@@ -262,62 +262,62 @@ export default function SoftwareApp(){
       {admin?<>
        <div><FiUsers/><span>Total Players</span><strong>{userData.counts?.players??0}</strong></div>
        <div><FiLayers/><span>Squads</span><strong>{userData.counts?.teams??0}</strong></div>
-       <div><FiTarget/><span>রেকর্ডেড Matches</span><strong>{userData.counts?.matches??0}</strong></div>
+       <div><FiTarget/><span>Recorded Matches</span><strong>{userData.counts?.matches??0}</strong></div>
        <div><FiAward/><span>Tournaments</span><strong>{userData.counts?.tournaments??0}</strong></div>
       </>:<>
-       <div><FiCalendar/><span>আসন্ন Matches</span><strong>{upcoming.length}</strong></div>
-       <div><FiTarget/><span>মোট Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
+       <div><FiCalendar/><span>Upcoming Matches</span><strong>{upcoming.length}</strong></div>
+       <div><FiTarget/><span>Total Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
        <div><FiAward/><span>Wins</span><strong>{userData.player?.wins??0}</strong></div>
        <div><FiZap/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div>
       </>}
      </section>
      {unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
-      <span><b>{unread}টি নতুন Matches Notifications</b><small>Tap to view</small></span><FiChevronRight/>
+      <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
      <div className="op-app-section-title"><div><span className="op-app-overline">QUICK ACCESS</span><h2>Your Features</h2></div><FiGrid/></div>
      <section className="op-app-feature-grid">
       {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
-       <FeatureCard icon={FiCalendar} title="Matches সেন্টার" sub="আসন্ন Matches ও লবি" accent="cyan" onClick={()=>go('matches')}/>
-       <FeatureCard icon={FiCreditCard} title="আমার Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>
-       <FeatureCard icon={FiBell} title="Notifications" sub="Matches রিমাইন্ডার ও Inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
-       <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squads তথ্য'} accent="mint" onClick={()=>go('team')}/>
-       <FeatureCard icon={FiAward} title="Tournaments" sub="প্রতিযোগিতা ও Schedule" accent="gold" onClick={()=>go('tournaments')}/>
-       <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, Wins ও Kills" accent="blue" onClick={()=>go('performance')}/>
+       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches ও লবি" accent="cyan" onClick={()=>go('matches')}/>
+       <FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>
+       <FeatureCard icon={FiBell} title="Notifications" sub="Match reminders and inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
+       <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squad details'} accent="mint" onClick={()=>go('team')}/>
+       <FeatureCard icon={FiAward} title="Tournaments" sub="Competitions and schedule" accent="gold" onClick={()=>go('tournaments')}/>
+       <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
      {upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
-      <div><span className="op-app-overline">UP NEXT</span><h2>পরবর্তী Matches</h2></div>
+      <div><span className="op-app-overline">UP NEXT</span><h2>Next Match</h2></div>
       <button onClick={()=>go(admin?'schedule':'matches')}>View All <FiChevronRight/></button>
      </div><MatchCard match={upcoming[0]}/></section>}
     </div>}
     {tab==='matches'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="YOUR LIVE FIXTURES" title="আমার Matches সেন্টার" subtitle="অনুমোদিত Squadsে প্রকাশিত Matches এখানে দেখাবে।"/>
+     <SectionHead overline="YOUR LIVE FIXTURES" title="আমার Match Center" subtitle="Published match schedules for your approved squad appear here."/>
      {matchError&&<p className="op-app-error" role="alert">{matchError}</p>}
      <div className="op-app-inline"><span><FiClock/> Bangladesh Time (UTC+6)</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
-     {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Match Schedule দেখার জন্য আপনার প্লেয়ার অ্যাকাউন্ট Approved হতে হবে।"/>:
-      fixtures.schedules.length===0?<EmptyPanel icon={FiCalendar} title="কোনো Match Schedule নেই" description="অ্যাডমিন Matches প্রকাশ করলে এখানে স্বয়ংক্রিয়ভাবে দেখা যাবে।"/>:
+     {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Your player account must be approved to view schedules."/>:
+      fixtures.schedules.length===0?<EmptyPanel icon={FiCalendar} title="No Scheduled Matches" description="Published matches will appear here automatically."/>:
       <div className="op-app-match-list">{fixtures.schedules.map(x=><MatchCard key={x.id} match={x}/>)}</div>}
     </div>}
     {tab==='wallet'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="SECURE FINANCE" title="আমার Wallet" subtitle="Secure existing bKash and Nagad withdrawals."/>
-     {approved?<PlayerWallet/>:<EmptyPanel icon={FiLock} title="Wallet ব্যবহারের অনুমতি নেই" description="Only approved players may request withdrawals."/>}
+     <SectionHead overline="SECURE FINANCE" title="My Wallet" subtitle="Secure existing bKash and Nagad withdrawals."/>
+     {approved?<PlayerWallet/>:<EmptyPanel icon={FiLock} title="Wallet Unavailable" description="Only approved players may request withdrawals."/>}
     </div>}
     {tab==='alerts'&&<div className="op-app-view">
-     <SectionHead overline="MATCH ALERTS" title="Notifications Inbox" subtitle="Matches প্রকাশ ও শুরুর আগের বার্তাগুলো।"/>
+     <SectionHead overline="MATCH ALERTS" title="Notifications Inbox" subtitle="Published matches and start-time reminders."/>
      {matchError&&<p role="alert" className="op-app-error">{matchError}</p>}
      <div className="op-app-inline"><span>{unread} unread</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
-     {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approved Player Required" description="Matches অ্যালার্ট পেতে প্রথমে আপনার অ্যাকাউন্ট অনুমোদিত হতে হবে।"/>:
-     fixtures.inbox.length===0?<EmptyPanel icon={FiBell} title="Inbox খালি" description="নতুন Matches প্রকাশিত হলে এখানে জানানো হবে।"/>:
+     {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approved Player Required" description="You must be an approved player to receive match alerts."/>:
+     fixtures.inbox.length===0?<EmptyPanel icon={FiBell} title="Inbox Empty" description="New match notifications will appear here."/>:
      <div className="op-app-inbox">{fixtures.inbox.map(note=>{
       const match=fixtures.schedules.find(s=>s.id===note.schedule_id);
       return <button key={note.id} className={'op-app-notice '+(!note.read_at?'is-unread':'')}
        onClick={()=>{if(!note.read_at)markRead(note.id);if(match)go(admin?'schedule':'matches')}}>
        <span className="op-app-notice-icon"><FiBell/></span><span><strong>{
-        note.event_key==='created'?'নতুন Matches প্রকাশিত':
-        note.event_key==='60m'?'Matches শুরুতে ১ ঘণ্টা':
-        note.event_key==='30m'?'Matches শুরুতে ৩০ মিনিট':'Matches শুরুতে ১৫ মিনিট'
+        note.event_key==='created'?'New Match Published':
+        note.event_key==='60m'?'Match starts in 1 hour':
+        note.event_key==='30m'?'Match starts in 30 minutes':'Match starts in 15 minutes'
        }</strong><small>{match?.title||'Match Center'} · {dateTime.format(new Date(note.created_at))}</small></span>
        {!note.read_at&&<i/>}
       </button>;
@@ -327,7 +327,7 @@ export default function SoftwareApp(){
      </details>}
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="MY TEAM" title="আমার Squads" subtitle="Your current team details."/>
+     <SectionHead overline="MY TEAM" title="My Squad" subtitle="Your current team details."/>
      {userData.team?<div className="op-app-info-card"><FiLayers/><h2>{userData.team.name}</h2>
       <p>{userData.team.description||'OVER POWER ESPORTS TEAM'}</p>
       <dl><dt>Coach</dt><dd>{userData.team.coach_name||'—'}</dd><dt>Manager</dt><dd>{userData.team.manager_name||'—'}</dd>
@@ -335,22 +335,22 @@ export default function SoftwareApp(){
       <EmptyPanel icon={FiLayers} title="No Team Assigned" description="Your team details will appear once assigned."/>}
     </div>}
     {tab==='tournaments'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="COMPETE & WIN" title="Tournaments" subtitle="বিদ্যমান Tournaments ডাটাবেস থেকে সরাসরি।"/>
-     {!userData.tournaments?.length?<EmptyPanel icon={FiAward} title="এখন কোনো Tournaments নেই" description="New tournaments will appear here."/>:
+     <SectionHead overline="COMPETE & WIN" title="Tournaments" subtitle="Live tournaments from the existing database."/>
+     {!userData.tournaments?.length?<EmptyPanel icon={FiAward} title="No Tournaments Available" description="New tournaments will appear here."/>:
       <div className="op-app-tournament-grid">{userData.tournaments.map(t=><article key={t.id} className="op-app-tournament">
        <FiAward/><span>{t.status||'Upcoming'}</span><h3>{t.name}</h3>
-       <p>Starts: {t.start_date?shortDate.format(new Date(t.start_date+'T12:00:00+06:00')):'ঘোষণার অপেক্ষা'}</p>
+       <p>Starts: {t.start_date?shortDate.format(new Date(t.start_date+'T12:00:00+06:00')):'To Be Announced'}</p>
        <strong>Prize Pool: {currency(t.prize_pool)}</strong>
       </article>)}</div>}
     </div>}
     {tab==='performance'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="আপনার রেকর্ডে সংরক্ষিত Matches, Wins ও Kills।"/>
-     <div className="op-app-stats"><div><FiCalendar/><span>মোট Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
+     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="আপনার রেকর্ডে সংরক্ষিত Matches, wins and kills।"/>
+     <div className="op-app-stats"><div><FiCalendar/><span>Total Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
       <div><FiAward/><span>Total Wins</span><strong>{userData.player?.wins??0}</strong></div>
       <div><FiTarget/><span>Total Kills</span><strong>{userData.player?.total_kills??0}</strong></div></div>
     </div>}
     {tab==='profile'&&<div className="op-app-view">
-     <SectionHead overline="ACCOUNT CENTER" title="আমার Profile" subtitle="Your current verified account details."/>
+     <SectionHead overline="ACCOUNT CENTER" title="My Profile" subtitle="Your current verified account details."/>
      <div className="op-app-profile">
       <div className="op-app-profile-avatar"><FiUser/></div>
       <h2>{displayName}</h2><span className="op-app-profile-pill">{admin?'Main Admin':userData.player?.status||'Player'}</span>
@@ -358,24 +358,24 @@ export default function SoftwareApp(){
        <dt>Account Type</dt><dd>{admin?'Administrator':'Player'}</dd>
        {!admin&&<><dt>Squads</dt><dd>{userData.player?.team_name||'—'}</dd>
         <dt>Verification</dt><dd>{userData.player?.verified?'Verified':'Not verified'}</dd>
-        <dt>রোস্টার</dt><dd>{userData.player?.is_active?'Active':'Inactive'}</dd></>}
+        <dt>Roster</dt><dd>{userData.player?.is_active?'Active':'Inactive'}</dd></>}
       </dl>
       <button className="op-app-logout" onClick={signOut} disabled={busy}><FiLogOut/> Sign Out</button>
      </div>
     </div>}
     {tab==='manage'&&admin&&!module&&<div className="op-app-view">
-     <SectionHead overline="ADMIN OPERATIONS" title="সফটওয়্যার Management" subtitle="Open any management module directly inside this app."/>
+     <SectionHead overline="ADMIN OPERATIONS" title="App Management" subtitle="Open any management module directly inside this app."/>
      <div className="op-app-feature-grid">{MODULES.map(x=><FeatureCard key={x.id} title={x.title} sub={x.sub}
       icon={x.icon} accent={x.tone} onClick={()=>go('manage',x.id)}/>)}</div>
     </div>}
     {showAdminComponent&&<div className="op-app-view op-app-management-view">
-     <button className="op-app-back" type="button" onClick={()=>go('manage')}><FiArrowLeft/> সব Modules</button>
+     <button className="op-app-back" type="button" onClick={()=>go('manage')}><FiArrowLeft/> All Modules</button>
      <SectionHead overline="ADMIN MODULE" title={activeModule?.title||'Management'} subtitle={activeModule?.sub||'Existing administrative tools'}/>
      <AdminModule key={currentModule} module={currentModule}/>
     </div>}
     {tab==='alerts'&&admin&&fixtures.schedules.length>0&&
      <div className="op-app-view op-app-schedule-access"><button className="op-app-primary" onClick={()=>go('schedule')}>
-      <FiCalendar/> Schedule পরিচালনা করুন <FiChevronRight/></button></div>}
+      <FiCalendar/> Manage Schedules <FiChevronRight/></button></div>}
    </main>
    <nav className="op-app-bottom" aria-label="App bottom navigation">
     {tabs.map(t=><button key={t.id} type="button" className={tab===t.id?'is-active':''}
@@ -396,7 +396,7 @@ function MatchCard({match}){
    <b>{cancelled?'Cancelled':'PUBLISHED'}</b></div>
   <h3>{match.title}</h3><p>{match.lobby_details||'Lobby details will appear here.'}</p>
   <div className="op-app-match-values"><span>Entry Fee <strong>{currency(match.entry_fee)}</strong></span>
-   <span>প্রাইজ পুল <strong>{match.prize_pool||'—'}</strong></span></div>
+   <span>Prize Pool <strong>{match.prize_pool||'—'}</strong></span></div>
   {match.notes&&<p className="op-app-match-note">{match.notes}</p>}
  </article>;
 }

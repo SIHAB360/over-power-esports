@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
         icon.setGravity(android.view.Gravity.CENTER);
         errorView.addView(icon);
         TextView title=new TextView(this);
-        title.setText("ইন্টারনেট সংযোগ পরীক্ষা করুন\nঅ্যাপটি আবার চালু করুন");
+        title.setText("Check your internet connection\nThen try again");
         title.setTextColor(Color.WHITE);
         title.setTextSize(19);
         title.setGravity(android.view.Gravity.CENTER);
