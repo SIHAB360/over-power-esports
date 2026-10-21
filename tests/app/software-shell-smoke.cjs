@@ -108,6 +108,7 @@ async function testPlayer(browser){
   assert.equal(marked(),1,'Reading a match alert must use authenticated PATCH');
   await page.locator('.op-app-bottom').getByRole('button',{name:'ওয়ালেট'}).click();
   await page.getByRole('heading',{name:'আমার ওয়ালেট'}).waitFor();
+  await page.locator('.op-software-wallet').waitFor({state:'visible',timeout:15000});
   assert(await page.locator('.op-software-wallet').isVisible(),
    'Real existing withdrawal component should mount inside app shell');
   await page.locator('.op-app-bottom').getByRole('button',{name:'প্রোফাইল'}).click();
