@@ -41,7 +41,7 @@ export default function InstallApp(){
    <div className="op-install-logo" aria-hidden="true">OP</div>
    <p className="op-install-eyebrow">ONE ACCOUNT · ALL YOUR DEVICES</p>
    <h1>Get the {title} App</h1>
-   <p>একটি আলাদা সফটওয়্যার ইন্টারফেস: লগইন, নিজের Home, Match Center, Wallet, Notifications ও Profile ট্যাব। আপনার ওয়েবসাইট আলাদা আগের মতোই থাকবে।</p><a className="op-install-open" href="/app">সফটওয়্যার খুলে দেখুন →</a>
+   <p>A dedicated app interface with Sign In, Home, Match Center, Wallet, Notifications and Profile tabs. Your public website remains separate.</p><a className="op-install-open" href="/app">Open the App →</a>
    {installed?<div className="op-install-state">✓ You are using the installed web app</div>:
      prompt?<button type="button" className="op-install-action" onClick={install}>Install {title} <span aria-hidden="true">↘</span></button>:
      <div className="op-install-state">Select your device below for the supported installation steps.</div>}

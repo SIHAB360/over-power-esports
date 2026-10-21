@@ -25,6 +25,18 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.FrameLayout;
 import android.graphics.Typeface;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+import androidx.webkit.JavaScriptReplyProxy;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import java.util.Collections;
+import org.json.JSONObject;
 
 public class MainActivity extends Activity {
     private static final String ROOT = "https://over-power-esports.vercel.app";
@@ -33,6 +45,9 @@ public class MainActivity extends Activity {
     private FrameLayout rootView;
     private LinearLayout errorView;
     private ProgressBar progress;
+    private JavaScriptReplyProxy pendingPushReply;
+    private static final int NOTIFICATION_PERMISSION_REQUEST=1742;
+    private boolean firebaseReady=false;
 
     private boolean official(Uri uri) {
         return "https".equalsIgnoreCase(uri.getScheme())
@@ -71,6 +86,19 @@ public class MainActivity extends Activity {
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, false);
         WebView.setWebContentsDebuggingEnabled(false);
+        webView.getSettings().setUserAgentString(webView.getSettings().getUserAgentString()+" OverPowerNative/2.1");
+        initializeFirebase();
+        MatchFirebaseMessagingService.ensureChannel(this);
+        // Origin-restricted WebMessageListener: unlike addJavascriptInterface,
+        // untrusted iframes or external sites cannot invoke the native bridge.
+        if(WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)){
+            WebViewCompat.addWebMessageListener(webView,"OverPowerNative",
+                Collections.singleton(ROOT),(view,message,sourceOrigin,isMainFrame,replyProxy)->{
+                    if(!isMainFrame||!ROOT.equals(sourceOrigin.toString()))return;
+                    if(!"enable-push".equals(message.getData()))return;
+                    runOnUiThread(()->enableNativePush(replyProxy));
+                });
+        }
         webView.setWebViewClient(new WebViewClient() {
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 if (!request.isForMainFrame()) return false;
@@ -131,21 +159,97 @@ public class MainActivity extends Activity {
         icon.setGravity(android.view.Gravity.CENTER);
         errorView.addView(icon);
         TextView title=new TextView(this);
-        title.setText("ইন্টারনেট সংযোগ পরীক্ষা করুন\nঅ্যাপটি আবার চালু করুন");
+        title.setText("Check your internet connection\nThen try again");
         title.setTextColor(Color.WHITE);
         title.setTextSize(19);
         title.setGravity(android.view.Gravity.CENTER);
         title.setPadding(0,24,0,24);
         errorView.addView(title);
         Button retry=new Button(this);
-        retry.setText("আবার চেষ্টা করুন");
+        retry.setText("Try Again");
         retry.setOnClickListener(v -> webView.loadUrl(START));
         errorView.addView(retry);
         FrameLayout.LayoutParams errParams=new FrameLayout.LayoutParams(-1,-1);
         rootView.addView(errorView,errParams);
         errorView.setVisibility(View.GONE);
         setContentView(rootView);
-        webView.loadUrl(START);
+        webView.loadUrl(startUrl());
+    }
+    private String startUrl(){
+        String path=getIntent()!=null?getIntent().getStringExtra("matchUrl"):null;
+        if(path!=null && path.startsWith("/app")&&!path.startsWith("//")){
+            return ROOT+path;
+        }
+        return START;
+    }
+    @Override protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if(webView!=null)webView.loadUrl(startUrl());
+    }
+    private void initializeFirebase(){
+        String appId=getString(R.string.op_firebase_app_id);
+        String apiKey=getString(R.string.op_firebase_api_key);
+        String projectId=getString(R.string.op_firebase_project_id);
+        String senderId=getString(R.string.op_firebase_sender_id);
+        if(appId.isEmpty()||apiKey.isEmpty()||projectId.isEmpty()||senderId.isEmpty()){
+            firebaseReady=false;
+            return;
+        }
+        try{
+            FirebaseApp existing=FirebaseApp.getApps(this).isEmpty()?null:FirebaseApp.getInstance();
+            if(existing==null){
+                FirebaseOptions options=new FirebaseOptions.Builder()
+                    .setApplicationId(appId).setApiKey(apiKey).setProjectId(projectId)
+                    .setGcmSenderId(senderId).build();
+                FirebaseApp.initializeApp(this,options);
+            }
+            firebaseReady=true;
+        }catch(Exception e){firebaseReady=false;android.util.Log.w("OverPowerFCM","FCM initialization unavailable: "+e.getClass().getSimpleName());}
+    }
+    private void replyError(JavaScriptReplyProxy reply,String message){
+        try{reply.postMessage("{\"type\":\"push-error\",\"message\":"+JSONObject.quote(message)+"}");}
+        catch(Exception ignored){}
+    }
+    private void enableNativePush(JavaScriptReplyProxy reply){
+        if(!firebaseReady){
+            replyError(reply,"Firebase is not yet configured for this APK. Contact the app administrator.");
+            return;
+        }
+        pendingPushReply=reply;
+        if(Build.VERSION.SDK_INT>=33 &&
+            ContextCompat.checkSelfPermission(this,Manifest.permission.POST_NOTIFICATIONS)
+                !=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.POST_NOTIFICATIONS},NOTIFICATION_PERMISSION_REQUEST);
+            return;
+        }
+        requestFcmToken();
+    }
+    private void requestFcmToken(){
+        final JavaScriptReplyProxy reply=pendingPushReply;
+        if(reply==null)return;
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task->{
+            if(!task.isSuccessful()||task.getResult()==null||task.getResult().isEmpty()){
+                replyError(reply,"Unable to register this Android device for notifications.");
+            }else{
+                String token=task.getResult();
+                try{reply.postMessage("{\"type\":\"push-token\",\"token\":"+JSONObject.quote(token)+"}");}
+                catch(Exception ignored){}
+            }
+            pendingPushReply=null;
+        });
+    }
+    @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        if(requestCode!=NOTIFICATION_PERMISSION_REQUEST)return;
+        if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED)
+            requestFcmToken();
+        else{
+            if(pendingPushReply!=null)replyError(pendingPushReply,
+               "Android notification permission was declined. Enable it in Settings to receive banners.");
+            pendingPushReply=null;
+        }
     }
     private void showError() {
         runOnUiThread(() -> { progress.setVisibility(View.GONE);errorView.setVisibility(View.VISIBLE); });

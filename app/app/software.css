@@ -334,3 +334,17 @@
 /* Official website logo is the SAME source asset in mobile and desktop app. */
 .op-app-brand-icon img,.op-app-top-logo img,.op-app-sidebar-logo>span img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:inherit}
 .op-app-welcome-art img{max-width:100%;height:auto;object-fit:contain}
+
+/* Match alerts have a high-contrast heads-up banner while the app is open. */
+.op-app-push-banner{position:fixed;z-index:150;top:calc(18px + env(safe-area-inset-top));left:50%;
+ transform:translateX(-50%);width:min(95vw,460px);display:flex;gap:11px;align-items:center;
+ padding:13px 15px;border:1px solid #a1fff3;background:linear-gradient(115deg,#173c61,#2b3363);
+ border-radius:16px;color:#f5ffff;box-shadow:0 8px 45px #07132fc9,0 0 19px #9cffff6a}
+.op-app-push-banner-icon{font-size:25px;color:#8efeea}
+.op-app-push-banner>div{flex:1;display:grid;gap:3px;min-width:0}
+.op-app-push-banner strong{font-size:14px}.op-app-push-banner small{color:#d2e5f9;font-size:12px}
+.op-app-push-banner button{font-weight:850;padding:8px;border-radius:9px;border:1px solid #a1cfff;background:#294776;color:#fff}
+.op-app-native-push{display:grid;gap:10px;padding:13px;border-radius:12px;background:#17294b;border:1px solid #63d3e7}
+.op-app-native-push h3{margin:0;color:#fff;font-size:17px}
+.op-app-native-push p,.op-app-native-hint{margin:0;color:#cfdef4;font-size:13px}
+.op-app-native-push .op-app-primary{max-width:350px}

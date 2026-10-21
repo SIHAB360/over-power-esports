@@ -21,6 +21,11 @@ jobs:
     name: Build Native Android Software APK
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    env:
+      OP_FIREBASE_APP_ID: ${{ secrets.OP_FIREBASE_APP_ID }}
+      OP_FIREBASE_API_KEY: ${{ secrets.OP_FIREBASE_API_KEY }}
+      OP_FIREBASE_PROJECT_ID: ${{ secrets.OP_FIREBASE_PROJECT_ID }}
+      OP_FIREBASE_SENDER_ID: ${{ secrets.OP_FIREBASE_SENDER_ID }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
