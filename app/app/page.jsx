@@ -12,6 +12,7 @@ import {
  FiZap,FiCheckCircle,FiClock,FiMenu,FiX,FiTrendingUp,FiSmartphone
 } from 'react-icons/fi';
 import './software.css';
+import NativePushManager from './NativePushManager';
 import {EXTRA_ADMIN_MODULES,EXTRA_PLAYER_MODULES} from './generated-software-modules';
 
 const currency=value=>'BDT '+Number(value||0).toLocaleString('en-BD',{maximumFractionDigits:2});
@@ -269,6 +270,7 @@ export default function SoftwareApp(){
     </div>
    </header>
    <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
+    {!admin&&approved&&<NativePushManager/>}
     {tab==='home'&&<div className="op-app-view">
      <section className="op-app-welcome">
       <div className="op-app-welcome-copy"><span className="op-app-overline"><FiZap/> OVER POWER COMMAND CENTER</span>
@@ -300,7 +302,7 @@ export default function SoftwareApp(){
       {admin?ALL_MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
-       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches ও লবি" accent="cyan" onClick={()=>go('matches')}/>
+       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming matches & lobbies" accent="cyan" onClick={()=>go('matches')}/>
        <FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals & payment history" accent="pink" onClick={()=>go('wallet')}/>
        <FeatureCard icon={FiBell} title="Notifications" sub="Match reminders & inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
        <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squad details'} accent="mint" onClick={()=>go('team')}/>
@@ -315,7 +317,7 @@ export default function SoftwareApp(){
      </div><MatchCard match={upcoming[0]}/></section>}
     </div>}
     {tab==='matches'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="YOUR LIVE FIXTURES" title="আমার Match Center" subtitle="Matches published for your squad appear here."/>
+     <SectionHead overline="YOUR LIVE FIXTURES" title="My Match Center" subtitle="Matches published for your squad appear here."/>
      {matchError&&<p className="op-app-error" role="alert">{matchError}</p>}
      <div className="op-app-inline"><span><FiClock/> Bangladesh Time (UTC+6)</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
      {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Your player account must be approved to view match schedules."/>:
@@ -366,7 +368,7 @@ export default function SoftwareApp(){
       </article>)}</div>}
     </div>}
     {tab==='performance'&&!admin&&<div className="op-app-view">
-     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="আপNoর রেকর্ডে সংরক্ষিত Matches, Wins & Kills।"/>
+     <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="Your recorded matches, wins and kills."/>
      <div className="op-app-stats"><div><FiCalendar/><span>Total Matches</span><strong>{userData.player?.matches_played??0}</strong></div>
       <div><FiAward/><span>Total Wins</span><strong>{userData.player?.wins??0}</strong></div>
       <div><FiTarget/><span>Total Kills</span><strong>{userData.player?.total_kills??0}</strong></div></div>
