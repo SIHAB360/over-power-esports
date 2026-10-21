@@ -18,7 +18,7 @@ permissions:
   contents: read
 jobs:
   debug-apk:
-    name: Build Android TWA Debug APK
+    name: Build Native Android Software APK
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -43,9 +43,20 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
+      - name: Use official site logo for Android home-screen icon
+        run: |
+          python -m pip install --disable-pip-version-check Pillow==11.3.0
+          python android/scripts/prepare_brand_icons.py
       - name: Compile unsigned-release-free debug APK
         working-directory: android
         run: gradle :app:assembleDebug --no-daemon
+      - name: Verify APK package and native launcher
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep "package: name='com.overpower.esports.debug'"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep "launchable-activity: name='com.overpower.esports.MainActivity'"
+          unzip -l "$APK" | grep 'res/mipmap'
       - name: Upload test APK (not a signed release)
         uses: actions/upload-artifact@v4
         with:
