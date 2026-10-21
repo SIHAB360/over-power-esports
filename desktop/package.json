@@ -1,8 +1,8 @@
 {
   "name": "over-power-esports-desktop",
   "productName": "OVER POWER ESPORTS",
-  "version": "1.0.0",
-  "description": "OVER POWER ESPORTS secure live Windows and macOS desktop app",
+  "version": "2.0.0",
+  "description": "Official branded OVER POWER ESPORTS desktop software with live app modules",
   "private": true,
   "main": "main.cjs",
   "license": "UNLICENSED",

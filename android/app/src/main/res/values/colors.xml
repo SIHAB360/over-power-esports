@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="launcher_bg">#101C44</color>
-    <color name="status_bar_color">#101C44</color>
-    <color name="navigation_bar_color">#101C44</color>
+<resources><color name="launcher_bg">#111A39</color>
+ <color name="status_bar_color">#0B152F</color>
+ <color name="navigation_bar_color">#0B152F</color>
 </resources>

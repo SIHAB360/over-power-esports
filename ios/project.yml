@@ -1,0 +1,24 @@
+name: OverPowerEsports
+options:
+  bundleIdPrefix: com.overpower
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.4"
+targets:
+  OverPowerEsports:
+    type: application
+    platform: iOS
+    deploymentTarget: "16.4"
+    sources:
+      - path: OverPowerEsports
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.overpower.esports
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: "OVER POWER ESPORTS"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        SUPPORTS_MACCATALYST: NO

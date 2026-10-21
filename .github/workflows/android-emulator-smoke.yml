@@ -1,0 +1,69 @@
+name: Android App — Real Emulator Launch Test
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "android/**"
+      - ".github/workflows/android-emulator-smoke.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "android/**"
+      - ".github/workflows/android-emulator-smoke.yml"
+permissions:
+  contents: read
+jobs:
+  emulator-launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OP_FIREBASE_API_KEY: ${{ secrets.OP_FIREBASE_API_KEY }}
+      OP_FIREBASE_APP_ID: ${{ secrets.OP_FIREBASE_APP_ID }}
+      OP_FIREBASE_SENDER_ID: ${{ secrets.OP_FIREBASE_SENDER_ID }}
+      OP_FIREBASE_PROJECT_ID: ${{ secrets.OP_FIREBASE_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+      - name: Allow KVM access
+        run: |
+          if [ -e /dev/kvm ]; then sudo chmod 666 /dev/kvm; fi
+      - name: Run the APK in an actual Android 35 emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: true
+          emulator-boot-timeout: 600
+          script: |
+            set -eu
+            gradle -p android :app:assembleDebug --no-daemon
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell am start -W -n com.overpower.esports.v2test/com.overpower.esports.MainActivity
+            sleep 12
+            adb shell dumpsys activity activities | grep -E 'com.overpower.esports.v2test|MainActivity'
+            adb shell uiautomator dump /sdcard/overpower-ui.xml || true
+            adb shell screencap -p /sdcard/overpower-app.png
+            adb pull /sdcard/overpower-app.png android-emulator-screen.png
+            adb logcat -d -s AndroidRuntime:E > android-crashes.log
+            ! grep -q "FATAL EXCEPTION" android-crashes.log
+            adb shell pidof com.overpower.esports.v2test
+            echo "PASS Android native MainActivity installed, launched and stayed alive"
+      - name: Upload emulator evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-native-emulator-screenshot-and-logs
+          path: |
+            android-emulator-screen.png
+            android-crashes.log
+          if-no-files-found: warn
+          retention-days: 7

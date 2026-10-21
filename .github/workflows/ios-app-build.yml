@@ -1,0 +1,48 @@
+name: iPhone/iPad Native App — Simulator Build
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios-app-build.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios-app-build.yml"
+permissions:
+  contents: read
+jobs:
+  ios-simulator:
+    name: Compile unsigned iOS simulator app
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate iPhone app icon from the exact website logo
+        run: |
+          mkdir -p ios/OverPowerEsports/Assets.xcassets/AppIcon.appiconset
+          sips -s format png -z 1024 1024 \
+            app/assets/logo.png --out ios/OverPowerEsports/Assets.xcassets/AppIcon.appiconset/AppIcon.png
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          cd ios
+          xcodegen generate --spec project.yml
+      - name: Build actual iOS simulator application
+        run: |
+          set -euo pipefail
+          xcodebuild -project ios/OverPowerEsports.xcodeproj \
+            -scheme OverPowerEsports -configuration Debug \
+            -sdk iphonesimulator -destination "generic/platform=iOS Simulator" \
+            -derivedDataPath "$RUNNER_TEMP/overpower-ios" \
+            CODE_SIGNING_ALLOWED=NO build
+          test -d "$RUNNER_TEMP/overpower-ios/Build/Products/Debug-iphonesimulator/OverPowerEsports.app"
+          cd "$RUNNER_TEMP/overpower-ios/Build/Products/Debug-iphonesimulator"
+          zip -qry "$GITHUB_WORKSPACE/over-power-ios-simulator.zip" OverPowerEsports.app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: over-power-ios-simulator-test-app
+          path: over-power-ios-simulator.zip
+          if-no-files-found: error
+          retention-days: 7
