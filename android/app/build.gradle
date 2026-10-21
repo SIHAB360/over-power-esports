@@ -1,58 +1,44 @@
 plugins {
-    id 'com.android.application'
+ id 'com.android.application'
 }
-
-// Keep all release signing keys OUT of the repository.
-// Provide these optional variables locally or via GitHub encrypted secrets.
 def signFile = System.getenv('OP_ANDROID_KEYSTORE_PATH')
 def signPass = System.getenv('OP_ANDROID_STORE_PASSWORD')
 def signAlias = System.getenv('OP_ANDROID_KEY_ALIAS')
 def signKeyPass = System.getenv('OP_ANDROID_KEY_PASSWORD')
-def canReleaseSign = [signFile, signPass, signAlias, signKeyPass].every { it != null && !it.isEmpty() }
+def canReleaseSign = [signFile,signPass,signAlias,signKeyPass].every{it!=null&&!it.isEmpty()}
 
 android {
-    namespace 'com.overpower.esports'
-    compileSdk 36
-
-    defaultConfig {
-        applicationId 'com.overpower.esports'
-        minSdk 26
-        targetSdk 35
-        versionCode 1
-        versionName '1.0.0'
-    }
-
-    signingConfigs {
-        if (canReleaseSign) {
-            release {
-                storeFile file(signFile)
-                storePassword signPass
-                keyAlias signAlias
-                keyPassword signKeyPass
-            }
-        }
-    }
-
-    buildTypes {
-        debug {
-            // Debug APK uses its own app ID, so test installs do not replace
-            // the eventual Play Store / signed release app.
-            applicationIdSuffix '.debug'
-        }
-        release {
-            minifyEnabled false
-            if (canReleaseSign) {
-                signingConfig signingConfigs.release
-            }
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-}
-
-dependencies {
-    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.4'
+ namespace 'com.overpower.esports'
+ compileSdk 36
+ defaultConfig {
+  applicationId 'com.overpower.esports'
+  minSdk 26
+  targetSdk 35
+  versionCode 2
+  versionName '2.0.0'
+ }
+ signingConfigs {
+  if(canReleaseSign) {
+   release {
+    storeFile file(signFile)
+    storePassword signPass
+    keyAlias signAlias
+    keyPassword signKeyPass
+   }
+  }
+ }
+ buildTypes {
+  debug {
+   applicationIdSuffix '.debug'
+   versionNameSuffix '-test'
+  }
+  release {
+   minifyEnabled false
+   if(canReleaseSign)signingConfig signingConfigs.release
+  }
+ }
+ compileOptions {
+  sourceCompatibility JavaVersion.VERSION_17
+  targetCompatibility JavaVersion.VERSION_17
+ }
 }
