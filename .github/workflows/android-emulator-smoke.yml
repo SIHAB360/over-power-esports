@@ -16,6 +16,11 @@ jobs:
   emulator-launch:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      OP_FIREBASE_API_KEY: ${{ secrets.OP_FIREBASE_API_KEY }}
+      OP_FIREBASE_APP_ID: ${{ secrets.OP_FIREBASE_APP_ID }}
+      OP_FIREBASE_SENDER_ID: ${{ secrets.OP_FIREBASE_SENDER_ID }}
+      OP_FIREBASE_PROJECT_ID: ${{ secrets.OP_FIREBASE_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4

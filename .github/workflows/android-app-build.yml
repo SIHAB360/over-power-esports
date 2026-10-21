@@ -43,8 +43,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.11.1"
+      - name: Build Firebase-enabled APK when project config is connected
+        run: echo "Firebase public project identifiers are optional at build; FCM is inactive without them."
       - name: Compile unsigned-release-free debug APK
         working-directory: android
+        env:
+          OP_FIREBASE_API_KEY: ${{ secrets.OP_FIREBASE_API_KEY }}
+          OP_FIREBASE_APP_ID: ${{ secrets.OP_FIREBASE_APP_ID }}
+          OP_FIREBASE_SENDER_ID: ${{ secrets.OP_FIREBASE_SENDER_ID }}
+          OP_FIREBASE_PROJECT_ID: ${{ secrets.OP_FIREBASE_PROJECT_ID }}
         run: gradle :app:assembleDebug --no-daemon
       - name: Upload test APK (not a signed release)
         uses: actions/upload-artifact@v4
