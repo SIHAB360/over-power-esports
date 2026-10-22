@@ -64,6 +64,7 @@ export default function SoftwareApp(){
  const [tab,setTab]=useState('home');
  const [matchView,setMatchView]=useState('today');
  const [showHistory,setShowHistory]=useState(false);
+ const [inboxHistory,setInboxHistory]=useState(false);
  const [module,setModule]=useState(null);
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
@@ -363,28 +364,15 @@ export default function SoftwareApp(){
      <SectionHead overline="SECURE FINANCE" title="My Wallet" subtitle="Secure existing bKash and Nagad withdrawals."/>
      {approved?<PlayerWallet/>:<EmptyPanel icon={FiLock} title="Wallet Unavailable" description="Only approved players may request withdrawals."/>}
     </div>}
-    {tab==='alerts'&&<div className="op-app-view">
-     <SectionHead overline="MATCH ALERTS" title="Inbox" subtitle="Your match announcements and reminders, organized by date."/>
-     {matchError&&<p role="alert" className="op-app-error">{matchError}</p>}
-     <div className="op-app-inline"><span>{unread} unread</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
-     {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approved Player Required" description="You must be an approved player to receive match alerts."/>:
-     fixtures.inbox.length===0?<EmptyPanel icon={FiBell} title="Inbox Empty" description="New match notifications will appear here."/>:
-     <div className="op-app-inbox op-app-inbox-chat">{fixtures.inbox.map((note,index)=>{
-      const match=fixtures.schedules.find(s=>s.id===note.schedule_id);
-      const day=shortDate.format(new Date(note.created_at));
-      const previous=fixtures.inbox[index-1];
-      const newDay=!previous||shortDate.format(new Date(previous.created_at))!==day;
-      return <div key={note.id}>{newDay&&<div className="op-app-chat-day">{day}</div>}<button className={'op-app-notice '+(!note.read_at?'is-unread':'')}
-       onClick={()=>{if(!note.read_at)markRead(note.id);if(match)go(admin?'schedule':'matches')}}>
-       <span className="op-app-notice-icon"><FiBell/></span><span><strong>{
-        note.event_key==='created'?'New Match Published':
-        note.event_key==='60m'?'Match starts in 1 hour':
-        note.event_key==='30m'?'Match starts in 30 minutes':'Match starts in 15 minutes'
-       }</strong><small>{match?.title||'Match Center'} · {dateTime.format(new Date(note.created_at))}</small></span>
-       {!note.read_at&&<i/>}
-      </button></div>;
-     })}</div>}
-
+    {tab==='alerts'&&<div className="op-app-view op-app-schedule-inbox">
+      {matchError&&<p role="alert" className="op-app-error">{matchError}</p>}
+      {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approval Pending" description="Match schedules are available to approved players."/>:
+      <section className="op-app-daily">
+       <div className="op-app-daily-head"><div><span className="op-app-overline">TODAY · BANGLADESH TIME</span><h2>Match Schedule</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
+       {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><time className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</time><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small></div></article>)}</div>:<p className="op-app-daily-empty">No matches today.</p>}
+       <button type="button" className="op-app-history-toggle" aria-expanded={inboxHistory} onClick={()=>setInboxHistory(x=>!x)}><FiClock/> History <FiChevronRight/></button>
+       {inboxHistory&&<div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div key={x.id} className="op-app-history-row"><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Past'}</small></div>):<p>No previous matches.</p>}</div>}
+      </section>}
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
      <SectionHead overline="MY TEAM" title="My Squad" subtitle="Your current team details."/>
