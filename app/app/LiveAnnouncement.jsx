@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {supabase} from '../lib/supabase';
-export default function LiveAnnouncement(){
+export default function LiveAnnouncement({onSettings}){
  const [settings,setSettings]=useState(null);
  useEffect(()=>{
   let active=true;
@@ -12,7 +12,7 @@ export default function LiveAnnouncement(){
     const response=await fetch('/api/software/settings',{cache:'no-store',headers:{Authorization:'Bearer '+session.access_token}});
     if(!response.ok)return;
     const json=await response.json();
-    if(active)setSettings(json.settings);
+    if(active){setSettings(json.settings);onSettings?.(json.settings)}
    }catch{}
   }
   refresh();
