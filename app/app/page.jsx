@@ -6,6 +6,7 @@ import officialLogo from '../assets/logo.png';
 import {AdminModule,PlayerWallet} from './SoftwareModules';
 import PlayerMatchCenter from '../player/dashboard/MatchCenterWidget';
 import NativePushSetup from './NativePushSetup';
+import LiveAnnouncement from './LiveAnnouncement';
 import {
  FiHome,FiCalendar,FiCreditCard,FiBell,FiUser,FiGrid,FiUsers,FiLayers,
  FiAward,FiActivity,FiTarget,FiDollarSign,FiShield,FiImage,FiLogOut,
@@ -18,6 +19,7 @@ const currency=value=>'৳'+Number(value||0).toLocaleString('en-BD',{maximumFrac
 const dateTime=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',hour:'numeric',minute:'2-digit',hour12:true});
 const shortDate=new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit',month:'short',year:'numeric'});
 const MODULES=[
+ {id:'software',title:'Software Control',sub:'Publish live announcements',icon:FiSmartphone,tone:'cyan'},
  {id:'schedule',title:'Match Schedule',sub:'Create matches and alert players',icon:FiCalendar,tone:'cyan'},
  {id:'players',title:'Player Management',sub:'Accounts and approvals',icon:FiUsers,tone:'blue'},
  {id:'roster',title:'Roster Control',sub:'Active players and squads',icon:FiActivity,tone:'purple'},
@@ -308,6 +310,7 @@ export default function SoftwareApp(){
        <div><FiZap/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div>
       </>}
      </section>
+     <LiveAnnouncement/>
      {unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
       <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
