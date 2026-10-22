@@ -4,9 +4,9 @@ export async function GET(req){
  try{
   const {db,user,role}=await identity(req);
   const player=role==='player'?await playerFor(db,user.id):null;
-  const floor=new Date(Date.now()-2*86400000).toISOString();
+  const floor=new Date(Date.now()-365*86400000).toISOString();
   let q=db.from('op_match_schedules').select('*').gte('starts_at',floor)
-   .eq('status','published').order('starts_at',{ascending:true}).limit(150);
+   .in('status',['published','cancelled']).order('starts_at',{ascending:false}).limit(500);
   const {data:schedules,error}=await q;
   if(error)throw new HttpError('Unable to load schedules.',503);
   const permitted=(schedules||[]).filter(s=>!s.team_id||role==='admin'||s.team_id===player?.team_id);
