@@ -11,7 +11,7 @@ import {
  FiHome,FiCalendar,FiCreditCard,FiBell,FiUser,FiGrid,FiUsers,FiLayers,
  FiAward,FiActivity,FiTarget,FiDollarSign,FiShield,FiImage,FiLogOut,
  FiChevronRight,FiArrowLeft,FiRefreshCw,FiEye,FiEyeOff,FiLock,
- FiZap,FiCheckCircle,FiClock,FiMenu,FiX,FiTrendingUp,FiSmartphone
+ FiZap,FiCheckCircle,FiClock,FiMenu,FiX,FiTrendingUp,FiSmartphone,FiMoreVertical
 } from 'react-icons/fi';
 import './software.css';
 
@@ -65,6 +65,8 @@ export default function SoftwareApp(){
  const [matchView,setMatchView]=useState('today');
  const [showHistory,setShowHistory]=useState(false);
  const [inboxHistory,setInboxHistory]=useState(false);
+ const [moreOpen,setMoreOpen]=useState(false);
+ const [clockNow,setClockNow]=useState(Date.now());
  const [module,setModule]=useState(null);
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
@@ -88,6 +90,8 @@ export default function SoftwareApp(){
  const historyMatches=fixtures.schedules.filter(x=>x.status!=='published'||bdDate(x.starts_at)<bdDate(Date.now())).sort((a,b)=>new Date(b.starts_at)-new Date(a.starts_at));
  const visibleMatches=fixtures.schedules.filter(x=>matchView==='today'?x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()):matchView==='history'?x.status!=='published'||new Date(x.starts_at).getTime()<Date.now():x.status==='published'&&new Date(x.starts_at).getTime()>=Date.now());
 
+ useEffect(()=>{const timer=setInterval(()=>setClockNow(Date.now()),1000);return()=>clearInterval(timer)},[]);
+ const countdown=startsAt=>{const seconds=Math.max(0,Math.floor((new Date(startsAt).getTime()-clockNow)/1000));if(seconds===0)return 'Started';const days=Math.floor(seconds/86400),hours=Math.floor(seconds%86400/3600),minutes=Math.floor(seconds%3600/60),secs=seconds%60;return (days?days+'d ':'')+(days||hours?hours+'h ':'')+minutes+'m '+secs+'s left';};
  const authenticatedFetch=useCallback(async(path,method='GET',body)=>{
   const {data:{session}}=await supabase.auth.getSession();
   if(!session?.access_token)throw Error('Your session expired. Please sign in again.');
@@ -195,7 +199,7 @@ export default function SoftwareApp(){
   }catch(err){setError(err.message)}finally{setBusy(false)}
  };
  const go=(destination,submodule=null)=>{
-  setTab(destination);setModule(submodule);setSideOpen(false);
+  setTab(destination);setModule(submodule);setSideOpen(false);setMoreOpen(false);
   window.scrollTo({top:0,behavior:'instant'});
  };
  const markRead=async(id)=>{
@@ -287,9 +291,13 @@ export default function SoftwareApp(){
      <button className="op-app-top-bell" aria-label={'Notifications '+unread} onClick={()=>go('alerts')}>
       <FiBell/>{unread>0&&<span>{unread>9?'9+':unread}</span>}
      </button>
+     {!admin&&<button className="op-app-more-trigger" type="button" aria-label="More player options" aria-expanded={moreOpen} onClick={()=>setMoreOpen(x=>!x)}><FiMoreVertical/></button>}
      <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{welcomeName.slice(0,2).toUpperCase()}</button>
     </div>
    </header>
+   {moreOpen&&!admin&&<div className="op-app-more-menu" role="navigation" aria-label="Player details and options">
+     {[['profile','My Profile',FiUser],['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['wallet','Wallet',FiCreditCard],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} onClick={()=>go(id)}><Icon/><span>{label}</span><FiChevronRight/></button>)}
+   </div>}
    {matchBanner&&<div className="op-app-push-banner" role="alert">
     <span className="op-app-push-banner-icon"><FiBell/></span>
     <div><strong>{matchBanner.title}</strong><small>{matchBanner.subtitle}</small></div>
@@ -298,6 +306,7 @@ export default function SoftwareApp(){
    </div>}
    <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
     {tab==='home'&&<div className="op-app-view">
+     {admin&&<>
      <section className="op-app-welcome">
       <div className="op-app-welcome-copy"><span className="op-app-overline"><FiZap/> OVER POWER COMMAND CENTER</span>
        <p className="op-app-greet">{greetings()},</p>
@@ -343,11 +352,12 @@ export default function SoftwareApp(){
        <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
+     </>}
      {!admin&&remote?.matches_enabled!==false&&<section className="op-app-daily">
       <div className="op-app-daily-head"><div><span className="op-app-overline">BANGLADESH TIME · TODAY</span><h2>Today's Matches</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
-      {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><span className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</span><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small></div><span className="op-app-daily-live">Scheduled</span></article>)}</div>:<p className="op-app-daily-empty">No matches scheduled for today. Check back when a new match is published.</p>}
-      <button className="op-app-history-toggle" type="button" aria-expanded={showHistory} onClick={()=>setShowHistory(!showHistory)}><FiClock/> Match History ({historyMatches.length}) <FiChevronRight/></button>
-      {showHistory&&<div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div className="op-app-history-row" key={x.id}><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Finished'}</small></div>):<p>No previous matches.</p>}</div>}
+      {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><span className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</span><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small><small className="op-app-countdown">⏳ {countdown(x.starts_at)}</small></div><span className="op-app-daily-live">Scheduled</span></article>)}</div>:<p className="op-app-daily-empty">No matches scheduled for today. Check back when a new match is published.</p>}
+      <button className="op-app-history-toggle" type="button" aria-expanded={showHistory} onClick={()=>go('history')}><FiClock/> Match History ({historyMatches.length}) <FiChevronRight/></button>
+
      </section>}
 
     </div>}
@@ -369,9 +379,9 @@ export default function SoftwareApp(){
       {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approval Pending" description="Match schedules are available to approved players."/>:
       <section className="op-app-daily">
        <div className="op-app-daily-head"><div><span className="op-app-overline">TODAY · BANGLADESH TIME</span><h2>Match Schedule</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
-       {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><time className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</time><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small></div></article>)}</div>:<p className="op-app-daily-empty">No matches today.</p>}
-       <button type="button" className="op-app-history-toggle" aria-expanded={inboxHistory} onClick={()=>setInboxHistory(x=>!x)}><FiClock/> History <FiChevronRight/></button>
-       {inboxHistory&&<div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div key={x.id} className="op-app-history-row"><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Past'}</small></div>):<p>No previous matches.</p>}</div>}
+       {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><time className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</time><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small><small className="op-app-countdown">⏳ {countdown(x.starts_at)}</small></div></article>)}</div>:<p className="op-app-daily-empty">No matches today.</p>}
+       <button type="button" className="op-app-history-toggle" aria-expanded={inboxHistory} onClick={()=>go('history')><FiClock/> History <FiChevronRight/></button>
+
       </section>}
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
