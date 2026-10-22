@@ -58,6 +58,7 @@ function EmptyPanel({icon:Icon,title,description}){
 }
 export default function SoftwareApp(){
  const [stage,setStage]=useState('checking');
+ const [remote,setRemote]=useState(null);
  const [userData,setUserData]=useState(null);
  const [tab,setTab]=useState('home');
  const [module,setModule]=useState(null);
@@ -75,7 +76,7 @@ export default function SoftwareApp(){
  const role=userData?.role||'';
  const admin=role==='admin';
  const approved=String(userData?.player?.status||'').toLowerCase()==='approved';
- const tabs=admin?ADMIN_TABS:PLAYER_TABS;
+ const tabs=admin?ADMIN_TABS:PLAYER_TABS.filter(x=>(x.id!=='matches'||remote?.matches_enabled!==false)&&(x.id!=='wallet'||remote?.wallet_enabled!==false));
  const activeModule=MODULES.find(x=>x.id===module);
  const upcoming=useMemo(()=>fixtures.schedules.filter(x=>x.status==='published'&&new Date(x.starts_at).getTime()>Date.now()),[fixtures.schedules]);
 
@@ -310,7 +311,9 @@ export default function SoftwareApp(){
        <div><FiZap/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div>
       </>}
      </section>
-     <LiveAnnouncement/>
+     <LiveAnnouncement onSettings={setRemote}/>
+     {remote?.banner_url&&<img src={remote.banner_url} alt="Official event banner" loading="lazy" style={{width:'100%',maxHeight:260,objectFit:'cover',borderRadius:16,margin:'12px 0'}}/>}
+     {remote?.maintenance_enabled&&<aside role="status" style={{padding:16,border:'1px solid #f59e0b',borderRadius:12,margin:'12px 0'}}>Maintenance notice: Some services may be temporarily unavailable.</aside>}
      {unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
       <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
@@ -322,20 +325,20 @@ export default function SoftwareApp(){
       {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
-       <FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches and Lobbies" accent="cyan" onClick={()=>go('matches')}/>
-       <FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>
+       {remote?.matches_enabled!==false&&<FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches and Lobbies" accent="cyan" onClick={()=>go('matches')}/>}
+       {remote?.wallet_enabled!==false&&<FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>}
        <FeatureCard icon={FiBell} title="Notifications" sub="Match reminders and inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
        <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squad details'} accent="mint" onClick={()=>go('team')}/>
-       <FeatureCard icon={FiAward} title="Tournaments" sub="Competitions and schedule" accent="gold" onClick={()=>go('tournaments')}/>
+       {remote?.tournaments_enabled!==false&&<FeatureCard icon={FiAward} title="Tournaments" sub="Competitions and schedule" accent="gold" onClick={()=>go('tournaments')}/>}
        <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
-     {upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
+     {remote?.matches_enabled!==false&&upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
       <div><span className="op-app-overline">UP NEXT</span><h2>Next Match</h2></div>
       <button onClick={()=>go(admin?'schedule':'matches')}>View All <FiChevronRight/></button>
      </div><MatchCard match={upcoming[0]}/></section>}
     </div>}
-    {tab==='matches'&&!admin&&<div className="op-app-view">
+    {tab==='matches'&&!admin&&remote?.matches_enabled!==false&&<div className="op-app-view">
      <SectionHead overline="YOUR LIVE FIXTURES" title="My Match Center" subtitle="Published match schedules for your approved squad appear here."/>
      {matchError&&<p className="op-app-error" role="alert">{matchError}</p>}
      <div className="op-app-inline"><span><FiClock/> Bangladesh Time (UTC+6)</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
