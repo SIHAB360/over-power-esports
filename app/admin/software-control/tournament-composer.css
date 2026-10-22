@@ -41,3 +41,39 @@ html[data-op-admin-theme="light"] .op-tc .op-tc-field select option:checked {
 html[data-op-admin-theme="light"] .op-tc .op-tc-date-field input,html[data-op-admin-theme="light"] .op-tc .op-tc-time-field input{background:#fff!important;color:#193654!important}
 html[data-op-admin-theme="light"] .op-tc .op-tc-date-field input::-webkit-calendar-picker-indicator,html[data-op-admin-theme="light"] .op-tc .op-tc-time-field input::-webkit-calendar-picker-indicator{filter:none}
 @media(max-width:600px){.op-tc .op-tc-time-input{grid-template-columns:minmax(0,1fr) 64px}.op-tc .op-tc-time-input .op-tc-auto-time{min-width:0;padding:8px}}
+
+
+/* Full-size custom premium date/time selection dialog */
+.op-tc .op-tc-head{text-align:center;justify-content:center}.op-tc .op-tc-head h2{text-align:center!important}
+.op-tc .op-tc-subhead{text-align:center;justify-content:center}
+.op-tc .op-tc-field>span{font-size:14px;color:#f5d5ff;letter-spacing:.025em}
+.op-tc .op-tc-picker-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:58px;padding:13px 17px!important;background:linear-gradient(110deg,#352755,#273f67)!important;border:1px solid #e3a5ff!important;box-shadow:0 0 16px #bf7bff2c;text-align:left}
+.op-tc .op-tc-picker-trigger strong{font-size:17px;color:#fff}
+.op-tc .op-tc-picker-trigger span{color:#ffcefa;font-size:12px}
+.op-tc .op-tc-modal-backdrop{position:fixed;z-index:99999;inset:0;background:#030718d9;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px}
+.op-tc .op-tc-modal{width:min(560px,100%);max-height:min(92dvh,780px);overflow:auto;background:radial-gradient(circle at 100% 0%,#6d3e8b55,transparent 55%),linear-gradient(150deg,#231d43,#182a4a);border:1px solid #df9cf7;border-radius:26px;padding:clamp(17px,4vw,30px);box-shadow:0 30px 100px #000a,0 0 60px #aa72ff35;color:#fff}
+.op-tc .op-tc-modal-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;text-align:left;margin-bottom:18px}
+.op-tc .op-tc-modal-top span{color:#f7b8ff;font-size:11px;letter-spacing:.16em;font-weight:900}
+.op-tc .op-tc-modal-top h3{color:#fff!important;font-size:26px!important;margin:5px 0!important}
+.op-tc .op-tc-modal-top p{color:#c8c1ed;margin:0;font-size:13px}
+.op-tc .op-tc-modal-top button{width:40px;min-height:40px;background:#47355e}
+.op-tc .op-tc-calendar-bar{display:flex;align-items:center;justify-content:space-between;margin:12px 0 18px}
+.op-tc .op-tc-calendar-bar strong{font-size:20px}
+.op-tc .op-tc-calendar-bar button{width:44px;height:44px;background:#42375d;font-size:28px}
+.op-tc .op-tc-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;text-align:center}
+.op-tc .op-tc-weekday{color:#f3bfff;font-size:12px;font-weight:800;padding:8px 0}
+.op-tc .op-tc-calendar-grid button{aspect-ratio:1;min-height:0!important;padding:0!important;border-radius:12px;background:#293755;border:1px solid #62688c;font-size:15px;color:#f9f3ff}
+.op-tc .op-tc-calendar-grid button:disabled{opacity:.28;cursor:not-allowed}
+.op-tc .op-tc-calendar-grid button.is-selected,.op-tc .op-tc-clock-options button.is-selected,.op-tc .op-tc-period button.is-selected{background:linear-gradient(135deg,#a44bce,#d566ad);border-color:#ffd6fb;color:white;box-shadow:0 0 18px #dd76ec55}
+.op-tc .op-tc-modal-today,.op-tc .op-tc-modal-apply{width:100%;margin-top:20px;background:linear-gradient(110deg,#a84cce,#d35a9c);min-height:52px!important}
+.op-tc .op-tc-clock-face{text-align:center;padding:19px;background:#392b5b;border:1px solid #ac7cd4;border-radius:18px;display:grid;gap:6px;margin-bottom:16px}
+.op-tc .op-tc-clock-face span{font-size:11px;color:#f0bff5;letter-spacing:.15em}
+.op-tc .op-tc-clock-face strong{font-size:clamp(34px,8vw,53px);font-variant-numeric:tabular-nums}
+.op-tc .op-tc-clock-face em{font-size:19px;font-style:normal;color:#f7baff}
+.op-tc .op-tc-clock-picker{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.op-tc .op-tc-clock-picker label{display:block;text-align:center;font-weight:800;color:#f2d0ff;margin:0 0 9px}
+.op-tc .op-tc-clock-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.op-tc .op-tc-clock-options button{min-height:42px;background:#2a3958;border:1px solid #647397;font-variant-numeric:tabular-nums}
+.op-tc .op-tc-period{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.op-tc .op-tc-period button{width:110px;background:#293858}
+@media(max-width:520px){.op-tc .op-tc-modal{border-radius:20px;padding:16px}.op-tc .op-tc-calendar-grid{gap:4px}.op-tc .op-tc-calendar-grid button{font-size:13px}.op-tc .op-tc-clock-picker{gap:9px}.op-tc .op-tc-clock-options{gap:4px}.op-tc .op-tc-clock-options button{min-height:38px;padding:6px!important}.op-tc .op-tc-picker-trigger{flex-wrap:wrap}}
