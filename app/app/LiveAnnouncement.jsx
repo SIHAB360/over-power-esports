@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {supabase} from '../lib/supabase';
-export default function LiveAnnouncement({onSettings}){
+export default function LiveAnnouncement({onSettings,hidden=false}){
  const [settings,setSettings]=useState(null);
  useEffect(()=>{
   let active=true;
@@ -21,7 +21,7 @@ export default function LiveAnnouncement({onSettings}){
   document.addEventListener('visibilitychange',visibility);
   return()=>{active=false;clearInterval(interval);document.removeEventListener('visibilitychange',visibility)};
  },[]);
- if(!settings?.announcement_enabled||!settings.announcement)return null;
+ if(hidden||!settings?.announcement_enabled||!settings.announcement)return null;
  return <aside role="status" aria-label="Official announcement" style={{margin:'16px 0',padding:'16px',borderRadius:14,background:'rgba(14,165,233,.15)',border:'1px solid rgba(14,165,233,.45)',color:'inherit'}}>
   <strong style={{display:'block',marginBottom:6}}>OFFICIAL ANNOUNCEMENT</strong>
   <div style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{settings.announcement}</div>
