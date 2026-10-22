@@ -461,12 +461,23 @@ function MatchCard({match,now=Date.now()}){
  const remaining=Math.max(0,Math.floor((new Date(match.starts_at).getTime()-now)/1000));
  const countdown=remaining===0?'Match started':(Math.floor(remaining/86400)?Math.floor(remaining/86400)+'d ':'')+Math.floor(remaining%86400/3600)+'h '+Math.floor(remaining%3600/60)+'m '+remaining%60+'s left';
  const cancelled=match.status==='cancelled';
- return <article className={'op-app-match-card'+(cancelled?' is-cancelled':'')}>
-  <div className="op-app-match-top"><span><FiCalendar/> {dateTime.format(new Date(match.starts_at))}</span>
-   <b>{cancelled?'Cancelled':'PUBLISHED'}</b></div>
-  <h3>{match.title}</h3>{!cancelled&&<div className="op-app-countdown">⏳ {countdown}</div>}<p>{match.lobby_details||'Lobby details will appear here.'}</p>
-  <div className="op-app-match-values"><span>Entry Fee <strong>{currency(match.entry_fee)}</strong></span>
-   <span>Prize Pool <strong>{match.prize_pool||'—'}</strong></span></div>
-  {match.notes&&<p className="op-app-match-note">{match.notes}</p>}
+ return <article className={'op-app-match-card op-app-premium-fixture'+(cancelled?' is-cancelled':'')}>
+  <div className="op-app-fixture-inner">
+   <div className="op-app-fixture-brand">
+    <div className="op-app-fixture-logo"><Image src={officialLogo} alt="OVER POWER ESPORTS logo" width={48} height={48}/></div>
+    <div className="op-app-fixture-brand-copy"><strong>OVER POWER ESPORTS</strong><small>TOURNAMENT ANNOUNCEMENT</small></div>
+    <span className="op-app-fixture-live-dot" aria-label="Match announcement"/>
+   </div>
+   <div className="op-app-match-top"><span><FiCalendar/> {dateTime.format(new Date(match.starts_at))}</span>
+    <b>{cancelled?'CANCELLED':'PUBLISHED'}</b></div>
+   <h3>{match.title}</h3>
+   {!cancelled&&<div className="op-app-countdown"><FiClock/> {countdown}</div>}
+   <p className="op-app-fixture-lobby"><FiTarget/> {match.lobby_details||'Lobby details will appear here.'}</p>
+   <div className="op-app-match-values">
+    <span><small>ENTRY FEE</small><strong>{currency(match.entry_fee)}</strong></span>
+    <span><small>PRIZE POOL</small><strong>{match.prize_pool||'—'}</strong></span>
+   </div>
+   {match.notes&&<p className="op-app-match-note">{match.notes}</p>}
+  </div>
  </article>;
 }
