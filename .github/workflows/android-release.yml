@@ -1,6 +1,11 @@
 name: Android App — Signed Release
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/android-release.yml'
 permissions:
   contents: read
 jobs:
