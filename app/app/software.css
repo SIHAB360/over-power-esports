@@ -350,3 +350,13 @@
 .op-app-native-push .op-app-primary{max-width:350px}
 
 .op-app-root .op-app-native-onboarding{margin:16px 0 25px;padding:17px;border:1px solid #83dabeb1;border-radius:18px;background:linear-gradient(120deg,#1a495380,#32335bb5)}
+
+/* Remotely managed accent: scoped to the installed software, not admin dashboard. */
+.op-app-root[style*="--op-remote-accent"] .op-app-primary,
+.op-app-root[style*="--op-remote-accent"] .op-app-feature-chip{
+ background:var(--op-remote-accent)!important;
+}
+.op-app-root[style*="--op-remote-accent"] .op-app-overline,
+.op-app-root[style*="--op-remote-accent"] .op-app-live{
+ color:var(--op-remote-accent);
+}
