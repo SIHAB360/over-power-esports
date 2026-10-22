@@ -360,3 +360,34 @@
 .op-app-root[style*="--op-remote-accent"] .op-app-live{
  color:var(--op-remote-accent);
 }
+
+
+/* Player daily schedule and compact day-by-day archive */
+.op-app-daily{margin:18px 0 22px;padding:clamp(14px,3vw,24px);border:1px solid #57c7d78c;border-radius:22px;background:linear-gradient(140deg,#173b52,#172343 72%);box-shadow:0 10px 30px #0002;color:#f0fbff}
+.op-app-daily-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.op-app-daily-head h2{font-size:clamp(19px,4vw,25px);margin:3px 0;color:#f5ffff}
+.op-app-daily-head p{margin:0;color:#9fc3d7;font-size:13px}
+.op-app-daily-count{white-space:nowrap;border-radius:40px;padding:7px 12px;background:#20646c;color:#b5fff3;font-weight:800;font-size:12px}
+.op-app-daily-list{display:grid;gap:8px}
+.op-app-daily-row{display:flex;align-items:center;gap:12px;min-width:0;border:1px solid #557d9d77;background:#1c3453;border-radius:13px;padding:12px}
+.op-app-daily-time{flex:none;font-weight:800;color:#83f2e4;font-size:13px;min-width:76px}
+.op-app-daily-row>div{display:grid;gap:4px;min-width:0;flex:1}
+.op-app-daily-row strong{font-size:15px;overflow-wrap:anywhere}
+.op-app-daily-row small{color:#bdd2e4;font-size:12px}
+.op-app-daily-live{font-size:11px;font-weight:750;color:#b3e5ff}
+.op-app-daily-empty{color:#bfd5e3;font-size:14px}
+.op-app-history-toggle{margin-top:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;border-radius:12px;background:#29466b;color:#e5f8ff;border:1px solid #6ca8c180;font-weight:800}
+.op-app-history-toggle svg:last-child{margin-left:auto}
+.op-app-history-list{margin-top:9px;display:grid;gap:5px;max-height:280px;overflow-y:auto}
+.op-app-history-row{display:flex;align-items:center;gap:10px;border-bottom:1px solid #557b9760;padding:9px 4px;min-width:0;font-size:12px}
+.op-app-history-row time{flex:none;color:#8de9dc;max-width:115px}
+.op-app-history-row strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.op-app-history-row small{flex:none;color:#b9cce0}
+.op-app-inbox-chat{display:grid;gap:8px}
+.op-app-chat-day{margin:15px auto 10px;width:max-content;max-width:100%;padding:6px 16px;background:#2c4662;border-radius:30px;color:#cce9f5;font-size:12px;font-weight:800;text-align:center}
+.op-app-inbox-chat .op-app-notice{width:100%;text-align:left;border-radius:16px;min-height:72px;padding:13px 15px;gap:12px;background:linear-gradient(120deg,#1e3a59,#283b61);border:1px solid #5c89ac66}
+.op-app-inbox-chat .op-app-notice.is-unread{border-color:#5fe0cf;box-shadow:inset 3px 0 #4de0cd}
+.op-app-inbox-chat .op-app-notice-icon{width:40px;height:40px;flex:none}
+.op-app-inbox-chat .op-app-notice strong{font-size:14px}
+.op-app-inbox-chat .op-app-notice small{font-size:12px;line-height:1.5}
+@media(max-width:420px){.op-app-daily-row{gap:8px;padding:10px}.op-app-daily-time{min-width:65px;font-size:12px}.op-app-daily-live{display:none}.op-app-history-row time{max-width:95px;font-size:11px}}
