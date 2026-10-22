@@ -117,7 +117,7 @@ export default function AdminMatchScheduleCenter(){
   </div>
   {notice&&<div className="op-schedule-success" role="status"><FiCheckCircle/>{notice}</div>}
   {err&&<div className="op-schedule-error" role="alert">{err}</div>}
-  <section className="op-schedule-card" style={{marginBottom:20}}><div className="op-schedule-heading"><FiBell/><h2>Tournament Announcements</h2></div><p>Manually select the tournament, date, platform, schedule and player instructions. Generate a preview before sending Android push.</p><TournamentComposer/></section>
+  <div style={{marginBottom:22}}><TournamentComposer/></div>
   <div className="op-schedule-columns">
    <section className="op-schedule-card op-schedule-form" aria-label="Create match schedule">
     <div className="op-schedule-heading"><FiPlus/><h2>{editing?'Edit match schedule':'Publish a match'}</h2></div>
