@@ -36,6 +36,8 @@ async function get(path){
  assert(appHtml.includes('OVER POWER')||appHtml.includes('অ্যাকাউন্ট'),'App has its own branded view');
  const unauth=await get('/api/software/overview');
  assert.equal(unauth.status,401,'Private software overview must require login');
+ const privateStatus=await get('/api/admin/match-push-status');
+ assert.equal(privateStatus.status,401,'Push activation status must only be available after admin login');
  const install=await get('/install');
  assert.equal(install.status,200,'Cross-device install route');
  const installHtml=await install.text();

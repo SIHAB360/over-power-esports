@@ -535,3 +535,28 @@ html[data-op-admin-theme="light"] .op-admin-system .op-schedule-center .op-sched
   .op-admin-system .op-schedule-center *, .op-admin-system .op-schedule-center *::before,
   .op-admin-system .op-schedule-center *::after{transition:none!important}
 }
+/* Clear readiness health: distinguishes database inbox from true phone push. */
+.op-admin-system .op-schedule-center .op-schedule-native-status{
+ border:1px solid #6aa5e48a;border-radius:16px;padding:17px 18px;margin-top:18px;
+ background:linear-gradient(125deg,#1b3250,#242946);box-shadow:0 0 20px #4caaf71b;
+}
+.op-admin-system .op-schedule-center .op-schedule-native-status-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.op-admin-system .op-schedule-center .op-schedule-native-status-head strong{display:flex;align-items:center;gap:8px;font-size:15px;color:#ecf9ff}
+.op-admin-system .op-schedule-center .op-schedule-native-status-head button{min-height:35px!important;font-size:12px!important;padding:7px 10px!important}
+.op-admin-system .op-schedule-center .op-schedule-native-status-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0
+}
+.op-admin-system .op-schedule-center .op-schedule-native-status-grid>span{
+ display:grid;gap:5px;font-size:11px;color:#ccddf5;
+ border:1px solid #78c5f67a;border-radius:11px;padding:10px;
+ background:#2a476e85;overflow-wrap:anywhere
+}
+.op-admin-system .op-schedule-center .op-schedule-native-status-grid b{font-size:17px;color:#b1ffe6}
+.op-admin-system .op-schedule-center .op-schedule-native-status p{font-size:12px;color:#d0e5f6;line-height:1.6}
+.op-admin-system .op-schedule-center .op-schedule-native-status-warning{
+ border-left:3px solid #ffb784;padding:8px 11px;background:#65432c44;color:#fff1da!important
+}
+.op-admin-system .op-schedule-center .op-schedule-native-status-info a{color:#89f8e9;text-decoration:underline}
+@media(max-width:580px){
+ .op-admin-system .op-schedule-center .op-schedule-native-status-grid{grid-template-columns:1fr}
+}

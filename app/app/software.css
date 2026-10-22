@@ -348,3 +348,5 @@
 .op-app-native-push h3{margin:0;color:#fff;font-size:17px}
 .op-app-native-push p,.op-app-native-hint{margin:0;color:#cfdef4;font-size:13px}
 .op-app-native-push .op-app-primary{max-width:350px}
+
+.op-app-root .op-app-native-onboarding{margin:16px 0 25px;padding:17px;border:1px solid #83dabeb1;border-radius:18px;background:linear-gradient(120deg,#1a495380,#32335bb5)}
