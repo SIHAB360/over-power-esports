@@ -37,6 +37,12 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.Collections;
 import org.json.JSONObject;
+import android.app.AlertDialog;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends Activity {
     private static final String ROOT = "https://over-power-esports.vercel.app";
@@ -48,6 +54,8 @@ public class MainActivity extends Activity {
     private JavaScriptReplyProxy pendingPushReply;
     private static final int NOTIFICATION_PERMISSION_REQUEST=1742;
     private boolean firebaseReady=false;
+    private long lastUpdateCheck=0;
+    private boolean updateDialogShowing=false;
 
     private boolean official(Uri uri) {
         return "https".equalsIgnoreCase(uri.getScheme())
@@ -180,6 +188,7 @@ public class MainActivity extends Activity {
         errorView.setVisibility(View.GONE);
         setContentView(rootView);
         webView.loadUrl(startUrl());
+        checkForUpdates();
     }
     private String startUrl(){
         String path=getIntent()!=null?getIntent().getStringExtra("matchUrl"):null;
@@ -277,6 +286,61 @@ public class MainActivity extends Activity {
     private void showError() {
         runOnUiThread(() -> { progress.setVisibility(View.GONE);errorView.setVisibility(View.VISIBLE); });
     }
+
+    private int[] versionParts(String version){
+        int[] result={0,0,0};
+        String[] parts=version.split("\\.");
+        for(int i=0;i<Math.min(3,parts.length);i++){
+            try{result[i]=Integer.parseInt(parts[i]);}catch(Exception ignored){}
+        }
+        return result;
+    }
+    private boolean isNewer(String latest,String installed){
+        int[] a=versionParts(latest),b=versionParts(installed);
+        for(int i=0;i<3;i++){if(a[i]>b[i])return true;if(a[i]<b[i])return false;}
+        return false;
+    }
+    private void checkForUpdates(){
+        long now=System.currentTimeMillis();
+        if(now-lastUpdateCheck<120000)return;
+        lastUpdateCheck=now;
+        new Thread(()->{
+            HttpURLConnection connection=null;
+            try{
+                connection=(HttpURLConnection)new URL(ROOT+"/api/app-update").openConnection();
+                connection.setConnectTimeout(6000);
+                connection.setReadTimeout(6000);
+                connection.setRequestProperty("Accept","application/json");
+                if(connection.getResponseCode()!=200)return;
+                ByteArrayOutputStream output=new ByteArrayOutputStream();
+                try(InputStream input=connection.getInputStream()){
+                    byte[] buf=new byte[2048];int n;
+                    while((n=input.read(buf))!=-1&&output.size()<12000)output.write(buf,0,n);
+                }
+                JSONObject data=new JSONObject(output.toString("UTF-8"));
+                if(!data.optBoolean("available",false))return;
+                String version=data.optString("version","");
+                String url=data.optString("downloadUrl","");
+                if(!url.startsWith("https://github.com/SIHAB360/over-power-esports/releases/download/"))return;
+                String current=getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+                if(!isNewer(version,current))return;
+                runOnUiThread(()->{
+                    if(isFinishing()||updateDialogShowing)return;
+                    updateDialogShowing=true;
+                    new AlertDialog.Builder(this)
+                        .setTitle("OVER POWER ESPORTS Update")
+                        .setMessage("Version "+version+" is available. Update the app to get the latest notification features. Your account and app data will remain on this device.")
+                        .setPositiveButton("Update", (dialog,which)->{
+                            try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(url)));}
+                            catch(Exception ignored){}
+                        })
+                        .setNegativeButton("Later",(dialog,which)->{})
+                        .setOnDismissListener(dialog->updateDialogShowing=false)
+                        .show();
+                });
+            }catch(Exception ignored){}finally{if(connection!=null)connection.disconnect();}
+        }).start();
+    }
     @Override public void onBackPressed() {
         if(errorView.getVisibility()==View.VISIBLE){
             errorView.setVisibility(View.GONE);
@@ -285,6 +349,6 @@ public class MainActivity extends Activity {
         else super.onBackPressed();
     }
     @Override protected void onPause(){super.onPause();if(webView!=null)webView.onPause();}
-    @Override protected void onResume(){super.onResume();if(webView!=null)webView.onResume();}
+    @Override protected void onResume(){super.onResume();if(webView!=null)webView.onResume();checkForUpdates();}
     @Override protected void onDestroy(){if(webView!=null){rootView.removeView(webView);webView.destroy();webView=null;}super.onDestroy();}
 }
