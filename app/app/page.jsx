@@ -368,7 +368,7 @@ export default function SoftwareApp(){
      <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:16}}>{[['today','Today'],['upcoming','Upcoming'],['history','History']].map(([id,label])=><button key={id} onClick={()=>setMatchView(id)} aria-pressed={matchView===id} style={{padding:'10px 18px',borderRadius:12,background:matchView===id?'#2563eb':'#21365a',color:'#fff',border:'1px solid #5672a2',fontWeight:700}}>{label}</button>)}</div>
      {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Your player account must be approved to view schedules."/>:
       visibleMatches.length===0?<EmptyPanel icon={FiCalendar} title="No Matches for This View" description="Published matches will appear here automatically."/>:
-      <div className="op-app-match-list">{visibleMatches.map(x=><MatchCard key={x.id} match={x}/>)}</div>}
+      <div className="op-app-match-list">{visibleMatches.map(x=><MatchCard key={x.id} match={x} now={clockNow}/>)}</div>}
     </div>}
     {tab==='wallet'&&!admin&&<div className="op-app-view">
      <SectionHead overline="SECURE FINANCE" title="My Wallet" subtitle="Secure existing bKash and Nagad withdrawals."/>
@@ -400,6 +400,11 @@ export default function SoftwareApp(){
        <p>Starts: {t.start_date?shortDate.format(new Date(t.start_date+'T12:00:00+06:00')):'To Be Announced'}</p>
        <strong>Prize Pool: {currency(t.prize_pool)}</strong>
       </article>)}</div>}
+    </div>}
+    {tab==='achievements'&&!admin&&<div className="op-app-view">
+     <SectionHead overline="PLAYER PROFILE" title="My Achievements" subtitle="Your saved performance and achievements."/>
+     <div className="op-app-stats"><div><FiAward/><span>Wins</span><strong>{userData.player?.wins??0}</strong></div><div><FiTarget/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div><div><FiCalendar/><span>Matches Played</span><strong>{userData.player?.matches_played??0}</strong></div></div>
+     <button type="button" className="op-app-back" onClick={()=>go('performance')}>View full performance <FiChevronRight/></button>
     </div>}
     {tab==='performance'&&!admin&&<div className="op-app-view">
      <SectionHead overline="GAME STATISTICS" title="My Performance" subtitle="Your saved matches, wins and kills."/>
@@ -447,12 +452,14 @@ export default function SoftwareApp(){
 function SectionHead({overline,title,subtitle}){
  return <div className="op-app-heading"><span className="op-app-overline">{overline}</span><h1>{title}</h1><p>{subtitle}</p></div>;
 }
-function MatchCard({match}){
+function MatchCard({match,now=Date.now()}){
+ const remaining=Math.max(0,Math.floor((new Date(match.starts_at).getTime()-now)/1000));
+ const countdown=remaining===0?'Match started':(Math.floor(remaining/86400)?Math.floor(remaining/86400)+'d ':'')+Math.floor(remaining%86400/3600)+'h '+Math.floor(remaining%3600/60)+'m '+remaining%60+'s left';
  const cancelled=match.status==='cancelled';
  return <article className={'op-app-match-card'+(cancelled?' is-cancelled':'')}>
   <div className="op-app-match-top"><span><FiCalendar/> {dateTime.format(new Date(match.starts_at))}</span>
    <b>{cancelled?'Cancelled':'PUBLISHED'}</b></div>
-  <h3>{match.title}</h3><p>{match.lobby_details||'Lobby details will appear here.'}</p>
+  <h3>{match.title}</h3>{!cancelled&&<div className="op-app-countdown">⏳ {countdown}</div>}<p>{match.lobby_details||'Lobby details will appear here.'}</p>
   <div className="op-app-match-values"><span>Entry Fee <strong>{currency(match.entry_fee)}</strong></span>
    <span>Prize Pool <strong>{match.prize_pool||'—'}</strong></span></div>
   {match.notes&&<p className="op-app-match-note">{match.notes}</p>}
