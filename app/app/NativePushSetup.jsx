@@ -14,7 +14,7 @@ export default function NativePushSetup({hideWebHint=false}){
  const [serverReady,setServerReady]=useState(false);
 
  useEffect(()=>{
-  let alive=true,observer=null;
+  let alive=true,observer=null,bridgeReference=null;
   const attach=()=>{
    const bridge=window.OverPowerNative;
    if(!bridge?.postMessage)return;
@@ -57,7 +57,8 @@ export default function NativePushSetup({hideWebHint=false}){
       finally{if(alive)setLoading(false)}
      }
     };
-    bridge.addEventListener?.('message',observer);
+    bridgeReference=bridge;
+    bridge.onmessage=observer;
     // Resync rotated FCM tokens after returning to the app without reprompting
     // the operating-system permission (only for the previously opted-in user).
     if(window.localStorage.getItem(flag)==='true'){
@@ -74,7 +75,7 @@ export default function NativePushSetup({hideWebHint=false}){
   const timer=setInterval(attach,800);
   return()=>{
    alive=false;clearInterval(timer);
-   if(observer)window.OverPowerNative?.removeEventListener?.('message',observer);
+   if(bridgeReference)bridgeReference.onmessage=null;
   };
  },[]);
  const enable=()=>{
