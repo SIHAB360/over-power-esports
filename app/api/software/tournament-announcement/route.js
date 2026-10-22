@@ -11,13 +11,29 @@ function draft(b){
  const lines=['🏆 TOURNAMENT ANNOUNCEMENT','📅 Date — '+date,'🎮 Platform — '+platform,'🌐 Time Zone — '+zone,'','🟢 '+title,'',...events.map(e=>'🏆 '+e.name+' — '+e.time),'','⚠️ '+(clean(b.instructions,220)||'All players must be online before the scheduled time.')];
  return lines.join('\n');
 }
+async function generateAI(b,fallback){
+ const key=process.env.OPENAI_API_KEY;
+ if(!key)return {text:fallback,mode:'template'};
+ try{
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),10000);
+  try{
+   const response=await fetch('https://api.openai.com/v1/responses',{method:'POST',signal:controller.signal,headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_ANNOUNCEMENT_MODEL||'gpt-4.1-mini',max_output_tokens:650,instructions:'Format the supplied esports tournament details into a clear, attractive WhatsApp-style announcement. Keep every date, time, team and platform exactly as provided. Do not invent prizes, rules or schedule details. Output only announcement text, maximum 1500 characters.',input:JSON.stringify({title:b.title,date:b.date,platform:b.platform,timezone:b.timezone,events:b.events,instructions:b.instructions})})});
+   if(!response.ok)throw Error('AI generation unavailable');
+   const json=await response.json();
+   const output=(json.output||[]).flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join('').trim();
+   if(output.length<15||output.length>1500)throw Error('Invalid AI output');
+   return {text:output,mode:'ai'};
+  }finally{clearTimeout(timeout)}
+ }catch(e){console.warn('Tournament AI preview fallback:',e.message);return {text:fallback,mode:'template'}}
+}
 export async function POST(req){
  try{
   const {db}=await identity(req,true);
   const b=await req.json().catch(()=>null);
   if(!b||typeof b!=='object')throw new HttpError('Invalid announcement.');
   const text=clean(b.customText,1500)||draft(b);
-  if(b.action==='preview')return Response.json({text},{headers:noStore});
+  if(b.action==='preview'){const generated=await generateAI(b,text);return Response.json(generated,{headers:noStore});}
   if(b.action!=='publish')throw new HttpError('Invalid action.');
   if(text.length<15||text.length>1500)throw new HttpError('Announcement must contain 15–1500 characters.');
   const title=clean(b.pushTitle,100)||'🏆 Tournament Announcement';
