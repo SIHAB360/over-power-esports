@@ -62,6 +62,7 @@ export default function SoftwareApp(){
  const updateRemote=useCallback(next=>setRemote(old=>JSON.stringify(old)===JSON.stringify(next)?old:next),[]);
  const [userData,setUserData]=useState(null);
  const [tab,setTab]=useState('home');
+ const [matchView,setMatchView]=useState('today');
  const [module,setModule]=useState(null);
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
@@ -80,6 +81,9 @@ export default function SoftwareApp(){
  const tabs=admin?ADMIN_TABS:PLAYER_TABS.filter(x=>(x.id!=='matches'||remote?.matches_enabled!==false)&&(x.id!=='wallet'||remote?.wallet_enabled!==false));
  const activeModule=MODULES.find(x=>x.id===module);
  const upcoming=useMemo(()=>fixtures.schedules.filter(x=>x.status==='published'&&new Date(x.starts_at).getTime()>Date.now()),[fixtures.schedules]);
+ const bdDate=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(d));
+ const todayMatches=fixtures.schedules.filter(x=>x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()));
+ const visibleMatches=fixtures.schedules.filter(x=>matchView==='today'?x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()):matchView==='history'?x.status!=='published'||new Date(x.starts_at).getTime()<Date.now():x.status==='published'&&new Date(x.starts_at).getTime()>=Date.now());
 
  const authenticatedFetch=useCallback(async(path,method='GET',body)=>{
   const {data:{session}}=await supabase.auth.getSession();
@@ -336,6 +340,7 @@ export default function SoftwareApp(){
        <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
+     {!admin&&remote?.matches_enabled!==false&&todayMatches.length>0&&<section className="op-app-next-match"><div className="op-app-section-title"><div><span className="op-app-overline">TODAY</span><h2>Today's Match Schedule</h2></div><button onClick={()=>{setMatchView('today');go('matches')}}>View Today <FiChevronRight/></button></div>{todayMatches.map(x=><MatchCard key={x.id} match={x}/>)}</section>}
      {remote?.matches_enabled!==false&&upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
       <div><span className="op-app-overline">UP NEXT</span><h2>Next Match</h2></div>
       <button onClick={()=>go(admin?'schedule':'matches')}>View All <FiChevronRight/></button>
@@ -345,9 +350,10 @@ export default function SoftwareApp(){
      <SectionHead overline="YOUR LIVE FIXTURES" title="My Match Center" subtitle="Published match schedules for your approved squad appear here."/>
      {matchError&&<p className="op-app-error" role="alert">{matchError}</p>}
      <div className="op-app-inline"><span><FiClock/> Bangladesh Time (UTC+6)</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
+     <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:16}}>{[['today','Today'],['upcoming','Upcoming'],['history','History']].map(([id,label])=><button key={id} onClick={()=>setMatchView(id)} aria-pressed={matchView===id} style={{padding:'10px 18px',borderRadius:12,background:matchView===id?'#2563eb':'#21365a',color:'#fff',border:'1px solid #5672a2',fontWeight:700}}>{label}</button>)}</div>
      {!approved?<EmptyPanel icon={FiShield} title="Approval Pending" description="Your player account must be approved to view schedules."/>:
-      fixtures.schedules.length===0?<EmptyPanel icon={FiCalendar} title="No Scheduled Matches" description="Published matches will appear here automatically."/>:
-      <div className="op-app-match-list">{fixtures.schedules.map(x=><MatchCard key={x.id} match={x}/>)}</div>}
+      visibleMatches.length===0?<EmptyPanel icon={FiCalendar} title="No Matches for This View" description="Published matches will appear here automatically."/>:
+      <div className="op-app-match-list">{visibleMatches.map(x=><MatchCard key={x.id} match={x}/>)}</div>}
     </div>}
     {tab==='wallet'&&!admin&&<div className="op-app-view">
      <SectionHead overline="SECURE FINANCE" title="My Wallet" subtitle="Secure existing bKash and Nagad withdrawals."/>
