@@ -27,3 +27,17 @@ html[data-op-admin-theme="light"] .op-tc .op-tc-field select option:checked {
   background-color:#cde8ff!important;
   color:#172f4d!important;
 }
+
+
+/* Premium calendar and clock controls with explicit Bangladesh time. */
+.op-tc .op-tc-date-field,.op-tc .op-tc-time-field{position:relative}
+.op-tc .op-tc-date-field input,.op-tc .op-tc-time-field input{font-variant-numeric:tabular-nums;letter-spacing:.035em;border:1px solid #5de1e4!important;background:linear-gradient(110deg,#1a3454,#172944)!important;box-shadow:inset 0 1px #ffffff12,0 0 0 3px #3de4da10;color:#f2fbff!important;font-weight:750!important}
+.op-tc .op-tc-date-field input::-webkit-calendar-picker-indicator,.op-tc .op-tc-time-field input::-webkit-calendar-picker-indicator{filter:invert(1) brightness(1.3) sepia(1) saturate(2) hue-rotate(135deg);cursor:pointer;opacity:.9}
+.op-tc .op-tc-field small{font-size:11px;color:#8fdbdf;line-height:1.5}
+.op-tc .op-tc-time-input{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.op-tc .op-tc-time-input input{min-width:0}
+.op-tc .op-tc-time-input .op-tc-auto-time{min-width:70px;min-height:48px;padding:10px 13px;background:linear-gradient(135deg,#0b948d,#3569c7);border:1px solid #6ce6e2;color:white;box-shadow:0 4px 14px #1ee4d02c}
+.op-tc .op-tc-date-field input:focus,.op-tc .op-tc-time-field input:focus{outline:2px solid #73f5e3;outline-offset:2px}
+html[data-op-admin-theme="light"] .op-tc .op-tc-date-field input,html[data-op-admin-theme="light"] .op-tc .op-tc-time-field input{background:#fff!important;color:#193654!important}
+html[data-op-admin-theme="light"] .op-tc .op-tc-date-field input::-webkit-calendar-picker-indicator,html[data-op-admin-theme="light"] .op-tc .op-tc-time-field input::-webkit-calendar-picker-indicator{filter:none}
+@media(max-width:600px){.op-tc .op-tc-time-input{grid-template-columns:minmax(0,1fr) 64px}.op-tc .op-tc-time-input .op-tc-auto-time{min-width:0;padding:8px}}
