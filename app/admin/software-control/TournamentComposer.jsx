@@ -35,10 +35,11 @@ export default function TournamentComposer({onPublished}){
     setPreview(result.text);setMode(result.mode||'template');setConfirmed(false);setMessage('Preview ready. Check the selected details.');
    }else{
     if(!confirmed)throw Error('Confirm match dates and times first.');
+    const prepared=form.events.map(event=>({...event,local_time:localToIso(form.date,event.time)}));
+    for(const event of prepared){if(new Date(event.local_time+':00+06:00').getTime()<Date.now()+120000)throw Error('Schedule every match at least 2 minutes ahead: '+event.name);}
     let completed=0;
-    for(const event of form.events){
-     const local_time=localToIso(form.date,event.time);
-     if(new Date(local_time+':00+06:00').getTime()<=Date.now())throw Error('Match time must be in the future: '+event.name);
+    for(const event of prepared){
+     const local_time=event.local_time;
      const res=await fetch('/api/admin/match-schedules',{method:'POST',headers,body:JSON.stringify({
       title:event.name,local_time,entry_fee:Number(entryFee||0),prize_pool:prizePool,
       lobby_details:form.platform+' · '+form.title,notes:form.instructions,team_id:targetSquad||null
