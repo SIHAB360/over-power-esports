@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useMemo,useState} from 'react';
 import {supabase} from '../../lib/supabase';
+import TournamentComposer from '../software-control/TournamentComposer';
 import {FiCalendar,FiClock,FiPlus,FiBell,FiRefreshCw,FiEdit2,FiXCircle,FiCheckCircle,FiDollarSign,FiAward} from 'react-icons/fi';
 import './schedule-center.css';
 import './schedule-premium-lighting.css';
@@ -18,6 +19,7 @@ export default function AdminMatchScheduleCenter(){
  const [form,setForm]=useState(blank);
  const [rows,setRows]=useState([]),[teams,setTeams]=useState([]);
  const [selectedDate,setSelectedDate]=useState('');
+ const [view,setView]=useState('today');
  const [editing,setEditing]=useState(null),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false);
  const [notice,setNotice]=useState(''),[err,setErr]=useState('');
  const [pendingCancel,setPendingCancel]=useState(null);
@@ -56,6 +58,9 @@ export default function AdminMatchScheduleCenter(){
   const map=new Map();
   for(const s of rows){
    const day=localInput(s.starts_at).slice(0,10);
+   if(view==='today'&&day!==localInput(Date.now()).slice(0,10))continue;
+   if(view==='upcoming'&&(s.status!=='published'||new Date(s.starts_at).getTime()<Date.now()))continue;
+   if(view==='history'&&s.status==='published'&&new Date(s.starts_at).getTime()>=Date.now())continue;
    if(selectedDate&&day!==selectedDate)continue;
    if(!map.has(day))map.set(day,[]);
    map.get(day).push(s);
@@ -112,6 +117,7 @@ export default function AdminMatchScheduleCenter(){
   </div>
   {notice&&<div className="op-schedule-success" role="status"><FiCheckCircle/>{notice}</div>}
   {err&&<div className="op-schedule-error" role="alert">{err}</div>}
+  <section className="op-schedule-card" style={{marginBottom:20}}><div className="op-schedule-heading"><FiBell/><h2>Tournament Announcements</h2></div><p>Manually select the tournament, date, platform, schedule and player instructions. Generate a preview before sending Android push.</p><TournamentComposer/></section>
   <div className="op-schedule-columns">
    <section className="op-schedule-card op-schedule-form" aria-label="Create match schedule">
     <div className="op-schedule-heading"><FiPlus/><h2>{editing?'Edit match schedule':'Publish a match'}</h2></div>
@@ -142,6 +148,7 @@ export default function AdminMatchScheduleCenter(){
    </section>
    <section className="op-schedule-card" aria-label="Published schedule timeline">
     <div className="op-schedule-heading"><FiClock/><h2>Match timeline</h2></div>
+    <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:14}}>{[["today","Today"],["upcoming","Upcoming"],["history","History"],["all","All Matches"]].map(([key,label])=><button type="button" key={key} aria-pressed={view===key} onClick={()=>{setView(key);setSelectedDate("")}} style={{padding:"10px 16px",borderRadius:12,border:"1px solid #617ca6",background:view===key?"#2563eb":"#182c49",color:"#fff",fontWeight:700}}>{label}</button>)}</div>
     <div className="op-schedule-filters">
      <label>Filter match date <input type="date" value={selectedDate} onChange={e=>setSelectedDate(e.target.value)}/></label>
      <button type="button" className="op-schedule-secondary" disabled={loading} onClick={()=>{setSelectedDate('');load()}}><FiRefreshCw/> Refresh</button>
