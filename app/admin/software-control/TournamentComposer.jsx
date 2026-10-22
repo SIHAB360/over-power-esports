@@ -11,8 +11,30 @@ const initialSlot=()=>{const x=autoSlot();return {date:x.date.year+'-'+x.date.mo
 const displayTime=t=>{const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+pad(m)+' '+(h>=12?'PM':'AM');};
 const RULES=['সব প্লেয়ার ম্যাচের ১৫ মিনিট আগে Discord Voice-এ যোগ দিন এবং গেমে অনলাইন থাকুন।','ম্যাচ শুরুর ১০ মিনিট আগে গেম ও Discord-এ প্রস্তুত থাকুন।','Discord-এ নির্ধারিত Voice Channel-এ যোগ দিন, মাইক পরীক্ষা করুন এবং অ্যাডমিনের নির্দেশনা অনুসরণ করুন।','ম্যাচের সময়মতো লবিতে প্রবেশ করুন। রুম ID ও পাসওয়ার্ড অ্যাডমিন জানাবেন।'];
 const today=()=>initialSlot().date;
+const monthLabel=(year,month)=>new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric'}).format(new Date(Date.UTC(year,month,1)));
+function DateTimeDialog({kind,value,onSave,onClose}){
+ const parsed=kind==='date'?new Date(value+'T12:00:00+06:00'):null;
+ const [year,setYear]=useState(parsed?parsed.getFullYear():2026);
+ const [month,setMonth]=useState(parsed?parsed.getMonth():0);
+ const [hour,setHour]=useState(kind==='time'?Number(value.split(':')[0])%12||12:5);
+ const [minute,setMinute]=useState(kind==='time'?Number(value.split(':')[1]):0);
+ const [period,setPeriod]=useState(kind==='time'&&Number(value.split(':')[0])>=12?'PM':'AM');
+ const first=new Date(Date.UTC(year,month,1)).getUTCDay();
+ const days=new Date(Date.UTC(year,month+1,0)).getUTCDate();
+ const move=n=>{const d=new Date(Date.UTC(year,month+n,1));setYear(d.getUTCFullYear());setMonth(d.getUTCMonth());};
+ const chosen=kind==='date'?value:'';
+ const dateKey=d=>year+'-'+pad(month+1)+'-'+pad(d);
+ const saveTime=()=>onSave(pad(hour%12+(period==='PM'?12:0))+':'+pad(minute));
+ return <div className="op-tc-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)onClose()}}>
+  <div className="op-tc-modal" role="dialog" aria-modal="true" aria-label={kind==='date'?'Select match date':'Select match time'}>
+   <div className="op-tc-modal-top"><div><span>{kind==='date'?'MATCH CALENDAR':'MATCH START TIME'}</span><h3>{kind==='date'?'Choose a Date':'Choose a Time'}</h3><p>{kind==='date'?'Select your match day':'Bangladesh local time (UTC+6)'}</p></div><button type="button" onClick={onClose} aria-label="Close">✕</button></div>
+   {kind==='date'?<><div className="op-tc-calendar-bar"><button type="button" onClick={()=>move(-1)} aria-label="Previous month">‹</button><strong>{monthLabel(year,month)}</strong><button type="button" onClick={()=>move(1)} aria-label="Next month">›</button></div><div className="op-tc-calendar-grid">{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(x=><span className="op-tc-weekday" key={x}>{x}</span>)}{Array.from({length:first},(_,i)=><span key={'blank'+i}/>)}{Array.from({length:days},(_,i)=>{const d=i+1,key=dateKey(d);return <button type="button" key={key} disabled={key<today()} className={key===chosen?'is-selected':''} onClick={()=>onSave(key)}>{d}</button>})}</div><button className="op-tc-modal-today" type="button" onClick={()=>onSave(today())}>Select Today</button></>:<><div className="op-tc-clock-face"><span>SELECTED TIME</span><strong>{pad(hour)}:{pad(minute)} <em>{period}</em></strong></div><div className="op-tc-clock-picker"><div><label>Hour</label><div className="op-tc-clock-options">{Array.from({length:12},(_,i)=>i+1).map(h=><button type="button" key={h} className={h===hour?'is-selected':''} onClick={()=>setHour(h)}>{pad(h)}</button>)}</div></div><div><label>Minute</label><div className="op-tc-clock-options">{Array.from({length:12},(_,i)=>i*5).map(m=><button type="button" key={m} className={m===minute?'is-selected':''} onClick={()=>setMinute(m)}>{pad(m)}</button>)}</div></div></div><div className="op-tc-period">{['AM','PM'].map(p=><button type="button" key={p} className={p===period?'is-selected':''} onClick={()=>setPeriod(p)}>{p}</button>)}</div><button className="op-tc-modal-apply" type="button" onClick={saveTime}>Confirm Time</button></>}
+  </div>
+ </div>;
+}
 export default function TournamentComposer({onPublished}){
  const [form,setForm]=useState(()=>{const slot=initialSlot();return {title:SQUADS[0],date:slot.date,platform:'Discord Voice',timezone:'BST',instructions:RULES[0],events:[{name:MATCHES[0],time:slot.time}]};});
+ const [picker,setPicker]=useState(null);
  const [entryFee,setEntryFee]=useState('0'),[prizePool,setPrizePool]=useState(''),[targetSquad,setTargetSquad]=useState('');
  const [preview,setPreview]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[mode,setMode]=useState('template'),[confirmed,setConfirmed]=useState(false);
  const update=(key,value)=>{setForm(old=>({...old,[key]:value}));setPreview('');setConfirmed(false)};
@@ -61,12 +83,12 @@ export default function TournamentComposer({onPublished}){
   <div className="op-tc-head"><span className="op-tc-icon">🏆</span><div><h2>Smart Tournament Announcement</h2><p>Select your details. The announcement is generated automatically.</p></div></div>
   <div className="op-tc-grid">
    {select('Tournament / Squad',form.title,SQUADS,v=>update('title',v))}
-   <label className="op-tc-field op-tc-date-field"><span>📅 Match Date · Bangladesh</span><input type="date" min={today()} value={form.date} onChange={e=>update('date',e.target.value)}/><small>Calendar থেকে তারিখ নির্বাচন করুন</small></label>
+   <div className="op-tc-field op-tc-date-field"><span>📅 Match Date</span><button className="op-tc-picker-trigger" type="button" onClick={()=>setPicker({kind:'date'})}><strong>{new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric'}).format(new Date(form.date+'T12:00:00+06:00'))}</strong><span>Open Calendar ↗</span></button></div>
    {select('Platform',form.platform,['Discord Voice','Discord Stage','In-Game Voice','TeamSpeak'],v=>update('platform',v))}
-   {select('Time Zone',form.timezone,['BST','UTC','IST'],v=>update('timezone',v))}
+
   </div>
   <div className="op-tc-subhead"><h3>Match Schedule</h3><span>{form.events.length} selected</span></div>
-  <div className="op-tc-events">{form.events.map((event,i)=><div className="op-tc-event" key={i}><span className="op-tc-number">{String(i+1).padStart(2,'0')}</span>{select('Match',event.name,MATCHES,v=>eventUpdate(i,'name',v))}<label className="op-tc-field op-tc-time-field"><span>🕒 Start Time · BST</span><div className="op-tc-time-input"><input type="time" step="300" value={event.time} onChange={e=>eventUpdate(i,'time',e.target.value)}/><button type="button" className="op-tc-auto-time" onClick={()=>useAutoTime(i)} title="Auto-select next available time">Auto</button></div><small>{displayTime(event.time)} · 5-minute precision</small></label><button type="button" className="op-tc-remove" disabled={form.events.length===1} onClick={()=>update('events',form.events.filter((_,j)=>j!==i))} aria-label="Remove match">✕</button></div>)}</div>
+  <div className="op-tc-events">{form.events.map((event,i)=><div className="op-tc-event" key={i}><span className="op-tc-number">{String(i+1).padStart(2,'0')}</span>{select('Match',event.name,MATCHES,v=>eventUpdate(i,'name',v))}<div className="op-tc-field op-tc-time-field"><span>🕒 Start Time</span><button className="op-tc-picker-trigger" type="button" onClick={()=>setPicker({kind:'time',index:i})}><strong>{displayTime(event.time)}</strong><span>Set Time ↗</span></button></div><button type="button" className="op-tc-remove" disabled={form.events.length===1} onClick={()=>update('events',form.events.filter((_,j)=>j!==i))} aria-label="Remove match">✕</button></div>)}</div>
   <button className="op-tc-add" type="button" disabled={form.events.length>=8} onClick={()=>{const last=form.events[form.events.length-1];const [h,m]=last.time.split(':').map(Number);const next=pad((h+1)%24)+':'+pad(m);update('events',[...form.events,{name:MATCHES[0],time:next}])}}>+ Add another match</button>
   <div className="op-tc-grid">
    <label className="op-tc-field"><span>Entry Fee (৳)</span><input type="number" min="0" value={entryFee} onChange={e=>{setEntryFee(e.target.value);setPreview('');setConfirmed(false)}}/></label>
@@ -76,6 +98,7 @@ export default function TournamentComposer({onPublished}){
   <p className="op-tc-help">নির্দেশনা স্বয়ংক্রিয়ভাবে ম্যাচের সঙ্গে যুক্ত হবে। প্লেয়ারদের সময়মতো Discord Voice ও গেমে যোগ দিতে বলা হবে।</p>
   <button className="op-tc-generate" type="button" disabled={busy||!form.date} onClick={()=>submit('preview')}>{busy?'Please wait…':'✨ Generate Announcement Preview'}</button>
   {preview&&<div className="op-tc-preview"><div className="op-tc-subhead"><h3>Announcement Preview</h3><span>{mode==='ai'?'AI generated':'Auto formatted'}</span></div><pre>{preview}</pre><p>All details are generated from your selections. Review before publishing.</p><label className="op-tc-confirm"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/><span>I confirm the date and match times are correct.</span></label><button className="op-tc-publish" type="button" disabled={busy||!confirmed} onClick={()=>submit('publish')}>🚀 Publish Matches & Notify Players</button></div>}
+  {picker&&<DateTimeDialog kind={picker.kind} value={picker.kind==='date'?form.date:form.events[picker.index].time} onClose={()=>setPicker(null)} onSave={v=>{if(picker.kind==='date')update('date',v);else eventUpdate(picker.index,'time',v);setPicker(null)}}/>}
   {message&&<p className="op-tc-status" role="status">{message}</p>}
  </section>;
 }
