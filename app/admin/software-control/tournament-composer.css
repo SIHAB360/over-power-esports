@@ -1,1 +1,29 @@
 .op-tc{width:100%;min-width:0;padding:clamp(16px,2vw,30px);border:1px solid #53d8ee66;border-radius:22px;background:radial-gradient(circle at 100% 0%,#6947c43b,transparent 45%),radial-gradient(circle at 0 100%,#10c6ad20,transparent 40%),linear-gradient(135deg,#132947,#101c37);box-shadow:0 18px 50px #0004,inset 0 1px #8adfff35;color:#eaf7ff;display:grid;gap:18px}.op-tc *{box-sizing:border-box}.op-tc-head{display:flex;gap:16px;align-items:center}.op-tc-icon{display:grid;place-items:center;width:58px;height:58px;flex:none;border-radius:17px;background:linear-gradient(135deg,#159fbe,#7748cf);font-size:27px;box-shadow:0 0 25px #3bcbea55}.op-tc-head h2{font-size:clamp(19px,2vw,27px)!important;color:#fff!important;text-align:left!important;margin:0 0 5px!important}.op-tc-head p,.op-tc-preview p{color:#b6d4ed;margin:0}.op-tc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.op-tc-field{display:grid;gap:8px;min-width:0;color:#c7e6f5;font-weight:750;font-size:13px}.op-tc .op-tc-field :is(input,select){width:100%;min-width:0;min-height:48px;padding:11px 14px;border:1px solid #6fadd1a3;border-radius:12px;background:#182f50;color:#f4fbff;font-size:15px;font-weight:650;color-scheme:dark}.op-tc .op-tc-field :is(input,select):focus-visible{outline:2px solid #54e7dc;outline-offset:2px;box-shadow:0 0 18px #31d6c555}.op-tc-subhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.op-tc-subhead h3{font-size:18px!important;color:#f3fbff!important;margin:0}.op-tc-subhead>span{border:1px solid #5acfc58a;border-radius:30px;padding:5px 12px;color:#80f8e7;font-size:12px}.op-tc-events{display:grid;gap:10px}.op-tc-event{display:grid;grid-template-columns:44px minmax(0,1.5fr) minmax(0,1fr) 42px;gap:12px;align-items:end;padding:13px;border:1px solid #6289c06e;border-radius:14px;background:#1b315277}.op-tc-number{align-self:center;font-weight:900;color:#78f5e2;font-size:20px}.op-tc button{border-radius:12px;min-height:44px;font-size:14px;font-weight:800;cursor:pointer;color:#fff;border:1px solid #78dff080}.op-tc .op-tc-remove{background:#642d57;min-width:40px}.op-tc .op-tc-add{background:#234667;border:1px dashed #63c9e6}.op-tc .op-tc-generate{background:linear-gradient(110deg,#0bafa5,#287de3);min-height:53px;box-shadow:0 8px 24px #00b5c02c}.op-tc .op-tc-publish{width:100%;background:linear-gradient(110deg,#a65e18,#c14685);min-height:52px}.op-tc button:disabled{opacity:.45;cursor:not-allowed}.op-tc-preview{display:grid;gap:14px;border:1px solid #60cfb88c;background:#0c243a;border-radius:17px;padding:20px}.op-tc-preview pre{font:500 15px/1.8 inherit;white-space:pre-wrap;overflow-wrap:anywhere;color:#f2fcff;background:#173d3d;padding:18px;border-radius:12px;margin:0}.op-tc-confirm{display:flex;align-items:center;gap:12px;font-size:14px;color:#d5ebf8}.op-tc .op-tc-confirm input{width:20px;height:20px;min-height:20px;accent-color:#10bfa7}.op-tc-status{color:#91f4dd;font-size:14px;overflow-wrap:anywhere}.op-schedule-center .op-tc{margin:0}.op-schedule-center .op-tc button{padding:11px 15px}.op-schedule-center .op-tc .op-tc-remove{padding:10px}@media(max-width:700px){.op-tc-grid{grid-template-columns:1fr}.op-tc-event{grid-template-columns:30px minmax(0,1fr) 42px}.op-tc-event .op-tc-field:nth-of-type(2){grid-column:2}.op-tc-event .op-tc-remove{grid-column:3;grid-row:1/3}.op-tc-head{align-items:flex-start}.op-tc-icon{width:46px;height:46px;font-size:23px}.op-tc{padding:16px;gap:14px}}html[data-op-admin-theme="light"] .op-tc{background:linear-gradient(135deg,#f7fbff,#e8f5ff);color:#193252}html[data-op-admin-theme="light"] .op-tc :is(h2,h3){color:#153659!important}html[data-op-admin-theme="light"] .op-tc .op-tc-field :is(input,select){background:#fff;color:#183252;color-scheme:light}html[data-op-admin-theme="light"] .op-tc .op-tc-event{background:#e4efff}html[data-op-admin-theme="light"] .op-tc-preview{background:#e7f7f6}html[data-op-admin-theme="light"] .op-tc-preview pre{color:#eaffff}
+
+/* Fix native select dropdown option contrast in Chromium/Windows and light mode. */
+.op-admin-system .op-tc .op-tc-field select,
+.op-admin-system .op-tc .op-tc-field select option,
+.op-tc .op-tc-field select option {
+  background-color:#182f50!important;
+  color:#f4fbff!important;
+  -webkit-text-fill-color:#f4fbff;
+  font-weight:650;
+}
+.op-admin-system .op-tc .op-tc-field select option:checked {
+  background-color:#2563a6!important;
+  color:#fff!important;
+}
+.op-admin-system .op-tc .op-tc-field select option:disabled {
+  color:#a5bad0!important;
+}
+html[data-op-admin-theme="light"] .op-admin-system .op-tc .op-tc-field select,
+html[data-op-admin-theme="light"] .op-admin-system .op-tc .op-tc-field select option,
+html[data-op-admin-theme="light"] .op-tc .op-tc-field select option {
+  background-color:#fff!important;
+  color:#172f4d!important;
+  -webkit-text-fill-color:#172f4d;
+}
+html[data-op-admin-theme="light"] .op-tc .op-tc-field select option:checked {
+  background-color:#cde8ff!important;
+  color:#172f4d!important;
+}
