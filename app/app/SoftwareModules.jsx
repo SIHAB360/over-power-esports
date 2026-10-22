@@ -2,6 +2,7 @@
 import dynamic from 'next/dynamic';
 
 const panels={
+ software:dynamic(()=>import('../admin/software-control/page'),{ssr:false}),
  schedule:dynamic(()=>import('../admin/match-schedule/page'),{ssr:false}),
  players:dynamic(()=>import('../admin/players/page'),{ssr:false}),
  roster:dynamic(()=>import('../admin/roster/page'),{ssr:false}),
