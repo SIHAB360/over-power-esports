@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {supabase} from '../../lib/supabase';
+import TournamentComposer from './TournamentComposer';
 const initial={announcement:'',announcement_enabled:false,app_title:'OVER POWER ESPORTS',welcome_message:'Your team, matches, inbox and wallet in one app.',banner_url:'',accent_color:'#0ea5e9',maintenance_enabled:false,matches_enabled:true,wallet_enabled:true,tournaments_enabled:true};
 const flags=[['announcement_enabled','Show announcement'],['maintenance_enabled','Maintenance notice'],['matches_enabled','Show match features'],['wallet_enabled','Show wallet feature'],['tournaments_enabled','Show tournament feature']];
 export default function SoftwareControl(){
@@ -19,7 +20,7 @@ export default function SoftwareControl(){
  const inputStyle={padding:12,border:'1px solid #64748b',borderRadius:10,color:'#0f172a',background:'#fff',width:'100%',fontSize:16};
  const field=(label,key,maxLength)=> <label style={{display:'grid',gap:8}} key={key}><strong>{label}</strong><input style={inputStyle} value={form[key]} maxLength={maxLength} onChange={e=>change(key,e.target.value)}/></label>;
  return <main style={{maxWidth:850,margin:'24px auto',padding:24,color:'inherit'}}>
-  <h1>Software Control Center</h1><p>Publish live content and choose which player modules appear in the installed app. Changes do not require an APK update.</p>
+  <h1>Software Control Center</h1><TournamentComposer/><p>Publish live content and choose which player modules appear in the installed app. Changes do not require an APK update.</p>
   {loading?<p>Loading...</p>:<form onSubmit={save} style={{display:'grid',gap:20}}>
    {field('App title','app_title',60)}
    {field('Welcome message','welcome_message',180)}
