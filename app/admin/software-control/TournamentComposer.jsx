@@ -26,7 +26,7 @@ function DateTimeDialog({kind,value,onSave,onClose,anchor}){
  const chosen=kind==='date'?value:'';
  const dateKey=d=>year+'-'+pad(month+1)+'-'+pad(d);
  const saveTime=()=>onSave(pad(hour%12+(period==='PM'?12:0))+':'+pad(minute));
- const pos={top:Math.max(12,Math.min(anchor?.bottom+8||80,window.innerHeight-(kind==='date'?435:385))),left:Math.max(12,Math.min(anchor?.left||20,window.innerWidth-350))};
+ const popWidth=Math.min(356,window.innerWidth-24);const popHeight=kind==='date'?410:340;const below=(anchor?.bottom||80)+8;const above=(anchor?.top||80)-popHeight-8;const pos={top:below+popHeight<=window.innerHeight-12?below:above>=12?above:Math.max(12,window.innerHeight-popHeight-12),left:Math.max(12,Math.min(anchor?.left||20,window.innerWidth-popWidth-12))};
  return createPortal(<><div className="op-tc-popover-dismiss" onMouseDown={onClose}/><div className="op-tc-popover" style={pos}>
   <div className="op-tc-modal" role="dialog" aria-modal="false" aria-label={kind==='date'?'Select match date':'Select match time'}>
    <div className="op-tc-modal-top"><div><span>{kind==='date'?'MATCH CALENDAR':'MATCH START TIME'}</span><h3>{kind==='date'?'Choose a Date':'Choose a Time'}</h3><p>{kind==='date'?'Select your match day':'Bangladesh local time (UTC+6)'}</p></div><button type="button" onClick={onClose} aria-label="Close">✕</button></div>
