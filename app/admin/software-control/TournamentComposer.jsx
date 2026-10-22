@@ -4,24 +4,27 @@ import {supabase} from '../../lib/supabase';
 import './tournament-composer.css';
 const SQUADS=['OVER POWER Elite','OVER POWER','All Squads'];
 const MATCHES=['CHAMPION RUSH','Daily Scrim','BR Lobby','CS Ranked','Custom Match','Practice Match','Scrim'];
-const TIMES=['12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM','6:00 PM','7:00 PM','8:00 PM','9:00 PM','10:00 PM','11:00 PM','12:00 AM'];
+const pad=n=>String(n).padStart(2,'0');
+const bdParts=()=>{const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());return Object.fromEntries(parts.map(x=>[x.type,x.value]));};
+const autoSlot=()=>{const p=bdParts();let mins=Number(p.hour)*60+Number(p.minute)+30;mins=Math.ceil(mins/15)*15;const dayOffset=Math.floor(mins/1440);mins%=1440;const base=new Date(p.year+'-'+p.month+'-'+p.day+'T00:00:00+06:00');base.setUTCDate(base.getUTCDate()+dayOffset);return {date:new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(base).filter(x=>['year','month','day'].includes(x.type)).reduce((a,x)=>({...a,[x.type]:x.value}),{}),time:pad(Math.floor(mins/60))+':'+pad(mins%60),dayOffset};};
+const initialSlot=()=>{const x=autoSlot();return {date:x.date.year+'-'+x.date.month+'-'+x.date.day,time:x.time};};
+const displayTime=t=>{const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+pad(m)+' '+(h>=12?'PM':'AM');};
 const RULES=['সব প্লেয়ার ম্যাচের ১৫ মিনিট আগে Discord Voice-এ যোগ দিন এবং গেমে অনলাইন থাকুন।','ম্যাচ শুরুর ১০ মিনিট আগে গেম ও Discord-এ প্রস্তুত থাকুন।','Discord-এ নির্ধারিত Voice Channel-এ যোগ দিন, মাইক পরীক্ষা করুন এবং অ্যাডমিনের নির্দেশনা অনুসরণ করুন।','ম্যাচের সময়মতো লবিতে প্রবেশ করুন। রুম ID ও পাসওয়ার্ড অ্যাডমিন জানাবেন।'];
-const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const today=()=>initialSlot().date;
 export default function TournamentComposer({onPublished}){
- const [form,setForm]=useState({title:SQUADS[0],date:today(),platform:'Discord Voice',timezone:'BST',instructions:RULES[0],events:[{name:MATCHES[0],time:'5:00 PM'}]});
+ const [form,setForm]=useState(()=>{const slot=initialSlot();return {title:SQUADS[0],date:slot.date,platform:'Discord Voice',timezone:'BST',instructions:RULES[0],events:[{name:MATCHES[0],time:slot.time}]};});
  const [entryFee,setEntryFee]=useState('0'),[prizePool,setPrizePool]=useState(''),[targetSquad,setTargetSquad]=useState('');
  const [preview,setPreview]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false),[mode,setMode]=useState('template'),[confirmed,setConfirmed]=useState(false);
  const update=(key,value)=>{setForm(old=>({...old,[key]:value}));setPreview('');setConfirmed(false)};
  const eventUpdate=(i,key,value)=>update('events',form.events.map((x,j)=>i===j?{...x,[key]:value}:x));
  const select=(label,value,options,onChange)=><label className="op-tc-field"><span>{label}</span><select value={value} onChange={e=>onChange(e.target.value)}>{options.map(x=><option key={x} value={x}>{x}</option>)}</select></label>;
  const localToIso=(date,time)=>{
-  const match=String(time).match(/^(\\d{1,2}):(\\d{2})\\s*(AM|PM)$/i);
-  if(!match)throw Error('Select a valid match time.');
-  let hour=Number(match[1])%12;if(match[3].toUpperCase()==='PM')hour+=12;
-  const iso=new Date(date+'T'+String(hour).padStart(2,'0')+':'+match[2]+':00+06:00');
-  if(!Number.isFinite(iso.getTime()))throw Error('Select a valid match date.');
-  return date+'T'+String(hour).padStart(2,'0')+':'+match[2];
+  if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)||!/^\\d{2}:\\d{2}$/.test(time))throw Error('Select a valid date and time.');
+  const iso=new Date(date+'T'+time+':00+06:00');
+  if(!Number.isFinite(iso.getTime()))throw Error('Select a valid Bangladesh date and time.');
+  return date+'T'+time;
  };
+ const useAutoTime=(i)=>{const slot=initialSlot();setForm(old=>({...old,date:slot.date,events:old.events.map((e,j)=>j===i?{...e,time:slot.time}:e)}));setPreview('');setConfirmed(false);};
  async function submit(action){
   setBusy(true);setMessage('');
   try{
@@ -58,13 +61,13 @@ export default function TournamentComposer({onPublished}){
   <div className="op-tc-head"><span className="op-tc-icon">🏆</span><div><h2>Smart Tournament Announcement</h2><p>Select your details. The announcement is generated automatically.</p></div></div>
   <div className="op-tc-grid">
    {select('Tournament / Squad',form.title,SQUADS,v=>update('title',v))}
-   <label className="op-tc-field"><span>Match Date</span><input type="date" value={form.date} onChange={e=>update('date',e.target.value)}/></label>
+   <label className="op-tc-field op-tc-date-field"><span>📅 Match Date · Bangladesh</span><input type="date" min={today()} value={form.date} onChange={e=>update('date',e.target.value)}/><small>Calendar থেকে তারিখ নির্বাচন করুন</small></label>
    {select('Platform',form.platform,['Discord Voice','Discord Stage','In-Game Voice','TeamSpeak'],v=>update('platform',v))}
    {select('Time Zone',form.timezone,['BST','UTC','IST'],v=>update('timezone',v))}
   </div>
   <div className="op-tc-subhead"><h3>Match Schedule</h3><span>{form.events.length} selected</span></div>
-  <div className="op-tc-events">{form.events.map((event,i)=><div className="op-tc-event" key={i}><span className="op-tc-number">{String(i+1).padStart(2,'0')}</span>{select('Match',event.name,MATCHES,v=>eventUpdate(i,'name',v))}{select('Start Time',event.time,TIMES,v=>eventUpdate(i,'time',v))}<button type="button" className="op-tc-remove" disabled={form.events.length===1} onClick={()=>update('events',form.events.filter((_,j)=>j!==i))} aria-label="Remove match">✕</button></div>)}</div>
-  <button className="op-tc-add" type="button" disabled={form.events.length>=8} onClick={()=>update('events',[...form.events,{name:MATCHES[0],time:'8:00 PM'}])}>+ Add another match</button>
+  <div className="op-tc-events">{form.events.map((event,i)=><div className="op-tc-event" key={i}><span className="op-tc-number">{String(i+1).padStart(2,'0')}</span>{select('Match',event.name,MATCHES,v=>eventUpdate(i,'name',v))}<label className="op-tc-field op-tc-time-field"><span>🕒 Start Time · BST</span><div className="op-tc-time-input"><input type="time" step="300" value={event.time} onChange={e=>eventUpdate(i,'time',e.target.value)}/><button type="button" className="op-tc-auto-time" onClick={()=>useAutoTime(i)} title="Auto-select next available time">Auto</button></div><small>{displayTime(event.time)} · 5-minute precision</small></label><button type="button" className="op-tc-remove" disabled={form.events.length===1} onClick={()=>update('events',form.events.filter((_,j)=>j!==i))} aria-label="Remove match">✕</button></div>)}</div>
+  <button className="op-tc-add" type="button" disabled={form.events.length>=8} onClick={()=>{const last=form.events[form.events.length-1];const [h,m]=last.time.split(':').map(Number);const next=pad((h+1)%24)+':'+pad(m);update('events',[...form.events,{name:MATCHES[0],time:next}])}}>+ Add another match</button>
   <div className="op-tc-grid">
    <label className="op-tc-field"><span>Entry Fee (৳)</span><input type="number" min="0" value={entryFee} onChange={e=>{setEntryFee(e.target.value);setPreview('');setConfirmed(false)}}/></label>
    <label className="op-tc-field"><span>Prize Pool (optional)</span><input value={prizePool} onChange={e=>{setPrizePool(e.target.value);setPreview('');setConfirmed(false)}} placeholder="৳2,000 + bonus"/></label>
