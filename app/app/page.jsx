@@ -380,9 +380,14 @@ export default function SoftwareApp(){
       <section className="op-app-daily">
        <div className="op-app-daily-head"><div><span className="op-app-overline">TODAY · BANGLADESH TIME</span><h2>Match Schedule</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
        {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><time className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</time><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small><small className="op-app-countdown">⏳ {countdown(x.starts_at)}</small></div></article>)}</div>:<p className="op-app-daily-empty">No matches today.</p>}
-       <button type="button" className="op-app-history-toggle" aria-expanded={inboxHistory} onClick={()=>go('history')><FiClock/> History <FiChevronRight/></button>
+       <button type="button" className="op-app-history-toggle" aria-expanded={inboxHistory} onClick={()=>go('history')}><FiClock/> History <FiChevronRight/></button>
 
       </section>}
+    </div>}
+    {tab==='history'&&!admin&&<div className="op-app-view op-app-history-page">
+     <button type="button" className="op-app-back" onClick={()=>go('alerts')}><FiArrowLeft/> Back to Schedule</button>
+     <h1>Match History</h1>
+     <div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div className="op-app-history-row" key={x.id}><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Past'}</small></div>):<p>No previous matches yet.</p>}</div>
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
      <SectionHead overline="MY TEAM" title="My Squad" subtitle="Your current team details."/>
