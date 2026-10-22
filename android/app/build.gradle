@@ -18,7 +18,7 @@ android {
         applicationId 'com.overpower.esports'
         minSdk 26
         targetSdk 35
-        versionCode 3
+        versionCode 4
         resValue 'string','op_firebase_app_id',(System.getenv('OP_FIREBASE_APP_ID') ?: '')
         resValue 'string','op_firebase_api_key',(System.getenv('OP_FIREBASE_API_KEY') ?: '')
         resValue 'string','op_firebase_project_id',(System.getenv('OP_FIREBASE_PROJECT_ID') ?: '')
@@ -29,7 +29,7 @@ android {
         resValue 'string','google_api_key',(System.getenv('OP_FIREBASE_API_KEY') ?: '')
         resValue 'string','gcm_defaultSenderId',(System.getenv('OP_FIREBASE_SENDER_ID') ?: '')
         resValue 'string','project_id',(System.getenv('OP_FIREBASE_PROJECT_ID') ?: '')
-        versionName '1.2.0'
+        versionName '1.3.0'
     }
 
     signingConfigs {
