@@ -63,6 +63,7 @@ export default function SoftwareApp(){
  const [userData,setUserData]=useState(null);
  const [tab,setTab]=useState('home');
  const [matchView,setMatchView]=useState('today');
+ const [showHistory,setShowHistory]=useState(false);
  const [module,setModule]=useState(null);
  const [sideOpen,setSideOpen]=useState(false);
  const [fixtures,setFixtures]=useState({schedules:[],inbox:[],unread:0});
@@ -83,6 +84,7 @@ export default function SoftwareApp(){
  const upcoming=useMemo(()=>fixtures.schedules.filter(x=>x.status==='published'&&new Date(x.starts_at).getTime()>Date.now()),[fixtures.schedules]);
  const bdDate=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(d));
  const todayMatches=fixtures.schedules.filter(x=>x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()));
+ const historyMatches=fixtures.schedules.filter(x=>x.status!=='published'||bdDate(x.starts_at)<bdDate(Date.now())).sort((a,b)=>new Date(b.starts_at)-new Date(a.starts_at));
  const visibleMatches=fixtures.schedules.filter(x=>matchView==='today'?x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()):matchView==='history'?x.status!=='published'||new Date(x.starts_at).getTime()<Date.now():x.status==='published'&&new Date(x.starts_at).getTime()>=Date.now());
 
  const authenticatedFetch=useCallback(async(path,method='GET',body)=>{
@@ -317,15 +319,15 @@ export default function SoftwareApp(){
        <div><FiZap/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div>
       </>}
      </section>
-     {remote?.announcement_enabled&&remote.announcement&&<aside role="status" style={{margin:'16px 0',padding:16,border:'1px solid var(--op-remote-accent,#0ea5e9)',borderRadius:12}}><strong>OFFICIAL ANNOUNCEMENT</strong><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{remote.announcement}</p></aside>}
-     {remote?.welcome_message&&<p style={{margin:'8px 0 14px',fontSize:15,opacity:.85}}>{remote.welcome_message}</p>}
-     {remote?.banner_url&&<img src={remote.banner_url} alt="Official event banner" loading="lazy" style={{width:'100%',maxHeight:260,objectFit:'cover',borderRadius:16,margin:'12px 0'}}/>}
+     {remote?.announcement_enabled&&remote.announcement&&false&&<aside role="status" style={{margin:'16px 0',padding:16,border:'1px solid var(--op-remote-accent,#0ea5e9)',borderRadius:12}}><strong>OFFICIAL ANNOUNCEMENT</strong><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{remote.announcement}</p></aside>}
+     {remote?.welcome_message&&false&&<p style={{margin:'8px 0 14px',fontSize:15,opacity:.85}}>{remote.welcome_message}</p>}
+     {remote?.banner_url&&false&&<img src={remote.banner_url} alt="Official event banner" loading="lazy" style={{width:'100%',maxHeight:260,objectFit:'cover',borderRadius:16,margin:'12px 0'}}/>}
      {remote?.maintenance_enabled&&<aside role="status" style={{padding:16,border:'1px solid #f59e0b',borderRadius:12,margin:'12px 0'}}>Maintenance notice: Some services may be temporarily unavailable.</aside>}
-     {unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
+     {false&&unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
       <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
      <div className="op-app-section-title"><div><span className="op-app-overline">QUICK ACCESS</span><h2>Your Features</h2></div><FiGrid/></div>
-     {!admin&&approved&&<section className="op-app-native-onboarding" aria-label="Match notification settings">
+     {false&&!admin&&approved&&<section className="op-app-native-onboarding" aria-label="Match notification settings">
        <NativePushSetup hideWebHint/>
      </section>}
      <section className="op-app-feature-grid">
@@ -340,11 +342,13 @@ export default function SoftwareApp(){
        <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
-     {!admin&&remote?.matches_enabled!==false&&todayMatches.length>0&&<section className="op-app-next-match"><div className="op-app-section-title"><div><span className="op-app-overline">TODAY</span><h2>Today's Match Schedule</h2></div><button onClick={()=>{setMatchView('today');go('matches')}}>View Today <FiChevronRight/></button></div>{todayMatches.map(x=><MatchCard key={x.id} match={x}/>)}</section>}
-     {remote?.matches_enabled!==false&&upcoming.length>0&&<section className="op-app-next-match"><div className="op-app-section-title">
-      <div><span className="op-app-overline">UP NEXT</span><h2>Next Match</h2></div>
-      <button onClick={()=>go(admin?'schedule':'matches')}>View All <FiChevronRight/></button>
-     </div><MatchCard match={upcoming[0]}/></section>}
+     {!admin&&remote?.matches_enabled!==false&&<section className="op-app-daily">
+      <div className="op-app-daily-head"><div><span className="op-app-overline">BANGLADESH TIME · TODAY</span><h2>Today's Matches</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
+      {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><span className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</span><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small></div><span className="op-app-daily-live">Scheduled</span></article>)}</div>:<p className="op-app-daily-empty">No matches scheduled for today. Check back when a new match is published.</p>}
+      <button className="op-app-history-toggle" type="button" aria-expanded={showHistory} onClick={()=>setShowHistory(!showHistory)}><FiClock/> Match History ({historyMatches.length}) <FiChevronRight/></button>
+      {showHistory&&<div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div className="op-app-history-row" key={x.id}><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Finished'}</small></div>):<p>No previous matches.</p>}</div>}
+     </section>}
+
     </div>}
     {tab==='matches'&&!admin&&remote?.matches_enabled!==false&&<div className="op-app-view">
      <SectionHead overline="YOUR LIVE FIXTURES" title="My Match Center" subtitle="Published match schedules for your approved squad appear here."/>
@@ -360,14 +364,17 @@ export default function SoftwareApp(){
      {approved?<PlayerWallet/>:<EmptyPanel icon={FiLock} title="Wallet Unavailable" description="Only approved players may request withdrawals."/>}
     </div>}
     {tab==='alerts'&&<div className="op-app-view">
-     <SectionHead overline="MATCH ALERTS" title="Notifications Inbox" subtitle="Published matches and start-time reminders."/>
+     <SectionHead overline="MATCH ALERTS" title="Inbox" subtitle="Your match announcements and reminders, organized by date."/>
      {matchError&&<p role="alert" className="op-app-error">{matchError}</p>}
      <div className="op-app-inline"><span>{unread} unread</span><button onClick={loadMatches}><FiRefreshCw/> Refresh</button></div>
      {!approved&&!admin?<EmptyPanel icon={FiShield} title="Approved Player Required" description="You must be an approved player to receive match alerts."/>:
      fixtures.inbox.length===0?<EmptyPanel icon={FiBell} title="Inbox Empty" description="New match notifications will appear here."/>:
-     <div className="op-app-inbox">{fixtures.inbox.map(note=>{
+     <div className="op-app-inbox op-app-inbox-chat">{fixtures.inbox.map((note,index)=>{
       const match=fixtures.schedules.find(s=>s.id===note.schedule_id);
-      return <button key={note.id} className={'op-app-notice '+(!note.read_at?'is-unread':'')}
+      const day=shortDate.format(new Date(note.created_at));
+      const previous=fixtures.inbox[index-1];
+      const newDay=!previous||shortDate.format(new Date(previous.created_at))!==day;
+      return <div key={note.id}>{newDay&&<div className="op-app-chat-day">{day}</div>}<button className={'op-app-notice '+(!note.read_at?'is-unread':'')}
        onClick={()=>{if(!note.read_at)markRead(note.id);if(match)go(admin?'schedule':'matches')}}>
        <span className="op-app-notice-icon"><FiBell/></span><span><strong>{
         note.event_key==='created'?'New Match Published':
@@ -375,12 +382,9 @@ export default function SoftwareApp(){
         note.event_key==='30m'?'Match starts in 30 minutes':'Match starts in 15 minutes'
        }</strong><small>{match?.title||'Match Center'} · {dateTime.format(new Date(note.created_at))}</small></span>
        {!note.read_at&&<i/>}
-      </button>;
+      </button></div>;
      })}</div>}
-     {!admin&&approved&&<details className="op-app-push-settings" open><summary><FiSmartphone/> Enable Phone Push Notifications</summary>
-      <NativePushSetup/>
-      <PlayerMatchCenter/>
-     </details>}
+
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
      <SectionHead overline="MY TEAM" title="My Squad" subtitle="Your current team details."/>
