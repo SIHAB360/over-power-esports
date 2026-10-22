@@ -6,12 +6,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {FiGrid,FiUsers,FiTarget,FiLayers,FiAward,FiDollarSign,
  FiCreditCard,FiShield,FiImage,FiActivity,FiBarChart2,FiArrowUpRight,
- FiMenu,FiX,FiLogOut,FiClock} from 'react-icons/fi';
+ FiMenu,FiX,FiLogOut,FiClock,FiSmartphone} from 'react-icons/fi';
 import {supabase} from '../lib/supabase';
 import logo from '../assets/logo.png';
 
 const menu=[
  {label:'Dashboard',href:'/admin/dashboard',Icon:FiGrid},
+ {label:'Software Control',href:'/admin/software-control',Icon:FiSmartphone},
  {label:'Players',href:'/admin/players',Icon:FiUsers},
  {label:'Roster Controls',href:'/admin/roster',Icon:FiActivity},
  {label:'Match Schedule Center',href:'/admin/match-schedule',Icon:FiClock},
