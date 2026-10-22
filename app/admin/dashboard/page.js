@@ -20,7 +20,6 @@ const WithdrawalManagement = dynamic(() => import("./WithdrawalManagement"), { s
 // Reuse each existing FULL management page inside the new command center.
 // This preserves every existing form, field, validation, database write and record view.
 const ADMIN_MANAGERS = {
-  software: dynamic(() => import("../software-control/page"), { ssr: false }),
   players: dynamic(() => import("../players/page"), { ssr: false }),
   roster: dynamic(() => import("../roster/page"), { ssr: false }),
   schedule: dynamic(() => import("../match-schedule/page"), { ssr: false }),
@@ -37,7 +36,6 @@ const LIMIT = 500;
 // Existing management routes are kept intact; no fictitious routes.
 const NAV = [
   { key: "overview", name: "Overview", Icon: FiGrid, description: "Esports operations at a glance" },
-  { key: "software", name: "Software Control", Icon: FiSmartphone, href: "/admin/software-control", description: "Tournament announcements, Android push and player app settings" },
   { key: "players", name: "Players", Icon: FiUsers, href: "/admin/players", description: "Player accounts and approvals" },
   { key: "roster", name: "Roster Controls", Icon: FiActivity, href: "/admin/roster", description: "Activate players, show or hide squads, and move players" },
   { key: "schedule", name: "Match Schedule Center", Icon: FiCalendar, href: "/admin/match-schedule", description: "Publish lobbies, entry fees, prize pools and automatic player alerts" },
