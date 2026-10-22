@@ -59,6 +59,7 @@ function EmptyPanel({icon:Icon,title,description}){
 export default function SoftwareApp(){
  const [stage,setStage]=useState('checking');
  const [remote,setRemote]=useState(null);
+ const updateRemote=useCallback(next=>setRemote(old=>JSON.stringify(old)===JSON.stringify(next)?old:next),[]);
  const [userData,setUserData]=useState(null);
  const [tab,setTab]=useState('home');
  const [module,setModule]=useState(null);
@@ -244,7 +245,8 @@ export default function SoftwareApp(){
  const showAdminComponent=admin&&(tab==='schedule'||(tab==='manage'&&module));
  const currentModule=tab==='schedule'?'schedule':module;
  const unread=fixtures.unread||0;
- return <div className="op-app-root" data-app-role={role}>
+ return <div className="op-app-root" data-app-role={role} style={remote?.accent_color?{'--op-remote-accent':remote.accent_color}:undefined}>
+  <LiveAnnouncement onSettings={updateRemote} hidden/>
   {sideOpen&&<button className="op-app-scrim" type="button" onClick={()=>setSideOpen(false)} aria-label="Close application menu"/>}
   <aside className={'op-app-sidebar'+(sideOpen?' is-open':'')} aria-label="Software navigation">
    <div className="op-app-sidebar-logo"><span><Image src={officialLogo} alt="" width={46} height={46}/></span><div><strong>OVER POWER</strong><small>ESPORTS</small></div>
@@ -271,7 +273,7 @@ export default function SoftwareApp(){
     <div className="op-app-top-left">
      <button className="op-app-hamburger" aria-label="Open application menu" onClick={()=>setSideOpen(true)}><FiMenu/></button>
      <div className="op-app-top-logo"><Image src={officialLogo} alt="OVER POWER official logo" width={38} height={38}/></div>
-     <div><b>OVER POWER</b><small>ESPORTS APP</small></div>
+     <div><b>{remote?.app_title||'OVER POWER ESPORTS'}</b><small>ESPORTS APP</small></div>
     </div>
     <div className="op-app-top-actions">
      <span className="op-app-secure"><FiShield/> SECURE</span>
@@ -311,7 +313,7 @@ export default function SoftwareApp(){
        <div><FiZap/><span>Kills</span><strong>{userData.player?.total_kills??0}</strong></div>
       </>}
      </section>
-     <LiveAnnouncement onSettings={setRemote}/>
+     {remote?.announcement_enabled&&remote.announcement&&<aside role="status" style={{margin:'16px 0',padding:16,border:'1px solid var(--op-remote-accent,#0ea5e9)',borderRadius:12}}><strong>OFFICIAL ANNOUNCEMENT</strong><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{remote.announcement}</p></aside>}
      {remote?.welcome_message&&<p style={{margin:'8px 0 14px',fontSize:15,opacity:.85}}>{remote.welcome_message}</p>}
      {remote?.banner_url&&<img src={remote.banner_url} alt="Official event banner" loading="lazy" style={{width:'100%',maxHeight:260,objectFit:'cover',borderRadius:16,margin:'12px 0'}}/>}
      {remote?.maintenance_enabled&&<aside role="status" style={{padding:16,border:'1px solid #f59e0b',borderRadius:12,margin:'12px 0'}}>Maintenance notice: Some services may be temporarily unavailable.</aside>}
@@ -326,11 +328,11 @@ export default function SoftwareApp(){
       {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):
       <>
-       {remote?.matches_enabled!==false&&<FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches and Lobbies" accent="cyan" onClick={()=>go('matches')}/>}
-       {remote?.wallet_enabled!==false&&<FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>go('wallet')}/>}
+       {remote?.matches_enabled!==false&&<FeatureCard icon={FiCalendar} title="Match Center" sub="Upcoming Matches and Lobbies" accent="cyan" onClick={()=>remote?.matches_enabled!==false&&go('matches')}/>}
+       {remote?.wallet_enabled!==false&&<FeatureCard icon={FiCreditCard} title="My Wallet" sub="Withdrawals and payment history" accent="pink" onClick={()=>remote?.wallet_enabled!==false&&go('wallet')}/>}
        <FeatureCard icon={FiBell} title="Notifications" sub="Match reminders and inbox" accent="purple" onClick={()=>go('alerts')} chip={unread||null}/>
        <FeatureCard icon={FiLayers} title="My Team" sub={userData?.team?.name||'Squad details'} accent="mint" onClick={()=>go('team')}/>
-       {remote?.tournaments_enabled!==false&&<FeatureCard icon={FiAward} title="Tournaments" sub="Competitions and schedule" accent="gold" onClick={()=>go('tournaments')}/>}
+       {remote?.tournaments_enabled!==false&&<FeatureCard icon={FiAward} title="Tournaments" sub="Competitions and schedule" accent="gold" onClick={()=>remote?.tournaments_enabled!==false&&go('tournaments')}/>}
        <FeatureCard icon={FiTrendingUp} title="My Performance" sub="Matches, wins and kills" accent="blue" onClick={()=>go('performance')}/>
       </>}
      </section>
