@@ -391,3 +391,17 @@
 .op-app-inbox-chat .op-app-notice strong{font-size:14px}
 .op-app-inbox-chat .op-app-notice small{font-size:12px;line-height:1.5}
 @media(max-width:420px){.op-app-daily-row{gap:8px;padding:10px}.op-app-daily-time{min-width:65px;font-size:12px}.op-app-daily-live{display:none}.op-app-history-row time{max-width:95px;font-size:11px}}
+
+
+/* Player overflow menu, standalone history and live countdown */
+.op-app-top-actions{position:relative}
+.op-app-more-trigger{display:grid;place-items:center;width:42px;height:42px;border:1px solid #557fa4;border-radius:13px;background:#263c61;color:#e7faff;font-size:22px}
+.op-app-more-menu{position:absolute;z-index:100;top:75px;right:12px;width:min(320px,calc(100vw - 28px));padding:9px;background:linear-gradient(150deg,#1c3153,#17243e);border:1px solid #5b9cc0;border-radius:17px;box-shadow:0 22px 55px #0008;display:grid;gap:3px}
+.op-app-more-menu button{width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;background:transparent;color:#edf8ff;border:0;border-radius:10px;text-align:left;font-size:14px;font-weight:750}
+.op-app-more-menu button:hover,.op-app-more-menu button:focus-visible{background:#315478}
+.op-app-more-menu button svg:last-child{margin-left:auto}
+.op-app-history-page{max-width:900px;margin-inline:auto}
+.op-app-history-page h1{color:#f5ffff;font-size:clamp(23px,5vw,33px);margin:14px 0}
+.op-app-history-page .op-app-history-list{max-height:none;overflow:visible;border:1px solid #5d94b17a;border-radius:16px;background:#19314e;padding:8px 15px}
+.op-app-countdown{display:block!important;color:#78f7dc!important;font-weight:850!important;font-variant-numeric:tabular-nums;font-size:13px!important;margin-top:4px}
+@media(max-width:600px){.op-app-more-menu{top:65px;right:8px}.op-app-history-page .op-app-history-row{gap:6px}.op-app-history-page .op-app-history-row time{max-width:105px}.op-app-more-trigger{width:38px;height:38px}}
