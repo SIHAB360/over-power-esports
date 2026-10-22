@@ -312,6 +312,7 @@ export default function SoftwareApp(){
       </>}
      </section>
      <LiveAnnouncement onSettings={setRemote}/>
+     {remote?.welcome_message&&<p style={{margin:'8px 0 14px',fontSize:15,opacity:.85}}>{remote.welcome_message}</p>}
      {remote?.banner_url&&<img src={remote.banner_url} alt="Official event banner" loading="lazy" style={{width:'100%',maxHeight:260,objectFit:'cover',borderRadius:16,margin:'12px 0'}}/>}
      {remote?.maintenance_enabled&&<aside role="status" style={{padding:16,border:'1px solid #f59e0b',borderRadius:12,margin:'12px 0'}}>Maintenance notice: Some services may be temporarily unavailable.</aside>}
      {unread>0&&<button className="op-app-alert-strip" onClick={()=>go('alerts')}><FiBell/>
