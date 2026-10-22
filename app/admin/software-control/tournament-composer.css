@@ -109,3 +109,19 @@ html[data-op-admin-theme="light"] .op-tc .op-tc-date-field input::-webkit-calend
 .op-tc .op-tc-picker-trigger strong{font-size:14px!important}
 .op-tc .op-tc-picker-trigger span{font-size:12px;color:#c5a1e5}
 @media(max-width:420px){.op-tc-popover{width:min(322px,calc(100vw - 24px))}}
+
+
+/* Final fixed overlay: stays attached to the clicked control, never expands form */
+body>.op-tc-popover-dismiss{position:fixed!important;inset:0!important;z-index:2147483645!important;background:transparent!important}
+body>.op-tc-popover{position:fixed!important;z-index:2147483646!important;width:min(356px,calc(100vw - 24px))!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto!important;box-sizing:border-box!important;isolation:isolate}
+body>.op-tc-popover .op-tc-modal{display:block!important;box-sizing:border-box!important;position:relative!important;width:100%!important;max-width:none!important;padding:16px!important;border-radius:14px!important;background:#242529!important;border:1px solid #595d6a!important;box-shadow:0 22px 70px #000b!important;color:#fff!important}
+body>.op-tc-popover .op-tc-wheel-picker{display:grid!important;grid-template-columns:1.1fr 1.1fr .7fr!important;gap:10px!important}
+body>.op-tc-popover .op-tc-wheel-col{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-content:start!important;gap:4px!important;max-height:none!important;overflow:visible!important}
+body>.op-tc-popover .op-tc-wheel-col>span{grid-column:1/-1!important;position:static!important;text-align:center!important;padding:5px!important}
+body>.op-tc-popover .op-tc-wheel-col button{min-height:32px!important;min-width:0!important;padding:5px 2px!important;border-radius:6px!important;font-size:12px!important}
+body>.op-tc-popover .op-tc-wheel-period{grid-template-columns:1fr!important}
+body>.op-tc-popover .op-tc-wheel-period>span{grid-column:1!important}
+body>.op-tc-popover .op-tc-wheel-period button{min-height:43px!important}
+body>.op-tc-popover .op-tc-modal-apply{display:block!important;width:100%!important;background:#7e55af!important;color:white!important;margin-top:13px!important}
+body>.op-tc-popover .op-tc-calendar-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:4px!important}
+body>.op-tc-popover .op-tc-calendar-grid button{width:100%!important;min-height:36px!important}
