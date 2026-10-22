@@ -15,7 +15,7 @@ export async function PUT(request){
   const {db}=await identity(request,true);
   const body=await request.json().catch(()=>null);
   if(!body||typeof body!=='object')throw new HttpError('Invalid settings.');
-  const textLimits={announcement:300,app_title:60,welcome_message:180,banner_url:500};
+  const textLimits={announcement:1500,app_title:60,welcome_message:180,banner_url:500};
   const flags=['announcement_enabled','maintenance_enabled','matches_enabled','wallet_enabled','tournaments_enabled'];
   const updates={id:1,updated_at:new Date().toISOString()};
   for(const [key,limit] of Object.entries(textLimits)){
