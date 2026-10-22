@@ -21,6 +21,19 @@ export default function AdminMatchScheduleCenter(){
  const [editing,setEditing]=useState(null),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false);
  const [notice,setNotice]=useState(''),[err,setErr]=useState('');
  const [pendingCancel,setPendingCancel]=useState(null);
+ const [pushHealth,setPushHealth]=useState(null);
+ const [pushHealthError,setPushHealthError]=useState(false);
+ const checkPushHealth=async()=>{
+  try{
+   const {data:{session}}=await supabase.auth.getSession();
+   if(!session?.access_token)return;
+   const r=await fetch('/api/admin/match-push-status',{cache:'no-store',
+    headers:{Authorization:'Bearer '+session.access_token}});
+   if(!r.ok)throw Error('Unavailable');
+   const body=await r.json();
+   setPushHealth(body);setPushHealthError(false);
+  }catch{setPushHealthError(true)}
+ };
  const request=async(method='GET',body=null)=>{
   const {data:{session}}=await supabase.auth.getSession();
   if(!session?.access_token)throw Error('Admin login required');
@@ -37,7 +50,7 @@ export default function AdminMatchScheduleCenter(){
   catch(e){setErr(e.message)}
   finally{setLoading(false)}
  };
- useEffect(()=>{load()},[]);
+ useEffect(()=>{load();checkPushHealth()},[]);
  const upcoming=rows.filter(r=>r.status==='published'&&new Date(r.starts_at).getTime()>Date.now());
  const days=useMemo(()=>{
   const map=new Map();
@@ -153,6 +166,27 @@ export default function AdminMatchScheduleCenter(){
       </div>:<span className="op-schedule-cancelled">Cancelled</span>}
      </article>)}
     </div>)}
+    <section className="op-schedule-native-status" aria-label="System push notification status">
+     <div className="op-schedule-native-status-head">
+      <strong><FiBell aria-hidden="true"/> Android Push Readiness</strong>
+      <button type="button" className="op-schedule-secondary" onClick={checkPushHealth} aria-label="Refresh Android push readiness">
+       <FiRefreshCw/> Check
+      </button>
+     </div>
+     {pushHealth?
+      <div className="op-schedule-native-status-grid">
+       <span><b>{pushHealth.registeredAndroidDevices}</b> Android devices opted in</span>
+       <span><b>{pushHealth.webPushDevices}</b> browser push devices</span>
+       <span><b>{pushHealth.firebaseConfigured?'Configured':'Not configured'}</b> Firebase server</span>
+      </div>:
+      <p>{pushHealthError?'Could not load push readiness. Match inbox alerts still work.':'Checking push setup…'}</p>}
+     {pushHealth&&(!pushHealth.firebaseConfigured||!pushHealth.registeredAndroidDevices)&&
+      <p className="op-schedule-native-status-warning">
+       {pushHealth.firebaseConfigured?'No Android player has opted into notifications yet.':'Firebase server credentials are not set, so Android closed-app banners cannot be sent yet.'}
+       {' '}Each approved player must enable Android Notifications from their app Home or Inbox.
+      </p>}
+     <p className="op-schedule-native-status-info">This is configuration and enrollment status, not proof of push delivery. <a href="https://firebase.google.com/docs/cloud-messaging/android/get-started" target="_blank" rel="noopener noreferrer">Firebase setup guide</a></p>
+    </section>
     <aside className="op-schedule-insight" aria-label="Match notification timing">
      <div className="op-schedule-insight-inner">
       <div className="op-schedule-insight-title"><FiBell aria-hidden="true"/> Automatic reminder sequence</div>

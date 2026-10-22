@@ -312,6 +312,9 @@ export default function SoftwareApp(){
       <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
      <div className="op-app-section-title"><div><span className="op-app-overline">QUICK ACCESS</span><h2>Your Features</h2></div><FiGrid/></div>
+     {!admin&&approved&&<section className="op-app-native-onboarding" aria-label="Match notification settings">
+       <NativePushSetup hideWebHint/>
+     </section>}
      <section className="op-app-feature-grid">
       {admin?MODULES.slice(0,8).map(x=><FeatureCard key={x.id} icon={x.icon} title={x.title} sub={x.sub}
        accent={x.tone} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id)}/>):

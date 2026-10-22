@@ -6,7 +6,7 @@ const flag='op-native-push-opted-in';
 const tokenKey='op-native-push-token';
 const ownerKey='op-native-push-user-id';
 
-export default function NativePushSetup(){
+export default function NativePushSetup({hideWebHint=false}){
  const [native,setNative]=useState(false);
  const [status,setStatus]=useState('');
  const [loading,setLoading]=useState(false);
@@ -104,6 +104,7 @@ export default function NativePushSetup(){
   }catch(e){setStatus(e.message||'Could not disable notifications.')}
   finally{setLoading(false)}
  };
+ if(!native&&hideWebHint)return null;
  if(!native)return <p className="op-app-native-hint">
   For alerts when the app is closed, install the latest Android app.
   On supported browsers, you can also enable Web Push below.
