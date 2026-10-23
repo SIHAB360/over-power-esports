@@ -298,12 +298,13 @@ export default function SoftwareApp(){
    {moreOpen&&!admin&&<div className="op-app-more-menu" role="navigation" aria-label="Player details and options">
      {[['profile','My Profile',FiUser],['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['wallet','Wallet',FiCreditCard],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} onClick={()=>go(id)}><Icon/><span>{label}</span><FiChevronRight/></button>)}
    </div>}
-   {matchBanner&&<div className="op-app-push-banner" role="alert">
-    <span className="op-app-push-banner-icon"><FiBell/></span>
-    <div><strong>{matchBanner.title}</strong><small>{matchBanner.subtitle}</small></div>
-    <button type="button" onClick={()=>{go('alerts');setMatchBanner(null)}}>View</button>
-    <button type="button" onClick={()=>setMatchBanner(null)} aria-label="Dismiss notification"><FiX/></button>
-   </div>}
+   {matchBanner&&<aside className="op-app-push-banner op-app-push-premium" role="alert" aria-label="Tournament notification">
+    <div className="op-app-push-premium-inner">
+     <div className="op-app-push-brand"><Image src={officialLogo} alt="OVER POWER ESPORTS" width={42} height={42}/><span><b>OVER POWER ESPORTS</b><small>LIVE TOURNAMENT ALERT</small></span><button className="op-app-push-close" type="button" onClick={()=>setMatchBanner(null)} aria-label="Dismiss notification"><FiX/></button></div>
+     <div className="op-app-push-message"><span className="op-app-push-bell"><FiBell/></span><div><strong>{matchBanner.title}</strong><small>{matchBanner.subtitle}</small></div></div>
+     <div className="op-app-push-actions"><button type="button" onClick={()=>setMatchBanner(null)}>Dismiss</button><button type="button" onClick={()=>{go('alerts');setMatchBanner(null)}}><FiEye/> View Match</button></div>
+    </div>
+   </aside>}
    <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
     {tab==='home'&&<div className="op-app-view">
      {admin&&<>
