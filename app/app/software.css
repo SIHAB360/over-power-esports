@@ -468,3 +468,41 @@
 @media(prefers-reduced-motion:reduce){
  .op-app-premium-fixture,.op-app-premium-fixture:before,.op-app-fixture-live-dot{animation:none!important}
 }
+
+
+/* FaceTime-inspired, branded match notification — replaces old horizontal toast. */
+.op-app-root .op-app-push-banner.op-app-push-premium{
+ position:fixed!important;z-index:1000!important;
+ top:calc(16px + env(safe-area-inset-top))!important;
+ left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+ display:block!important;width:min(calc(100vw - 24px),430px)!important;
+ padding:2px!important;margin:0!important;overflow:hidden!important;
+ border:0!important;border-radius:28px!important;
+ background:linear-gradient(115deg,#4de9ff,#8c6aff,#fc6ebd,#45e5ca,#4de9ff)!important;
+ background-size:300% 300%!important;
+ animation:op-push-glow 7s ease-in-out infinite!important;
+ box-shadow:0 12px 38px #04081fc9,0 0 22px #5ce7ff88,0 0 38px #aa5aff44!important;
+}
+.op-app-push-premium .op-app-push-premium-inner{
+ display:grid!important;gap:15px!important;padding:15px!important;border-radius:26px!important;
+ background:linear-gradient(140deg,#28334d 0%,#302f48 65%,#292d46 100%)!important;
+ color:#fff!important;min-width:0!important;
+}
+.op-app-push-premium .op-app-push-brand{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important}
+.op-app-push-premium .op-app-push-brand img{width:42px!important;height:42px!important;object-fit:cover!important;border-radius:13px!important;box-shadow:0 0 14px #9c76ff80!important;flex-shrink:0}
+.op-app-push-premium .op-app-push-brand>span{display:grid!important;gap:3px!important;min-width:0!important;flex:1!important}
+.op-app-push-premium .op-app-push-brand b{font-size:12px!important;letter-spacing:.07em!important;line-height:1.2!important;color:#fff!important}
+.op-app-push-premium .op-app-push-brand small{font-size:9px!important;letter-spacing:.13em!important;color:#b9c8e6!important;font-weight:800!important}
+.op-app-push-premium button.op-app-push-close{display:grid!important;place-items:center!important;width:34px!important;height:34px!important;padding:0!important;flex-shrink:0!important;border-radius:50%!important;background:#ffffff19!important;border:1px solid #ffffff35!important}
+.op-app-push-premium .op-app-push-message{display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important}
+.op-app-push-premium .op-app-push-bell{display:grid!important;place-items:center!important;flex-shrink:0!important;width:44px!important;height:44px!important;font-size:24px!important;color:#6affd6!important;background:#51f9d012!important;border-radius:14px!important}
+.op-app-push-premium .op-app-push-message>div{display:grid!important;gap:5px!important;min-width:0!important;flex:1!important}
+.op-app-push-premium .op-app-push-message strong{font-size:16px!important;color:#fff!important;line-height:1.3!important}
+.op-app-push-premium .op-app-push-message small{font-size:13px!important;color:#d4d8ec!important;overflow-wrap:anywhere!important}
+.op-app-push-premium .op-app-push-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+.op-app-push-premium .op-app-push-actions button{display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;
+ min-height:43px!important;border-radius:24px!important;border:0!important;
+ background:#ffffff2b!important;color:#fff!important;font-size:14px!important;font-weight:800!important}
+.op-app-push-premium .op-app-push-actions button:last-child{background:#27d66d!important;color:#fff!important;box-shadow:0 0 15px #20e47c55!important}
+@keyframes op-push-glow{0%,100%{background-position:0% 50%;box-shadow:0 12px 38px #04081fc9,0 0 18px #5ce7ff77}50%{background-position:100% 50%;box-shadow:0 12px 38px #04081fc9,0 0 30px #ec64ff99}}
+@media(prefers-reduced-motion:reduce){.op-app-root .op-app-push-banner.op-app-push-premium{animation:none!important}}
