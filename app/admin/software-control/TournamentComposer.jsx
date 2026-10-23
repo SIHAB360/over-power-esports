@@ -14,7 +14,7 @@ const today=()=>initialSlot().date;
 const monthLabel=(year,month)=>new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric'}).format(new Date(Date.UTC(year,month,1)));
 export default function TournamentComposer({onPublished}){
  const [form,setForm]=useState(()=>{const slot=initialSlot();return {title:SQUADS[0],date:slot.date,platform:'Discord Voice',timezone:'BST',instructions:RULES[0],events:[{name:MATCHES[0],time:slot.time}]};});
- const quickDate=days=>{const p=bdParts();const d=new Date(p.year+'-'+p.month+'-'+p.day+'T12:00:00+06:00');d.setUTCDate(d.getUTCDate()+days);update('date',new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(d).filter(x=>['year','month','day'].includes(x.type)).reduce((a,x)=>({...a,[x.type]:x.value}),{}).year+'-'+pad(Number(new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',month:'numeric'}).format(d)))+'-'+pad(Number(new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',day:'numeric'}).format(d))));};
+ const quickDate=days=>{const p=bdParts();const base=new Date(Date.UTC(Number(p.year),Number(p.month)-1,Number(p.day)+days));update('date',base.toISOString().slice(0,10));};
  const setTimePart=(i,part,v)=>{const [hh,mm]=form.events[i].time.split(':').map(Number);const h12=hh%12||12;const period=hh>=12?'PM':'AM';const h=part==='hour'?Number(v):h12;const m=part==='minute'?Number(v):mm;const p=part==='period'?v:period;eventUpdate(i,'time',pad(h%12+(p==='PM'?12:0))+':'+pad(m));};
  const quickTime=(i,h)=>eventUpdate(i,'time',pad(h)+':00');
  const [entryFee,setEntryFee]=useState('0'),[prizePool,setPrizePool]=useState(''),[targetSquad,setTargetSquad]=useState('');
@@ -23,7 +23,7 @@ export default function TournamentComposer({onPublished}){
  const eventUpdate=(i,key,value)=>update('events',form.events.map((x,j)=>i===j?{...x,[key]:value}:x));
  const select=(label,value,options,onChange)=><label className="op-tc-field"><span>{label}</span><select value={value} onChange={e=>onChange(e.target.value)}>{options.map(x=><option key={x} value={x}>{x}</option>)}</select></label>;
  const localToIso=(date,time)=>{
-  if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)||!/^\\d{2}:\\d{2}$/.test(time))throw Error('Select a valid date and time.');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!/^\d{2}:\d{2}$/.test(time))throw Error('Select a valid date and time.');
   const iso=new Date(date+'T'+time+':00+06:00');
   if(!Number.isFinite(iso.getTime()))throw Error('Select a valid Bangladesh date and time.');
   return date+'T'+time;
