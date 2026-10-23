@@ -86,9 +86,9 @@ export default function SoftwareApp(){
  const activeModule=MODULES.find(x=>x.id===module);
  const upcoming=useMemo(()=>fixtures.schedules.filter(x=>x.status==='published'&&new Date(x.starts_at).getTime()>Date.now()),[fixtures.schedules]);
  const bdDate=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(d));
- const todayMatches=fixtures.schedules.filter(x=>x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()));
+ const todayMatches=fixtures.schedules.filter(x=>x.status==='published'&&bdDate(x.starts_at)===bdDate(clockNow));
  const historyMatches=fixtures.schedules.filter(x=>x.status!=='published'||bdDate(x.starts_at)<bdDate(Date.now())).sort((a,b)=>new Date(b.starts_at)-new Date(a.starts_at));
- const visibleMatches=fixtures.schedules.filter(x=>matchView==='today'?x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()):matchView==='history'?x.status!=='published'||new Date(x.starts_at).getTime()<Date.now():x.status==='published'&&new Date(x.starts_at).getTime()>=Date.now());
+ const visibleMatches=fixtures.schedules.filter(x=>matchView==='today'?x.status==='published'&&bdDate(x.starts_at)===bdDate(Date.now()):matchView==='history'?x.status!=='published'||bdDate(x.starts_at)<bdDate(clockNow):x.status==='published'&&bdDate(x.starts_at)>bdDate(clockNow));
 
  useEffect(()=>{const timer=setInterval(()=>setClockNow(Date.now()),1000);return()=>clearInterval(timer)},[]);
  const countdown=startsAt=>{const seconds=Math.max(0,Math.floor((new Date(startsAt).getTime()-clockNow)/1000));if(seconds===0)return 'Started';const days=Math.floor(seconds/86400),hours=Math.floor(seconds%86400/3600),minutes=Math.floor(seconds%3600/60),secs=seconds%60;return (days?days+'d ':'')+(days||hours?hours+'h ':'')+minutes+'m '+secs+'s left';};
@@ -398,7 +398,10 @@ export default function SoftwareApp(){
     {tab==='history'&&!admin&&<div className="op-app-view op-app-history-page">
      <button type="button" className="op-app-back" onClick={()=>go('alerts')}><FiArrowLeft/> Back to Schedule</button>
      <h1>Match History</h1>
-     <div className="op-app-history-list">{historyMatches.length?historyMatches.map(x=><div className="op-app-history-row" key={x.id}><time>{dateTime.format(new Date(x.starts_at))}</time><strong>{x.title}</strong><small>{x.status==='cancelled'?'Cancelled':'Past'}</small></div>):<p>No previous matches yet.</p>}</div>
+     <div className="op-app-history-list op-app-history-premium">{historyMatches.length?historyMatches.map(x=><article className="op-app-history-row op-app-history-compact" key={x.id}>
+      <div className="op-app-history-main"><span className="op-app-history-mark"><FiCalendar/></span><div className="op-app-history-copy"><strong>{x.title}</strong><time><FiClock/> {dateTime.format(new Date(x.starts_at))} · BST</time></div><span className={'op-app-history-status'+(x.status==='cancelled'?' is-cancelled':'')}>{x.status==='cancelled'?'Cancelled':'Completed'}</span></div>
+      <div className="op-app-history-meta"><span>ENTRY FEE <b>{currency(x.entry_fee)}</b></span><span>PRIZE <b>{x.prize_pool||'—'}</b></span></div>
+     </article>):<p>No previous matches yet.</p>}</div>
     </div>}
     {tab==='team'&&!admin&&<div className="op-app-view">
      <SectionHead overline="MY TEAM" title="My Squad" subtitle="Your current team details."/>
