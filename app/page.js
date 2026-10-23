@@ -65,13 +65,12 @@ export default function Home() {
               <Link href="#best-players" className={heroStyles.secondaryAction}>
                 <span aria-hidden="true">🏆</span> HALL OF CHAMPIONS
               </Link>
-              <Link href="/install" className={heroStyles.secondaryAction}>
-                <span aria-hidden="true">📲</span> INSTALL APP
-              </Link>
             </div>
           </div>
           <div className={heroStyles.bottomBlend} aria-hidden="true" />
         </section>
+
+        <AppDownloads />
 
         <section
           id="best-players"
@@ -110,8 +109,6 @@ export default function Home() {
         </section>
 
           <AchievementGallery />
-
-          <AppDownloads />
 
         <FloatingContact />
       </main>
