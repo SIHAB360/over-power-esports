@@ -69,3 +69,17 @@
  .op-admin-system .op-admin-view .op-hist-toolbar label{width:100%}
  .op-admin-system .op-admin-view .op-hist-toolbar input{width:100%;min-width:0}
 }
+
+
+.op-hist-bulk{display:flex;align-items:end;flex-wrap:wrap;gap:10px;padding:13px 15px;margin:0 0 17px;border:1px solid #638dbe77;border-radius:15px;background:linear-gradient(115deg,#182d4b,#222349);box-shadow:inset 0 1px #ffffff19}
+.op-hist-bulk label{display:grid;gap:6px;color:#bddbf3;font-size:11px;font-weight:850;letter-spacing:.03em}
+.op-hist-bulk label input[type=date]{min-height:38px;max-width:160px;border:1px solid #6b92b2a8;border-radius:9px;background:#0b1a31;color:#f3f8ff;padding:7px 9px;color-scheme:dark;font-size:12px}
+.op-hist-bulk .op-hist-select-all{display:flex;align-items:center;gap:9px;min-height:38px;padding:0 12px;border:1px solid #6c92bd66;border-radius:10px;color:#e9faff;font-size:12px}
+.op-hist-bulk input[type=checkbox],.op-hist-card-select input{accent-color:#3ae9d7;width:17px;height:17px;cursor:pointer}
+.op-hist-bulk button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:38px;border:1px solid #69c8e48c;border-radius:10px;background:linear-gradient(115deg,#126b88,#4256a9);color:#fff;padding:8px 13px;font-size:11px;font-weight:900;cursor:pointer}
+.op-hist-bulk .op-hist-bulk-delete{background:linear-gradient(110deg,#aa315a,#df4177);border-color:#ff83a2}
+.op-hist-bulk button:disabled{opacity:.45;cursor:not-allowed}
+.op-hist-selection-count{margin-left:auto;white-space:nowrap;color:#8ff6e9;font-weight:950;font-size:13px;align-self:center}
+.op-hist-card.is-selected{border-color:#65efda!important;box-shadow:0 0 0 1px #65efda9e,0 15px 35px #00a9b626!important}
+.op-hist-card-select{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:850;color:#b9f9f0;cursor:pointer}
+@media(max-width:720px){.op-hist-bulk{align-items:stretch}.op-hist-bulk label{flex:1 1 130px}.op-hist-bulk label input[type=date]{max-width:none;width:100%}.op-hist-bulk .op-hist-select-all{flex:1 1 100%}.op-hist-bulk button{flex:1 1 145px}.op-hist-selection-count{margin-left:0;flex:1 1 100%;text-align:center}}
