@@ -600,3 +600,8 @@
 .op-app-pull-refresh .is-spinning{animation:op-app-pull-spin .8s linear infinite}
 @keyframes op-app-pull-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.op-app-pull-refresh .is-spinning{animation:none}}
+
+/* One serial, scrollable navigation list with no duplicate sections. */
+.op-app-sidebar .op-app-unified-nav{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:#6782c4 transparent}
+.op-app-sidebar .op-app-unified-nav button{flex-shrink:0}
+.op-app-sidebar .op-app-sidebar-bottom{flex-shrink:0}
