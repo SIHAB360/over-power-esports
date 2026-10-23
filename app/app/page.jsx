@@ -271,20 +271,13 @@ export default function SoftwareApp(){
     <button className="op-app-side-close" aria-label="Close navigation" onClick={()=>setSideOpen(false)}><FiX/></button>
    </div>
    <div className="op-app-sidebar-tag">{admin?'ADMIN COMMAND':'PLAYER APPLICATION'}</div>
-   <nav className="op-app-side-links">
-    {tabs.map(t=><button type="button" key={t.id} className={tab===t.id?'selected':''}
-     aria-current={tab===t.id?'page':undefined} onClick={()=>go(t.id)}>
-      <t.icon aria-hidden="true"/><span>{t.text}</span>
-      {t.id==='alerts'&&unread>0&&<b className="op-app-count">{unread}</b>}
+   <nav className="op-app-side-links op-app-unified-nav" aria-label="All application sections">
+    {(admin?[{id:'home',text:'Home',icon:FiHome},{id:'alerts',text:'Alerts',icon:FiBell},{id:'profile',text:'Profile',icon:FiUser}]:tabs).map(t=><button type="button" key={t.id} className={tab===t.id?'selected':''} aria-current={tab===t.id?'page':undefined} onClick={()=>go(t.id)}>
+     <t.icon aria-hidden="true"/><span>{t.text}</span>{t.id==='alerts'&&unread>0&&<b className="op-app-count">{unread}</b>}
     </button>)}
+    {admin?MODULES.map(x=><button type="button" key={x.id} className={(tab==='schedule'&&x.id==='schedule')||(tab==='manage'&&module===x.id)?'selected':''} onClick={()=>go(x.id==='schedule'?'schedule':'manage',x.id==='schedule'?null:x.id)}><x.icon aria-hidden="true"/><span>{x.title}</span></button>):
+     [['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} className={tab===id?'selected':''} onClick={()=>go(id)}><Icon aria-hidden="true"/><span>{label}</span></button>)}
    </nav>
-   {!admin&&<div className="op-app-side-tools op-app-player-extra"><span>More options</span>
-    {[['profile','My Profile',FiUser],['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['wallet','Wallet',FiCreditCard],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} onClick={()=>go(id)}><Icon/>{label}</button>)}
-   </div>}
-   {admin&&<div className="op-app-side-tools"><span>Management</span>
-    {MODULES.slice(0,6).map(x=><button key={x.id} className={module===x.id&&tab==='manage'?'selected':''}
-     onClick={()=>go('manage',x.id)}><x.icon/>{x.title}</button>)}
-   </div>}
    <div className="op-app-sidebar-bottom"><span className="op-app-online"><i/> Live Sync</span>
     <button onClick={signOut}><FiLogOut/> Sign Out</button>
    </div>
