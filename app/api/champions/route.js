@@ -148,12 +148,12 @@ export async function GET(req) {
 
     const [teams, players, matchStats] = await Promise.all([
       fetchAll(() => db.from("teams")
-        .select("id,team_name,logo,status")
+        .select("id,team_name,logo,status,show_on_homepage")
         .in("status", ["active", "approved"])
         .order("team_name", { ascending: true })),
       fetchAll(() => db.from("players")
-        .select("id,user_id,team_id,team_name,ign,full_name,profile_image,avatar_url,primary_role")
-        .eq("status", "approved")
+        .select("id,user_id,team_id,team_name,ign,full_name,profile_image,avatar_url,primary_role,is_active")
+        .in("status", ["approved","active"])
         .not("user_id", "is", null)),
       fetchAll(() => db.from("match_player_stats")
         .select("id,player_id,team_id_at_match,kills,assists,damage,mvp,match_id,matches!inner(status,match_date)")
@@ -163,6 +163,7 @@ export async function GET(req) {
 
     const officialTeams = teams
       .filter((team) => {
+        if(team.show_on_homepage===false)return false;
         const name = normalized(team.team_name);
         return name.includes("overpower") && (name.includes("main") || name.includes("elite"));
       })
@@ -172,7 +173,7 @@ export async function GET(req) {
       })
       .slice(0, 2);
 
-    const eligiblePlayers = players.map((player) => ({
+    const eligiblePlayers = players.filter(player=>player.is_active!==false).map((player) => ({
       ...player,
       resolvedTeamId: fallbackTeamId(player, officialTeams),
     }));
