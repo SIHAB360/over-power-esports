@@ -593,3 +593,11 @@
 .periodActive{color:#fff;background:linear-gradient(110deg,#fa3556,#b42a77);border-color:#ff94a58c;box-shadow:0 6px 20px #fa365666,inset 0 1px #ffffff5e}
 @media(max-width:480px){.periodTabs{display:flex;width:min(100%,355px);gap:4px;padding:5px}.periodButton,.periodActive{flex:1;min-width:0;min-height:40px;padding:9px 7px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.periodButton,.periodActive{transition:none}}
+
+
+/* Keep the championship section balanced for one or two actual winners. */
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));max-width:960px;justify-content:center;justify-items:stretch}
+.grid:has(> :only-child){max-width:470px;grid-template-columns:minmax(0,1fr)}
+.showcase{padding-top:clamp(42px,5vw,76px);padding-bottom:clamp(45px,5vw,76px)}
+.heading{margin-bottom:clamp(24px,3vw,36px)}
+@media(max-width:720px){.grid{grid-template-columns:minmax(0,1fr);max-width:460px}.showcase{padding:42px 14px 48px}}
