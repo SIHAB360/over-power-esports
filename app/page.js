@@ -14,6 +14,7 @@ import Leadership from "./components/Leadership";
 import PreLoader from "./components/PreLoader";
 import BestPlayers from "./components/BestPlayers";
 import Footer from "./components/Footer";
+import AppDownloads from "./components/AppDownloads";
 import AchievementGallery from "./components/AchievementGallery";
 import heroStyles from "./components/HomeHero.module.css";
 
@@ -109,6 +110,8 @@ export default function Home() {
         </section>
 
           <AchievementGallery />
+
+          <AppDownloads />
 
         <FloatingContact />
       </main>
