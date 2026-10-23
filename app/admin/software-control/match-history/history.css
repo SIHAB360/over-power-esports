@@ -42,3 +42,30 @@
 @media(max-width:760px){.op-hist-page{padding:20px 13px}.op-hist-grid{grid-template-columns:1fr;gap:14px}.op-hist-header{align-items:flex-start;gap:14px}.op-hist-toolbar{gap:12px}.op-hist-card{padding:19px}.op-hist-card h2{font-size:21px}.op-hist-details{font-size:13px}.op-hist-chip{font-size:12px}.op-hist-stats strong{font-size:19px}.op-hist-actions button{font-size:12px}.op-hist-header h1{font-size:36px}}
 @media(max-width:430px){.op-hist-page{padding:15px 10px}.op-hist-header h1{font-size:32px}.op-hist-toolbar{padding:13px}.op-hist-toolbar label{width:100%}.op-hist-toolbar input{width:100%;font-size:13px}.op-hist-card{padding:16px}.op-hist-card-head{align-items:flex-start}.op-hist-chip{font-size:11px}.op-hist-status{font-size:9px}.op-hist-card h2{font-size:20px}.op-hist-stats>div{padding:10px}.op-hist-stats small{font-size:9px}.op-hist-stats strong{font-size:17px}.op-hist-actions{gap:8px}.op-hist-actions button{padding:10px 8px;min-height:45px}.op-hist-dialog{width:100%;max-height:95dvh;padding:16px}.op-hist-dialog footer{flex-wrap:wrap}.op-hist-dialog footer button{flex:1}}
 @media(prefers-reduced-motion:reduce){.op-hist-card,.op-hist-actions button{transition:none}.op-hist-card:hover,.op-hist-actions button:hover{transform:none!important}}
+
+
+/* Match History layout integration: admin rail is outside this page. */
+.op-admin-system .op-admin-view:has(.op-hist-page){min-width:0;scroll-padding-top:0}
+.op-admin-system .op-admin-view .op-hist-page{box-sizing:border-box;min-height:100%;height:auto!important;width:100%;margin:0!important;padding:76px clamp(14px,2.1vw,34px) 55px!important;overflow:visible!important}
+.op-admin-system .op-admin-view .op-hist-wrap{max-width:none!important;margin:0!important;width:100%;box-sizing:border-box}
+.op-admin-system .op-admin-view .op-hist-header{width:100%;padding:0 0 4px;align-items:center}
+.op-admin-system .op-admin-view .op-hist-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.1vw,19px);width:100%}
+.op-admin-system .op-admin-view .op-hist-card{min-width:0}
+.op-admin-system .op-admin-view .op-hist-toolbar{width:100%;box-sizing:border-box}
+.op-admin-system .op-admin-view .op-hist-card h2{min-height:0}
+.op-admin-system .op-admin-view .op-hist-details{flex:1}
+@media(max-width:1450px){
+ .op-admin-system .op-admin-view .op-hist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+ .op-admin-system .op-admin-view .op-hist-page{padding:76px 17px 36px!important}
+ .op-admin-system .op-admin-view .op-hist-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:670px){
+ .op-admin-system .op-admin-view .op-hist-page{padding:70px 12px 30px!important}
+ .op-admin-system .op-admin-view .op-hist-grid{grid-template-columns:minmax(0,1fr)}
+ .op-admin-system .op-admin-view .op-hist-header{flex-direction:column;align-items:flex-start}
+ .op-admin-system .op-admin-view .op-hist-toolbar{flex-direction:column;align-items:stretch}
+ .op-admin-system .op-admin-view .op-hist-toolbar label{width:100%}
+ .op-admin-system .op-admin-view .op-hist-toolbar input{width:100%;min-width:0}
+}
