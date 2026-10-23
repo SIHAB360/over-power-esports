@@ -59,7 +59,7 @@ export async function PATCH(req){
   }
   if(b.action!=='edit')throw new HttpError('Unsupported schedule action.');
   if(old.status==='cancelled')throw new HttpError('A cancelled schedule cannot be edited.');
-  const change=scheduleInput(b);
+  const change=scheduleInput(b,true);
   const {data,error}=await db.from('op_match_schedules')
    .update({...change,updated_at:new Date().toISOString()})
    .eq('id',b.id).select('*').single();
@@ -76,5 +76,18 @@ export async function PATCH(req){
    catch(e){console.warn('Edited schedule notification queue',e.message)}
   }
   return Response.json({schedule:sanitizeSchedule(data)},{headers:noStore});
+ }catch(e){return errResponse(e)}
+}
+
+export async function DELETE(req){
+ try{
+  const {db}=await identity(req,true);
+  const b=await req.json().catch(()=>null);
+  if(!goodUuid(b?.id))throw new HttpError('Invalid schedule ID.');
+  // Notification rows cascade with the schedule; no orphan player alerts.
+  const {data,error}=await db.from('op_match_schedules').delete().eq('id',b.id).select('id').maybeSingle();
+  if(error)throw new HttpError(error.message,400);
+  if(!data)throw new HttpError('Schedule not found.',404);
+  return Response.json({ok:true,id:data.id},{headers:noStore});
  }catch(e){return errResponse(e)}
 }
