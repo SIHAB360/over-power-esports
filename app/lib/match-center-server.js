@@ -40,7 +40,7 @@ export async function recipients(db,teamId){
  if(error)throw new HttpError('Unable to load player recipients.',503);
  return [...new Set((data||[]).map(p=>p.user_id).filter(Boolean))];
 }
-export function scheduleInput(input){
+export function scheduleInput(input,allowPast=false){
  const title=String(input?.title||'').trim(),prize=String(input?.prize_pool||'').trim(),
   details=String(input?.lobby_details||'').trim(),notes=String(input?.notes||'').trim();
  // Format yyyy-mm-ddThh:mm is a local Bangladesh wall clock; +06:00 required.
@@ -49,7 +49,7 @@ export function scheduleInput(input){
  const dt=new Date(wall+':00+06:00');
  if(!Number.isFinite(dt.getTime())||new Date(dt.getTime()+6*3600000).toISOString().slice(0,16)!==wall)
    throw new HttpError('Invalid Bangladesh date or time.');
- if(dt.getTime()<Date.now()+2*60000||dt.getTime()>Date.now()+365*86400000)
+ if((!allowPast&&dt.getTime()<Date.now()+2*60000)||dt.getTime()>Date.now()+365*86400000)
    throw new HttpError('Schedule matches at least 2 minutes ahead and within one year.');
  const fee=Number(input?.entry_fee);
  if(!Number.isFinite(fee)||fee<0||fee>1000000||Math.abs(Math.round(fee*100)-fee*100)>0.000001)throw new HttpError('Enter a valid entry fee.');
