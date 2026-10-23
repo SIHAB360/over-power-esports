@@ -10,7 +10,7 @@ export async function GET(request){
   if(profileError||!profile)throw new HttpError('Unable to load your account.',503);
   const safeProfile={
    full_name:profile.full_name||'',email:profile.email||user.email||'',
-   role
+   role,avatar:typeof profile.avatar==='string'&&/^https:\/\//.test(profile.avatar)?profile.avatar:''
   };
   if(role==='admin'){
    const sources=['players','teams','matches','tournaments','op_match_schedules'];
@@ -22,7 +22,7 @@ export async function GET(request){
    },{headers:noStore});
   }
   const {data:player,error:playerError}=await db.from('players')
-   .select('id,status,is_active,ign,full_name,team_id,team_name,verified,matches_played,wins,total_kills')
+   .select('id,status,is_active,ign,full_name,team_id,team_name,verified,matches_played,wins,total_kills,profile_image,avatar_url')
    .eq('user_id',user.id).maybeSingle();
   if(playerError)throw new HttpError('Player profile is temporarily unavailable.',503);
   let team=null;
@@ -42,6 +42,7 @@ export async function GET(request){
    player:player?{
     status:player.status||'',is_active:!!player.is_active,
     ign:player.ign||'',full_name:player.full_name||'',
+    avatar:[player.avatar_url,player.profile_image].find(v=>typeof v==='string'&&/^https:\/\//.test(v))||'',
     team_id:player.team_id||null,team_name:team?.team_name||player.team_name||'',
     verified:!!player.verified,matches_played:Number(player.matches_played||0),
     wins:Number(player.wins||0),total_kills:Number(player.total_kills||0)
