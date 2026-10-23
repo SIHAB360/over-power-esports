@@ -564,3 +564,24 @@
 .op-app-root .op-app-profile-avatar{border:3px solid #9fe9ff!important;box-shadow:0 0 23px #9e65fa70!important}
 .op-app-root .op-app-native-onboarding{background:linear-gradient(125deg,#173b55,#2a2653)!important;border-color:#60d9eb80!important}
 @media(prefers-reduced-motion:reduce){.op-app-root{background-attachment:scroll!important}}
+
+
+/* Compact, premium match history. Archived automatically by Dhaka calendar date. */
+.op-app-root .op-app-history-premium{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr))!important;gap:10px!important;margin-top:14px!important}
+.op-app-root .op-app-history-row.op-app-history-compact{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px!important;
+ padding:13px 14px!important;border:1px solid #5b85bc85!important;border-radius:15px!important;
+ background:linear-gradient(120deg,#16344e,#24294c 70%,#30234c)!important;
+ box-shadow:inset 0 1px #b6eaff18,0 5px 16px #060d2460!important;min-width:0!important}
+.op-app-history-main{display:flex;align-items:center;gap:10px;min-width:0}
+.op-app-history-mark{display:grid;place-items:center;width:34px;height:34px;flex-shrink:0;border-radius:11px;
+ color:#80f2e7;background:#46e6dc17;border:1px solid #57e4d653;font-size:16px}
+.op-app-history-copy{display:grid;gap:4px;flex:1;min-width:0}
+.op-app-root .op-app-history-copy strong{font-size:14px!important;line-height:1.3!important;font-weight:950!important;color:#fff!important;overflow-wrap:anywhere}
+.op-app-root .op-app-history-copy time{display:flex;align-items:center;gap:5px;font-size:11px!important;font-weight:700!important;color:#a9c5e7!important}
+.op-app-history-status{flex-shrink:0;padding:5px 7px;border:1px solid #4ed8a65c;border-radius:20px;background:#1a9e7040;color:#a7ffe1;font-size:10px;font-weight:900}
+.op-app-history-status.is-cancelled{background:#a24e5640;border-color:#e98b955c;color:#ffb9c0}
+.op-app-history-meta{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding-top:9px;border-top:1px solid #7594ba35}
+.op-app-history-meta>span{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:.05em;color:#aac5df;font-weight:900}
+.op-app-history-meta b{font-size:12px;letter-spacing:0;color:#7ff3dc;font-weight:950}
+.op-app-history-meta>span:last-child b{color:#f5b6ef}
+@media(max-width:370px){.op-app-history-status{font-size:9px}.op-app-history-copy time{font-size:10px!important}}
