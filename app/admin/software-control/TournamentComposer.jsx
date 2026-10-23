@@ -1,5 +1,6 @@
 'use client';
 import {useState} from 'react';
+import Link from 'next/link';
 import {supabase} from '../../lib/supabase';
 import './tournament-composer.css';
 const SQUADS=['OVER POWER Elite','OVER POWER','All Squads'];
@@ -110,5 +111,6 @@ export default function TournamentComposer({onPublished}){
   <button className="op-tc-generate" type="button" disabled={busy||!form.date} onClick={()=>submit('preview')}>{busy?'Please wait…':'✨ Generate Announcement Preview'}</button>
   {preview&&<div className="op-tc-preview"><div className="op-tc-subhead"><h3>Announcement Preview</h3><span>{mode==='ai'?'AI generated':'Auto formatted'}</span></div><pre>{preview}</pre><p>All details are generated from your selections. Review before publishing.</p><label className="op-tc-confirm"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/><span>I confirm the date and match times are correct.</span></label><button className="op-tc-publish" type="button" disabled={busy||!confirmed} onClick={()=>submit('publish')}>🚀 Publish Matches & Notify Players</button></div>}
   {message&&<p className="op-tc-status" role="status">{message}</p>}
+  <Link className="op-tc-history-link" href="/admin/software-control/match-history"><span>◷</span><span><strong>Match History & Management</strong><small>View all published matches · Edit details · Delete records</small></span><b>VIEW HISTORY →</b></Link>
  </section>;
 }
