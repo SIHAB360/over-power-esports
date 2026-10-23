@@ -585,3 +585,18 @@
 .op-app-history-meta b{font-size:12px;letter-spacing:0;color:#7ff3dc;font-weight:950}
 .op-app-history-meta>span:last-child b{color:#f5b6ef}
 @media(max-width:370px){.op-app-history-status{font-size:9px}.op-app-history-copy time{font-size:10px!important}}
+
+
+/* Player options now live in the hamburger navigation. */
+.op-app-sidebar .op-app-player-extra{display:grid;gap:3px;overflow-y:auto;min-height:0;padding-bottom:12px}
+.op-app-sidebar .op-app-player-extra>span{font-size:11px;font-weight:900;letter-spacing:.09em;color:#8de7f1;margin:6px 9px}
+.op-app-sidebar .op-app-player-extra button{display:flex;align-items:center;gap:12px;text-align:left;min-height:42px}
+.op-app-sidebar .op-app-player-extra button svg{flex-shrink:0}
+.op-app-root .op-app-pull-refresh{position:sticky;top:84px;z-index:18;display:flex;align-items:center;justify-content:center;gap:10px;
+ width:max-content;max-width:95%;margin:0 auto -40px;padding:10px 17px;border:1px solid #60e6e2a0;border-radius:30px;
+ background:linear-gradient(115deg,#143e58,#302c65);box-shadow:0 6px 23px #0a1231b0,0 0 13px #5be4ff44;
+ color:#e7ffff;font-size:12px;font-weight:850;pointer-events:none}
+.op-app-pull-refresh svg{color:#79f9de;font-size:17px}
+.op-app-pull-refresh .is-spinning{animation:op-app-pull-spin .8s linear infinite}
+@keyframes op-app-pull-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.op-app-pull-refresh .is-spinning{animation:none}}
