@@ -356,7 +356,16 @@ export default function SoftwareApp(){
      </>}
      {!admin&&remote?.matches_enabled!==false&&<section className="op-app-daily">
       <div className="op-app-daily-head"><div><span className="op-app-overline">BANGLADESH TIME · TODAY</span><h2>Today's Matches</h2><p>{shortDate.format(new Date())}</p></div><span className="op-app-daily-count">{todayMatches.length} match{todayMatches.length===1?'':'es'}</span></div>
-      {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row"><span className="op-app-daily-time">{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</span><div><strong>{x.title}</strong><small>Entry {currency(x.entry_fee)} · Prize {x.prize_pool||'—'}</small><small className="op-app-countdown">⏳ {countdown(x.starts_at)}</small></div><span className="op-app-daily-live">Scheduled</span></article>)}</div>:<p className="op-app-daily-empty">No matches scheduled for today. Check back when a new match is published.</p>}
+      {todayMatches.length?<div className="op-app-daily-list">{todayMatches.map(x=><article key={x.id} className="op-app-daily-row op-app-daily-premium">
+       <div className="op-app-daily-match-head"><span className="op-app-daily-match-label"><FiZap/> MATCH ANNOUNCEMENT</span><span className="op-app-daily-live">{new Date(x.starts_at).getTime()<=clockNow?'STARTED':'SCHEDULED'}</span></div>
+       <h3 className="op-app-daily-match-title">{x.title}</h3>
+       <div className="op-app-daily-match-info">
+        <div className="op-app-daily-info-cell"><small><FiClock/> START TIME</small><strong>{new Intl.DateTimeFormat('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date(x.starts_at))}</strong></div>
+        <div className="op-app-daily-info-cell"><small>ENTRY FEE</small><strong>{currency(x.entry_fee)}</strong></div>
+        <div className="op-app-daily-info-cell"><small>PRIZE POOL</small><strong>{x.prize_pool||'—'}</strong></div>
+       </div>
+       <div className="op-app-daily-countdown"><FiClock/><span>{countdown(x.starts_at)}</span></div>
+      </article>)}</div>:<p className="op-app-daily-empty">No matches scheduled for today. Check back when a new match is published.</p>}
       <button className="op-app-history-toggle" type="button" aria-expanded={showHistory} onClick={()=>go('history')}><FiClock/> Match History ({historyMatches.length}) <FiChevronRight/></button>
 
      </section>}
