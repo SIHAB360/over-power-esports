@@ -125,3 +125,32 @@ body>.op-tc-popover .op-tc-wheel-period button{min-height:43px!important}
 body>.op-tc-popover .op-tc-modal-apply{display:block!important;width:100%!important;background:#7e55af!important;color:white!important;margin-top:13px!important}
 body>.op-tc-popover .op-tc-calendar-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:4px!important}
 body>.op-tc-popover .op-tc-calendar-grid button{width:100%!important;min-height:36px!important}
+
+
+/* Inline Smart Match Scheduler */
+.op-tc .op-tc-smart-scheduler{margin:17px 0 23px;padding:17px 19px 18px;background:linear-gradient(125deg,#132c3a,#172337 70%,#25203c);border:1px solid #4c92b0;border-radius:17px;color:#f5fbff;box-shadow:0 10px 28px #020b1955}
+.op-tc .op-tc-smart-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid #54718980}
+.op-tc .op-tc-smart-header strong{display:flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.08em;font-weight:950}
+.op-tc .op-tc-smart-header small{color:#ffd6a0;font-size:10px;font-weight:900;letter-spacing:.03em}
+.op-tc .op-tc-smart-led{width:7px;height:7px;border-radius:50%;background:#55e7c7;box-shadow:0 0 12px #55e7c7}
+.op-tc .op-tc-smart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.op-tc .op-tc-smart-panel{padding:16px;border:1px solid #416986;border-radius:13px;background:#102437a8;min-width:0}
+.op-tc .op-tc-smart-panel>label{display:block;margin-bottom:12px;color:#dcefff;font-size:11px;font-weight:900;letter-spacing:.04em}
+.op-tc .op-tc-smart-panel input[type=date]{display:block;width:100%;min-width:0;height:48px;border:1px solid #6195bd;border-radius:10px;padding:0 11px;background:#18344b;color:#fff;font-size:14px;font-weight:850;color-scheme:dark}
+.op-tc .op-tc-smart-caption{display:block;margin:12px 0 8px;color:#afc5d7;font-size:10px;font-weight:950;letter-spacing:.06em}
+.op-tc .op-tc-smart-shortcuts{display:flex;flex-wrap:wrap;gap:7px}
+.op-tc .op-tc-smart-shortcuts button{border:1px solid #4d7897;border-radius:9px;padding:9px 11px;background:#244257;color:#e5f4ff;font-size:11px;font-weight:850;cursor:pointer}
+.op-tc .op-tc-smart-shortcuts button.is-active,.op-tc .op-tc-smart-shortcuts button:hover{background:#84efdc;color:#10343a;border-color:#84efdc}
+.op-tc .op-tc-smart-time-stack{display:grid;gap:16px}
+.op-tc .op-tc-smart-time-item{min-width:0}
+.op-tc .op-tc-smart-time-item+.op-tc-smart-time-item{padding-top:13px;border-top:1px solid #52738b70}
+.op-tc .op-tc-smart-time-name{display:block;color:#d9f2ff;font-size:11px;font-weight:850;margin-bottom:7px}
+.op-tc .op-tc-smart-time-selects{display:grid;grid-template-columns:minmax(0,1fr) 8px minmax(0,1fr) minmax(0,1.15fr);align-items:center;gap:7px}
+.op-tc .op-tc-smart-time-selects>span{text-align:center;font-size:20px;color:#f9df9d;font-weight:900}
+.op-tc .op-tc-smart-time-selects select{width:100%;min-width:0;height:43px;border:1px solid #6499bf;border-radius:9px;padding:0 7px;background:#18364c;color:#fff;font-size:14px;font-weight:900;text-align:center;cursor:pointer;color-scheme:dark}
+.op-tc .op-tc-smart-live{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:17px;padding:14px 16px;border:1px solid #258b81;border-radius:11px;background:#10363880}
+.op-tc .op-tc-smart-live strong{color:#90f4da;font-size:11px;letter-spacing:.02em}
+.op-tc .op-tc-smart-live>span{color:#ffe0b2;font-size:13px;font-weight:850;overflow-wrap:anywhere}
+.op-tc .op-tc-smart-time-readout{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;padding:9px 12px;border:1px solid #547db3;border-radius:9px;background:#23375c;color:#fff;font-size:14px;font-weight:900}
+.op-tc .op-tc-smart-time-readout small{font-size:10px;color:#a5e8e2}
+@media(max-width:650px){.op-tc .op-tc-smart-grid{grid-template-columns:1fr}.op-tc .op-tc-smart-scheduler{padding:13px}.op-tc .op-tc-smart-panel{padding:13px}.op-tc .op-tc-smart-header strong{font-size:11px}.op-tc .op-tc-smart-header small{font-size:9px}}
