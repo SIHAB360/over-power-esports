@@ -547,3 +547,20 @@
  box-shadow:inset 0 1px #ffffff1c!important}
 @media(max-width:370px){.op-app-daily-match-info{grid-template-columns:repeat(2,minmax(0,1fr))}
  .op-app-daily-info-cell:first-child{grid-column:1/-1}}
+
+
+/* Premium multicolor home atmosphere and account avatar centering */
+.op-app-root{background:radial-gradient(ellipse 80% 34% at 8% 28%,#0c5a7652,transparent 75%),
+ radial-gradient(ellipse 72% 40% at 100% 52%,#7133a84a,transparent 76%),
+ radial-gradient(ellipse 80% 35% at 22% 88%,#134e9766,transparent 75%),
+ linear-gradient(160deg,#0a1730,#11152c 47%,#1b1032 75%,#0a2540)!important;background-attachment:fixed!important}
+.op-app-root .op-app-content{background:radial-gradient(ellipse 80% 35% at 50% 92%,#7d2d9d28,transparent 80%)}
+.op-app-root .op-app-bottom{background:linear-gradient(115deg,#112a46 0%,#24204d 47%,#10394a 100%)!important;
+ border-top:1px solid #6c91dc88!important;box-shadow:0 -6px 24px #2a77c027,0 -3px 16px #a54df025!important}
+.op-app-root .op-app-bottom button.is-active{background:linear-gradient(130deg,#265f85,#45397f)!important;box-shadow:inset 0 1px #b5f8ff44,0 0 16px #6b81ff38!important}
+.op-app-root .op-app-avatar,.op-app-root .op-app-profile-avatar{overflow:hidden!important;display:grid!important;place-items:center!important;border-radius:50%!important}
+.op-app-root .op-app-avatar img,.op-app-root .op-app-profile-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;object-position:center center!important;border-radius:50%!important}
+.op-app-root .op-app-avatar{padding:0!important;border:2px solid #8beaff!important;box-shadow:0 0 13px #59cfff7d!important}
+.op-app-root .op-app-profile-avatar{border:3px solid #9fe9ff!important;box-shadow:0 0 23px #9e65fa70!important}
+.op-app-root .op-app-native-onboarding{background:linear-gradient(125deg,#173b55,#2a2653)!important;border-color:#60d9eb80!important}
+@media(prefers-reduced-motion:reduce){.op-app-root{background-attachment:scroll!important}}
