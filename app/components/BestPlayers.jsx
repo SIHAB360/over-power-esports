@@ -74,6 +74,8 @@ export default function BestPlayers() {
     };
   }, [period]);
 
+  if (!loading && !error && !bestPlayers.some(item=>item.bestPlayer)) return null;
+
   return (
     <section className={styles.showcase} aria-labelledby="hall-of-champions-title">
       <div className={styles.heading}>
@@ -101,49 +103,14 @@ export default function BestPlayers() {
         </div>
       )}
 
-      {!loading && !error && bestPlayers.length === 0 && (
-        <div className={styles.pendingLoad}>
-          No eligible squads are available for the Hall of Champions yet.
-        </div>
-      )}
-
       {bestPlayers.length > 0 && (
         <div className={styles.grid}>
-          {bestPlayers.map((item, index) =>
-            item.bestPlayer ? (
-              <BestPlayerCard
-                key={item.team.id}
-                data={item}
-                index={index}
-              />
-            ) : (
-              <article
-                key={item.team.id}
-                className={[styles.champion, styles.awaiting, index % 2 ? styles.ice : ""].join(" ")}
-                aria-label={item.team.name + ": waiting for recorded player performance"}
-              >
-                <span className={styles.cornerTop} aria-hidden="true" />
-                <span className={styles.cornerBottom} aria-hidden="true" />
-                <div className={styles.cardHeader}>
-                  <span className={styles.badge}>✦ AUTOMATIC CHAMPION SELECTION</span>
-                  <span className={styles.cardIndex}>PENDING</span>
-                </div>
-                <div className={styles.awaitingBody}>
-                  <span className={styles.awaitingCrown} aria-hidden="true">♛</span>
-                  <p className={styles.identityKicker}>{item.team.name}</p>
-                  <h3>Awaiting Match Stats</h3>
-                  <p>No completed-match Kill, Assist or Damage record is available for this squad yet. The leading player will appear here automatically after results are saved.</p>
-                </div>
-                <div className={styles.cardFooter}>
-                  <span className={styles.footerMark}>AUTOMATIC · NO MANUAL SELECTION</span>
-                  <span className={styles.footerLine} aria-hidden="true" />
-                </div>
-              </article>
-            )
-          )}
+          {bestPlayers.filter(item=>item.bestPlayer).map((item,index)=>(
+            <BestPlayerCard key={item.team.id} data={item} index={index}/>
+          ))}
         </div>
       )}
-      {updatedAt && (
+      {updatedAt && bestPlayers.some(item=>item.bestPlayer) && (
         <p className={styles.liveNote} role="status">
           <span aria-hidden="true" className={styles.liveDot} />
           {period.charAt(0).toUpperCase()+period.slice(1)} rankings · Completed matches only · Refreshes automatically
