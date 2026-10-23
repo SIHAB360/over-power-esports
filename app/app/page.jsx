@@ -219,15 +219,15 @@ export default function SoftwareApp(){
  if(stage==='login')return <main className="op-app-root op-app-gate">
   <section className="op-app-login" aria-label="OVER POWER ESPORTS software login">
    <div className="op-app-login-hero"><div className="op-app-brand-icon"><FiZap/></div>
-    <span className="op-app-overline">OFFICIAL ESPORTS APPLICATION</span>
-    <h1>OVER POWER <em>ESPORTS</em></h1>
-    <p>Your team, matches, inbox and wallet in one app.</p>
-    <div className="op-app-login-dots"><span/> <span/> <span/></div>
+    <span className="op-app-overline">OVER POWER ESPORTS</span>
+    <h1>READY TO <em>PLAY?</em></h1>
+
+
    </div>
    <div className="op-app-login-form">
-    <p className="op-app-overline">{forgot?'SECURE RECOVERY':'WELCOME BACK'}</p>
-    <h2>{forgot?'Reset Password':'Sign in to your account'}</h2>
-    <p>Use your existing OVER POWER ESPORTS account.</p>
+
+    <h2>{forgot?'Reset Password':'Login here'}</h2>
+    <p>{forgot?"Enter your account email.":"Welcome back, champion!"}</p>
     <form onSubmit={forgot?resetPassword:signIn}>
      <label htmlFor="op-app-email">Email Address</label>
      <input id="op-app-email" type="email" value={email} onChange={e=>setEmail(e.target.value)}
@@ -242,13 +242,13 @@ export default function SoftwareApp(){
       </div></>}
      {error&&<p role="alert" className="op-app-form-message">{error}</p>}
      <button className="op-app-primary" type="submit" disabled={busy}>
-      {busy?'Please wait…':forgot?'Send reset link':'Secure Sign In'} <FiChevronRight/>
+      {busy?'Please wait…':forgot?'Send reset link':'Sign In'} <FiChevronRight/>
      </button>
     </form>
     <button className="op-app-link" type="button" onClick={()=>{setForgot(!forgot);setError('')}}>
      {forgot?'← Back to Sign In':'Forgot your password?'}
     </button>
-    <p className="op-app-login-safe"><FiLock/> Your credentials are verified securely through Supabase Authentication.</p>
+
    </div>
   </section>
  </main>;
