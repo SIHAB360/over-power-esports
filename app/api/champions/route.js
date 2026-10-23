@@ -197,7 +197,7 @@ export async function GET(req) {
     }
 
     return json({
-      champions: officialTeams.map((team) => buildRanking(team, eligiblePlayers, totals)),
+      champions: officialTeams.map((team) => buildRanking(team, eligiblePlayers, totals)).filter(item => item.bestPlayer),
       weights: { kills: 50, assists: 30, damage: 20 },
       period,periodStart:start,
       updatedAt: new Date().toISOString(),
