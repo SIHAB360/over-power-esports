@@ -9,6 +9,7 @@ const REFRESH_INTERVAL = 30000;
 
 export default function BestPlayers() {
   const [bestPlayers, setBestPlayers] = useState([]);
+  const [period, setPeriod] = useState("weekly");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -24,7 +25,7 @@ export default function BestPlayers() {
       runningController = controller;
 
       try {
-        const response = await fetch("/api/champions", {
+        const response = await fetch("/api/champions?period=" + period, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -71,7 +72,7 @@ export default function BestPlayers() {
       window.removeEventListener("focus", loadBestPlayers);
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [period]);
 
   return (
     <section className={styles.showcase} aria-labelledby="hall-of-champions-title">
@@ -86,6 +87,9 @@ export default function BestPlayers() {
         <p className={styles.description}>
           Auto-ranked from completed matches · Kills 50% · Assists 30% · Damage 20%
         </p>
+        <div className={styles.periodTabs} role="group" aria-label="Champion ranking time period">
+          {["weekly","monthly","yearly"].map(option=><button key={option} type="button" aria-pressed={period===option} className={period===option?styles.periodActive:styles.periodButton} onClick={()=>{if(period!==option){setLoading(true);setBestPlayers([]);setPeriod(option)}}}>{option.toUpperCase()}</button>)}
+        </div>
         <div className={styles.divider} aria-hidden="true" />
       </div>
 
@@ -142,7 +146,7 @@ export default function BestPlayers() {
       {updatedAt && (
         <p className={styles.liveNote} role="status">
           <span aria-hidden="true" className={styles.liveDot} />
-          Calculated from completed matches · Refreshes automatically
+          {period.charAt(0).toUpperCase()+period.slice(1)} rankings · Completed matches only · Refreshes automatically
         </p>
       )}
     </section>
