@@ -65,7 +65,9 @@ export default function SoftwareApp(){
  const [matchView,setMatchView]=useState('today');
  const [showHistory,setShowHistory]=useState(false);
  const [inboxHistory,setInboxHistory]=useState(false);
- const [moreOpen,setMoreOpen]=useState(false);
+ const [pullDistance,setPullDistance]=useState(0);
+ const [pullRefreshing,setPullRefreshing]=useState(false);
+ const pullStart=useRef(null);
  const [clockNow,setClockNow]=useState(Date.now());
  const [module,setModule]=useState(null);
  const [sideOpen,setSideOpen]=useState(false);
@@ -198,8 +200,12 @@ export default function SoftwareApp(){
    if(outError)throw outError;
   }catch(err){setError(err.message)}finally{setBusy(false)}
  };
+ const refreshApp=async()=>{if(pullRefreshing)return;setPullRefreshing(true);try{await loadAccount()}finally{setPullDistance(0);setPullRefreshing(false)}};
+ const pullTouchStart=e=>{if((tab==='home'||tab==='matches')&&window.scrollY<=2&&e.touches.length===1)pullStart.current={y:e.touches[0].clientY,x:e.touches[0].clientX};else pullStart.current=null};
+ const pullTouchMove=e=>{const p=pullStart.current;if(!p||e.touches.length!==1)return;const dy=e.touches[0].clientY-p.y,dx=e.touches[0].clientX-p.x;if(window.scrollY>2||Math.abs(dx)>Math.abs(dy)){pullStart.current=null;setPullDistance(0);return}setPullDistance(Math.min(105,Math.max(0,dy*.55)))};
+ const pullTouchEnd=()=>{const shouldRefresh=pullDistance>=65;pullStart.current=null;setPullDistance(0);if(shouldRefresh)refreshApp()};
  const go=(destination,submodule=null)=>{
-  setTab(destination);setModule(submodule);setSideOpen(false);setMoreOpen(false);
+  setTab(destination);setModule(submodule);setSideOpen(false);
   window.scrollTo({top:0,behavior:'instant'});
  };
  const markRead=async(id)=>{
@@ -272,6 +278,9 @@ export default function SoftwareApp(){
       {t.id==='alerts'&&unread>0&&<b className="op-app-count">{unread}</b>}
     </button>)}
    </nav>
+   {!admin&&<div className="op-app-side-tools op-app-player-extra"><span>More options</span>
+    {[['profile','My Profile',FiUser],['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['wallet','Wallet',FiCreditCard],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} onClick={()=>go(id)}><Icon/>{label}</button>)}
+   </div>}
    {admin&&<div className="op-app-side-tools"><span>Management</span>
     {MODULES.slice(0,6).map(x=><button key={x.id} className={module===x.id&&tab==='manage'?'selected':''}
      onClick={()=>go('manage',x.id)}><x.icon/>{x.title}</button>)}
@@ -292,13 +301,10 @@ export default function SoftwareApp(){
      <button className="op-app-top-bell" aria-label={'Notifications '+unread} onClick={()=>go('alerts')}>
       <FiBell/>{unread>0&&<span>{unread>9?'9+':unread}</span>}
      </button>
-     {!admin&&<button className="op-app-more-trigger" type="button" aria-label="More player options" aria-expanded={moreOpen} onClick={()=>setMoreOpen(x=>!x)}><FiMoreVertical/></button>}
+
      <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{accountAvatar?<img src={accountAvatar} alt={displayName+' profile photo'} referrerPolicy="no-referrer" onError={e=>{e.currentTarget.style.display='none'}}/>:welcomeName.slice(0,2).toUpperCase()}</button>
     </div>
    </header>
-   {moreOpen&&!admin&&<div className="op-app-more-menu" role="navigation" aria-label="Player details and options">
-     {[['profile','My Profile',FiUser],['team','My Squad',FiUsers],['performance','My Performance',FiActivity],['tournaments','Tournaments',FiAward],['achievements','Achievements',FiImage],['wallet','Wallet',FiCreditCard],['history','Match History',FiClock]].map(([id,label,Icon])=><button type="button" key={id} onClick={()=>go(id)}><Icon/><span>{label}</span><FiChevronRight/></button>)}
-   </div>}
    {matchBanner&&<aside className="op-app-push-banner op-app-push-premium" role="alert" aria-label="Tournament notification">
     <div className="op-app-push-premium-inner">
      <div className="op-app-push-brand"><Image src={officialLogo} alt="OVER POWER ESPORTS" width={42} height={42}/><span><b>OVER POWER ESPORTS</b><small>LIVE TOURNAMENT ALERT</small></span><button className="op-app-push-close" type="button" onClick={()=>setMatchBanner(null)} aria-label="Dismiss notification"><FiX/></button></div>
@@ -306,7 +312,8 @@ export default function SoftwareApp(){
      <div className="op-app-push-actions"><button type="button" onClick={()=>setMatchBanner(null)}>Dismiss</button><button type="button" onClick={()=>{go('alerts');setMatchBanner(null)}}><FiEye/> View Match</button></div>
     </div>
    </aside>}
-   <main className={'op-app-content'+(showAdminComponent?' is-management':'')}>
+   <main className={'op-app-content'+(showAdminComponent?' is-management':'')} onTouchStart={pullTouchStart} onTouchMove={pullTouchMove} onTouchEnd={pullTouchEnd} onTouchCancel={()=>{pullStart.current=null;setPullDistance(0)}}>
+    {(tab==='home'||tab==='matches')&&(pullRefreshing||pullDistance>0)&&<div className="op-app-pull-refresh" style={{transform:'translateY('+Math.max(0,pullDistance-25)+'px)'}} role="status"><FiRefreshCw className={pullRefreshing?'is-spinning':''}/>{pullRefreshing?'Refreshing matches…':pullDistance>=65?'Release to refresh':'Pull to refresh'}</div>}
     {tab==='home'&&<div className="op-app-view">
      {admin&&<>
      <section className="op-app-welcome">
