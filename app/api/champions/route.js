@@ -119,7 +119,20 @@ function buildRanking(team, players, totals) {
   };
 }
 
-export async function GET() {
+function periodStart(period) {
+  const today = new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const [year,month,day]=today.split('-').map(Number);
+  if(period==='yearly')return year+'-01-01';
+  if(period==='monthly')return year+'-'+String(month).padStart(2,'0')+'-01';
+  const d=new Date(Date.UTC(year,month-1,day));
+  d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));
+  return d.toISOString().slice(0,10);
+}
+
+export async function GET(req) {
+  const period=new URL(req.url).searchParams.get('period')||'weekly';
+  if(!['weekly','monthly','yearly'].includes(period))return json({message:'Invalid ranking period.'},400);
+  const start=periodStart(period);
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -143,7 +156,7 @@ export async function GET() {
         .eq("status", "approved")
         .not("user_id", "is", null)),
       fetchAll(() => db.from("match_player_stats")
-        .select("id,player_id,team_id_at_match,kills,assists,damage,mvp,match_id,matches!inner(status)")
+        .select("id,player_id,team_id_at_match,kills,assists,damage,mvp,match_id,matches!inner(status,match_date)")
         .eq("matches.status", "completed")
         .order("id", { ascending: true })),
     ]);
@@ -168,6 +181,8 @@ export async function GET() {
 
     for (const row of matchStats) {
       if (!registeredIds.has(row.player_id) || !row.team_id_at_match) continue;
+      const matchDay=String(row.matches?.match_date||'').slice(0,10);
+      if(!matchDay||matchDay<start)continue;
       const key = row.team_id_at_match + ':' + row.player_id;
       const current = totals.get(key) || {
         kills: 0, assists: 0, damage: 0, mvp: 0, matches: 0,
@@ -183,6 +198,7 @@ export async function GET() {
     return json({
       champions: officialTeams.map((team) => buildRanking(team, eligiblePlayers, totals)),
       weights: { kills: 50, assists: 30, damage: 20 },
+      period,periodStart:start,
       updatedAt: new Date().toISOString(),
     });
   } catch (error) {
