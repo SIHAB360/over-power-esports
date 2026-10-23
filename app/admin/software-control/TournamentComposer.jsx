@@ -54,9 +54,12 @@ export default function TournamentComposer({onPublished}){
      const result=await res.json();
      if(!res.ok)throw Error((result.message||'Could not publish match')+' ('+event.name+'). '+completed+' already published.');
      completed++;
+     if(result.notificationWarning||Number(result.notified||0)===0){
+      setMessage('Match saved, but player alerts need attention: '+(result.notificationWarning?'notification queue error':'no eligible player recipients')+'. Check squad assignment and Android notification registration.');
+     }
     }
     setConfirmed(false);setPreview('');
-    setMessage(completed+' match schedule(s) published. Player alerts and Android push are queued automatically.');
+    setMessage(completed+' match schedule(s) published. Check player Inbox and Match Center; Android delivery requires each player to enable notifications on their device.');
     onPublished?.();
    }
   }catch(e){setMessage(e.message)}finally{setBusy(false)}
