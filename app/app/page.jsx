@@ -253,6 +253,7 @@ export default function SoftwareApp(){
 
  const displayName=userData?.player?.ign||userData?.profile?.full_name||'OVER POWER';
  const welcomeName=admin?'ADMIN':displayName;
+ const accountAvatar=userData?.player?.avatar||userData?.profile?.avatar||'';
  const showAdminComponent=admin&&(tab==='schedule'||(tab==='manage'&&module));
  const currentModule=tab==='schedule'?'schedule':module;
  const unread=fixtures.unread||0;
@@ -292,7 +293,7 @@ export default function SoftwareApp(){
       <FiBell/>{unread>0&&<span>{unread>9?'9+':unread}</span>}
      </button>
      {!admin&&<button className="op-app-more-trigger" type="button" aria-label="More player options" aria-expanded={moreOpen} onClick={()=>setMoreOpen(x=>!x)}><FiMoreVertical/></button>}
-     <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{welcomeName.slice(0,2).toUpperCase()}</button>
+     <button className="op-app-avatar" aria-label="My profile" onClick={()=>go('profile')}>{accountAvatar?<img src={accountAvatar} alt={displayName+' profile photo'} referrerPolicy="no-referrer" onError={e=>{e.currentTarget.style.display='none'}}/>:welcomeName.slice(0,2).toUpperCase()}</button>
     </div>
    </header>
    {moreOpen&&!admin&&<div className="op-app-more-menu" role="navigation" aria-label="Player details and options">
@@ -338,7 +339,7 @@ export default function SoftwareApp(){
       <span><b>{unread} new match notifications</b><small>Tap to view</small></span><FiChevronRight/>
      </button>}
      <div className="op-app-section-title"><div><span className="op-app-overline">QUICK ACCESS</span><h2>Your Features</h2></div><FiGrid/></div>
-     {false&&!admin&&approved&&<section className="op-app-native-onboarding" aria-label="Match notification settings">
+     {!admin&&approved&&<section className="op-app-native-onboarding" aria-label="Match notification settings">
        <NativePushSetup hideWebHint/>
      </section>}
      <section className="op-app-feature-grid">
@@ -430,7 +431,7 @@ export default function SoftwareApp(){
     {tab==='profile'&&<div className="op-app-view">
      <SectionHead overline="ACCOUNT CENTER" title="My Profile" subtitle="Your current verified account details."/>
      <div className="op-app-profile">
-      <div className="op-app-profile-avatar"><FiUser/></div>
+      <div className="op-app-profile-avatar">{accountAvatar?<img src={accountAvatar} alt={displayName+' profile photo'} referrerPolicy="no-referrer" onError={e=>{e.currentTarget.style.display='none'}}/>:<FiUser/>}</div>
       <h2>{displayName}</h2><span className="op-app-profile-pill">{admin?'Main Admin':userData.player?.status||'Player'}</span>
       <dl><dt>Email</dt><dd>{userData.profile?.email||'—'}</dd>
        <dt>Account Type</dt><dd>{admin?'Administrator':'Player'}</dd>
