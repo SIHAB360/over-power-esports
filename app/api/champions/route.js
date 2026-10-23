@@ -57,7 +57,7 @@ function buildRanking(team, players, totals) {
   const eligible = players
     .filter((player) => player.resolvedTeamId === team.id)
     .map((player) => {
-      const stats = totals.get(player.id) || {
+      const stats = totals.get(team.id + ':' + player.id) || {
         kills: 0, assists: 0, damage: 0, mvp: 0, matches: 0,
       };
       return { player, stats };
@@ -143,7 +143,7 @@ export async function GET() {
         .eq("status", "approved")
         .not("user_id", "is", null)),
       fetchAll(() => db.from("match_player_stats")
-        .select("id,player_id,kills,assists,damage,mvp,match_id,matches!inner(status)")
+        .select("id,player_id,team_id_at_match,kills,assists,damage,mvp,match_id,matches!inner(status)")
         .eq("matches.status", "completed")
         .order("id", { ascending: true })),
     ]);
@@ -167,8 +167,9 @@ export async function GET() {
     const totals = new Map();
 
     for (const row of matchStats) {
-      if (!registeredIds.has(row.player_id)) continue;
-      const current = totals.get(row.player_id) || {
+      if (!registeredIds.has(row.player_id) || !row.team_id_at_match) continue;
+      const key = row.team_id_at_match + ':' + row.player_id;
+      const current = totals.get(key) || {
         kills: 0, assists: 0, damage: 0, mvp: 0, matches: 0,
       };
       current.kills += positiveNumber(row.kills);
@@ -176,7 +177,7 @@ export async function GET() {
       current.damage += positiveNumber(row.damage);
       current.mvp += row.mvp ? 1 : 0;
       current.matches += 1;
-      totals.set(row.player_id, current);
+      totals.set(key, current);
     }
 
     return json({
