@@ -605,3 +605,27 @@
 .op-app-sidebar .op-app-unified-nav{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:12px;scrollbar-width:thin;scrollbar-color:#6782c4 transparent}
 .op-app-sidebar .op-app-unified-nav button{flex-shrink:0}
 .op-app-sidebar .op-app-sidebar-bottom{flex-shrink:0}
+
+
+/* Esports login: compact reference-inspired mobile card, not an image. */
+.op-app-root.op-app-gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:clamp(18px,5vw,42px) 14px;background:radial-gradient(ellipse 55% 48% at 10% 8%,#e23a6938,transparent 75%),radial-gradient(ellipse 45% 60% at 100% 90%,#6b40d148,transparent 75%),linear-gradient(155deg,#080b19,#151128 65%,#0c0b19)!important}
+.op-app-gate .op-app-login{width:min(100%,430px)!important;max-width:430px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;border-radius:28px!important;border:1px solid #b78be27d!important;background:linear-gradient(150deg,#211b39,#131a30)!important;box-shadow:0 24px 75px #000a,0 0 42px #9150dd22!important}
+.op-app-gate .op-app-login-hero{position:relative;display:flex!important;align-items:center!important;justify-content:center!important;flex-direction:column!important;gap:9px!important;min-height:0!important;padding:30px 22px 22px!important;text-align:center!important;background:radial-gradient(ellipse at 50% 0,#c83d9240,transparent 70%),linear-gradient(135deg,#281a42,#1b284a)!important}
+.op-app-gate .op-app-login-hero:before{content:"";position:absolute;inset:0;opacity:.22;pointer-events:none;background:repeating-linear-gradient(130deg,transparent 0 42px,#ffffff09 43px 44px)}
+.op-app-gate .op-app-brand-icon{width:64px!important;height:64px!important;border-radius:18px!important;margin:0 auto 4px!important;background:linear-gradient(135deg,#29bdf4,#8b51ef 65%,#f24eab)!important;box-shadow:0 8px 26px #8b51ef6b!important}
+.op-app-gate .op-app-overline{color:#8ff8e4!important;font-size:10px!important;font-weight:950!important;letter-spacing:.15em!important}
+.op-app-gate .op-app-login-hero h1{font-size:clamp(23px,5vw,31px)!important;line-height:1.25!important;margin:0!important;color:#fff!important;letter-spacing:-.02em!important}
+.op-app-gate .op-app-login-hero h1 em{font-style:normal!important;color:#8cefe6!important}
+.op-app-gate .op-app-login-form{padding:25px clamp(20px,6vw,34px) 29px!important;text-align:center!important;background:transparent!important}
+.op-app-gate .op-app-login-form h2{font-size:clamp(23px,5vw,29px)!important;font-weight:950!important;line-height:1.25!important;margin:0 0 8px!important;color:#fff!important}
+.op-app-gate .op-app-login-form>p:not(.op-app-form-message){font-size:13px!important;line-height:1.5!important;color:#c1c6df!important;margin:0 0 24px!important}
+.op-app-gate .op-app-login-form form{display:flex!important;flex-direction:column!important;gap:0!important;text-align:left!important}
+.op-app-gate .op-app-login-form label{font-size:12px!important;font-weight:850!important;color:#d5e4ff!important;margin:0 0 7px!important}
+.op-app-gate .op-app-login-form input{height:49px!important;min-height:49px!important;width:100%!important;border-radius:11px!important;border:1px solid #7188c680!important;background:#10172b!important;color:#fff!important;padding:12px 14px!important;font-size:14px!important;margin:0 0 17px!important;box-shadow:inset 0 1px #ffffff0a!important}
+.op-app-gate .op-app-login-form input:focus{outline:2px solid #8d68ed!important;outline-offset:1px!important}
+.op-app-gate .op-app-password{position:relative!important}
+.op-app-gate .op-app-password input{padding-right:49px!important}
+.op-app-gate .op-app-password button{position:absolute!important;right:7px!important;top:5px!important;min-width:38px!important;min-height:38px!important;background:transparent!important;color:#a9bdf5!important}
+.op-app-gate .op-app-primary{width:100%!important;min-height:49px!important;margin:7px 0 9px!important;border-radius:11px!important;background:linear-gradient(110deg,#ee4368,#8a55ed)!important;color:#fff!important;font-size:14px!important;font-weight:950!important;box-shadow:0 9px 25px #a24ae65c!important}
+.op-app-gate .op-app-link{font-size:12px!important;color:#8deee4!important;font-weight:800!important;margin:5px auto 0!important}
+@media(max-width:480px){.op-app-root.op-app-gate{padding:14px 12px!important}.op-app-gate .op-app-login{border-radius:22px!important}.op-app-gate .op-app-login-hero{padding:23px 18px 18px!important}.op-app-gate .op-app-login-form{padding:23px 21px 25px!important}}
