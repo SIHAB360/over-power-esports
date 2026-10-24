@@ -22,13 +22,13 @@ export async function GET(request){
    },{headers:noStore});
   }
   const {data:player,error:playerError}=await db.from('players')
-   .select('id,status,is_active,ign,full_name,team_id,team_name,verified,matches_played,wins,total_kills,profile_image,avatar_url')
+   .select('id,status,is_active,ign,full_name,team_id,team_name,verified,matches_played,wins,total_kills,profile_image,avatar_url,freefire_uid,country,age,phone,position,experience,joining_date,birth_date,primary_role,secondary_role,device,internet_connection,practice_time,game_experience,tournament_experience,average_br_kd_rate,expert_weapon,previous_team,social_media_link,facebook_link,instagram_link,tiktok_link,youtube_link,earning_percentage,created_at')
    .eq('user_id',user.id).maybeSingle();
   if(playerError)throw new HttpError('Player profile is temporarily unavailable.',503);
   let team=null;
   if(player?.team_id){
    const {data,error}=await db.from('teams')
-    .select('id,team_name,description,coach_name,manager_name')
+    .select('id,team_name,logo,description,coach_name,manager_name,country,founded_year,total_winnings')
     .eq('id',player.team_id).maybeSingle();
    if(error)throw new HttpError('Team information is temporarily unavailable.',503);
    team=data;
@@ -37,6 +37,10 @@ export async function GET(request){
    .select('id,name,status,start_date,prize_pool')
    .order('start_date',{ascending:false}).limit(6);
   if(te)throw new HttpError('Tournaments temporarily unavailable.',503);
+  const {data:matchStats,error:statsError}=player?await db.from('match_player_stats').select('id,kills,assists,damage,mvp,placement,team_id_at_match,matches(match_date,status,match_type,map,platform,entry_fee,prize_money,team_id)').eq('player_id',player.id).order('created_at',{ascending:false}).limit(60):{data:[],error:null};
+  if(statsError)throw new HttpError('Match statistics temporarily unavailable.',503);
+  const {data:withdrawals,error:withdrawalsError}=player?await db.from('withdrawal_requests').select('id,amount,status,provider,created_at,processed_at,transfer_fee,net_payout').eq('player_id',player.id).order('created_at',{ascending:false}).limit(30):{data:[],error:null};
+  if(withdrawalsError)throw new HttpError('Withdrawal history temporarily unavailable.',503);
   return Response.json({
    role,profile:safeProfile,
    player:player?{
@@ -45,10 +49,12 @@ export async function GET(request){
     avatar:[player.avatar_url,player.profile_image].find(v=>typeof v==='string'&&/^https:\/\//.test(v))||'',
     team_id:player.team_id||null,team_name:team?.team_name||player.team_name||'',
     verified:!!player.verified,matches_played:Number(player.matches_played||0),
-    wins:Number(player.wins||0),total_kills:Number(player.total_kills||0)
+    wins:Number(player.wins||0),total_kills:Number(player.total_kills||0),
+    ...Object.fromEntries(['freefire_uid','country','age','phone','position','experience','joining_date','birth_date','primary_role','secondary_role','device','internet_connection','practice_time','game_experience','tournament_experience','average_br_kd_rate','expert_weapon','previous_team','social_media_link','facebook_link','instagram_link','tiktok_link','youtube_link','earning_percentage','created_at'].map(key=>[key,player[key]??null]))
    }:null,
-   team:team?{name:team.team_name||'',description:team.description||'',
-    coach_name:team.coach_name||'',manager_name:team.manager_name||''}:null,
+   team:team?{name:team.team_name||'',logo:team.logo||'',description:team.description||'',
+    coach_name:team.coach_name||'',manager_name:team.manager_name||'',country:team.country||'',founded_year:team.founded_year||null,total_winnings:team.total_winnings||0}:null,
+   matchStats:matchStats||[],withdrawals:withdrawals||[],
    tournaments:(tournaments||[]).map(x=>({
     id:x.id,name:x.name,status:x.status,start_date:x.start_date,
     prize_pool:Number(x.prize_pool||0)
