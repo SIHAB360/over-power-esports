@@ -218,9 +218,9 @@ export default function SoftwareApp(){
  if(stage==='checking')return <main className="op-app-root op-app-gate"><div className="op-app-splash"><div className="op-app-brand-icon"><Image src={officialLogo} alt="OVER POWER ESPORTS official logo" width={72} height={72} /></div><strong>OVER POWER</strong><small>ESPORTS APP</small><p role="status">Verifying your account…</p></div></main>;
  if(stage==='login')return <main className="op-app-root op-app-gate">
   <section className="op-app-login" aria-label="OVER POWER ESPORTS software login">
-   <div className="op-app-login-hero"><div className="op-app-brand-icon"><FiZap/></div>
+   <div className="op-app-login-hero"><div className="op-app-brand-icon op-app-login-logo"><Image src={officialLogo} alt="OVER POWER ESPORTS official logo" width={64} height={64} priority /></div>
     <span className="op-app-overline">OVER POWER ESPORTS</span>
-    <h1>READY TO <em>PLAY?</em></h1>
+    <h1>OVER POWER <em>APP LOGIN</em></h1>
 
 
    </div>
