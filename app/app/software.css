@@ -633,3 +633,22 @@
 /* Official identity for the compact software sign-in header. */
 .op-app-gate .op-app-login-logo{display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;padding:5px!important;background:linear-gradient(145deg,#e8f2ff,#d4ddfa)!important;border:1px solid #ffffff9c!important;box-shadow:0 8px 25px #7d54e56b!important}
 .op-app-gate .op-app-login-logo img{display:block;width:100%!important;height:100%!important;object-fit:contain!important}
+
+
+/* Synced player account details — compact responsive panels */
+.op-app-account-data{margin-top:14px}
+.op-app-account-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:11px}
+.op-app-account-fields>div{min-width:0;display:grid;gap:7px;padding:14px;border:1px solid #7190c451;border-radius:13px;background:linear-gradient(140deg,#152743,#201c40);box-shadow:inset 0 1px #ffffff14}
+.op-app-account-fields small{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#9dbde1;font-weight:850}
+.op-app-account-fields strong{font-size:13px;color:#e6f6ff;line-height:1.5;overflow-wrap:anywhere}
+.op-app-record-list{display:grid;gap:11px}
+.op-app-record{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:15px;border:1px solid #7095c45b;border-radius:14px;background:linear-gradient(110deg,#182c49,#241f40)}
+.op-app-record>div:first-child{display:grid;gap:6px;min-width:0}
+.op-app-record strong{font-size:14px;color:#f3f9ff}
+.op-app-record small{font-size:11px;color:#a7c4e5}
+.op-app-record-metrics{display:flex;flex-wrap:wrap;gap:8px}
+.op-app-record-metrics span,.op-app-record-status{display:inline-flex;align-items:center;gap:7px;padding:7px 9px;border-radius:9px;background:#091a30;border:1px solid #5c83b45c;color:#b9d6f2;font-size:11px;font-weight:750}
+.op-app-record-metrics b{color:#75f0e2;font-size:13px}
+.op-app-record-metrics .op-app-mvp{color:#ffb9e5;border-color:#e76da57d}
+.op-app-record-status{color:#80f5dc;text-transform:capitalize}
+@media(max-width:550px){.op-app-account-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.op-app-account-fields>div{padding:11px}.op-app-account-fields strong{font-size:12px}.op-app-record{padding:12px}.op-app-record-metrics{width:100%}}
