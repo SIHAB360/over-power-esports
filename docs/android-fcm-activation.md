@@ -3,12 +3,12 @@
 The app's English Home, Matches, Wallet, Inbox and Profile screens are in
 Production. Server-generated match Inbox entries are **not** Android OS banners.
 
-## Actual push status at last inspection (2026-10-22)
-- Production project Vercel environment **does not** list `FIREBASE_SERVICE_ACCOUNT_JSON`.
-- Supabase `op_match_native_push_tokens` has **zero** registered Android devices.
-- No genuine closed-app FCM delivery can be claimed until setup is completed.
-- Existing Supabase match schedule, approved-player recipients, notification
-  records, and the 60/30/15 minute pg_cron worker are retained.
+## Actual push status at last inspection (2026-10-31)
+- Vercel Production environment **does list** the sensitive variable `FIREBASE_SERVICE_ACCOUNT_JSON`. Its secret value is not exposed in deployment metadata, so JSON validity and Firebase project matching must still be confirmed in Admin > Match Schedule Center > Android Push Readiness.
+- Supabase `op_match_native_push_tokens` has **zero** registered Android devices and `op_match_push_subscriptions` has **zero** browser push subscriptions.
+- Therefore the server credential's presence is confirmed, but no real Android device registration or closed-app FCM delivery has yet been proven.
+- The match schedule, approved-player recipient selection, in-app notification records, and 60/30/15-minute reminder worker remain in place.
+- The GitHub Actions workflow requires repository secrets `OP_FIREBASE_API_KEY`, `OP_FIREBASE_PROJECT_ID`, and `OP_FIREBASE_SENDER_ID`; their secret values cannot be verified from repository metadata. The Android app ID is pinned in the workflow.
 
 ## Required setup by Firebase project owner
 
