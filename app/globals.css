@@ -5427,3 +5427,235 @@ html, body {
     gap: 8px;
   }
 }
+
+
+/* =========================================================
+   PLAYER PROFILE — TRUE EDGE-TO-EDGE RESPONSIVE CANVAS
+   Final override: no centered max-width frame or page gutters.
+   ========================================================= */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: clip;
+}
+.esports-profile {
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0 !important;
+  padding: clamp(14px, 2vw, 32px) clamp(12px, 2vw, 36px) !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+.esports-profile *,
+.esports-profile *::before,
+.esports-profile *::after {
+  box-sizing: border-box;
+}
+.esports-profile .profile-header {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+.esports-profile .profile-layout {
+  display: grid;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  grid-template-columns: minmax(260px, 0.36fr) minmax(0, 0.64fr);
+  align-items: stretch;
+}
+.esports-profile .profile-left,
+.esports-profile .profile-right,
+.esports-profile .photo-box,
+.esports-profile .info-box,
+.esports-profile .profile-table,
+.esports-profile .video-gallery,
+.esports-profile .video-grid,
+.esports-profile .video-card {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.esports-profile .profile-photo {
+  width: 100%;
+  max-width: 100%;
+  height: clamp(300px, 52vw, 680px);
+  object-fit: cover;
+  object-position: center 18%;
+}
+.esports-profile .profile-table {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  scrollbar-width: thin;
+  overscroll-behavior-inline: contain;
+}
+.esports-profile .profile-table table {
+  width: 100%;
+  min-width: 0;
+  table-layout: auto;
+}
+.esports-profile .profile-table th,
+.esports-profile .profile-table td {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.esports-profile .profile-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+.esports-profile .profile-social a,
+.esports-profile .uid-action,
+.esports-profile .uid-action strong {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.esports-profile .video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.esports-profile .video-card {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  overflow: hidden;
+}
+.esports-profile .video-card iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (min-width: 1600px) {
+  .esports-profile {
+    padding: 32px 40px !important;
+  }
+  .esports-profile .profile-layout {
+    grid-template-columns: minmax(340px, 0.34fr) minmax(0, 0.66fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 900px) {
+  .esports-profile {
+    padding: 16px !important;
+  }
+  .esports-profile .profile-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .esports-profile .profile-left,
+  .esports-profile .profile-right {
+    height: auto;
+  }
+  .esports-profile .profile-right {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .esports-profile .profile-photo {
+    height: clamp(280px, 58vw, 480px);
+  }
+}
+
+@media (max-width: 600px) {
+  .esports-profile {
+    width: 100% !important;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 10px !important;
+  }
+  .esports-profile .profile-header {
+    padding: 18px 12px !important;
+    gap: 16px;
+    border-radius: 16px;
+  }
+  .esports-profile .player-heading {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+  .esports-profile .player-heading h1 {
+    font-size: clamp(24px, 7.5vw, 34px) !important;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  .esports-profile .player-heading h3 {
+    font-size: clamp(16px, 4.8vw, 21px) !important;
+  }
+  .esports-profile .player-heading h4,
+  .esports-profile .player-heading p {
+    font-size: 13px !important;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .esports-profile .winning-card {
+    width: min(100%, 250px);
+    margin-inline: auto;
+  }
+  .esports-profile .profile-layout {
+    margin-top: 14px;
+    gap: 14px;
+  }
+  .esports-profile .profile-photo {
+    height: clamp(230px, 76vw, 360px);
+  }
+  .esports-profile .info-box,
+  .esports-profile .profile-table {
+    padding: 14px 12px !important;
+    border-radius: 15px;
+  }
+  .esports-profile .info-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 10px 0;
+  }
+  .esports-profile .info-item strong {
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+  .esports-profile .profile-table h2,
+  .esports-profile .info-box h3 {
+    font-size: 17px !important;
+    line-height: 1.3;
+  }
+  /* Any wide data table scrolls inside its own card, never the page. */
+  .esports-profile .profile-table table {
+    width: 100%;
+    min-width: 440px;
+  }
+  .esports-profile .profile-table th,
+  .esports-profile .profile-table td {
+    padding: 10px 8px !important;
+    font-size: 12px;
+  }
+  .esports-profile .video-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .esports-profile .profile-social {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .esports-profile {
+    padding: 7px !important;
+  }
+  .esports-profile .profile-header,
+  .esports-profile .info-box,
+  .esports-profile .profile-table {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
