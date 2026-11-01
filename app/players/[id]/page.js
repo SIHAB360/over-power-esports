@@ -430,6 +430,27 @@ function formatDate(date) {
 
 }
 
+function formatMatchDate(value) {
+  if (!value) return "Date not recorded";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+  return date.toLocaleString("en-GB", {
+    day: "2-digit", month: "short", year: "numeric",
+    hour: "2-digit", minute: "2-digit", hour12: true,
+    timeZone: "Asia/Dhaka",
+  });
+}
+
+function getMatchTypeLabel(type) {
+  const labels = { CR: "CHAMPION RUSH", Scrim: "DAILY SCRIM", Official: "OFFICIAL TOURNAMENT", Custom: "CUSTOM TOURNAMENT" };
+  return labels[type] || String(type || "MATCH").toUpperCase();
+}
+
+function getMatchStatusLabel(status) {
+  const labels = { upcoming: "UPCOMING", live: "LIVE NOW", completed: "COMPLETED", cancelled: "CANCELLED" };
+  return labels[String(status || "").toLowerCase()] || String(status || "SCHEDULED").toUpperCase();
+}
+
 
 
 function cleanVideoIds(videos = []) {
@@ -979,6 +1000,95 @@ item.mvp === 1
 
 
 
+
+/* ===========================
+ PLAYER MATCH PARTICIPATION
+=========================== */
+
+let playerLineups = [];
+let matchHistory = [];
+let matchTeams = [];
+let matchTournaments = [];
+
+if (targetPlayerId) {
+  const { data: lineupRows, error: lineupError } = await supabase
+    .from("match_players")
+    .select("match_id, team_id, created_at")
+    .eq("player_id", targetPlayerId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (lineupError) console.error("PLAYER MATCH LINEUP ERROR:", lineupError);
+  else playerLineups = lineupRows || [];
+
+  const matchIds = [...new Set([
+    ...playerLineups.map(row => row.match_id),
+    ...stats.map(row => row.match_id),
+  ].filter(Boolean))];
+
+  if (matchIds.length) {
+    const { data: matchRows, error: matchesError } = await supabase
+      .from("matches")
+      .select("id, tournament_id, match_date, match_type, status, platform, map, team1_id, team2_id, winner_id, team_id, notice")
+      .in("id", matchIds)
+      .order("match_date", { ascending: false, nullsFirst: false });
+
+    if (matchesError) console.error("PLAYER MATCH HISTORY ERROR:", matchesError);
+    else matchHistory = matchRows || [];
+
+    const tournamentIds = [...new Set(matchHistory.map(match => match.tournament_id).filter(Boolean))];
+    if (tournamentIds.length) {
+      const { data, error } = await supabase
+        .from("tournaments")
+        .select("id, name, status, banner")
+        .in("id", tournamentIds);
+      if (error) console.error("PLAYER TOURNAMENT DETAILS ERROR:", error);
+      else matchTournaments = data || [];
+    }
+
+    const teamIds = [...new Set([
+      ...playerLineups.map(row => row.team_id),
+      ...matchHistory.flatMap(match => [match.team_id, match.team1_id, match.team2_id]),
+      ...stats.map(row => row.team_id_at_match),
+    ].filter(Boolean))];
+    if (teamIds.length) {
+      const { data, error } = await supabase
+        .from("teams")
+        .select("id, team_name, logo")
+        .in("id", teamIds);
+      if (error) console.error("PLAYER MATCH TEAM DETAILS ERROR:", error);
+      else matchTeams = data || [];
+    }
+  }
+}
+
+const playerMatchCards = matchHistory.map(match => {
+  const lineup = playerLineups.find(row => row.match_id === match.id);
+  const playerStat = stats.find(row => row.match_id === match.id);
+  const tournament = matchTournaments.find(item => item.id === match.tournament_id);
+  const teamId = lineup?.team_id || playerStat?.team_id_at_match || match.team_id || match.team1_id;
+  const team = matchTeams.find(item => item.id === teamId);
+  return { ...match, playerStat, tournamentName: tournament?.name || "", teamName: team?.team_name || player.team || "Team not recorded" };
+});
+
+const activePlayerMatches = playerMatchCards.filter(match =>
+  ["upcoming", "live"].includes(String(match.status || "").toLowerCase())
+);
+const completedPlayerMatches = playerMatchCards.filter(match =>
+  String(match.status || "").toLowerCase() === "completed"
+);
+const playerTopThreeFinishes = stats.filter(item =>
+  Number(item.placement) > 0 && Number(item.placement) <= 3
+).length;
+
+const playerAchievements = [
+  { id: "debut", icon: "🎮", title: "MATCH DEBUT", detail: "Recorded first match appearance", earned: totalMatches >= 1, value: "UNLOCKED" },
+  { id: "mvp", icon: "🏅", title: "MVP PERFORMER", detail: "Earned MVP recognition in recorded matches", earned: totalMVP > 0, value: `${totalMVP} MVP${totalMVP === 1 ? "" : "s"}` },
+  { id: "top-three", icon: "🥉", title: "TOP 3 FINISHER", detail: "Finished in the top three in recorded matches", earned: playerTopThreeFinishes > 0, value: `${playerTopThreeFinishes} TOP 3` },
+  { id: "ten-matches", icon: "🔥", title: "10 MATCH CLUB", detail: "Reached ten recorded match appearances", earned: totalMatches >= 10, value: `${totalMatches}/10 MATCHES` },
+  { id: "fifty-kills", icon: "⚔️", title: "50 KILL CLUB", detail: "Reached fifty total recorded kills", earned: totalKills >= 50, value: `${totalKills}/50 KILLS` },
+  { id: "damage", icon: "💥", title: "DAMAGE DEALER", detail: "Recorded at least 5,000 total damage", earned: totalDamage >= 5000, value: `${totalDamage.toLocaleString("en-BD")}/5,000 DMG` },
+].filter(item => item.earned);
 
 /* ===========================
  TOTAL EARNINGS
@@ -1734,197 +1844,72 @@ MVP
 
 
 
-<div className="profile-table reveal-table">
-
-
-<h2>
-🏆 ACHIEVEMENTS
-</h2>
-
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>
-DATE
-</th>
-
-<th>
-TIER
-</th>
-
-<th>
-TOURNAMENT
-</th>
-
-<th>
-PRIZE
-</th>
-
-
-</tr>
-
-
-</thead>
-
-
-<tbody>
-
-
-<tr>
-
-<td>
-2026
-</td>
-
-<td>
-A-Tier
-</td>
-
-<td>
-Free Fire Championship
-</td>
-
-<td>
-$120
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-2026
-</td>
-
-<td>
-A-Tier
-</td>
-
-<td>
-Asia Invitational
-</td>
-
-<td>
-$181
-</td>
-
-</tr>
-
-
-<tr>
-
-<td>
-2026
-</td>
-
-<td>
-C-Tier
-</td>
-
-<td>
-Community Tournament
-</td>
-
-<td>
-$48
-</td>
-
-</tr>
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-
-
-
-
-<div className="profile-table reveal-table">
-
-
-<h2>
-🏅 AWARDS
-</h2>
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>
-DATE
-</th>
-
-
-<th>
-AWARD
-</th>
-
-
-<th>
-ORGANIZATION
-</th>
-
-
-</tr>
-
-
-</thead>
-
-
-
-<tbody>
-
-
-<tr>
-
-<td>
-2026
-</td>
-
-
-<td>
-Elite Player Award
-</td>
-
-
-<td>
-Over Power Esports
-</td>
-
-
-</tr>
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-
-
-
-
+<section className="profile-table career-achievements reveal-table">
+  <div className="profile-section-heading">
+    <div><span className="profile-section-kicker">PLAYER PROGRESSION</span><h2>🏆 VERIFIED ACHIEVEMENTS</h2></div>
+    <span className="profile-section-count">{playerAchievements.length} EARNED</span>
+  </div>
+  {playerAchievements.length ? (
+    <div className="achievement-grid">
+      {playerAchievements.map(item => (
+        <article className="achievement-card" key={item.id}>
+          <span className="achievement-icon">{item.icon}</span>
+          <div className="achievement-copy">
+            <strong>{item.title}</strong><p>{item.detail}</p><span>{item.value}</span>
+          </div>
+          <span className="achievement-unlocked">✓</span>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div className="profile-empty-state"><span>🏆</span><strong>ACHIEVEMENTS ARE WAITING</strong><p>Verified milestones unlock automatically as match results and player statistics are recorded.</p></div>
+  )}
+</section>
+
+<section className="profile-table player-match-history reveal-table">
+  <div className="profile-section-heading">
+    <div><span className="profile-section-kicker">LIVE FROM MATCH CENTER</span><h2>🎯 MATCH PARTICIPATION</h2></div>
+    <span className="profile-section-count">{playerMatchCards.length} MATCHES</span>
+  </div>
+  <div className="match-summary-strip">
+    <div><strong>{activePlayerMatches.length}</strong><span>UPCOMING / LIVE</span></div>
+    <div><strong>{completedPlayerMatches.length}</strong><span>COMPLETED</span></div>
+    <div><strong>{totalMVP}</strong><span>MVP AWARDS</span></div>
+  </div>
+  {playerMatchCards.length ? (
+    <div className="player-match-list">
+      {playerMatchCards.map(match => {
+        const status = String(match.status || "").toLowerCase();
+        const result = match.playerStat;
+        return (
+          <article className="player-match-card" key={match.id}>
+            <div className="player-match-main">
+              <div className="player-match-topline">
+                <span className={`match-type-chip match-type-${String(match.match_type || "match").toLowerCase()}`}>{getMatchTypeLabel(match.match_type)}</span>
+                <span className={`match-status-chip match-status-${status || "unknown"}`}>{getMatchStatusLabel(status)}</span>
+              </div>
+              <h3>{match.tournamentName || (match.match_type === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(match.match_type))}</h3>
+              <p>{match.teamName}{match.map ? ` · ${match.map}` : ""}{match.platform ? ` · ${match.platform}` : ""}</p>
+              <time>{formatMatchDate(match.match_date)}</time>
+            </div>
+            {result ? (
+              <div className="player-match-stats">
+                <div><strong>{Number(result.kills || 0)}</strong><span>KILLS</span></div>
+                <div><strong>{Number(result.assists || 0)}</strong><span>ASSISTS</span></div>
+                <div><strong>{Number(result.damage || 0).toLocaleString("en-BD")}</strong><span>DAMAGE</span></div>
+                <div><strong>{result.mvp ? "MVP" : (result.placement ? `#${result.placement}` : "—")}</strong><span>{result.mvp ? "AWARD" : "PLACE"}</span></div>
+              </div>
+            ) : (
+              <div className="player-match-pending">{status === "upcoming" ? "LINEUP CONFIRMED" : status === "live" ? "MATCH IN PROGRESS" : "RESULT NOT RECORDED"}</div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  ) : (
+    <div className="profile-empty-state"><span>🎮</span><strong>NO MATCHES RECORDED YET</strong><p>When this player is added to a Match Center lineup, the match will automatically appear here.</p></div>
+  )}
+</section>
 
 <div className="profile-table video-gallery">
 
