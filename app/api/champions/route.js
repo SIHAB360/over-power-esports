@@ -124,8 +124,11 @@ function periodStart(period) {
   const [year,month,day]=today.split('-').map(Number);
   if(period==='yearly')return year+'-01-01';
   if(period==='monthly')return year+'-'+String(month).padStart(2,'0')+'-01';
+  // Weekly means a rolling seven-day window (today plus the previous six
+  // days), so a Sunday match remains visible on Monday instead of vanishing
+  // at the calendar-week boundary.
   const d=new Date(Date.UTC(year,month-1,day));
-  d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));
+  d.setUTCDate(d.getUTCDate()-6);
   return d.toISOString().slice(0,10);
 }
 
@@ -181,10 +184,16 @@ export async function GET(req) {
     const totals = new Map();
 
     for (const row of matchStats) {
-      if (!registeredIds.has(row.player_id) || !row.team_id_at_match) continue;
+      if (!registeredIds.has(row.player_id)) continue;
       const matchDay=String(row.matches?.match_date||'').slice(0,10);
       if(!matchDay||matchDay<start)continue;
-      const key = row.team_id_at_match + ':' + row.player_id;
+      // Older match-stat rows may predate team_id_at_match. In that case,
+      // use the player's verified current official roster assignment instead
+      // of silently discarding valid kills/assists/damage/MVP data.
+      const resolvedMatchTeamId = row.team_id_at_match ||
+        eligiblePlayers.find((player) => player.id === row.player_id)?.resolvedTeamId;
+      if (!resolvedMatchTeamId || !officialTeams.some((team) => team.id === resolvedMatchTeamId)) continue;
+      const key = resolvedMatchTeamId + ':' + row.player_id;
       const current = totals.get(key) || {
         kills: 0, assists: 0, damage: 0, mvp: 0, matches: 0,
       };
