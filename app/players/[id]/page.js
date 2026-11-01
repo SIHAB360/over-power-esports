@@ -453,7 +453,7 @@ function getMatchStatusLabel(status) {
 
 function cleanMatchDisplayTitle(value, matchType) {
   const fallback = matchType === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(matchType);
-  const title = String(value || "").replace(/^\\s*(?:৳\\s*)?\\d+(?:[.,]\\d+)?\\s*(?:tk|taka|bdt|৳)\\s*[-–—:]?\\s*/i, "").trim();
+  const title = String(value || "").replace(/^\s*(?:৳\s*)?\d+(?:[.,]\d+)?\s*(?:tk|taka|bdt|৳)\s*[-–—:]?\s*/i, "").trim();
   return title || fallback;
 }
 
