@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
         style={{
           "--font-orbitron": '"Orbitron", sans-serif',
           "--font-rajdhani": '"Rajdhani", sans-serif',
-          "--font-bangla": '"Hind Siliguri", "Kalpurush", sans-serif',
+          "--font-bangla": '"Noto Serif Bengali", "Hind Siliguri", "Kalpurush", sans-serif',
         }}
       >
         <PageTransition />
