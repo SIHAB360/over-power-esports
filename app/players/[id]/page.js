@@ -1852,8 +1852,8 @@ MVP
                 <span className={`match-type-chip match-type-${String(match.match_type || "match").toLowerCase()}`}>{getMatchTypeLabel(match.match_type)}</span>
                 <span className={`match-status-chip match-status-${status || "unknown"}`}>{getMatchStatusLabel(status)}</span>
               </div>
-              <h3>{match.tournamentName || (match.match_type === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(match.match_type))}</h3>
-              <p>{match.teamName}{match.map ? ` · ${match.map}` : ""}{match.platform ? ` · ${match.platform}` : ""}</p>
+              <h3>{match.tournament_name || (match.match_type === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(match.match_type))}</h3>
+              <p>{match.team_name}{match.map ? ` · ${match.map}` : ""}{match.platform ? ` · ${match.platform}` : ""}</p>
               <time>{formatMatchDate(match.match_date)}</time>
             </div>
             {result ? (
