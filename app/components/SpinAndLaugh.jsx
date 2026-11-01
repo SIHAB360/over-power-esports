@@ -3,21 +3,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import styles from "./SpinAndLaugh.module.css";
 
-const jokes = [
-  { tag: "AIM CHECK", title: "AIM ON VACATION 🎯", text: "শত্রু সামনে দাঁড়িয়ে… কিন্তু ভাইয়ের Aim ছুটিতে গিয়েছে!" },
-  { tag: "RUSH ALERT", title: "RUSH আগে, ভাবনা পরে 🏃", text: "ভাই এমন Rush দিল, Teammate-রা এখনও Lobby-তে!" },
-  { tag: "LOOT MASTER", title: "LOOT-এর রাজা 🎒", text: "ম্যাচ শেষ, Zone শেষ—ভাইয়ের Loot করা এখনও শেষ হয়নি!" },
-  { tag: "GRENade EXPERT", title: "নিজের Grenade, নিজের বিপদ 💣", text: "Enemy-কে মারতে Grenade ছুড়েছিল… Knock হলো নিজের Team!" },
-  { tag: "PING PROBLEM", title: "Wi-Fi-এর দোষ 📶", text: "হারলে Ping, জিতলে Skill—এই হলো আসল Gamer Logic!" },
-  { tag: "SQUAD LEGEND", title: "একাই একশো… নাকি? 👑", text: "Squad বলল Cover দে! ভাই দিল Offline!" },
-  { tag: "CAMPING PRO", title: "ঘরের কোণ Champion 🪑", text: "Enemy খুঁজছে ভাইকে, ভাই আরাম করে ঘাস গুনছে!" },
-  { tag: "MVP DREAM", title: "MVP-এর স্বপ্ন 🏆", text: "Kill কম, Damage কম—কিন্তু Celebration একদম World Champion!" },
-  { tag: "REVIVE PLEASE", title: "Revive কোথায়? 🥲", text: "ভাই Revive চাইছে, Teammate তখন Loot-এর হিসাব করছে!" },
-  { tag: "PRO PLAYER", title: "প্রো Max Level 😎", text: "ভাইয়ের Strategy এত Secret—নিজেও জানে না কী করছে!" },
-  { tag: "HEADSHOT?", title: "Headshot-এর অপেক্ষা 🎯", text: "Crosshair ঠিক মাথায়… গুলি গেল পাশের পাহাড়ে!" },
-  { tag: "LAST ZONE", title: "Zone-এর সাথে বন্ধুত্ব 🔥", text: "Enemy-র গুলির চেয়ে Zone-এর Damage-ই আজ বেশি ভয়ংকর!" },
-];
-
 const segments = ["AIM", "RUSH", "LOOT", "GRENade", "PING", "SQUAD", "CAMP", "MVP"];
 
 export default function SpinAndLaugh() {
@@ -42,16 +27,34 @@ export default function SpinAndLaugh() {
     };
   }, []);
 
-  function spin() {
+  async function spin() {
     if (spinning) return;
     setSelected(null);
     setSpinning(true);
-    const next = jokes[Math.floor(Math.random() * jokes.length)];
     setRotation((current) => current + 360 * 7 + Math.floor(Math.random() * 360) + 90);
-    timerRef.current = window.setTimeout(() => {
-      setSelected(next);
-      setSpinning(false);
-    }, 5100);
+    try {
+      const response = await fetch("/api/spin-and-laugh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+      });
+      const joke = await response.json();
+      if (!response.ok) throw new Error(joke.error || "Joke generation failed");
+      const remaining = Math.max(0, 5100);
+      timerRef.current = window.setTimeout(() => {
+        setSelected(joke);
+        setSpinning(false);
+      }, remaining);
+    } catch (error) {
+      timerRef.current = window.setTimeout(() => {
+        setSelected({
+          tag: "AI CONNECTION",
+          title: "JOKE MACHINE TAKING A BREAK 🤖",
+          text: error.message || "এই মুহূর্তে নতুন Joke তৈরি হচ্ছে না। একটু পরে আবার চেষ্টা করো!",
+        });
+        setSpinning(false);
+      }, 900);
+    }
   }
 
   function close() {
@@ -83,7 +86,7 @@ export default function SpinAndLaugh() {
             <button type="button" className={styles.closeButton} onClick={close} disabled={spinning} aria-label="Close Spin and Laugh">×</button>
             <div className={styles.eyebrow}>OVER POWER ESPORTS PRESENTS</div>
             <h2 id={dialogId}>SPIN <span>&amp;</span> LAUGH</h2>
-            <p className={styles.subtitle}>ঘোরাও চাকা, হাসির Jackpot জিতে নাও!</p>
+            <p className={styles.subtitle}>AI দিয়ে প্রতিবার নতুন Joke তৈরি হবে—Spin করলেই Surprise!</p>
 
             <div className={styles.wheelStage}>
               <div className={styles.pointer} aria-hidden="true">▼</div>
@@ -106,7 +109,7 @@ export default function SpinAndLaugh() {
 
             {!selected ? (
               <div className={styles.actionArea}>
-                <p className={styles.hint}>{spinning ? "চাকা ঘুরছে… Joke আসছে! 🤣" : "প্রস্তুত? একবার Spin করো!"}</p>
+                <p className={styles.hint}>{spinning ? "AI নতুন Joke বানাচ্ছে… একটু অপেক্ষা! 🤣" : "প্রস্তুত? একবার Spin করো!"}</p>
                 <button type="button" className={styles.spinButton} onClick={spin} disabled={spinning}>
                   {spinning ? "SPINNING..." : "🎡 SPIN NOW"}
                 </button>
