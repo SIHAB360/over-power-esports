@@ -451,6 +451,12 @@ function getMatchStatusLabel(status) {
   return labels[String(status || "").toLowerCase()] || String(status || "SCHEDULED").toUpperCase();
 }
 
+function cleanMatchDisplayTitle(value, matchType) {
+  const fallback = matchType === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(matchType);
+  const title = String(value || "").replace(/^\\s*(?:৳\\s*)?\\d+(?:[.,]\\d+)?\\s*(?:tk|taka|bdt|৳)\\s*[-–—:]?\\s*/i, "").trim();
+  return title || fallback;
+}
+
 
 
 function cleanVideoIds(videos = []) {
@@ -1846,14 +1852,17 @@ MVP
         const status = String(match.status || "").toLowerCase();
         const result = match.playerStat;
         return (
-          <article className="player-match-card" key={match.id}>
+          <article className="player-match-card" key={match.match_id}>
+            <div className="player-match-type-rail">
+              <span className={`match-type-chip match-type-${String(match.match_type || "match").toLowerCase()}`}>{getMatchTypeLabel(match.match_type)}</span>
+              <span className={`match-status-chip match-status-${status || "unknown"}`}>{getMatchStatusLabel(status)}</span>
+            </div>
             <div className="player-match-main">
-              <div className="player-match-topline">
-                <span className={`match-type-chip match-type-${String(match.match_type || "match").toLowerCase()}`}>{getMatchTypeLabel(match.match_type)}</span>
-                <span className={`match-status-chip match-status-${status || "unknown"}`}>{getMatchStatusLabel(status)}</span>
-              </div>
-              <h3>{match.tournament_name || (match.match_type === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(match.match_type))}</h3>
+              <h3>{cleanMatchDisplayTitle(match.tournament_name, match.match_type)}</h3>
               <p>{match.team_name}{match.map ? ` · ${match.map}` : ""}{match.platform ? ` · ${match.platform}` : ""}</p>
+            </div>
+            <div className="player-match-date-block">
+              <span>MATCH DATE</span>
               <time>{formatMatchDate(match.match_date)}</time>
             </div>
             {result ? (
