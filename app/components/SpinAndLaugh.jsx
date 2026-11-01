@@ -82,8 +82,14 @@ export default function SpinAndLaugh() {
         <div className={styles.backdrop} onMouseDown={(event) => {
           if (event.target === event.currentTarget) close();
         }}>
+          <div className={styles.emojiAtmosphere} aria-hidden="true">
+            <span>😂</span><span>🤣</span><span>🎮</span><span>💀</span>
+            <span>🤡</span><span>👾</span><span>🍿</span><span>🔥</span>
+            <span>😎</span><span>💥</span><span>🫠</span><span>🎯</span>
+          </div>
           <section className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby={dialogId}>
             <button type="button" className={styles.closeButton} onClick={close} disabled={spinning} aria-label="Close Spin and Laugh">×</button>
+            <div className={styles.dialogSpark} aria-hidden="true">✨ 🤣 ✨</div>
             <div className={styles.eyebrow}>OVER POWER ESPORTS PRESENTS</div>
             <h2 id={dialogId}>SPIN <span>&amp;</span> LAUGH</h2>
             <p className={styles.subtitle}>AI দিয়ে প্রতিবার নতুন Joke তৈরি হবে—Spin করলেই Surprise!</p>
