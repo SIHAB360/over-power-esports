@@ -5823,3 +5823,332 @@ body {
     padding: 12px 13px 14px;
   }
 }
+
+
+/* =========================================================
+   PLAYER CAREER CENTER — VERIFIED ACHIEVEMENTS + MATCH HISTORY
+   ========================================================= */
+.esports-profile .career-achievements,
+.esports-profile .player-match-history {
+  width: 100%;
+  min-width: 0;
+  margin-top: 22px;
+  padding: clamp(18px, 2.2vw, 30px);
+  overflow: hidden;
+  border: 1px solid rgba(255, 48, 67, .42);
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(255, 35, 65, .09), transparent 38%),
+    linear-gradient(145deg, rgba(17, 8, 12, .98), rgba(5, 5, 9, .99));
+  box-shadow: 0 14px 38px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.035);
+}
+.esports-profile .profile-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  margin-bottom: 20px;
+}
+.esports-profile .profile-section-heading h2 {
+  margin: 5px 0 0;
+  color: #fff;
+  font-size: clamp(17px, 1.5vw, 23px);
+  letter-spacing: .035em;
+}
+.esports-profile .profile-section-kicker {
+  color: #ff8998;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .19em;
+}
+.esports-profile .profile-section-count {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 65, 85, .35);
+  border-radius: 999px;
+  background: rgba(255, 35, 55, .09);
+  color: #ff9aa7;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .08em;
+}
+.esports-profile .achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: 13px;
+}
+.esports-profile .achievement-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  min-width: 0;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 80, 100, .25);
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(40, 19, 27, .9), rgba(11, 10, 15, .96));
+}
+.esports-profile .achievement-icon {
+  display: grid;
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  place-items: center;
+  border: 1px solid rgba(255, 90, 110, .3);
+  border-radius: 13px;
+  background: rgba(255, 40, 65, .12);
+  font-size: 21px;
+}
+.esports-profile .achievement-copy {
+  min-width: 0;
+  padding-right: 14px;
+}
+.esports-profile .achievement-copy strong {
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .055em;
+  overflow-wrap: anywhere;
+}
+.esports-profile .achievement-copy p {
+  margin: 6px 0 8px;
+  color: #a99ca3;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.esports-profile .achievement-copy > span {
+  color: #ff9aa7;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+.esports-profile .achievement-unlocked {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #6df0b0;
+  font-size: 13px;
+  font-weight: 900;
+}
+.esports-profile .match-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.esports-profile .match-summary-strip > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 70, 90, .2);
+  border-radius: 13px;
+  background: rgba(255,255,255,.025);
+}
+.esports-profile .match-summary-strip strong {
+  color: #fff;
+  font-size: clamp(20px, 2vw, 27px);
+  line-height: 1;
+}
+.esports-profile .match-summary-strip span {
+  color: #a99ba3;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .08em;
+}
+.esports-profile .player-match-list {
+  display: grid;
+  gap: 12px;
+}
+.esports-profile .player-match-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .78fr);
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(255, 75, 95, .22);
+  border-radius: 15px;
+  background: linear-gradient(115deg, rgba(30, 15, 22, .84), rgba(9, 9, 14, .94));
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.esports-profile .player-match-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 75, 95, .62);
+  box-shadow: 0 10px 24px rgba(0,0,0,.26), 0 0 20px rgba(255,0,40,.08);
+}
+.esports-profile .player-match-main {
+  min-width: 0;
+}
+.esports-profile .player-match-topline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 9px;
+}
+.esports-profile .match-type-chip,
+.esports-profile .match-status-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .065em;
+}
+.esports-profile .match-type-chip {
+  border: 1px solid rgba(255, 72, 95, .3);
+  background: rgba(255, 35, 60, .1);
+  color: #ff9aa8;
+}
+.esports-profile .match-status-chip {
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: #c4bac0;
+}
+.esports-profile .match-status-live {
+  border-color: rgba(90,255,165,.38);
+  background: rgba(50,220,130,.10);
+  color: #7cf0b3;
+}
+.esports-profile .match-status-upcoming {
+  border-color: rgba(90,170,255,.32);
+  background: rgba(50,130,255,.10);
+  color: #9ccaff;
+}
+.esports-profile .match-status-completed {
+  color: #b7aeb4;
+}
+.esports-profile .player-match-main h3 {
+  margin: 0 0 5px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+.esports-profile .player-match-main p {
+  margin: 0 0 7px;
+  color: #a99da4;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.esports-profile .player-match-main time {
+  color: #827780;
+  font-size: 10px;
+}
+.esports-profile .player-match-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  min-width: 0;
+}
+.esports-profile .player-match-stats > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 8px 4px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 10px;
+  background: rgba(255,255,255,.025);
+}
+.esports-profile .player-match-stats strong {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+.esports-profile .player-match-stats span {
+  color: #8f828b;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .06em;
+}
+.esports-profile .player-match-pending {
+  justify-self: end;
+  padding: 10px 13px;
+  border: 1px solid rgba(120,170,255,.22);
+  border-radius: 10px;
+  background: rgba(65,120,220,.08);
+  color: #a7c9ff;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+.esports-profile .profile-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 160px;
+  padding: 24px;
+  border: 1px dashed rgba(255, 75, 95, .25);
+  border-radius: 14px;
+  background: rgba(255,255,255,.018);
+  text-align: center;
+}
+.esports-profile .profile-empty-state > span {
+  font-size: 27px;
+}
+.esports-profile .profile-empty-state strong {
+  color: #eee;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+.esports-profile .profile-empty-state p {
+  max-width: 460px;
+  margin: 0;
+  color: #998e95;
+  font-size: 11px;
+  line-height: 1.6;
+}
+@media (max-width: 720px) {
+  .esports-profile .player-match-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 13px;
+    padding: 13px;
+  }
+  .esports-profile .player-match-pending {
+    justify-self: start;
+  }
+}
+@media (max-width: 480px) {
+  .esports-profile .career-achievements,
+  .esports-profile .player-match-history {
+    padding: 15px 12px;
+    border-radius: 16px;
+  }
+  .esports-profile .profile-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .esports-profile .match-summary-strip {
+    gap: 7px;
+  }
+  .esports-profile .match-summary-strip > div {
+    padding: 11px 9px;
+  }
+  .esports-profile .match-summary-strip span {
+    font-size: 8px;
+    line-height: 1.35;
+  }
+  .esports-profile .player-match-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+  }
+  .esports-profile .player-match-stats > div {
+    min-height: 53px;
+  }
+}
