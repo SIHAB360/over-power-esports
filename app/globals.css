@@ -43,6 +43,7 @@ background:#050505;
 color:white;
 
 font-family:
+"Noto Serif Bengali",
 Arial,
 Helvetica,
 sans-serif;
@@ -97,7 +98,10 @@ transition:.3s ease;
 
 
 
-button{
+button,
+input,
+textarea,
+select{
 
 font-family:inherit;
 
