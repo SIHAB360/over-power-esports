@@ -4,6 +4,7 @@ import "./admin/matches/match-premium.css";
 import PageTransition from "./components/PageTransition";
 import VisitorTracker from "./components/VisitorTracker";
 import PwaBootstrap from "./components/PwaBootstrap";
+import SpinAndLaugh from "./components/SpinAndLaugh";
 
 export const metadata = {
   title: "Over Power Esports",
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
         <PageTransition />
         <VisitorTracker />
         <PwaBootstrap />
+        <SpinAndLaugh />
         {children}
       </body>
     </html>
