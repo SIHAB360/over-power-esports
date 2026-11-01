@@ -1002,74 +1002,38 @@ item.mvp === 1
 
 
 /* ===========================
- PLAYER MATCH PARTICIPATION
+ PUBLIC PLAYER MATCH HISTORY
 =========================== */
 
-let playerLineups = [];
+// The RPC exposes only safe public match-history fields. Direct match_players
+// reads are intentionally not public because that table is protected by RLS.
 let matchHistory = [];
-let matchTeams = [];
-let matchTournaments = [];
 
 if (targetPlayerId) {
-  const { data: lineupRows, error: lineupError } = await supabase
-    .from("match_players")
-    .select("match_id, team_id, created_at")
-    .eq("player_id", targetPlayerId)
-    .order("created_at", { ascending: false })
-    .limit(100);
+  const { data, error } = await supabase.rpc(
+    "get_public_player_match_history",
+    { p_player_id: targetPlayerId }
+  );
 
-  if (lineupError) console.error("PLAYER MATCH LINEUP ERROR:", lineupError);
-  else playerLineups = lineupRows || [];
-
-  const matchIds = [...new Set([
-    ...playerLineups.map(row => row.match_id),
-    ...stats.map(row => row.match_id),
-  ].filter(Boolean))];
-
-  if (matchIds.length) {
-    const { data: matchRows, error: matchesError } = await supabase
-      .from("matches")
-      .select("id, tournament_id, match_date, match_type, status, platform, map, team1_id, team2_id, winner_id, team_id, notice")
-      .in("id", matchIds)
-      .order("match_date", { ascending: false, nullsFirst: false });
-
-    if (matchesError) console.error("PLAYER MATCH HISTORY ERROR:", matchesError);
-    else matchHistory = matchRows || [];
-
-    const tournamentIds = [...new Set(matchHistory.map(match => match.tournament_id).filter(Boolean))];
-    if (tournamentIds.length) {
-      const { data, error } = await supabase
-        .from("tournaments")
-        .select("id, name, status, banner")
-        .in("id", tournamentIds);
-      if (error) console.error("PLAYER TOURNAMENT DETAILS ERROR:", error);
-      else matchTournaments = data || [];
-    }
-
-    const teamIds = [...new Set([
-      ...playerLineups.map(row => row.team_id),
-      ...matchHistory.flatMap(match => [match.team_id, match.team1_id, match.team2_id]),
-      ...stats.map(row => row.team_id_at_match),
-    ].filter(Boolean))];
-    if (teamIds.length) {
-      const { data, error } = await supabase
-        .from("teams")
-        .select("id, team_name, logo")
-        .in("id", teamIds);
-      if (error) console.error("PLAYER MATCH TEAM DETAILS ERROR:", error);
-      else matchTeams = data || [];
-    }
+  if (error) {
+    console.error("PLAYER MATCH HISTORY RPC ERROR:", error);
+  } else {
+    matchHistory = data || [];
   }
 }
 
-const playerMatchCards = matchHistory.map(match => {
-  const lineup = playerLineups.find(row => row.match_id === match.id);
-  const playerStat = stats.find(row => row.match_id === match.id);
-  const tournament = matchTournaments.find(item => item.id === match.tournament_id);
-  const teamId = lineup?.team_id || playerStat?.team_id_at_match || match.team_id || match.team1_id;
-  const team = matchTeams.find(item => item.id === teamId);
-  return { ...match, playerStat, tournamentName: tournament?.name || "", teamName: team?.team_name || player.team || "Team not recorded" };
-});
+const playerMatchCards = matchHistory.map(match => ({
+  ...match,
+  playerStat: match.kills !== null || match.assists !== null || match.damage !== null
+    ? {
+        kills: match.kills,
+        assists: match.assists,
+        damage: match.damage,
+        mvp: match.mvp,
+        placement: match.placement,
+      }
+    : null,
+}));
 
 const activePlayerMatches = playerMatchCards.filter(match =>
   ["upcoming", "live"].includes(String(match.status || "").toLowerCase())
