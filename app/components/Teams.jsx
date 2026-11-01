@@ -15,7 +15,7 @@ export default function Teams(){
     if(!result.ok)throw Error('Public squads temporarily unavailable');
     const data=await result.json();
     if(alive)setTeams((data.teams||[]).map(team=>({
-     ...team,slogan:'আমাদের (অরা) একটু বেশি'
+     ...team,slogan:'দক্ষতাই পরিচয়, জয়ই লক্ষ্য'
     })));
    }catch(e){console.warn('Squad display refresh unavailable',e.message)}
    finally{if(alive)setLoading(false)}
@@ -43,7 +43,7 @@ OUR TEAMS
 
 
 <p>
-আমাদের (অরা) একটু বেশি
+এক স্কোয়াড, এক লক্ষ্য—আধিপত্য
 </p>
 
 
