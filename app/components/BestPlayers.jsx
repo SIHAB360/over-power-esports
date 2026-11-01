@@ -74,8 +74,6 @@ export default function BestPlayers() {
     };
   }, [period]);
 
-  if (!loading && !error && !bestPlayers.some(item=>item.bestPlayer)) return null;
-
   return (
     <section className={styles.showcase} aria-labelledby="hall-of-champions-title">
       <div className={styles.heading}>
@@ -108,6 +106,19 @@ export default function BestPlayers() {
           {bestPlayers.filter(item=>item.bestPlayer).map((item,index)=>(
             <BestPlayerCard key={item.team.id} data={item} index={index}/>
           ))}
+        </div>
+      )}
+      {!loading && !error && !bestPlayers.some(item=>item.bestPlayer) && (
+        <div className={styles.awaiting} role="status" aria-live="polite">
+          <div className={styles.awaitingBody}>
+            <span className={styles.awaitingCrown} aria-hidden="true">♛</span>
+            <p className={styles.identityKicker}>CHAMPIONSHIP RANKING</p>
+            <h3>No Champion Yet</h3>
+            <p>
+              No eligible completed-match performance is recorded for this {period} period yet.
+              Once match results and player statistics are published, the champion will appear here automatically.
+            </p>
+          </div>
         </div>
       )}
       {updatedAt && bestPlayers.some(item=>item.bestPlayer) && (
