@@ -452,6 +452,83 @@ function cleanVideoIds(videos = []) {
 }
 
 
+function decodeXmlText(value = "") {
+  return String(value)
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .trim();
+}
+
+async function fetchYouTubeUploads(channelUrl, fallbackIds = []) {
+  const fallback = cleanVideoIds(fallbackIds).map((id, index) => ({
+    id,
+    title: `Player Highlight ${index + 1}`,
+    published: "",
+  }));
+
+  if (!channelUrl || !/^https?:\/\//i.test(channelUrl)) return fallback;
+
+  try {
+    const parsed = new URL(channelUrl);
+    if (!/(^|\.)youtube\.com$/i.test(parsed.hostname) &&
+        !/(^|\.)youtu\.be$/i.test(parsed.hostname)) return fallback;
+
+    let channelId = "";
+    const directChannel = parsed.pathname.match(/\/channel\/(UC[\w-]{22})/);
+    if (directChannel) channelId = directChannel[1];
+
+    if (!channelId) {
+      const channelResponse = await fetch(channelUrl, {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; OverPowerEsports/1.0)" },
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(7000),
+      });
+      if (!channelResponse.ok) return fallback;
+
+      const html = await channelResponse.text();
+      const channelMatch =
+        html.match(/"channelId"\s*:\s*"(UC[\w-]{22})"/) ||
+        html.match(/"externalId"\s*:\s*"(UC[\w-]{22})"/) ||
+        html.match(/itemprop=["']channelId["'][^>]*content=["'](UC[\w-]{22})["']/i) ||
+        html.match(/content=["'](UC[\w-]{22})["'][^>]*itemprop=["']channelId["']/i);
+
+      channelId = channelMatch?.[1] || "";
+    }
+
+    if (!channelId) return fallback;
+
+    const feedResponse = await fetch(
+      `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
+      {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; OverPowerEsports/1.0)" },
+        next: { revalidate: 3600 },
+        signal: AbortSignal.timeout(7000),
+      }
+    );
+    if (!feedResponse.ok) return fallback;
+
+    const xml = await feedResponse.text();
+    const entries = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)];
+    const videos = entries.map((match) => {
+      const entry = match[1];
+      const id = entry.match(/<yt:videoId>([\w-]{11})<\/yt:videoId>/)?.[1];
+      const title = entry.match(/<title>([\s\S]*?)<\/title>/)?.[1] || "";
+      const published = entry.match(/<published>([\s\S]*?)<\/published>/)?.[1] || "";
+      return id ? { id, title: decodeXmlText(title), published: published.slice(0, 10) } : null;
+    }).filter(Boolean);
+
+    return videos.length ? videos.slice(0, 6) : fallback;
+  } catch (error) {
+    console.warn("YouTube channel feed unavailable; using saved highlights:", error?.message);
+    return fallback;
+  }
+}
+
+
 
 function isUUID(value) {
 
@@ -795,6 +872,10 @@ dbPlayer?.expert_weapon || "N/A",
 
 
 };
+
+// Pull each player's latest public uploads from their linked YouTube channel.
+// RSS metadata is cached for one hour; saved highlight IDs remain a safe fallback.
+player.youtubeVideos = await fetchYouTubeUploads(player.youtube, player.youtubeVideos);
 
 const isActive =
   String(player.status).toLowerCase() === "active";
@@ -1867,30 +1948,26 @@ player.youtubeVideos.map(
 (video,index)=>(
 
 
-<div
+<article
 className="video-card"
-key={`${video}-${index}`}
+key={`${video.id}-${index}`}
 >
-
-
-<iframe
-
-src={`https://www.youtube.com/embed/${video}`}
-
-title={`${player.ign} Highlight ${index + 1}`}
-
-loading="lazy"
-
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-
-referrerPolicy="strict-origin-when-cross-origin"
-
-allowFullScreen
-
-></iframe>
-
-
-</div>
+  <div className="video-frame">
+    <iframe
+      src={`https://www.youtube-nocookie.com/embed/${video.id}?rel=0&modestbranding=1`}
+      title={video.title || `${player.ign} Highlight ${index + 1}`}
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerPolicy="strict-origin-when-cross-origin"
+      allowFullScreen
+    ></iframe>
+  </div>
+  <div className="video-card-meta">
+    <span className="video-card-index">HIGHLIGHT {String(index + 1).padStart(2, "0")}</span>
+    <h3>{video.title || `Latest upload from ${player.ign}`}</h3>
+    <span className="video-card-date">{video.published || "YouTube channel upload"}</span>
+  </div>
+</article>
 
 
 )
