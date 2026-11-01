@@ -453,7 +453,13 @@ function getMatchStatusLabel(status) {
 
 function cleanMatchDisplayTitle(value, matchType) {
   const fallback = matchType === "Scrim" ? "Daily Scrim" : getMatchTypeLabel(matchType);
-  const title = String(value || "").replace(/^\s*(?:৳\s*)?\d+(?:[.,]\d+)?\s*(?:tk|taka|bdt|৳)\s*[-–—:]?\s*/i, "").trim();
+  // Public profile match cards must never advertise entry fees or cash amounts.
+  // Remove currency values wherever they appear in the title, not just at the start.
+  const title = String(value || "")
+    .replace(/(?:৳|BDT)\s*\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*(?:TK|TAKA|BDT|৳)/gi, " ")
+    .replace(/[|·•,:;–—-]+/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
   return title || fallback;
 }
 
