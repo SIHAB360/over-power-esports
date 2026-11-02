@@ -32,7 +32,7 @@ export default function EditMatchPerformancePage() {
       if (String(profile?.role || '').toLowerCase() !== 'admin') throw new Error('Administrator access required.');
 
       const { data:m, error:matchError } = await supabase.from('matches')
-        .select('id,team1_id,team_id,match_date,match_type,status,teams:teams!matches_team1_id_fkey(team_name)')
+        .select('id,team1_id,team_id,match_date,match_type,status')
         .eq('id',matchId).single();
       if (matchError) throw matchError;
       const teamId = m.team1_id || m.team_id;
