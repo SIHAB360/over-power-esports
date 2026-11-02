@@ -39,7 +39,7 @@ export default function EditMatchPerformancePage() {
       if (!teamId) throw new Error('This match has no team assigned.');
 
       const [{data:roster,error:rosterError},{data:participants,error:participantsError},{data:stats,error:statsError}] = await Promise.all([
-        supabase.from('players').select('id,full_name,ign,status,is_active,team_id').eq('team_id',teamId).eq('is_active',true).in('status',['approved','active']).order('full_name'),
+        supabase.from('players').select('id,full_name,ign,status,is_active,team_id').eq('team_id',teamId).order('full_name'),
         supabase.from('match_players').select('player_id,slot_number').eq('match_id',matchId).order('slot_number'),
         supabase.from('match_player_stats').select('player_id,kills,damage,assists,mvp').eq('match_id',matchId)
       ]);
@@ -100,7 +100,7 @@ export default function EditMatchPerformancePage() {
             <label style={{display:'block',fontSize:13,color:'#cbd5e1',marginBottom:12}}>Player
               <select value={row.player_id} onChange={e=>updateRow(index,'player_id',e.target.value)} style={{...field,marginTop:6}}>
                 <option value="">Select a player</option>
-                {players.map(p=><option key={p.id} value={p.id}>{p.ign || p.full_name} {p.ign && p.full_name ? '— '+p.full_name : ''}</option>)}
+                {players.map(p=><option key={p.id} value={p.id} disabled={!p.is_active || !['approved','active'].includes(String(p.status||'').toLowerCase())}>{p.ign || p.full_name} {p.ign && p.full_name ? '— '+p.full_name : ''} {(!p.is_active || !['approved','active'].includes(String(p.status||'').toLowerCase())) ? '(inactive)' : ''}</option>)}
               </select>
             </label>
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(140px,1fr))',gap:12}}>
