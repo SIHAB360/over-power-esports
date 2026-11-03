@@ -997,7 +997,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 {scanPreviewUrl && (
                   <div className="scanner-preview">
                     <img src={scanPreviewUrl} alt="Selected match scoreboard preview" />
-                    <span>{scanLoading ? "AI IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · SENT TO AI FOR SCANNING"}</span>
+                    <span>{scanLoading ? "OCR IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · OCR PROCESSING"}</span>
                   </div>
                 )}
 
