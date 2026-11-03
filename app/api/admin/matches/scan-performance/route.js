@@ -28,6 +28,7 @@ function normalizeIgn(value) {
 // for exact matching, then use this conservative second pass.
 function normalizeIgnForOcr(value) {
   return normalizeIgn(value)
+    .replace(/ø/g, "o")
     .replace(/[0o]/g, "o")
     .replace(/[1il]/g, "i")
     .replace(/[5s]/g, "s")
@@ -56,56 +57,61 @@ function editDistance(a, b) {
 
 function similarity(a, b) {
   if (!a || !b) return 0;
-  return 1 - editDistance(a, b) / Math.max(a.length, b.length, 1);
+  return 1 - editDistance(a, b) / Math.max(a.lfunction rosterMatchScore(recognizedIgn, player) {
+  const target = normalizeIgn(recognizedIgn);
+  const ocrTarget = normalizeIgnForOcr(recognizedIgn);
+  const alias = normalizeIgn(player.ign);
+  const ocrAlias = normalizeIgnForOcr(player.ign);
+  if (!target || !alias) return 0;
+  if (target === alias) return 1;
+  if (ocrTarget === ocrAlias) return 0.97;
+
+  // Ignore rank badges, clan decorations and subtitle text around a full IGN.
+  if (alias.length >= 6 && (target.includes(alias) || ocrTarget.includes(ocrAlias))) return 0.95;
+
+  // OCR sometimes separates a multi-word IGN into adjacent text tokens.
+  const recognizedTokens = String(recognizedIgn || "").split(/\\s+/).map(normalizeIgn).filter(Boolean);
+  const playerTokens = String(player.ign || "").split(/\\s+/).map(normalizeIgn).filter(Boolean);
+  if (playerTokens.length > 1 && playerTokens.length <= recognizedTokens.length) {
+    for (let index = 0; index <= recognizedTokens.length - playerTokens.length; index += 1) {
+      const window = recognizedTokens.slice(index, index + playerTokens.length).join("");
+      if (window === alias) return 0.96;
+      if (normalizeIgnForOcr(window) === ocrAlias) return 0.94;
+    }
+  }
+
+  return Math.max(similarity(target, alias), similarity(ocrTarget, ocrAlias));
 }
 
 function findRosterPlayer(recognizedIgn, candidates) {
   const target = normalizeIgn(recognizedIgn);
   if (!target) return null;
-  const ocrTarget = normalizeIgnForOcr(recognizedIgn);
-
-  const aliasesFor = (player) => {
-    const values = Array.isArray(player.aliases) && player.aliases.length
-      ? player.aliases
-      : [player.ign];
-    return [...new Set(values.map(normalizeIgn).filter(Boolean))];
-  };
-  const uniquePlayers = (matches) => {
-    const byId = new Map(matches.map((player) => [player.id, player]));
-    return [...byId.values()];
-  };
-
-  const exact = uniquePlayers(candidates.filter((player) => aliasesFor(player).includes(target)));
-  if (exact.length === 1) return { player: exact[0], score: 1, method: "exact" };
-  if (exact.length > 1) return null;
-
-  const confusableExact = uniquePlayers(candidates.filter((player) =>
-    aliasesFor(player).some((alias) => normalizeIgnForOcr(alias) === ocrTarget)
-  ));
-  if (confusableExact.length === 1) {
-    return { player: confusableExact[0], score: 0.96, method: "ocr-confusable" };
-  }
-  if (confusableExact.length > 1) return null;
-
   const ranked = candidates
-    .map((player) => {
-      const aliases = aliasesFor(player);
-      const score = Math.max(0, ...aliases.map((alias) => Math.max(
-        similarity(target, alias),
-        similarity(ocrTarget, normalizeIgnForOcr(alias))
-      )));
-      return { player, score };
-    })
+    .map((player) => ({ player, score: rosterMatchScore(recognizedIgn, player) }))
     .sort((a, b) => b.score - a.score);
-
   const best = ranked[0];
   const second = ranked[1];
-  if (
-    best &&
-    best.score >= 0.84 &&
-    (!second || best.score - second.score >= 0.08)
-  ) {
+  if (best?.score === 1) {
+    return ranked.filter((item) => item.score === 1).length === 1 ? { ...best, method: "exact" } : null;
+  }
+  if (best?.score >= 0.94 && (!second || best.score - second.score >= 0.03)) {
+    return { ...best, method: "ocr-normalized" };
+  }
+  if (best?.score >= 0.84 && (!second || best.score - second.score >= 0.08)) {
     return { ...best, method: "fuzzy" };
+  }
+  return null;
+}
+
+function suggestRosterPlayer(recognizedIgn, candidates) {
+  const ranked = candidates
+    .map((player) => ({ player, score: rosterMatchScore(recognizedIgn, player) }))
+    .sort((a, b) => b.score - a.score);
+  const best = ranked[0];
+  if (!best || best.score < 0.45) return null;
+  return { ign: best.player.ign, score: Math.round(best.score * 100) };
+}
+
   }
 
   return null;
@@ -379,7 +385,12 @@ export async function POST(request) {
       const match = findRosterPlayer(recognizedIgn, candidates);
 
       if (!match) {
-        unmatched.push({ recognized_ign: recognizedIgn || "Unreadable IGN", reason: "Could not safely match this IGN to the selected squad." });
+        const suggestion = suggestRosterPlayer(recognizedIgn, candidates);
+        unmatched.push({
+          recognized_ign: recognizedIgn || "Unreadable IGN",
+          reason: "Could not safely match this IGN to the selected squad.",
+          ...(suggestion ? { suggested_ign: suggestion.ign, suggestion_score: suggestion.score } : {}),
+        });
         continue;
       }
       if (usedPlayerIds.has(match.player.id)) {
