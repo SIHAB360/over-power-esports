@@ -106,7 +106,8 @@ function suggestRosterPlayer(recognizedIgn, candidates) {
     .map((player) => ({ player, score: rosterMatchScore(recognizedIgn, player) }))
     .sort((a, b) => b.score - a.score);
   const best = ranked[0];
-  if (!best || best.score < 0.45) return null;
+  const second = ranked[1];
+  if (!best || best.score < 0.45 || (second && best.score - second.score < 0.08)) return null;
   return { ign: best.player.ign, score: Math.round(best.score * 100) };
 }
 function parseCount(value) {
