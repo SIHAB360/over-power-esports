@@ -242,7 +242,7 @@ async function recognizeScoreboard(bytes) {
       tessedit_pageseg_mode: "6",
       preserve_interword_spaces: "1",
     });
-    const result = await worker.recognize(bytes);
+    const result = await worker.recognize(bytes, {}, { blocks: true });
     return result?.data || {};
   } finally {
     if (worker) await worker.terminate().catch(() => {});
