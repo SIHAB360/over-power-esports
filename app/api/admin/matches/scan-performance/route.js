@@ -23,6 +23,18 @@ function normalizeIgn(value) {
     .replace(/[^\p{L}\p{N}]/gu, "");
 }
 
+// Free Fire names often use decorative characters, while OCR can confuse
+// visually similar Latin letters and digits. Keep the original normalizer
+// for exact matching, then use this conservative second pass.
+function normalizeIgnForOcr(value) {
+  return normalizeIgn(value)
+    .replace(/[0o]/g, "o")
+    .replace(/[1il]/g, "i")
+    .replace(/[5s]/g, "s")
+    .replace(/[8b]/g, "b")
+    .replace(/[2z]/g, "z");
+}
+
 function editDistance(a, b) {
   if (a === b) return 0;
   if (!a) return b.length;
@@ -50,16 +62,40 @@ function similarity(a, b) {
 function findRosterPlayer(recognizedIgn, candidates) {
   const target = normalizeIgn(recognizedIgn);
   if (!target) return null;
+  const ocrTarget = normalizeIgnForOcr(recognizedIgn);
 
-  const exact = candidates.filter((player) => normalizeIgn(player.ign) === target);
+  const aliasesFor = (player) => {
+    const values = Array.isArray(player.aliases) && player.aliases.length
+      ? player.aliases
+      : [player.ign];
+    return [...new Set(values.map(normalizeIgn).filter(Boolean))];
+  };
+  const uniquePlayers = (matches) => {
+    const byId = new Map(matches.map((player) => [player.id, player]));
+    return [...byId.values()];
+  };
+
+  const exact = uniquePlayers(candidates.filter((player) => aliasesFor(player).includes(target)));
   if (exact.length === 1) return { player: exact[0], score: 1, method: "exact" };
   if (exact.length > 1) return null;
 
+  const confusableExact = uniquePlayers(candidates.filter((player) =>
+    aliasesFor(player).some((alias) => normalizeIgnForOcr(alias) === ocrTarget)
+  ));
+  if (confusableExact.length === 1) {
+    return { player: confusableExact[0], score: 0.96, method: "ocr-confusable" };
+  }
+  if (confusableExact.length > 1) return null;
+
   const ranked = candidates
-    .map((player) => ({
-      player,
-      score: similarity(target, normalizeIgn(player.ign)),
-    }))
+    .map((player) => {
+      const aliases = aliasesFor(player);
+      const score = Math.max(0, ...aliases.map((alias) => Math.max(
+        similarity(target, alias),
+        similarity(ocrTarget, normalizeIgnForOcr(alias))
+      )));
+      return { player, score };
+    })
     .sort((a, b) => b.score - a.score);
 
   const best = ranked[0];
@@ -309,11 +345,16 @@ export async function POST(request) {
     }
 
     const candidates = roster
-      .map((player) => ({
-        id: player.id,
-        ign: String(player.ign || player.full_name || "").trim(),
-        full_name: String(player.full_name || "").trim(),
-      }))
+      .map((player) => {
+        const ign = String(player.ign || player.full_name || "").trim();
+        const fullName = String(player.full_name || "").trim();
+        return {
+          id: player.id,
+          ign,
+          full_name: fullName,
+          aliases: [...new Set([ign, fullName].filter(Boolean))],
+        };
+      })
       .filter((player) => player.ign);
 
     if (candidates.length < 4) {
@@ -376,9 +417,17 @@ export async function POST(request) {
 
     if (!matched.length) {
       return json({
-        message: "The scoreboard text was read, but no player names could be safely matched to this squad. Check the in-game names and enter any unclear rows manually.",
+        message: "The scoreboard text was read, but no player names could be safely matched to this squad. Review the OCR-read names against the selected squad IGN list, then check the in-game names or enter unclear rows manually.",
         matched_count: 0,
         selected_count: 4,
+        columns_detected: parsed.columns_detected,
+        recognized_rows: parsed.rows.map((row) => ({
+          recognized_ign: String(row.recognized_ign || "").slice(0, 100),
+          kills: parseCount(row.kills),
+          assists: parseCount(row.assists),
+          damage: parseCount(row.damage),
+          confidence: Math.max(0, Math.min(1, Number(row.match_confidence) || 0)),
+        })),
         unmatched_rows: unmatched,
       }, 422);
     }
