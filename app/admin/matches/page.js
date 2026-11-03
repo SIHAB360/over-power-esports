@@ -117,6 +117,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
   useEffect(() => {
     return () => {
+      scanRequestId.current += 1;
       if (scanWorkerRef.current) void scanWorkerRef.current.terminate().catch(() => {});
     };
   }, []);
@@ -497,6 +498,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
           }
         },
       });
+      if (requestId !== scanRequestId.current) return;
       scanWorkerRef.current = worker;
 
       await worker.setParameters({
@@ -595,7 +597,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       );
     } catch (error) {
       if (requestId === scanRequestId.current) {
-        setScanError(error.message || "Unable to scan this screenshot. Please try again.");
+        const detail = String(error?.message || "");
+        const friendly = /fetch|network|worker|wasm|traineddata|cross-origin/i.test(detail)
+          ? "The free OCR engine could not load. Check your internet connection and retry; no payment method is needed."
+          : detail || "Unable to scan this screenshot. Please try again.";
+        setScanError(friendly);
       }
     } finally {
       if (worker) {
