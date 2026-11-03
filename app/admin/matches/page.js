@@ -18,6 +18,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [moderatorPermissions, setModeratorPermissions] = useState([]);
   const canCreate = !moderatorMode || moderatorPermissions.some(p => p.section === "matches" && p.action === "create");
   const canFinalize = !moderatorMode || moderatorPermissions.some(p => p.section === "matches" && p.action === "approve");
+  const canEdit = !moderatorMode || (moderatorPermissions.some(p => p.section === "matches" && p.action === "edit") && canFinalize);
 
   const [teams, setTeams] = useState([]);
   const [registeredPlayers, setRegisteredPlayers] = useState([]);
@@ -29,6 +30,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [recentMatches, setRecentMatches] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
+  const [editMode, setEditMode] = useState(false);
+  const [editMatchId, setEditMatchId] = useState("");
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -101,6 +104,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       }
 
       await Promise.all([loadTeams(), loadTournaments(), loadRecentMatches(), loadRegisteredPlayers()]);
+      const requestedEditId = new URLSearchParams(window.location.search).get("edit");
+      if (requestedEditId) {
+        if (moderatorMode) throw new Error("Only administrators can edit an existing match.");
+        await loadMatchForEditing(requestedEditId);
+      }
     } catch (error) {
       console.error(error);
       setMessage(error.message || "Unable to load Match Management.");
@@ -214,6 +222,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         secondary_role,
         verified,
         status,
+        is_active,
         team_id
       `
       )
@@ -230,6 +239,124 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     }
 
     setTeamPlayers(data || []);
+  }
+
+  async function loadMatchForEditing(id, { silent = false } = {}) {
+    setEditMode(true);
+    setEditMatchId(id);
+
+    const { data: match, error: matchError } = await supabase
+      .from("matches")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (matchError) throw matchError;
+
+    const [
+      { data: participants, error: participantsError },
+      { data: stats, error: statsError },
+      { data: resultRows, error: resultError },
+    ] = await Promise.all([
+      supabase.from("match_players")
+        .select("player_id,slot_number")
+        .eq("match_id", id)
+        .order("slot_number", { ascending: true }),
+      supabase.from("match_player_stats")
+        .select("player_id,kills,assists,damage,mvp")
+        .eq("match_id", id),
+      supabase.from("match_results")
+        .select("position,points")
+        .eq("match_id", id)
+        .limit(1),
+    ]);
+
+    if (participantsError) throw participantsError;
+    if (statsError) throw statsError;
+    if (resultError) throw resultError;
+
+    const teamId = match.team1_id || match.team_id;
+    if (!teamId) throw new Error("This match has no assigned team.");
+
+    const participantRows = participants?.length
+      ? participants
+      : (stats || []).map((row, index) => ({ player_id: row.player_id, slot_number: index + 1 }));
+    const selectedIds = participantRows
+      .slice()
+      .sort((a, b) => Number(a.slot_number || 0) - Number(b.slot_number || 0))
+      .map((row) => row.player_id)
+      .filter(Boolean)
+      .slice(0, REQUIRED_PLAYERS);
+
+    if (selectedIds.length !== REQUIRED_PLAYERS) {
+      throw new Error("This match does not have a complete four-player lineup to edit.");
+    }
+
+    const playerFields = "id,full_name,ign,profile_image,avatar_url,primary_role,secondary_role,verified,status,is_active,team_id";
+    const [rosterResult, historicalResult] = await Promise.all([
+      supabase.from("players")
+        .select(playerFields)
+        .eq("team_id", teamId)
+        .order("full_name", { ascending: true }),
+      supabase.from("players")
+        .select(playerFields)
+        .in("id", selectedIds),
+    ]);
+
+    if (rosterResult.error) throw rosterResult.error;
+    if (historicalResult.error) throw historicalResult.error;
+
+    const playerById = new Map();
+    [...(rosterResult.data || []), ...(historicalResult.data || [])]
+      .forEach((player) => playerById.set(player.id, player));
+
+    const mergedPlayers = Array.from(playerById.values()).sort((a, b) =>
+      String(a.full_name || a.ign || "").localeCompare(String(b.full_name || b.ign || ""))
+    );
+    const selected = selectedIds.map((playerId) => playerById.get(playerId)).filter(Boolean);
+
+    if (selected.length !== REQUIRED_PLAYERS) {
+      throw new Error("One or more historical players could not be loaded.");
+    }
+
+    const statsById = Object.fromEntries((stats || []).map((row) => [row.player_id, row]));
+    setTeamPlayers(mergedPlayers);
+    setSelectedPlayers(selected);
+    setPlayerStats(Object.fromEntries(selectedIds.map((playerId) => {
+      const row = statsById[playerId] || {};
+      return [playerId, {
+        kills: Number(row.kills || 0),
+        assists: Number(row.assists || 0),
+        damage: Number(row.damage || 0),
+        mvp: Boolean(row.mvp),
+      }];
+    })));
+
+    const result = resultRows?.[0] || {};
+    setForm({
+      tournament_id: match.tournament_id || "",
+      team1_id: teamId,
+      team2_id: match.team2_id || "",
+      match_date: String(match.match_date || "").replace(" ", "T").slice(0, 16),
+      match_type: match.match_type || "Scrim",
+      status: match.status || "completed",
+      team1_score: String(match.team1_score ?? 0),
+      team2_score: String(match.team2_score ?? 0),
+      winner_id: match.winner_id || "",
+      position: result.position == null ? "" : String(result.position),
+      points: String(result.points ?? 0),
+      entry_fee: match.entry_fee == null ? "" : String(match.entry_fee),
+      prize_money: match.prize_money == null ? "" : String(match.prize_money),
+      platform: match.platform || "Free Fire",
+      map: match.map || "",
+      sponsor: match.sponsor || "",
+      notice: match.notice || "",
+    });
+
+    if (!silent) {
+      setMessage("Existing match loaded. Edit the required fields and save to update this same match.");
+      setMessageType("success");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   function handleChange(e) {
@@ -303,8 +430,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
   async function handleSaveMatch(e) {
     e.preventDefault();
-    if (moderatorMode && !canCreate) {
-      setMessage("Main Admin must grant Match Center · Create permission.");
+    if (moderatorMode && (editMode ? !canEdit : !canCreate)) {
+      setMessage(editMode ? "Match Edit + Approval permission is required." : "Main Admin must grant Match Center · Create permission.");
       setMessageType("error");
       return;
     }
@@ -376,51 +503,72 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         mvp: Boolean(playerStats[selected.id]?.mvp),
       }));
 
-      const { data: matchId, error: saveError } = await supabase.rpc(
-        moderatorMode ? "moderator_create_esports_match" : "create_esports_match",
-        { p_match: payload, p_players: participants }
-      );
+      if (editMode) {
+        const { data: updateResult, error: saveError } = await supabase.rpc(
+          "admin_update_esports_match",
+          { p_match_id: editMatchId, p_match: payload, p_players: participants }
+        );
+        if (saveError) throw saveError;
+        if (!updateResult?.saved) throw new Error("The database did not confirm the match update.");
 
-      if (saveError) throw saveError;
-      if (!matchId) throw new Error("Match ID was not returned by Supabase.");
+        await loadRecentMatches();
+        await loadMatchForEditing(editMatchId, { silent: true });
+        setMessage(
+          form.status === "completed"
+            ? netProfit > 0
+              ? `Existing match updated. Player pool: +৳${money(playerPool)} (shared by 4 players).`
+              : netProfit < 0
+                ? `Existing match updated. Player loss: ৳${money(Math.abs(playerPool))} (shared by 4 players).`
+                : "Existing match updated. Break-even: no player earnings or losses."
+            : "Existing match updated. No player earnings until completion."
+        );
+        setMessageType("success");
+      } else {
+        const { data: matchId, error: saveError } = await supabase.rpc(
+          moderatorMode ? "moderator_create_esports_match" : "create_esports_match",
+          { p_match: payload, p_players: participants }
+        );
 
-      setMessage(
-        form.status === "completed"
-          ? netProfit > 0
-            ? `Match saved. Player pool: +৳${money(playerPool)} (shared by 4 players).`
-            : netProfit < 0
-              ? `Match saved. Player loss: ৳${money(Math.abs(playerPool))} (shared by 4 players).`
-              : "Match saved. Break-even: no player earnings or losses."
-          : "Match created. No player earnings until completion."
-      );
-      setMessageType("success");
+        if (saveError) throw saveError;
+        if (!matchId) throw new Error("Match ID was not returned by Supabase.");
 
-      // Reset form
-      setForm({
-        tournament_id: "",
-        team1_id: "",
-        team2_id: "",
-        match_date: "",
-        match_type: "Scrim",
-        status: "completed",
-        team1_score: "",
-        team2_score: "",
-        winner_id: "",
-        position: "",
-        points: "",
-        entry_fee: "",
-        prize_money: "",
-        platform: "Free Fire",
-        map: "",
-        sponsor: "",
-        notice: "",
-      });
+        setMessage(
+          form.status === "completed"
+            ? netProfit > 0
+              ? `Match saved. Player pool: +৳${money(playerPool)} (shared by 4 players).`
+              : netProfit < 0
+                ? `Match saved. Player loss: ৳${money(Math.abs(playerPool))} (shared by 4 players).`
+                : "Match saved. Break-even: no player earnings or losses."
+            : "Match created. No player earnings until completion."
+        );
+        setMessageType("success");
 
-      setTeamPlayers([]);
-      setSelectedPlayers([]);
-      setPlayerStats({});
+        setForm({
+          tournament_id: "",
+          team1_id: "",
+          team2_id: "",
+          match_date: "",
+          match_type: "Scrim",
+          status: "completed",
+          team1_score: "",
+          team2_score: "",
+          winner_id: "",
+          position: "",
+          points: "",
+          entry_fee: "",
+          prize_money: "",
+          platform: "Free Fire",
+          map: "",
+          sponsor: "",
+          notice: "",
+        });
 
-      await loadRecentMatches();
+        setTeamPlayers([]);
+        setSelectedPlayers([]);
+        setPlayerStats({});
+        await loadRecentMatches();
+      }
+
 
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
@@ -487,8 +635,10 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         <header className="topbar">
           <div>
             <span className="eyebrow">OVER POWER ESPORTS</span>
-            <h1>MATCH COMMAND CENTER</h1>
-            <p>Record matches, active players, results and earnings.</p>
+            <h1>{editMode ? "EDIT EXISTING MATCH" : "MATCH COMMAND CENTER"}</h1>
+            <p>{editMode ? "Update the original match details, selected players, performance and financial values." : "Record matches, active players, results and earnings."}</p>
+            {editMode && <p style={{ color: "#ffe08a", marginTop: 8, fontWeight: 800 }}>EDITING EXISTING MATCH · {editMatchId}</p>}
+            {editMode && <Link href="/admin/profit" style={{ display: "inline-flex", marginTop: 12, color: "#8de7ff", fontWeight: 800, textDecoration: "none" }}>← BACK TO FINANCIAL HISTORY</Link>}
             {moderatorMode && <p style={{color:"#75d6e4",fontWeight:700,fontSize:13}}>
               MODERATOR MODE · Assigned: {moderatorPermissions.filter(p=>p.section==="matches").map(p=>p.action.toUpperCase()).join(" · ") || "VIEW"}
             </p>}
@@ -517,7 +667,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         )}
 
         <form onSubmit={handleSaveMatch}>
-          <fieldset disabled={moderatorMode && !canCreate} style={{border:0,padding:0,margin:0,minWidth:0}}>
+          <fieldset disabled={moderatorMode && (editMode ? !canEdit : !canCreate)} style={{border:0,padding:0,margin:0,minWidth:0}}>
           {/* STEP 01 */}
           <section className="panel">
             <SectionTitle
@@ -712,7 +862,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                         selected ? "player-card selected" : "player-card"
                       }
                     >
-                    <input type="checkbox" className="squad-player-checkbox" checked={selected} onChange={() => togglePlayer(player)} aria-label={"Pick "+(player.ign || player.full_name || "player")+" for match"} />
+                    <input type="checkbox" className="squad-player-checkbox" checked={selected} disabled={!((player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase())) || selected)} onChange={() => togglePlayer(player)} aria-label={"Pick "+(player.ign || player.full_name || "player")+" for match"} />
                       <div className="avatar">
                         {player.profile_image || player.avatar_url ? (
                           <img
@@ -731,7 +881,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                       <div className="player-copy">
                         <strong>{player.ign || player.full_name}</strong>
                         <span>{player.full_name}</span>
-                        <small>{player.primary_role || "PLAYER"}</small>
+                        <small>{player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase()) ? (player.primary_role || "PLAYER") : "HISTORICAL / INACTIVE"}</small>
                       </div>
 
                       <div className="check">{selected ? "✓" : "+"}</div>
@@ -988,9 +1138,9 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             />
           </section>
 
-          <button type="submit" className="save-button" disabled={saving}>
+          <button type="submit" className="save-button" disabled={saving || (moderatorMode && (editMode ? !canEdit : !canCreate))}>
             <span>
-              {saving ? "PROCESSING MATCH..." : "SAVE MATCH & CALCULATE"}
+              {saving ? "PROCESSING MATCH..." : editMode ? "UPDATE EXISTING MATCH" : "SAVE MATCH & CALCULATE"}
             </span>
             <strong>→</strong>
           </button>
