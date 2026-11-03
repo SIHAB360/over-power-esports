@@ -466,7 +466,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     }
 
     if (selectedPlayers.length !== REQUIRED_PLAYERS) {
-      setMessage("You must select exactly 4 active players.");
+      setMessage(editMode ? "Select exactly four players for this match." : "You must select exactly 4 active players.");
       setMessageType("error");
       return;
     }
@@ -834,7 +834,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             />
 
             <div className="selection-counter">
-              <span>SELECTED · {teamPlayers.length} AVAILABLE IN SQUAD</span>
+              <span>SELECTED · {teamPlayers.length} PLAYERS LISTED</span>
               <strong>
                 {selectedPlayers.length} / 4
               </strong>
@@ -848,7 +848,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
               </div>
             ) : (
               <>
-              <p className="squad-picker-help">All active squad members are listed below. Tick exactly four to include in the match. Only selected players receive performance statistics and earnings.</p>
+              <p className="squad-picker-help">{editMode ? "Current lineup players and active squad members are listed below. Historical inactive players can remain in this match, but only active approved players can be added as replacements." : "All active squad members are listed below. Tick exactly four to include in the match. Only selected players receive performance statistics and earnings."}</p>
                <div className="player-grid">
                 {teamPlayers.map((player) => {
                   const selected = selectedPlayers.some(
