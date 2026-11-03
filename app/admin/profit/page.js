@@ -614,7 +614,7 @@ export default function ProfitPage({moderatorMode=false}={}) {
                       }}
                     >
                       <a
-                        href={matchId ? `/admin/matches/edit/${matchId}` : "#"}
+                        href={matchId ? `/admin/matches?edit=${matchId}` : "#"}
                         aria-disabled={!matchId}
                         style={{
                           display: moderatorMode ? "none" : "inline-flex",
