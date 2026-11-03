@@ -449,11 +449,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   async function scanPerformanceScreenshot(file) {
     if (!file) return;
     if (!form.team1_id) {
-      setScanError("Select a squad before scanning.");
+      setScanError("Select your team first, then upload the match screenshot.");
       return;
     }
-    if (selectedPlayers.length !== REQUIRED_PLAYERS) {
-      setScanError("Select all four players first, then upload the scoreboard.");
+    if (!teamPlayers.length) {
+      setScanError("The selected team's active roster is still loading or is empty. Please wait and try again.");
       return;
     }
     if (moderatorMode && !canFinalize) {
@@ -471,7 +471,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       const formData = new FormData();
       formData.append("screenshot", prepared);
       formData.append("team_id", form.team1_id);
-      formData.append("players", JSON.stringify(selectedPlayers.map((player) => ({ id: player.id }))));
 
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Your session has expired. Sign in again.");
@@ -486,25 +485,41 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       if (requestId !== scanRequestId.current) return;
       if (!response.ok) throw new Error(result.message || "Unable to scan this screenshot.");
 
-      setScanResult(result);
-      setPlayerStats((previous) => {
-        const next = { ...previous };
-        for (const row of result.rows || []) {
-          if (!row.player_id) continue;
-          next[row.player_id] = {
-            ...previous[row.player_id],
-            ...(row.kills !== null && row.kills !== undefined ? { kills: row.kills } : {}),
-            ...(row.assists !== null && row.assists !== undefined ? { assists: row.assists } : {}),
-            ...(row.damage !== null && row.damage !== undefined ? { damage: row.damage } : {}),
+      const matchedPlayers = (result.rows || [])
+        .map((row) => teamPlayers.find((player) => player.id === row.player_id))
+        .filter(Boolean)
+        .slice(0, REQUIRED_PLAYERS);
+
+      if (!matchedPlayers.length) {
+        throw new Error("No player from this team's roster could be matched. Check the IGN values or upload a clearer screenshot.");
+      }
+
+      const rowsById = new Map((result.rows || []).map((row) => [row.player_id, row]));
+      setSelectedPlayers(matchedPlayers);
+      setPlayerStats(() => {
+        const next = {};
+        for (const player of matchedPlayers) {
+          const row = rowsById.get(player.id);
+          if (!row) continue;
+          next[player.id] = {
+            kills: row.kills ?? "",
+            assists: row.assists ?? "",
+            damage: row.damage ?? "",
+            ...(row.mvp === true ? { mvp: true } : {}),
           };
         }
         return next;
       });
 
+      setScanResult({
+        ...result,
+        matched_count: matchedPlayers.length,
+        selected_count: REQUIRED_PLAYERS,
+      });
       setScanError(
-        result.matched_count < REQUIRED_PLAYERS
-          ? `Matched ${result.matched_count} of 4 selected players. Check unmatched names and complete any missing values manually.`
-          : "All four selected players were matched. Review the values below before saving."
+        matchedPlayers.length < REQUIRED_PLAYERS
+          ? `Automatically selected ${matchedPlayers.length} of 4 players. Check the unmatched IGN list and manually add any missing squad player.`
+          : "All four players were automatically selected. Review their Kills, Assists and Damage below before saving."
       );
     } catch (error) {
       if (requestId === scanRequestId.current) {
@@ -519,25 +534,31 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    if (!form.team1_id) {
+      setScanError("Select your team first, then upload the match screenshot.");
+      if (scanInputRef.current) scanInputRef.current.value = "";
+      return;
+    }
+    if (!teamPlayers.length) {
+      setScanError("The selected team's active roster is still loading or is empty. Please wait and try again.");
+      if (scanInputRef.current) scanInputRef.current.value = "";
+      return;
+    }
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       clearPerformanceScan();
       setScanError("Choose a JPG, PNG or WEBP match screenshot.");
       return;
     }
-    if (selectedPlayers.length !== REQUIRED_PLAYERS) {
-      clearPerformanceScan();
-      setScanError("Select all four squad players first, then upload the scoreboard.");
-      return;
-    }
 
     clearPerformanceScan();
+    setSelectedPlayers([]);
+    setPlayerStats({});
     setScanFile(file);
     setScanPreviewUrl(URL.createObjectURL(file));
     void scanPerformanceScreenshot(file);
   }
 
   function togglePlayer(player) {
-    clearPerformanceScan();
     setMessage("");
     setMessageType("");
 
@@ -937,86 +958,15 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             </div>
           </section>
 
-          {/* STEP 03 */}
+          {/* STEP 03 - UPLOAD SCREENSHOT FIRST */}
           <section className="panel">
-            <SectionTitle
-              number="03"
-              small="ACTIVE LINEUP"
-              title="CHOOSE ANY 4 FROM THE FULL SQUAD"
-            />
-
-            <div className="selection-counter">
-              <span>SELECTED · {teamPlayers.length} PLAYERS LISTED</span>
-              <strong>
-                {selectedPlayers.length} / 4
-              </strong>
-            </div>
-
-            {!form.team1_id ? (
-              <div className="empty-state">Select your team first.</div>
-            ) : teamPlayers.length === 0 ? (
-              <div className="empty-state">
-                No active, approved players are currently assigned to this squad.
-              </div>
-            ) : (
-              <>
-              <p className="squad-picker-help">{editMode ? "Current lineup players and active squad members are listed below. Historical inactive players can remain in this match, but only active approved players can be added as replacements." : "All active squad members are listed below. Tick exactly four to include in the match. Only selected players receive performance statistics and earnings."}</p>
-               <div className="player-grid">
-                {teamPlayers.map((player) => {
-                  const selected = selectedPlayers.some(
-                    (p) => p.id === player.id
-                  );
-
-                  return (
-                    <label
-                      key={player.id}
-                      className={
-                        selected ? "player-card selected" : "player-card"
-                      }
-                    >
-                    <input type="checkbox" className="squad-player-checkbox" checked={selected} disabled={!((player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase())) || selected)} onChange={() => togglePlayer(player)} aria-label={"Pick "+(player.ign || player.full_name || "player")+" for match"} />
-                      <div className="avatar">
-                        {player.profile_image || player.avatar_url ? (
-                          <img
-                            src={player.profile_image || player.avatar_url}
-                            alt={player.ign || player.full_name}
-                          />
-                        ) : (
-                          <span>
-                            {(player.ign || player.full_name || "P")
-                              .charAt(0)
-                              .toUpperCase()}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="player-copy">
-                        <strong>{player.ign || player.full_name}</strong>
-                        <span>{player.full_name}</span>
-                        <small>{player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase()) ? (player.primary_role || "PLAYER") : "HISTORICAL / INACTIVE"}</small>
-                      </div>
-
-                      <div className="check">{selected ? "✓" : "+"}</div>
-                    </label>
-                  );
-                })}
-              </div>
-              </>
-            )}
-          </section>
-
-          {/* STEP 04 - RESULT + PERFORMANCE */}
-          <section className="panel">
-            <SectionTitle number="04" small="PLAYER STATS & PLACEMENT" title="PLAYER PERFORMANCE & PLACEMENT" />
-
-            {/* AI SCREENSHOT PERFORMANCE SCANNER */}
-            {selectedPlayers.length > 0 && (
+            <SectionTitle number="03" small="AI SCOREBOARD SCAN" title="UPLOAD MATCH SCREENSHOT FIRST" />
               <div className="op-screenshot-scanner">
                 <div className="scanner-heading">
                   <div>
                     <span className="scanner-eyebrow">AI-POWERED MATCH TOOL</span>
                     <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
-                    <p>Upload a Free Fire result screenshot like the Battle Royale table (NAME / K / A / DMG). AI matches the IGN and fills the existing Kills, Assists and Damage fields. Revival and Survival Time are ignored.</p>
+                    <p>{form.team1_id ? "Upload the Free Fire result screenshot. AI will compare the visible IGNs with this team's active roster, automatically select the players who took part, and fill their existing Kills, Assists and Damage fields." : "Select your team above first. Then upload the match screenshot here; the players shown in it will be selected automatically."}</p>
                   </div>
                   <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
                 </div>
@@ -1028,7 +978,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
                       onChange={handleScreenshotSelect}
-                      disabled={scanLoading || (moderatorMode && !canFinalize)}
+                      disabled={!form.team1_id || !teamPlayers.length || scanLoading || (moderatorMode && !canFinalize)}
                     />
                     <span className="scanner-upload-icon">＋</span>
                     <span className="scanner-upload-copy">
@@ -1103,7 +1053,79 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
                 <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image; it is sent to AI Gateway for processing with prompt-training disabled.</p>
               </div>
+          </section>
+
+          {/* STEP 04 */}
+          <section className="panel" id="op-active-lineup">
+            <SectionTitle
+              number="04"
+              small="ACTIVE LINEUP"
+              title="CHOOSE ANY 4 FROM THE FULL SQUAD"
+            />
+
+            <div className="selection-counter">
+              <span>ACTIVE ROSTER · {teamPlayers.length} PLAYERS · AUTO-SELECTED FROM SCREENSHOT</span>
+              <strong>
+                {selectedPlayers.length} / 4
+              </strong>
+            </div>
+
+            {!form.team1_id ? (
+              <div className="empty-state">Select your team first.</div>
+            ) : teamPlayers.length === 0 ? (
+              <div className="empty-state">
+                No active, approved players are currently assigned to this squad.
+              </div>
+            ) : (
+              <>
+              <p className="squad-picker-help">{editMode ? "Current lineup players and active squad members are listed below. Historical inactive players can remain in this match, but only active approved players can be added as replacements." : "Players recognized in the uploaded screenshot are selected automatically. Check the lineup below and adjust manually if needed. Exactly four players must be selected to save the match."}</p>
+               <div className="player-grid">
+                {teamPlayers.map((player) => {
+                  const selected = selectedPlayers.some(
+                    (p) => p.id === player.id
+                  );
+
+                  return (
+                    <label
+                      key={player.id}
+                      className={
+                        selected ? "player-card selected" : "player-card"
+                      }
+                    >
+                    <input type="checkbox" className="squad-player-checkbox" checked={selected} disabled={!((player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase())) || selected)} onChange={() => togglePlayer(player)} aria-label={"Pick "+(player.ign || player.full_name || "player")+" for match"} />
+                      <div className="avatar">
+                        {player.profile_image || player.avatar_url ? (
+                          <img
+                            src={player.profile_image || player.avatar_url}
+                            alt={player.ign || player.full_name}
+                          />
+                        ) : (
+                          <span>
+                            {(player.ign || player.full_name || "P")
+                              .charAt(0)
+                              .toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="player-copy">
+                        <strong>{player.ign || player.full_name}</strong>
+                        <span>{player.full_name}</span>
+                        <small>{player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase()) ? (player.primary_role || "PLAYER") : "HISTORICAL / INACTIVE"}</small>
+                      </div>
+
+                      <div className="check">{selected ? "✓" : "+"}</div>
+                    </label>
+                  );
+                })}
+              </div>
+              </>
             )}
+          </section>
+
+          {/* STEP 04 - RESULT + PERFORMANCE */}
+          <section className="panel">
+            <SectionTitle number="05" small="PLAYER STATS & PLACEMENT" title="PLAYER PERFORMANCE & PLACEMENT" />
 
             {/* PLAYER PERFORMANCE */}
             {selectedPlayers.length > 0 && (
@@ -1225,7 +1247,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
           {/* STEP 05 - FINANCE */}
           <section className="panel finance-panel">
             <SectionTitle
-              number="05"
+              number="06"
               small="FINANCE ENGINE"
               title="PROFIT & PLAYER EARNINGS"
             />
@@ -1298,7 +1320,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
           {/* STEP 06 */}
           <section className="panel">
-            <SectionTitle number="06" small="NOTES" title="MATCH NOTICE" />
+            <SectionTitle number="07" small="NOTES" title="MATCH NOTICE" />
 
             <textarea
               name="notice"
@@ -1319,7 +1341,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
         {/* HISTORY ARCHIVE LINK — all saved records now live on a separate page. */}
         <section className="history">
-          <SectionTitle number="07" small="MATCH RECORDS" title="MATCH HISTORY" />
+          <SectionTitle number="08" small="MATCH RECORDS" title="MATCH HISTORY" />
           <div className="history-link-panel">
             <div>
               <span className="history-link-tag">COMPLETE MATCH ARCHIVE</span>
