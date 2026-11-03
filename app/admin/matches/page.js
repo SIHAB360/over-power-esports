@@ -486,7 +486,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       const { createWorker } = await import("tesseract.js");
       worker = await createWorker("eng", 1, {
         workerPath: "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js",
-        corePath: "https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.1",
+        corePath: "https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.0",
         langPath: "https://tessdata.projectnaptha.com/4.0.0",
         gzip: true,
         logger: (message) => {
