@@ -511,18 +511,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         if (saveError) throw saveError;
         if (!updateResult?.saved) throw new Error("The database did not confirm the match update.");
 
-        await loadRecentMatches();
-        await loadMatchForEditing(editMatchId, { silent: true });
-        setMessage(
-          form.status === "completed"
-            ? netProfit > 0
-              ? `Existing match updated. Player pool: +৳${money(playerPool)} (shared by 4 players).`
-              : netProfit < 0
-                ? `Existing match updated. Player loss: ৳${money(Math.abs(playerPool))} (shared by 4 players).`
-                : "Existing match updated. Break-even: no player earnings or losses."
-            : "Existing match updated. No player earnings until completion."
-        );
-        setMessageType("success");
+        router.replace("/admin/profit?updated=1");
+        return;
       } else {
         const { data: matchId, error: saveError } = await supabase.rpc(
           moderatorMode ? "moderator_create_esports_match" : "create_esports_match",

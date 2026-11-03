@@ -99,6 +99,7 @@ export default function ProfitPage({moderatorMode=false}={}) {
   const canDelete=!moderatorMode||moderatorRights.some(p=>p.section==="profit"&&p.action==="delete");
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedTournament, setSelectedTournament] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
@@ -118,6 +119,11 @@ export default function ProfitPage({moderatorMode=false}={}) {
         const data=await response.json();
         if(!data.permissions?.some(x=>x.section==='profit'&&x.action==='view'))throw Error('Profit View permission required.');
         setModeratorRights(data.permissions);
+      }
+      const updated = new URLSearchParams(window.location.search).get("updated");
+      if (updated === "1") {
+        setSuccessMessage("Match updated successfully. Financial History has been refreshed.");
+        window.history.replaceState(null, "", window.location.pathname);
       }
       await loadFinance();
     })().catch(error=>{setAuthNotice(error.message);setLoading(false)});
@@ -341,6 +347,24 @@ export default function ProfitPage({moderatorMode=false}={}) {
       >
         💰 PROFIT MANAGEMENT
       </h1>
+
+      {successMessage && (
+        <div
+          role="status"
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto 20px",
+            padding: "16px 20px",
+            borderRadius: "14px",
+            background: "rgba(16,185,129,.12)",
+            border: "1px solid rgba(52,211,153,.55)",
+            color: "#6ee7b7",
+            fontWeight: 800,
+          }}
+        >
+          ✓ {successMessage}
+        </div>
+      )}
 
       {errorMessage && (
         <div
