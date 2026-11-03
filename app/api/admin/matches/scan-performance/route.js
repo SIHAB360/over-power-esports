@@ -186,8 +186,9 @@ function extractScoreboard(ocrData) {
 
     // IGN text sits to the left of the Kills column. Keep digits and symbols
     // in names; only the aligned numeric columns are parsed as statistics.
+    const ignCutoff = killX - maxDistance;
     const ignWords = words
-      .filter((word) => wordCenter(word, "x") < killX - 4)
+      .filter((word) => wordCenter(word, "x") < ignCutoff)
       .sort((a, b) => wordCenter(a, "x") - wordCenter(b, "x"));
     const recognizedIgn = ignWords.map((word) => String(word.text || "").trim()).filter(Boolean).join(" ").trim();
     if (recognizedIgn.replace(/\s/g, "").length < 2) continue;
