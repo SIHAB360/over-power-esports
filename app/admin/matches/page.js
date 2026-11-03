@@ -960,13 +960,13 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
           {/* STEP 03 - UPLOAD SCREENSHOT FIRST */}
           <section className="panel">
-            <SectionTitle number="03" small="AI SCOREBOARD SCAN" title="UPLOAD MATCH SCREENSHOT FIRST" />
+            <SectionTitle number="03" small="FREE SCOREBOARD OCR" title="UPLOAD MATCH SCREENSHOT FIRST" />
               <div className="op-screenshot-scanner">
                 <div className="scanner-heading">
                   <div>
-                    <span className="scanner-eyebrow">AI-POWERED MATCH TOOL</span>
+                    <span className="scanner-eyebrow">FREE OCR-POWERED MATCH TOOL</span>
                     <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
-                    <p>{form.team1_id ? "Upload the Free Fire result screenshot. AI will compare the visible IGNs with this team's active roster, automatically select the players who took part, and fill their existing Kills, Assists and Damage fields." : "Select your team above first. Then upload the match screenshot here; the players shown in it will be selected automatically."}</p>
+                    <p>{form.team1_id ? "Upload the Free Fire result screenshot. The free OCR scanner will read visible IGNs and scoreboard numbers, compare them with this team's active roster, and fill the existing Kills, Assists and Damage fields." : "Select your team above first. Then upload the match screenshot here; the players shown in it will be selected automatically."}</p>
                   </div>
                   <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
                 </div>
@@ -1004,7 +1004,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 {scanLoading && (
                   <div className="scanner-progress" role="status">
                     <span className="scanner-spinner" />
-                    <span>Reading player names and performance…</span>
+                    <span>Reading scoreboard text and performance…</span>
                   </div>
                 )}
 
@@ -1061,7 +1061,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                   </div>
                 )}
 
-                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image; it is sent to AI Gateway for processing with prompt-training disabled.</p>
+                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image. Free OCR processes it temporarily on the server; no AI Gateway key, payment method, or paid AI credits are required.</p>
               </div>
           </section>
 
