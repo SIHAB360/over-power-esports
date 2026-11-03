@@ -239,8 +239,15 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-lite",
+        // Gateway-level fallback models keep the scan working if the preferred
+        // provider is temporarily unavailable. The no-training policy applies
+        // to the primary model and every fallback.
+        models: [
+          "google/gemini-3.5-flash-lite",
+          "google/gemini-2.5-flash-lite",
+        ],
         temperature: 0,
-        max_tokens: 1200,
+        max_tokens: 1600,
         providerOptions: {
           gateway: {
             disallowPromptTraining: true,
@@ -261,8 +268,51 @@ export async function POST(request) {
     });
 
     if (!gatewayResponse.ok) {
-      // Do not log or return the screenshot, prompt payload, or secret gateway response.
-      return json({ message: "The AI scanner could not process this screenshot right now. Please try again." }, 502);
+      // Return a safe, actionable category without exposing the API key,
+      // image, prompt, provider payload, or raw upstream response.
+      const gatewayError = await gatewayResponse.json().catch(() => ({}));
+      const errorType = String(gatewayError?.type || gatewayError?.error?.type || "").toLowerCase();
+      const errorText = String(
+        gatewayError?.error?.message ||
+        gatewayError?.message ||
+        (typeof gatewayError?.error === "string" ? gatewayError.error : "")
+      ).toLowerCase();
+
+      let code = "AI_GATEWAY_TEMPORARY";
+      let message = "The AI provider is temporarily unavailable. Please retry the same screenshot.";
+
+      if (gatewayResponse.status === 401 || gatewayResponse.status === 403) {
+        code = "AI_GATEWAY_AUTH";
+        message = "The AI Gateway key is not authorized. The website admin needs to reconnect or replace the AI Gateway key.";
+      } else if (gatewayResponse.status === 402) {
+        code = "AI_GATEWAY_BILLING";
+        message = "The AI Gateway has reached its credit or usage limit. Please check the AI Gateway balance and retry.";
+      } else if (gatewayResponse.status === 429) {
+        code = "AI_GATEWAY_RATE_LIMIT";
+        message = "The AI scanner is receiving too many requests. Wait a moment and retry.";
+      } else if (gatewayResponse.status === 413) {
+        code = "AI_GATEWAY_IMAGE_SIZE";
+        message = "The AI Gateway rejected the image size. Please upload a smaller screenshot.";
+      } else if (
+        errorType === "no_providers_available" ||
+        errorText.includes("no providers available")
+      ) {
+        code = "AI_GATEWAY_NO_COMPLIANT_PROVIDER";
+        message = "No available AI provider currently meets the screenshot privacy policy. No training-enabled fallback was used. Please retry later or configure an eligible provider.";
+      } else if (gatewayResponse.status === 404) {
+        code = "AI_GATEWAY_MODEL";
+        message = "The configured AI model is unavailable. The admin needs to check the AI Gateway model configuration.";
+      } else if (gatewayResponse.status === 400) {
+        code = "AI_GATEWAY_REQUEST";
+        message = "The AI Gateway rejected the scan request. Please retry; if it continues, the admin needs to check the model request configuration.";
+      }
+
+      console.error("Match screenshot AI Gateway request failed", {
+        status: gatewayResponse.status,
+        type: errorType || "unknown",
+        code,
+      });
+      return json({ code, message }, 502);
     }
 
     const gatewayResult = await gatewayResponse.json();
