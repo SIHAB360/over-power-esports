@@ -57,7 +57,10 @@ function editDistance(a, b) {
 
 function similarity(a, b) {
   if (!a || !b) return 0;
-  return 1 - editDistance(a, b) / Math.max(a.lfunction rosterMatchScore(recognizedIgn, player) {
+  return 1 - editDistance(a, b) / Math.max(a.length, b.length, 1);
+}
+
+function rosterMatchScore(recognizedIgn, player) {
   const target = normalizeIgn(recognizedIgn);
   const ocrTarget = normalizeIgnForOcr(recognizedIgn);
   const alias = normalizeIgn(player.ign);
@@ -65,11 +68,7 @@ function similarity(a, b) {
   if (!target || !alias) return 0;
   if (target === alias) return 1;
   if (ocrTarget === ocrAlias) return 0.97;
-
-  // Ignore rank badges, clan decorations and subtitle text around a full IGN.
   if (alias.length >= 6 && (target.includes(alias) || ocrTarget.includes(ocrAlias))) return 0.95;
-
-  // OCR sometimes separates a multi-word IGN into adjacent text tokens.
   const recognizedTokens = String(recognizedIgn || "").split(/\s+/).map(normalizeIgn).filter(Boolean);
   const playerTokens = String(player.ign || "").split(/\s+/).map(normalizeIgn).filter(Boolean);
   if (playerTokens.length > 1 && playerTokens.length <= recognizedTokens.length) {
@@ -79,7 +78,6 @@ function similarity(a, b) {
       if (normalizeIgnForOcr(window) === ocrAlias) return 0.94;
     }
   }
-
   return Math.max(similarity(target, alias), similarity(ocrTarget, ocrAlias));
 }
 
