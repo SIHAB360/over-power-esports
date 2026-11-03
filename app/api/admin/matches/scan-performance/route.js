@@ -224,19 +224,21 @@ export async function POST(request) {
     }));
 
     const prompt = [
-      "Read this Free Fire / Free Fire MAX match result or scoreboard screenshot.",
+      "Read this Free Fire / Free Fire MAX match result or scoreboard screenshot, including the Battle Royale post-match result table.",
       "Extract only visible scoreboard facts. Never guess, invent, calculate, or fill a number that is not visibly present.",
+      "This scoreboard layout may use the column headers NAME, K, A, DMG, REVIVAL, and SURVIVAL TIME. Map K to kills, A to assists, and DMG to damage exactly. These are the only performance statistics this website currently stores.",
+      "Ignore REVIVAL, SURVIVAL TIME, rank badges, row placement numbers, Booyah placement such as #1/10, icons, likes, and all other columns. Never put those values into kills, assists, or damage.",
       "The selected squad roster is:",
       JSON.stringify(rosterText),
-      "Find the scoreboard rows belonging to these four selected players. Ignore opponents and unrelated players.",
-      "Match IGN carefully. Return candidate_player_id only when one roster entry is clearly the same player; otherwise use null.",
-      "For every selected player row you can read, return the visible IGN and exact visible values for kills, assists, and damage.",
-      "If a statistic column is not present or its value cannot be read clearly, return null for that field. Do not assume assists are zero when the screenshot has no assists column.",
+      "Find the scoreboard rows belonging to these four selected players. Ignore opponents and unrelated players. Read each row horizontally so that each K, A, and DMG number stays with the correct IGN.",
+      "Match the visible IGN carefully against the supplied roster. Preserve the recognized IGN exactly as displayed, including underscores, hyphens, digits, and special characters. Return candidate_player_id only when one roster entry is clearly the same player; otherwise use null.",
+      "For every selected player row you can read, return the exact visible K, A, and DMG values as kills, assists, and damage.",
+      "If a K, A, or DMG column is not present or a value cannot be read clearly, return null for that field. Do not assume assists are zero when the screenshot has no A column.",
       "Return match_confidence from 0 to 1 for the IGN-to-roster match. Do not mark a row as matched just because it looks similar.",
-      "Do not infer MVP. Return mvp true/false only if the screenshot clearly marks it; otherwise null.",
+      "Do not infer MVP from a highlighted row, thumbs-up icon, badge, or placement. Return mvp true/false only if the screenshot explicitly labels MVP; otherwise null.",
       "If this is not a match scoreboard, set scoreboard_detected to false.",
       "Return ONLY one valid JSON object in this exact shape:",
-      '{"scoreboard_detected":true,"game":"Free Fire","columns_detected":["IGN","Kills","Damage"],"rows":[{"recognized_ign":"visible IGN","candidate_player_id":"one supplied player_id or null","match_confidence":0.95,"kills":3,"assists":null,"damage":1250,"mvp":null}],"notes":""}',
+      '{"scoreboard_detected":true,"game":"Free Fire","columns_detected":["NAME","K","A","DMG"],"rows":[{"recognized_ign":"visible IGN","candidate_player_id":"one supplied player_id or null","match_confidence":0.95,"kills":3,"assists":2,"damage":1250,"mvp":null}],"notes":""}',
     ].join("\n");
 
     const gatewayResponse = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
