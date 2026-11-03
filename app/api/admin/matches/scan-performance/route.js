@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { createWorker } from "tesseract.js";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ const json = (body, status = 200) =>
     status,
     headers: {
       "Cache-Control": "private, no-store, max-age=0",
-      "Pragma": "no-cache",
+      Pragma: "no-cache",
       "X-Content-Type-Options": "nosniff",
     },
   });
@@ -51,7 +52,7 @@ function similarity(a, b) {
   return 1 - editDistance(a, b) / Math.max(a.length, b.length, 1);
 }
 
-function findRosterPlayer(recognizedIgn, candidates, hintedId, confidence) {
+function findRosterPlayer(recognizedIgn, candidates) {
   const target = normalizeIgn(recognizedIgn);
   if (!target) return null;
 
@@ -76,12 +77,6 @@ function findRosterPlayer(recognizedIgn, candidates, hintedId, confidence) {
     return { ...best, method: "fuzzy" };
   }
 
-  const hinted = candidates.find((player) => player.id === hintedId);
-  const hintedScore = hinted ? similarity(target, normalizeIgn(hinted.ign)) : 0;
-  if (hinted && Number(confidence) >= 0.92 && hintedScore >= 0.62) {
-    return { player: hinted, score: Math.min(0.99, Number(confidence)), method: "vision-assisted" };
-  }
-
   return null;
 }
 
@@ -93,15 +88,153 @@ function parseCount(value) {
   return Number.isSafeInteger(number) && number >= 0 && number <= 100000 ? number : null;
 }
 
-function parseModelJson(value) {
-  const text = String(value || "").trim()
-    .replace(/^\uFEFF/, "")
-    .replace(/^\u0060\u0060\u0060(?:json)?\s*/i, "")
-    .replace(/\s*\u0060\u0060\u0060$/, "");
-  const first = text.indexOf("{");
-  const last = text.lastIndexOf("}");
-  if (first < 0 || last <= first) throw new Error("The AI scanner returned an unreadable result.");
-  return JSON.parse(text.slice(first, last + 1));
+function normalizeHeader(value) {
+  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+function wordCenter(word, axis) {
+  const box = word?.bbox || {};
+  const start = axis === "x" ? Number(box.x0) : Number(box.y0);
+  const end = axis === "x" ? Number(box.x1) : Number(box.y1);
+  return ((Number.isFinite(start) ? start : 0) + (Number.isFinite(end) ? end : 0)) / 2;
+}
+
+function lineCenterY(line) {
+  if (line?.bbox) return wordCenter({ bbox: line.bbox }, "y");
+  const words = Array.isArray(line?.words) ? line.words : [];
+  if (!words.length) return 0;
+  return words.reduce((sum, word) => sum + wordCenter(word, "y"), 0) / words.length;
+}
+
+function parseOcrNumber(value) {
+  const cleaned = String(value || "")
+    .trim()
+    .replace(/[Oo]/g, "0")
+    .replace(/[Il|]/g, "1")
+    .replace(/[,.]/g, "");
+  if (!/^\d{1,6}$/.test(cleaned)) return null;
+  return parseCount(cleaned);
+}
+
+function nearestNumber(words, x, maxDistance) {
+  if (x === null || x === undefined) return null;
+  const candidates = words
+    .map((word) => ({
+      value: parseOcrNumber(word.text),
+      distance: Math.abs(wordCenter(word, "x") - x),
+      confidence: Number(word.confidence) || 0,
+    }))
+    .filter((item) => item.value !== null && item.distance <= maxDistance)
+    .sort((a, b) => a.distance - b.distance || b.confidence - a.confidence);
+  return candidates[0]?.value ?? null;
+}
+
+function extractScoreboard(ocrData) {
+  const lines = Array.isArray(ocrData?.lines) ? ocrData.lines : [];
+  const killHeaders = new Set(["K", "KILL", "KILLS", "ELIM", "ELIMS", "ELIMINATION", "ELIMINATIONS"]);
+  const assistHeaders = new Set(["A", "AST", "ASSIST", "ASSISTS"]);
+  const damageHeaders = new Set(["DMG", "DAMAGE", "DAMG"]);
+
+  const headerCandidates = lines
+    .map((line) => {
+      const words = Array.isArray(line?.words) ? line.words : [];
+      const findHeader = (aliases) =>
+        words.find((word) => aliases.has(normalizeHeader(word.text))) || null;
+      const kills = findHeader(killHeaders);
+      const assists = findHeader(assistHeaders);
+      const damage = findHeader(damageHeaders);
+      return { line, kills, assists, damage, score: (kills ? 2 : 0) + (assists ? 1 : 0) + (damage ? 2 : 0) };
+    })
+    .filter((item) => item.kills && item.damage)
+    .sort((a, b) => b.score - a.score);
+
+  const header = headerCandidates[0];
+  if (!header) {
+    return {
+      scoreboard_detected: false,
+      columns_detected: [],
+      rows: [],
+      notes: "Could not identify the Kills and Damage column headings clearly.",
+    };
+  }
+
+  const killX = wordCenter(header.kills, "x");
+  const assistX = header.assists ? wordCenter(header.assists, "x") : null;
+  const damageX = wordCenter(header.damage, "x");
+  const sortedColumns = [killX, ...(assistX === null ? [] : [assistX]), damageX].sort((a, b) => a - b);
+  const columnGaps = sortedColumns.slice(1).map((value, index) => value - sortedColumns[index]).filter((value) => value > 10);
+  const maxDistance = Math.max(35, Math.min(100, columnGaps.length ? Math.min(...columnGaps) * 0.58 : 70));
+  const headerY = lineCenterY(header.line);
+
+  const rows = [];
+  for (const line of lines) {
+    if (line === header.line || lineCenterY(line) <= headerY) continue;
+    const words = (Array.isArray(line?.words) ? line.words : [])
+      .filter((word) => String(word.text || "").trim() && (Number(word.confidence) || 0) >= 18);
+    if (!words.length) continue;
+
+    // IGN text sits to the left of the Kills column. Keep digits and symbols
+    // in names; only the aligned numeric columns are parsed as statistics.
+    const ignWords = words
+      .filter((word) => wordCenter(word, "x") < killX - 4)
+      .sort((a, b) => wordCenter(a, "x") - wordCenter(b, "x"));
+    const recognizedIgn = ignWords.map((word) => String(word.text || "").trim()).filter(Boolean).join(" ").trim();
+    if (recognizedIgn.replace(/\s/g, "").length < 2) continue;
+
+    const stats = {
+      kills: nearestNumber(words, killX, maxDistance),
+      assists: assistX === null ? null : nearestNumber(words, assistX, maxDistance),
+      damage: nearestNumber(words, damageX, maxDistance),
+    };
+    if (stats.kills === null && stats.assists === null && stats.damage === null) continue;
+
+    const confidenceWords = [
+      ...ignWords,
+      ...words.filter((word) => {
+        const x = wordCenter(word, "x");
+        return Math.abs(x - killX) <= maxDistance ||
+          (assistX !== null && Math.abs(x - assistX) <= maxDistance) ||
+          Math.abs(x - damageX) <= maxDistance;
+      }),
+    ];
+    const ocrConfidence = confidenceWords.length
+      ? confidenceWords.reduce((sum, word) => sum + (Number(word.confidence) || 0), 0) / confidenceWords.length
+      : 0;
+
+    rows.push({
+      recognized_ign: recognizedIgn,
+      match_confidence: Math.max(0, Math.min(1, ocrConfidence / 100)),
+      ...stats,
+      mvp: null,
+    });
+  }
+
+  return {
+    scoreboard_detected: rows.length > 0,
+    columns_detected: [
+      "NAME",
+      String(header.kills.text || "K").toUpperCase(),
+      ...(header.assists ? [String(header.assists.text || "A").toUpperCase()] : []),
+      String(header.damage.text || "DMG").toUpperCase(),
+    ],
+    rows: rows.slice(0, 24),
+    notes: "Free OCR scan completed. Check the recognized names and values before saving.",
+  };
+}
+
+async function recognizeScoreboard(bytes) {
+  let worker;
+  try {
+    worker = await createWorker("eng", 1, { logger: () => {} });
+    await worker.setParameters({
+      tessedit_pageseg_mode: "6",
+      preserve_interword_spaces: "1",
+    });
+    const result = await worker.recognize(bytes);
+    return result?.data || {};
+  } finally {
+    if (worker) await worker.terminate().catch(() => {});
+  }
 }
 
 async function authorize(request) {
@@ -124,7 +257,7 @@ async function authorize(request) {
 
   const db = createClient(url, anonKey, {
     auth: { persistSession: false, autoRefreshToken: false },
-    global: { headers: { Authorization: `Bearer ${token}` } },
+    global: { headers: { Authorization: "Bearer " + token } },
   });
 
   const { data: profile, error: profileError } = await db
@@ -160,11 +293,6 @@ export async function POST(request) {
     const access = await authorize(request);
     if (access.error) return access.error;
 
-    const gatewayKey = process.env.AI_GATEWAY_API_KEY;
-    if (!gatewayKey) {
-      return json({ message: "AI screenshot scanning is not configured on this deployment." }, 503);
-    }
-
     const form = await request.formData();
     const image = form.get("screenshot");
     const teamId = String(form.get("team_id") || "");
@@ -178,6 +306,7 @@ export async function POST(request) {
     if (image.size < 1000 || image.size > MAX_IMAGE_BYTES) {
       return json({ message: "Screenshot must be between 1 KB and 4 MB." }, 413);
     }
+
     // Load the active, approved roster for the selected team. The screenshot,
     // not a manually checked player list, determines who is selected for this match.
     const { data: roster, error: rosterError } = await access.db
@@ -206,139 +335,23 @@ export async function POST(request) {
     }
 
     const bytes = Buffer.from(await image.arrayBuffer());
-    const dataUrl = `data:${image.type};base64,${bytes.toString("base64")}`;
-    const rosterText = candidates.map((player) => ({
-      player_id: player.id,
-      ign: player.ign,
-      real_name_reference_only: player.full_name,
-    }));
+    const ocrData = await recognizeScoreboard(bytes);
+    const parsed = extractScoreboard(ocrData);
 
-    const prompt = [
-      "Read this Free Fire / Free Fire MAX match result or scoreboard screenshot, including the Battle Royale post-match result table.",
-      "Extract only visible scoreboard facts. Never guess, invent, calculate, or fill a number that is not visibly present.",
-      "This scoreboard layout may use the column headers NAME, K, A, DMG, REVIVAL, and SURVIVAL TIME. Map K to kills, A to assists, and DMG to damage exactly. These are the only performance statistics this website currently stores.",
-      "Ignore REVIVAL, SURVIVAL TIME, rank badges, row placement numbers, Booyah placement such as #1/10, icons, likes, and all other columns. Never put those values into kills, assists, or damage.",
-      "The selected team's active player roster is:",
-      JSON.stringify(rosterText),
-      "The admin has NOT manually selected players yet. Identify up to four unique players from this roster who actually appear in the scoreboard. Only match a player when the visible IGN is sufficiently clear. Ignore opponents and unrelated players. Read each row horizontally so that each K, A, and DMG number stays with the correct IGN.",
-      "Match the visible IGN carefully against the supplied roster. Preserve the recognized IGN exactly as displayed, including underscores, hyphens, digits, and special characters. Return candidate_player_id only when one roster entry is clearly the same player; otherwise use null.",
-      "For every selected player row you can read, return the exact visible K, A, and DMG values as kills, assists, and damage.",
-      "If a K, A, or DMG column is not present or a value cannot be read clearly, return null for that field. Do not assume assists are zero when the screenshot has no A column.",
-      "Return match_confidence from 0 to 1 for the IGN-to-roster match. Do not mark a row as matched just because it looks similar.",
-      "Do not infer MVP from a highlighted row, thumbs-up icon, badge, or placement. Return mvp true/false only if the screenshot explicitly labels MVP; otherwise null.",
-      "If this is not a match scoreboard, set scoreboard_detected to false.",
-      "Return ONLY one valid JSON object in this exact shape:",
-      '{"scoreboard_detected":true,"game":"Free Fire","columns_detected":["NAME","K","A","DMG"],"rows":[{"recognized_ign":"visible IGN","candidate_player_id":"one supplied player_id or null","match_confidence":0.95,"kills":3,"assists":2,"damage":1250,"mvp":null}],"notes":""}',
-    ].join("\n");
-
-    const gatewayResponse = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${gatewayKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3.1-flash-lite",
-        // Gateway-level fallback models keep the scan working if the preferred
-        // provider is temporarily unavailable. The no-training policy applies
-        // to the primary model and every fallback.
-        models: [
-          "google/gemini-3.5-flash-lite",
-          "google/gemini-2.5-flash-lite",
-        ],
-        temperature: 0,
-        max_tokens: 1600,
-        providerOptions: {
-          gateway: {
-            disallowPromptTraining: true,
-          },
-        },
-        messages: [
-          { role: "system", content: "You are a careful esports scoreboard OCR and extraction engine. Accuracy is more important than returning every row." },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: prompt },
-              { type: "image_url", image_url: { url: dataUrl, detail: "high" } },
-            ],
-          },
-        ],
-      }),
-      signal: AbortSignal.timeout(50000),
-    });
-
-    if (!gatewayResponse.ok) {
-      // Return a safe, actionable category without exposing the API key,
-      // image, prompt, provider payload, or raw upstream response.
-      const gatewayError = await gatewayResponse.json().catch(() => ({}));
-      const errorType = String(gatewayError?.type || gatewayError?.error?.type || "").toLowerCase();
-      const errorText = String(
-        gatewayError?.error?.message ||
-        gatewayError?.message ||
-        (typeof gatewayError?.error === "string" ? gatewayError.error : "")
-      ).toLowerCase();
-
-      let code = "AI_GATEWAY_TEMPORARY";
-      let message = "The AI provider is temporarily unavailable. Please retry the same screenshot.";
-
-      if (gatewayResponse.status === 401 || gatewayResponse.status === 403) {
-        code = "AI_GATEWAY_AUTH";
-        message = "The AI Gateway key is not authorized. The website admin needs to reconnect or replace the AI Gateway key.";
-      } else if (gatewayResponse.status === 402) {
-        code = "AI_GATEWAY_BILLING";
-        message = "The AI Gateway has reached its credit or usage limit. Please check the AI Gateway balance and retry.";
-      } else if (gatewayResponse.status === 429) {
-        code = "AI_GATEWAY_RATE_LIMIT";
-        message = "The AI scanner is receiving too many requests. Wait a moment and retry.";
-      } else if (gatewayResponse.status === 413) {
-        code = "AI_GATEWAY_IMAGE_SIZE";
-        message = "The AI Gateway rejected the image size. Please upload a smaller screenshot.";
-      } else if (
-        errorType === "no_providers_available" ||
-        errorText.includes("no providers available")
-      ) {
-        code = "AI_GATEWAY_NO_COMPLIANT_PROVIDER";
-        message = "No available AI provider currently meets the screenshot privacy policy. No training-enabled fallback was used. Please retry later or configure an eligible provider.";
-      } else if (gatewayResponse.status === 404) {
-        code = "AI_GATEWAY_MODEL";
-        message = "The configured AI model is unavailable. The admin needs to check the AI Gateway model configuration.";
-      } else if (gatewayResponse.status === 400) {
-        code = "AI_GATEWAY_REQUEST";
-        message = "The AI Gateway rejected the scan request. Please retry; if it continues, the admin needs to check the model request configuration.";
-      }
-
-      console.error("Match screenshot AI Gateway request failed", {
-        status: gatewayResponse.status,
-        type: errorType || "unknown",
-        code,
-      });
-      return json({ code, message }, 502);
-    }
-
-    const gatewayResult = await gatewayResponse.json();
-    const content = gatewayResult?.choices?.[0]?.message?.content;
-    const modelText = Array.isArray(content)
-      ? content.map((part) => part?.text || "").join("\n")
-      : content;
-    const parsed = parseModelJson(modelText);
-
-    if (parsed?.scoreboard_detected === false) {
-      return json({ message: "This image does not look like a readable match scoreboard. Upload the full result screen." }, 422);
-    }
-
-    const rawRows = Array.isArray(parsed?.rows) ? parsed.rows : [];
-    if (!rawRows.length) {
-      return json({ message: "No readable player rows were found. Try a clearer full-screen screenshot." }, 422);
+    if (!parsed.scoreboard_detected) {
+      return json({
+        code: "OCR_SCOREBOARD_NOT_DETECTED",
+        message: "The free OCR scanner could not clearly read the scoreboard headings or player rows. Upload the full result screen in a sharper resolution, or enter the stats manually.",
+      }, 422);
     }
 
     const matched = [];
     const unmatched = [];
     const usedPlayerIds = new Set();
 
-    for (const row of rawRows.slice(0, 24)) {
-      const recognizedIgn = String(row?.recognized_ign || row?.ign || row?.player_name || "").trim().slice(0, 100);
-      const confidence = Math.max(0, Math.min(1, Number(row?.match_confidence ?? row?.confidence ?? 0) || 0));
-      const match = findRosterPlayer(recognizedIgn, candidates, row?.candidate_player_id, confidence);
+    for (const row of parsed.rows.slice(0, 24)) {
+      const recognizedIgn = String(row?.recognized_ign || "").trim().slice(0, 100);
+      const match = findRosterPlayer(recognizedIgn, candidates);
 
       if (!match) {
         unmatched.push({ recognized_ign: recognizedIgn || "Unreadable IGN", reason: "Could not safely match this IGN to the selected squad." });
@@ -371,15 +384,15 @@ export async function POST(request) {
         kills: values.kills,
         assists: values.assists,
         damage: values.damage,
-        mvp: row?.mvp === true || row?.mvp === false ? row.mvp : null,
-        confidence: Math.max(confidence, match.score),
+        mvp: null,
+        confidence: Math.max(Number(row.match_confidence) || 0, match.score),
         match_method: match.method,
       });
     }
 
     if (!matched.length) {
       return json({
-        message: "No selected squad players could be matched confidently. Check the IGN spelling and upload a sharper scoreboard.",
+        message: "The scoreboard text was read, but no player names could be safely matched to this squad. Check the in-game names and enter any unclear rows manually.",
         matched_count: 0,
         selected_count: 4,
         unmatched_rows: unmatched,
@@ -388,20 +401,21 @@ export async function POST(request) {
 
     return json({
       success: true,
-      game: String(parsed?.game || "Free Fire").slice(0, 40),
-      columns_detected: Array.isArray(parsed?.columns_detected) ? parsed.columns_detected.slice(0, 12) : [],
+      game: "Free Fire",
+      columns_detected: parsed.columns_detected,
       matched_count: matched.length,
       selected_count: 4,
       rows: matched,
       unmatched_rows: unmatched,
-      notes: String(parsed?.notes || "").slice(0, 300),
+      notes: parsed.notes,
       image_stored: false,
+      scanner: "tesseract-ocr",
     });
   } catch (error) {
     if (error?.name === "TimeoutError" || error?.name === "AbortError") {
-      return json({ message: "Screenshot scanning took too long. Please try again with a smaller image." }, 504);
+      return json({ message: "Screenshot scanning took too long. Please try again with a smaller screenshot." }, 504);
     }
-    console.error("Match performance scanner failed:", error?.message || "Unknown error");
-    return json({ message: "Unable to scan this screenshot. Please try again." }, 500);
+    console.error("Match performance OCR scanner failed:", error?.message || "Unknown error");
+    return json({ message: "Unable to read this screenshot with the free OCR scanner. Please try a clearer image or enter the stats manually." }, 500);
   }
 }
