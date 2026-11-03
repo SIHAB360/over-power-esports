@@ -70,8 +70,8 @@ function similarity(a, b) {
   if (alias.length >= 6 && (target.includes(alias) || ocrTarget.includes(ocrAlias))) return 0.95;
 
   // OCR sometimes separates a multi-word IGN into adjacent text tokens.
-  const recognizedTokens = String(recognizedIgn || "").split(/\\s+/).map(normalizeIgn).filter(Boolean);
-  const playerTokens = String(player.ign || "").split(/\\s+/).map(normalizeIgn).filter(Boolean);
+  const recognizedTokens = String(recognizedIgn || "").split(/\s+/).map(normalizeIgn).filter(Boolean);
+  const playerTokens = String(player.ign || "").split(/\s+/).map(normalizeIgn).filter(Boolean);
   if (playerTokens.length > 1 && playerTokens.length <= recognizedTokens.length) {
     for (let index = 0; index <= recognizedTokens.length - playerTokens.length; index += 1) {
       const window = recognizedTokens.slice(index, index + playerTokens.length).join("");
@@ -111,12 +111,6 @@ function suggestRosterPlayer(recognizedIgn, candidates) {
   if (!best || best.score < 0.45) return null;
   return { ign: best.player.ign, score: Math.round(best.score * 100) };
 }
-
-  }
-
-  return null;
-}
-
 function parseCount(value) {
   if (value === null || value === undefined || value === "") return null;
   const cleaned = String(value).replace(/[,_\s]/g, "");
