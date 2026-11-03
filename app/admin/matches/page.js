@@ -73,10 +73,12 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [scanFile, setScanFile] = useState(null);
   const [scanPreviewUrl, setScanPreviewUrl] = useState("");
   const [scanLoading, setScanLoading] = useState(false);
+  const [scanProgress, setScanProgress] = useState(0);
   const [scanError, setScanError] = useState("");
   const [scanResult, setScanResult] = useState(null);
   const scanInputRef = useRef(null);
   const scanRequestId = useRef(0);
+  const scanWorkerRef = useRef(null);
   const [editMode, setEditMode] = useState(false);
   const [editMatchId, setEditMatchId] = useState("");
 
@@ -112,6 +114,12 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       if (scanPreviewUrl) URL.revokeObjectURL(scanPreviewUrl);
     };
   }, [scanPreviewUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (scanWorkerRef.current) void scanWorkerRef.current.terminate().catch(() => {});
+    };
+  }, []);
 
   async function initializePage() {
     try {
@@ -438,9 +446,13 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
   function clearPerformanceScan() {
     scanRequestId.current += 1;
+    const activeWorker = scanWorkerRef.current;
+    scanWorkerRef.current = null;
+    if (activeWorker) void activeWorker.terminate().catch(() => {});
     setScanFile(null);
     setScanPreviewUrl("");
     setScanLoading(false);
+    setScanProgress(0);
     setScanError("");
     setScanResult(null);
     if (scanInputRef.current) scanInputRef.current.value = "";
@@ -463,27 +475,87 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
     const requestId = ++scanRequestId.current;
     setScanLoading(true);
+    setScanProgress(0);
     setScanError("");
     setScanResult(null);
+    let worker = null;
 
     try {
       const prepared = await prepareMatchScreenshot(file);
-      const formData = new FormData();
-      formData.append("screenshot", prepared);
-      formData.append("team_id", form.team1_id);
+      const { createWorker } = await import("tesseract.js");
+      worker = await createWorker("eng", 1, {
+        workerPath: "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js",
+        corePath: "https://cdn.jsdelivr.net/npm/tesseract.js-core@6.0.1",
+        langPath: "https://tessdata.projectnaptha.com/4.0.0",
+        gzip: true,
+        logger: (message) => {
+          if (requestId !== scanRequestId.current) return;
+          if (message.status === "loading tesseract core") setScanProgress(3);
+          else if (message.status === "loading language traineddata") setScanProgress(8);
+          else if (message.status === "recognizing text") {
+            setScanProgress(Math.min(90, 10 + Math.round((Number(message.progress) || 0) * 80)));
+          }
+        },
+      });
+      scanWorkerRef.current = worker;
 
+      await worker.setParameters({
+        tessedit_pageseg_mode: "6",
+        preserve_interword_spaces: "1",
+      });
+
+      const recognition = await worker.recognize(prepared, {}, { blocks: true });
+      if (requestId !== scanRequestId.current) return;
+
+      const data = recognition?.data || {};
+      const rawLines = Array.isArray(data.lines) && data.lines.length
+        ? data.lines
+        : (Array.isArray(data.blocks) ? data.blocks.flatMap((block) =>
+            (block.paragraphs || []).flatMap((paragraph) => paragraph.lines || [])
+          ) : []);
+
+      const lines = rawLines.map((line) => ({
+        bbox: {
+          x0: Number(line?.bbox?.x0) || 0,
+          y0: Number(line?.bbox?.y0) || 0,
+          x1: Number(line?.bbox?.x1) || 0,
+          y1: Number(line?.bbox?.y1) || 0,
+        },
+        words: (Array.isArray(line?.words) ? line.words : []).map((word) => ({
+          text: String(word?.text || "").slice(0, 100),
+          confidence: Math.max(0, Math.min(100, Number(word?.confidence) || 0)),
+          bbox: {
+            x0: Number(word?.bbox?.x0) || 0,
+            y0: Number(word?.bbox?.y0) || 0,
+            x1: Number(word?.bbox?.x1) || 0,
+            y1: Number(word?.bbox?.y1) || 0,
+          },
+        })).filter((word) => word.text),
+      })).filter((line) => line.words.length);
+
+      if (!lines.length) {
+        throw new Error("OCR could not detect readable scoreboard text. Upload the full result screen in a sharper resolution.");
+      }
+
+      setScanProgress(94);
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) throw new Error("Your session has expired. Sign in again.");
 
       const response = await fetch("/api/admin/matches/scan-performance", {
         method: "POST",
-        headers: { Authorization: `Bearer ${session.access_token}` },
-        body: formData,
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          team_id: form.team1_id,
+          ocr_data: { lines },
+        }),
         cache: "no-store",
       });
       const result = await response.json().catch(() => ({}));
       if (requestId !== scanRequestId.current) return;
-      if (!response.ok) throw new Error(result.message || "Unable to scan this screenshot.");
+      if (!response.ok) throw new Error(result.message || "Unable to match the scanned scoreboard.");
 
       const matchedPlayers = (result.rows || [])
         .map((row) => teamPlayers.find((player) => player.id === row.player_id))
@@ -526,7 +598,14 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         setScanError(error.message || "Unable to scan this screenshot. Please try again.");
       }
     } finally {
-      if (requestId === scanRequestId.current) setScanLoading(false);
+      if (worker) {
+        if (scanWorkerRef.current === worker) scanWorkerRef.current = null;
+        await worker.terminate().catch(() => {});
+      }
+      if (requestId === scanRequestId.current) {
+        setScanLoading(false);
+        setScanProgress(100);
+      }
     }
   }
 
@@ -997,14 +1076,14 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 {scanPreviewUrl && (
                   <div className="scanner-preview">
                     <img src={scanPreviewUrl} alt="Selected match scoreboard preview" />
-                    <span>{scanLoading ? "OCR IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · OCR PROCESSING"}</span>
+                    <span>{scanLoading ? "ON-DEVICE OCR IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · PROCESSED ON THIS DEVICE"}</span>
                   </div>
                 )}
 
                 {scanLoading && (
                   <div className="scanner-progress" role="status">
                     <span className="scanner-spinner" />
-                    <span>Reading scoreboard text and performance…</span>
+                    <span>{scanProgress > 0 ? `Reading scoreboard on this device… ${scanProgress}%` : "Loading the free OCR engine on this device…"}</span>
                   </div>
                 )}
 
@@ -1061,7 +1140,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                   </div>
                 )}
 
-                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image. Free OCR processes it temporarily on the server; no AI Gateway key, payment method, or paid AI credits are required.</p>
+                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. Your screenshot stays on this device. Free OCR runs in your browser; only the recognized text and numbers are sent securely to match the selected squad. No AI Gateway key, payment method, or paid AI credits are required.</p>
               </div>
           </section>
 
