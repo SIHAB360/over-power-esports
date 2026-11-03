@@ -19,7 +19,7 @@ function normalizeIgn(value) {
   return String(value || "")
     .normalize("NFKC")
     .toLocaleLowerCase()
-    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\u115F\u1160\u200B-\u200D\u3164\uFEFF]/g, "")
     .replace(/[^\p{L}\p{N}]/gu, "");
 }
 
