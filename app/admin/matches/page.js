@@ -1014,7 +1014,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
                     <p>Upload this match's Free Fire scoreboard. AI will read the IGN and visible stats, match them with the four selected players, and fill the fields below.</p>
                   </div>
-                  <span className="scanner-storage-note">IMAGE NOT SAVED</span>
+                  <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
                 </div>
 
                 <div className="scanner-upload-row">
@@ -1043,7 +1043,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 {scanPreviewUrl && (
                   <div className="scanner-preview">
                     <img src={scanPreviewUrl} alt="Selected match scoreboard preview" />
-                    <span>{scanLoading ? "AI IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · NOT UPLOADED TO STORAGE"}</span>
+                    <span>{scanLoading ? "AI IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · SENT TO AI FOR SCANNING"}</span>
                   </div>
                 )}
 
@@ -1097,7 +1097,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                   </div>
                 )}
 
-                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry.</p>
+                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image; it is sent to AI Gateway for processing with prompt-training disabled.</p>
               </div>
             )}
 
