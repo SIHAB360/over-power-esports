@@ -557,7 +557,19 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       });
       const result = await response.json().catch(() => ({}));
       if (requestId !== scanRequestId.current) return;
-      if (!response.ok) throw new Error(result.message || "Unable to match the scanned scoreboard.");
+      if (!response.ok) {
+        if (response.status === 422 && Array.isArray(result.unmatched_rows)) {
+          setScanResult({
+            matched_count: 0,
+            selected_count: REQUIRED_PLAYERS,
+            columns_detected: result.columns_detected || [],
+            rows: [],
+            unmatched_rows: result.unmatched_rows,
+            recognized_rows: result.recognized_rows || [],
+          });
+        }
+        throw new Error(result.message || "Unable to match the scanned scoreboard.");
+      }
 
       const matchedPlayers = (result.rows || [])
         .map((row) => teamPlayers.find((player) => player.id === row.player_id))
@@ -1133,10 +1145,14 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     </div>
                     {scanResult.unmatched_rows?.length > 0 && (
                       <div className="scanner-unmatched">
-                        <strong>Needs manual checking</strong>
+                        <strong>OCR-read names · needs manual checking</strong>
                         {scanResult.unmatched_rows.map((row, index) => (
                           <span key={`${row.recognized_ign}-${index}`}>{row.recognized_ign}: {row.reason}</span>
                         ))}
+                        <div className="scanner-unmatched-roster">
+                          <strong>Selected squad registered IGNs</strong>
+                          <span>{teamPlayers.map((player) => player.ign || player.full_name).filter(Boolean).join(" · ") || "No registered IGNs found"}</span>
+                        </div>
                       </div>
                     )}
                     <p className="scanner-footnote">Only values visible in the screenshot are filled. If the scoreboard has no Assists column, that field stays unchanged for manual entry. MVP remains manually selectable.</p>
