@@ -129,8 +129,19 @@ function nearestNumber(words, x, maxDistance) {
   return candidates[0]?.value ?? null;
 }
 
+function collectOcrLines(ocrData) {
+  if (Array.isArray(ocrData?.lines) && ocrData.lines.length) return ocrData.lines;
+  const collected = [];
+  for (const block of ocrData?.blocks || []) {
+    for (const paragraph of block?.paragraphs || []) {
+      for (const line of paragraph?.lines || []) collected.push(line);
+    }
+  }
+  return collected;
+}
+
 function extractScoreboard(ocrData) {
-  const lines = Array.isArray(ocrData?.lines) ? ocrData.lines : [];
+  const lines = collectOcrLines(ocrData);
   const killHeaders = new Set(["K", "KILL", "KILLS", "ELIM", "ELIMS", "ELIMINATION", "ELIMINATIONS"]);
   const assistHeaders = new Set(["A", "AST", "ASSIST", "ASSISTS"]);
   const damageHeaders = new Set(["DMG", "DAMAGE", "DAMG"]);
