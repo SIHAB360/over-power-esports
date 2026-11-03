@@ -372,6 +372,11 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       setForm((prev) => ({
         ...prev,
         team1_id: value,
+        // Opponent and head-to-head scores are no longer part of the form.
+        // Clear legacy values if the primary team itself is changed.
+        team2_id: "",
+        team1_score: "",
+        team2_score: "",
         winner_id: "",
       }));
     }
@@ -414,11 +419,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
-  }
-
-  function teamName(teamId) {
-    if (!teamId) return "—";
-    return teams.find((team) => team.id === teamId)?.team_name || "Unknown Team";
   }
 
   function tournamentName(tournamentId) {
@@ -717,24 +717,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 </select>
               </FieldWrap>
 
-              <FieldWrap label="Platform">
-                <input
-                  name="platform"
-                  value={form.platform}
-                  onChange={handleChange}
-                  placeholder="Free Fire"
-                />
-              </FieldWrap>
-
-              <FieldWrap label="Map">
-                <input
-                  name="map"
-                  value={form.map}
-                  onChange={handleChange}
-                  placeholder="Optional"
-                />
-              </FieldWrap>
-
               <FieldWrap label="Sponsor / Organizer">
                 <div className="op-sponsor-picker">
                   <button type="button" className={`op-sponsor-trigger ${sponsorOpen ? "is-open" : ""}`}
@@ -777,7 +759,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
           {/* STEP 02 */}
           <section className="panel">
-            <SectionTitle number="02" small="TEAM" title="SELECT TEAM" />
+            <SectionTitle number="02" small="TEAM" title="SELECT YOUR TEAM" />
 
             <div className="team-grid">
               <FieldWrap label="Your Team">
@@ -796,22 +778,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 </select>
               </FieldWrap>
 
-              <FieldWrap label="Opponent Team (Optional)">
-                <select
-                  name="team2_id"
-                  value={form.team2_id}
-                  onChange={handleChange}
-                >
-                  <option value="">No Opponent</option>
-                  {teams
-                    .filter((team) => team.id !== form.team1_id)
-                    .map((team) => (
-                      <option key={team.id} value={team.id}>
-                        {team.team_name}
-                      </option>
-                    ))}
-                </select>
-              </FieldWrap>
             </div>
           </section>
 
@@ -885,7 +851,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
           {/* STEP 04 - RESULT + PERFORMANCE */}
           <section className="panel">
-            <SectionTitle number="04" small="RESULT" title="MATCH RESULT" />
+            <SectionTitle number="04" small="PLAYER STATS & PLACEMENT" title="PLAYER PERFORMANCE & PLACEMENT" />
 
             {/* PLAYER PERFORMANCE */}
             {selectedPlayers.length > 0 && (
@@ -895,7 +861,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 <div className="performance-header">
                   <span>Player</span>
                   <span>Kills</span>
-                  <span>Assist</span>
+                  <span>Assists</span>
                   <span>Damage</span>
                   <span>MVP</span>
                 </div>
@@ -909,7 +875,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     <input
                       type="number"
                       min="0"
-                      placeholder="0"
+                      placeholder="Kills"
+                      aria-label={`${player.ign || player.full_name || "Player"} kills`}
                       value={playerStats[player.id]?.kills ?? ""}
                       onChange={(e) =>
                         setPlayerStats((prev) => ({
@@ -925,7 +892,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     <input
                       type="number"
                       min="0"
-                      placeholder="0"
+                      placeholder="Assists"
+                      aria-label={`${player.ign || player.full_name || "Player"} assists`}
                       value={playerStats[player.id]?.assists ?? ""}
                       onChange={(e) =>
                         setPlayerStats((prev) => ({
@@ -941,7 +909,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     <input
                       type="number"
                       min="0"
-                      placeholder="0"
+                      placeholder="Damage"
+                      aria-label={`${player.ign || player.full_name || "Player"} damage`}
                       value={playerStats[player.id]?.damage ?? ""}
                       onChange={(e) =>
                         setPlayerStats((prev) => ({
@@ -975,8 +944,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
               </div>
             )}
 
-            <div className="form-grid" style={{ marginTop: "24px" }}>
-              <FieldWrap label="Position">
+            <div className="result-grid">
+              <FieldWrap label="Final Position">
                 <input
                   type="number"
                   min="1"
@@ -987,7 +956,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 />
               </FieldWrap>
 
-              <FieldWrap label="Points">
+              <FieldWrap label="Placement Points">
                 <input
                   type="number"
                   min="0"
@@ -998,47 +967,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 />
               </FieldWrap>
 
-              <FieldWrap label="Team 1 Score">
-                <input
-                  type="number"
-                  min="0"
-                  name="team1_score"
-                  value={form.team1_score}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </FieldWrap>
-
-              <FieldWrap label="Team 2 Score">
-                <input
-                  type="number"
-                  min="0"
-                  name="team2_score"
-                  value={form.team2_score}
-                  onChange={handleChange}
-                  placeholder="0"
-                />
-              </FieldWrap>
-
-              <FieldWrap label="Winner">
-                <select
-                  name="winner_id"
-                  value={form.winner_id}
-                  onChange={handleChange}
-                >
-                  <option value="">No Winner / Placement Match</option>
-                  {form.team1_id && (
-                    <option value={form.team1_id}>
-                      {teamName(form.team1_id)}
-                    </option>
-                  )}
-                  {form.team2_id && (
-                    <option value={form.team2_id}>
-                      {teamName(form.team2_id)}
-                    </option>
-                  )}
-                </select>
-              </FieldWrap>
             </div>
           </section>
 
@@ -1144,7 +1072,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             <div>
               <span className="history-link-tag">COMPLETE MATCH ARCHIVE</span>
               <h3>Every match, all in one place</h3>
-              <p>See all your recorded matches in serial order, including lobby, Scrim or Champion Rush, entry fee, prize, profit or loss, date and time.</p>
+              <p>See all recorded matches in serial order, including match type, selected squad, player performance, entry fee, prize, profit or loss, date and time.</p>
             </div>
             <Link href={moderatorMode ? "/moderator/section/matches?screen=records" : "/admin/matches/history"} className="history-open-button">
               VIEW MATCH HISTORY <span aria-hidden="true">→</span>
@@ -2130,6 +2058,99 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         @media(max-width:900px){.op-match-page .op-v4-scheduler-columns{grid-template-columns:1fr;}.op-match-page .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
         @media(max-width:640px){.op-match-page .form-grid,.op-match-page .team-grid,.op-match-page .money-inputs{grid-template-columns:1fr!important;}.op-match-page .op-smart-date-field{grid-column:1/-1!important;}.op-match-page .op-v4-scheduler{padding:14px!important;}.op-match-page .op-v4-date-column,.op-match-page .op-v4-time-column{padding:13px;}.op-match-page .op-v4-calendar{top:93px;left:7px;right:7px;}.op-match-page .op-v4-clock-row{gap:5px;}.op-match-page .op-v4-clock-row select{font-size:14px;padding:0 5px;}}
         @media(prefers-reduced-motion:reduce){.op-match-page .op-v4-live-dot,.op-match-page .rule-pill,.op-match-page .save-button{animation:none!important;}}
+      `}</style>
+      <style jsx global>{`
+        /* Simplified Match Command Center layout */
+        .op-match-page .team-grid {
+          display: grid !important;
+          grid-template-columns: minmax(0, 640px) !important;
+          max-width: 640px;
+          align-items: start;
+        }
+        .op-match-page .result-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+          max-width: 720px;
+          margin-top: 24px;
+        }
+        .op-match-page .result-grid .field-wrap,
+        .op-match-page .team-grid .field-wrap {
+          min-width: 0;
+          width: 100%;
+        }
+        .op-match-page .performance-box {
+          width: 100%;
+          min-width: 0;
+          overflow: hidden;
+          border-color: rgba(91, 190, 255, .38);
+          background: linear-gradient(135deg, rgba(13, 34, 53, .92), rgba(15, 14, 29, .96));
+          box-shadow: 0 0 28px rgba(57, 174, 255, .10), inset 0 1px rgba(255,255,255,.08);
+        }
+        .op-match-page .performance-box h3 {
+          color: #c8f1ff;
+          text-shadow: 0 0 14px rgba(76, 194, 255, .28);
+        }
+        .op-match-page .performance-header,
+        .op-match-page .performance-row {
+          grid-template-columns: minmax(140px, 1.4fr) repeat(3, minmax(72px, 1fr)) minmax(64px, .6fr);
+        }
+        .op-match-page .performance-row {
+          min-width: 0;
+        }
+        .op-match-page .performance-row input {
+          min-width: 0;
+        }
+        .op-match-page .performance-row input::placeholder {
+          color: #9db6cb;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: .2px;
+        }
+        @media (max-width: 900px) {
+          .op-match-page .performance-header,
+          .op-match-page .performance-row {
+            grid-template-columns: minmax(120px, 1.2fr) repeat(3, minmax(60px, 1fr)) minmax(56px, .6fr);
+          }
+        }
+        @media (max-width: 650px) {
+          .op-match-page .team-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+            max-width: none;
+          }
+          .op-match-page .result-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-width: none;
+            gap: 12px;
+          }
+          .op-match-page .performance-header {
+            display: none !important;
+          }
+          .op-match-page .performance-row {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid rgba(103, 195, 255, .16);
+            background: rgba(5, 15, 27, .66);
+          }
+          .op-match-page .performance-row .player-name {
+            grid-column: 1 / -1;
+          }
+          .op-match-page .performance-row .mvp-check {
+            grid-column: auto !important;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0 8px;
+            border: 1px solid rgba(103, 195, 255, .24);
+            border-radius: 11px;
+            background: rgba(16, 37, 57, .7);
+          }
+        }
+        @media (max-width: 380px) {
+          .op-match-page .result-grid {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
     </main>
   );
