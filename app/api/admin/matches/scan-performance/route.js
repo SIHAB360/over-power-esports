@@ -1,14 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import { createWorker } from "tesseract.js";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
-
-const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 const json = (body, status = 200) =>
   NextResponse.json(body, {
@@ -234,21 +229,6 @@ function extractScoreboard(ocrData) {
   };
 }
 
-async function recognizeScoreboard(bytes) {
-  let worker;
-  try {
-    worker = await createWorker("eng", 1, { logger: () => {} });
-    await worker.setParameters({
-      tessedit_pageseg_mode: "6",
-      preserve_interword_spaces: "1",
-    });
-    const result = await worker.recognize(bytes, {}, { blocks: true });
-    return result?.data || {};
-  } finally {
-    if (worker) await worker.terminate().catch(() => {});
-  }
-}
-
 async function authorize(request) {
   const token = request.headers.get("authorization")?.match(/^Bearer\s+(\S+)$/i)?.[1];
   if (!token) return { error: json({ message: "Sign in to use the performance scanner." }, 401) };
@@ -298,25 +278,19 @@ async function authorize(request) {
 export async function POST(request) {
   try {
     const contentLength = Number(request.headers.get("content-length") || 0);
-    if (contentLength > MAX_IMAGE_BYTES + 128 * 1024) {
-      return json({ message: "Screenshot is too large. Upload a clear image under 4 MB." }, 413);
+    if (contentLength > 2 * 1024 * 1024) {
+      return json({ message: "OCR result is too large. Please retry with a clearer, smaller screenshot." }, 413);
     }
 
     const access = await authorize(request);
     if (access.error) return access.error;
 
-    const form = await request.formData();
-    const image = form.get("screenshot");
-    const teamId = String(form.get("team_id") || "");
-    if (!image || typeof image.arrayBuffer !== "function") {
-      return json({ message: "Choose a match result screenshot first." }, 400);
-    }
+    const payload = await request.json().catch(() => null);
+    const teamId = String(payload?.team_id || "");
+    const ocrData = payload?.ocr_data;
     if (!UUID.test(teamId)) return json({ message: "Select a valid squad first." }, 400);
-    if (!ALLOWED_IMAGE_TYPES.has(image.type)) {
-      return json({ message: "Use a JPG, PNG or WEBP screenshot." }, 415);
-    }
-    if (image.size < 1000 || image.size > MAX_IMAGE_BYTES) {
-      return json({ message: "Screenshot must be between 1 KB and 4 MB." }, 413);
+    if (!ocrData || !Array.isArray(ocrData.lines) || ocrData.lines.length > 120) {
+      return json({ message: "The on-device OCR result was incomplete. Please scan the screenshot again." }, 400);
     }
 
     // Load the active, approved roster for the selected team. The screenshot,
@@ -346,8 +320,6 @@ export async function POST(request) {
       return json({ message: "At least four active squad players need an in-game name before scanning." }, 400);
     }
 
-    const bytes = Buffer.from(await image.arrayBuffer());
-    const ocrData = await recognizeScoreboard(bytes);
     const parsed = extractScoreboard(ocrData);
 
     if (!parsed.scoreboard_detected) {
@@ -421,13 +393,13 @@ export async function POST(request) {
       unmatched_rows: unmatched,
       notes: parsed.notes,
       image_stored: false,
-      scanner: "tesseract-ocr",
+      scanner: "tesseract.js-browser",
     });
   } catch (error) {
     if (error?.name === "TimeoutError" || error?.name === "AbortError") {
       return json({ message: "Screenshot scanning took too long. Please try again with a smaller screenshot." }, 504);
     }
-    console.error("Match performance OCR scanner failed:", error?.message || "Unknown error");
-    return json({ message: "Unable to read this screenshot with the free OCR scanner. Please try a clearer image or enter the stats manually." }, 500);
+    console.error("Match performance OCR matching failed:", error?.message || "Unknown error");
+    return json({ message: "Unable to match the on-device OCR result. Please retry the screenshot or enter the stats manually." }, 500);
   }
 }
