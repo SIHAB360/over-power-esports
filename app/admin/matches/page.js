@@ -14,6 +14,10 @@ async function prepareMatchScreenshot(file) {
   if (file.size > 12 * 1024 * 1024) {
     throw new Error("Screenshot is too large. Choose an image under 12 MB.");
   }
+  if (typeof createImageBitmap !== "function") {
+    if (file.size <= 3.8 * 1024 * 1024) return file;
+    throw new Error("This browser cannot optimize large screenshots. Choose an image under 4 MB.");
+  }
 
   const bitmap = await createImageBitmap(file);
   let scale = Math.min(1, 2400 / Math.max(bitmap.width, bitmap.height));
