@@ -249,6 +249,11 @@ export async function POST(request) {
         model: "google/gemini-3.1-flash-lite",
         temperature: 0,
         max_tokens: 1200,
+        providerOptions: {
+          gateway: {
+            disallowPromptTraining: true,
+          },
+        },
         messages: [
           { role: "system", content: "You are a careful esports scoreboard OCR and extraction engine. Accuracy is more important than returning every row." },
           {
