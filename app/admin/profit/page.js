@@ -613,6 +613,25 @@ export default function ProfitPage({moderatorMode=false}={}) {
                         flexWrap: "wrap",
                       }}
                     >
+                      <a
+                        href={matchId ? `/admin/matches?edit=${matchId}` : "#"}
+                        aria-disabled={!matchId}
+                        style={{
+                          display: moderatorMode ? "none" : "inline-flex",
+                          alignItems: "center",
+                          padding: "12px 20px",
+                          borderRadius: "14px",
+                          background: "rgba(59,130,246,.16)",
+                          border: "1px solid #60a5fa",
+                          color: "#93c5fd",
+                          fontWeight: 800,
+                          textDecoration: "none",
+                          pointerEvents: matchId ? "auto" : "none",
+                          opacity: matchId ? 1 : .5,
+                        }}
+                      >
+                        ✏️ EDIT MATCH
+                      </a>
                       <button
                         disabled={!canDelete} onClick={() => deleteFinance(item.id)}
                         style={{
