@@ -638,7 +638,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             <h1>{editMode ? "EDIT EXISTING MATCH" : "MATCH COMMAND CENTER"}</h1>
             <p>{editMode ? "Update the original match details, selected players, performance and financial values." : "Record matches, active players, results and earnings."}</p>
             {editMode && <p style={{ color: "#ffe08a", marginTop: 8, fontWeight: 800 }}>EDITING EXISTING MATCH · {editMatchId}</p>}
-            {editMode && <Link href="/admin/profit" style={{ display: "inline-flex", marginTop: 12, color: "#8de7ff", fontWeight: 800, textDecoration: "none" }}>← BACK TO FINANCIAL HISTORY</Link>}
+            {editMode && <a href={`/admin/profit?updated=${encodeURIComponent(editMatchId)}`} style={{ display: "inline-flex", marginTop: 12, color: "#8de7ff", fontWeight: 800, textDecoration: "none" }}>← BACK TO FINANCIAL HISTORY</a>}
             {moderatorMode && <p style={{color:"#75d6e4",fontWeight:700,fontSize:13}}>
               MODERATOR MODE · Assigned: {moderatorPermissions.filter(p=>p.section==="matches").map(p=>p.action.toUpperCase()).join(" · ") || "VIEW"}
             </p>}
