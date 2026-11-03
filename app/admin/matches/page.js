@@ -1147,7 +1147,10 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                       <div className="scanner-unmatched">
                         <strong>OCR-read names · needs manual checking</strong>
                         {scanResult.unmatched_rows.map((row, index) => (
-                          <span key={`${row.recognized_ign}-${index}`}>{row.recognized_ign}: {row.reason}</span>
+                          <span key={`${row.recognized_ign}-${index}`}>
+                            {row.recognized_ign}: {row.reason}
+                            {row.suggested_ign && <small className="scanner-suggestion"> Possible roster match: {row.suggested_ign} ({row.suggestion_score}%)</small>}
+                          </span>
                         ))}
                         <div className="scanner-unmatched-roster">
                           <strong>Selected squad registered IGNs</strong>
