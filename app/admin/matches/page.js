@@ -1016,7 +1016,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                   <div>
                     <span className="scanner-eyebrow">AI-POWERED MATCH TOOL</span>
                     <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
-                    <p>Upload this match's Free Fire scoreboard. AI will read the IGN and visible stats, match them with the four selected players, and fill the fields below.</p>
+                    <p>Upload a Free Fire result screenshot like the Battle Royale table (NAME / K / A / DMG). AI matches the IGN and fills the existing Kills, Assists and Damage fields. Revival and Survival Time are ignored.</p>
                   </div>
                   <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
                 </div>
