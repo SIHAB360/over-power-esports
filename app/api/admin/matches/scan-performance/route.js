@@ -168,13 +168,6 @@ export async function POST(request) {
     const form = await request.formData();
     const image = form.get("screenshot");
     const teamId = String(form.get("team_id") || "");
-    let selected;
-    try {
-      selected = JSON.parse(String(form.get("players") || "[]"));
-    } catch {
-      return json({ message: "Invalid selected player list." }, 400);
-    }
-
     if (!image || typeof image.arrayBuffer !== "function") {
       return json({ message: "Choose a match result screenshot first." }, 400);
     }
@@ -185,34 +178,31 @@ export async function POST(request) {
     if (image.size < 1000 || image.size > MAX_IMAGE_BYTES) {
       return json({ message: "Screenshot must be between 1 KB and 4 MB." }, 413);
     }
-    if (!Array.isArray(selected) || selected.length !== 4) {
-      return json({ message: "Select exactly four players before scanning." }, 400);
-    }
-
-    const selectedIds = selected.map((player) => String(player?.id || ""));
-    if (selectedIds.some((id) => !UUID.test(id)) || new Set(selectedIds).size !== 4) {
-      return json({ message: "The selected player list is invalid." }, 400);
-    }
-
-    // Always build the candidate list from the database, never from client-supplied IGN text.
+    // Load the active, approved roster for the selected team. The screenshot,
+    // not a manually checked player list, determines who is selected for this match.
     const { data: roster, error: rosterError } = await access.db
       .from("players")
       .select("id, ign, full_name, team_id")
       .eq("team_id", teamId)
-      .in("id", selectedIds);
+      .eq("is_active", true)
+      .in("status", ["approved", "active"])
+      .limit(80);
 
-    if (rosterError) return json({ message: "Unable to verify the selected squad players." }, 503);
-    if (!roster || roster.length !== 4) {
-      return json({ message: "All four selected players must belong to the selected squad." }, 400);
+    if (rosterError) return json({ message: "Unable to load the selected team's active roster." }, 503);
+    if (!roster || roster.length < 4) {
+      return json({ message: "The selected team needs at least four active, approved players before screenshot scanning." }, 400);
     }
 
-    const candidates = roster.map((player) => ({
-      id: player.id,
-      ign: String(player.ign || player.full_name || "").trim(),
-      full_name: String(player.full_name || "").trim(),
-    }));
-    if (candidates.some((player) => !player.ign)) {
-      return json({ message: "Every selected player needs an in-game name before scanning." }, 400);
+    const candidates = roster
+      .map((player) => ({
+        id: player.id,
+        ign: String(player.ign || player.full_name || "").trim(),
+        full_name: String(player.full_name || "").trim(),
+      }))
+      .filter((player) => player.ign);
+
+    if (candidates.length < 4) {
+      return json({ message: "At least four active squad players need an in-game name before scanning." }, 400);
     }
 
     const bytes = Buffer.from(await image.arrayBuffer());
@@ -228,9 +218,9 @@ export async function POST(request) {
       "Extract only visible scoreboard facts. Never guess, invent, calculate, or fill a number that is not visibly present.",
       "This scoreboard layout may use the column headers NAME, K, A, DMG, REVIVAL, and SURVIVAL TIME. Map K to kills, A to assists, and DMG to damage exactly. These are the only performance statistics this website currently stores.",
       "Ignore REVIVAL, SURVIVAL TIME, rank badges, row placement numbers, Booyah placement such as #1/10, icons, likes, and all other columns. Never put those values into kills, assists, or damage.",
-      "The selected squad roster is:",
+      "The selected team's active player roster is:",
       JSON.stringify(rosterText),
-      "Find the scoreboard rows belonging to these four selected players. Ignore opponents and unrelated players. Read each row horizontally so that each K, A, and DMG number stays with the correct IGN.",
+      "The admin has NOT manually selected players yet. Identify up to four unique players from this roster who actually appear in the scoreboard. Only match a player when the visible IGN is sufficiently clear. Ignore opponents and unrelated players. Read each row horizontally so that each K, A, and DMG number stays with the correct IGN.",
       "Match the visible IGN carefully against the supplied roster. Preserve the recognized IGN exactly as displayed, including underscores, hyphens, digits, and special characters. Return candidate_player_id only when one roster entry is clearly the same player; otherwise use null.",
       "For every selected player row you can read, return the exact visible K, A, and DMG values as kills, assists, and damage.",
       "If a K, A, or DMG column is not present or a value cannot be read clearly, return null for that field. Do not assume assists are zero when the screenshot has no A column.",
@@ -306,6 +296,10 @@ export async function POST(request) {
       }
       if (usedPlayerIds.has(match.player.id)) {
         unmatched.push({ recognized_ign: recognizedIgn, reason: "More than one screenshot row matched this player; please check the screenshot." });
+        continue;
+      }
+      if (matched.length >= 4) {
+        unmatched.push({ recognized_ign: recognizedIgn, reason: "Four squad players have already been matched for this match." });
         continue;
       }
 
