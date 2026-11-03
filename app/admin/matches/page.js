@@ -1009,9 +1009,19 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 )}
 
                 {scanError && (
-                  <p className={scanResult ? "scanner-feedback scanner-feedback-info" : "scanner-feedback scanner-feedback-error"} role="status">
-                    {scanError}
-                  </p>
+                  <div className={scanResult ? "scanner-feedback scanner-feedback-info" : "scanner-feedback scanner-feedback-error"} role="status">
+                    <p>{scanError}</p>
+                    {scanFile && !scanLoading && (
+                      <button
+                        type="button"
+                        className="scanner-rescan-button"
+                        onClick={() => scanPerformanceScreenshot(scanFile)}
+                        disabled={!form.team1_id || (moderatorMode && !canFinalize)}
+                      >
+                        RETRY SAME SCREENSHOT
+                      </button>
+                    )}
+                  </div>
                 )}
 
                 {scanResult && (
