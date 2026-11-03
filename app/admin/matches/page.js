@@ -10,6 +10,46 @@ const MANAGEMENT_PERCENTAGE = 30;
 const PLAYER_PERCENTAGE = 70;
 const REQUIRED_PLAYERS = 4;
 
+async function prepareMatchScreenshot(file) {
+  if (file.size > 12 * 1024 * 1024) {
+    throw new Error("Screenshot is too large. Choose an image under 12 MB.");
+  }
+  if (typeof createImageBitmap !== "function") {
+    if (file.size <= 3.8 * 1024 * 1024) return file;
+    throw new Error("This browser cannot optimize large screenshots. Choose an image under 4 MB.");
+  }
+
+  const bitmap = await createImageBitmap(file);
+  let scale = Math.min(1, 2400 / Math.max(bitmap.width, bitmap.height));
+  let quality = 0.92;
+  let output = null;
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const context = canvas.getContext("2d", { alpha: false });
+    if (!context) throw new Error("Could not prepare the screenshot for scanning.");
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+
+    output = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+    if (output && output.size <= 3.8 * 1024 * 1024) break;
+
+    quality = Math.max(0.68, quality - 0.07);
+    if (attempt >= 2) scale *= 0.88;
+  }
+
+  bitmap.close?.();
+  if (!output || output.size > 3.8 * 1024 * 1024) {
+    throw new Error("Could not compress this screenshot enough. Try a smaller image.");
+  }
+
+  return new File([output], "match-scoreboard.jpg", {
+    type: "image/jpeg",
+    lastModified: Date.now(),
+  });
+}
+
 export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const router = useRouter();
 
@@ -30,6 +70,13 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [recentMatches, setRecentMatches] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
+  const [scanFile, setScanFile] = useState(null);
+  const [scanPreviewUrl, setScanPreviewUrl] = useState("");
+  const [scanLoading, setScanLoading] = useState(false);
+  const [scanError, setScanError] = useState("");
+  const [scanResult, setScanResult] = useState(null);
+  const scanInputRef = useRef(null);
+  const scanRequestId = useRef(0);
   const [editMode, setEditMode] = useState(false);
   const [editMatchId, setEditMatchId] = useState("");
 
@@ -59,6 +106,12 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   useEffect(() => {
     initializePage();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (scanPreviewUrl) URL.revokeObjectURL(scanPreviewUrl);
+    };
+  }, [scanPreviewUrl]);
 
   async function initializePage() {
     try {
@@ -203,6 +256,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
   async function loadTeamPlayers(teamId) {
     const requestId=++squadRequestId.current;
+    clearPerformanceScan();
     setSelectedPlayers([]);
     setTeamPlayers([]);
     setPlayerStats({});
@@ -382,7 +436,108 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     }
   }
 
+  function clearPerformanceScan() {
+    scanRequestId.current += 1;
+    setScanFile(null);
+    setScanPreviewUrl("");
+    setScanLoading(false);
+    setScanError("");
+    setScanResult(null);
+    if (scanInputRef.current) scanInputRef.current.value = "";
+  }
+
+  async function scanPerformanceScreenshot(file) {
+    if (!file) return;
+    if (!form.team1_id) {
+      setScanError("Select a squad before scanning.");
+      return;
+    }
+    if (selectedPlayers.length !== REQUIRED_PLAYERS) {
+      setScanError("Select all four players first, then upload the scoreboard.");
+      return;
+    }
+    if (moderatorMode && !canFinalize) {
+      setScanError("Match Results & Finance approval permission is required to scan performance.");
+      return;
+    }
+
+    const requestId = ++scanRequestId.current;
+    setScanLoading(true);
+    setScanError("");
+    setScanResult(null);
+
+    try {
+      const prepared = await prepareMatchScreenshot(file);
+      const formData = new FormData();
+      formData.append("screenshot", prepared);
+      formData.append("team_id", form.team1_id);
+      formData.append("players", JSON.stringify(selectedPlayers.map((player) => ({ id: player.id }))));
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error("Your session has expired. Sign in again.");
+
+      const response = await fetch("/api/admin/matches/scan-performance", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+        body: formData,
+        cache: "no-store",
+      });
+      const result = await response.json().catch(() => ({}));
+      if (requestId !== scanRequestId.current) return;
+      if (!response.ok) throw new Error(result.message || "Unable to scan this screenshot.");
+
+      setScanResult(result);
+      setPlayerStats((previous) => {
+        const next = { ...previous };
+        for (const row of result.rows || []) {
+          if (!row.player_id) continue;
+          next[row.player_id] = {
+            ...previous[row.player_id],
+            ...(row.kills !== null && row.kills !== undefined ? { kills: row.kills } : {}),
+            ...(row.assists !== null && row.assists !== undefined ? { assists: row.assists } : {}),
+            ...(row.damage !== null && row.damage !== undefined ? { damage: row.damage } : {}),
+          };
+        }
+        return next;
+      });
+
+      setScanError(
+        result.matched_count < REQUIRED_PLAYERS
+          ? `Matched ${result.matched_count} of 4 selected players. Check unmatched names and complete any missing values manually.`
+          : "All four selected players were matched. Review the values below before saving."
+      );
+    } catch (error) {
+      if (requestId === scanRequestId.current) {
+        setScanError(error.message || "Unable to scan this screenshot. Please try again.");
+      }
+    } finally {
+      if (requestId === scanRequestId.current) setScanLoading(false);
+    }
+  }
+
+  function handleScreenshotSelect(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      clearPerformanceScan();
+      setScanError("Choose a JPG, PNG or WEBP match screenshot.");
+      return;
+    }
+    if (selectedPlayers.length !== REQUIRED_PLAYERS) {
+      clearPerformanceScan();
+      setScanError("Select all four squad players first, then upload the scoreboard.");
+      return;
+    }
+
+    clearPerformanceScan();
+    setScanFile(file);
+    setScanPreviewUrl(URL.createObjectURL(file));
+    void scanPerformanceScreenshot(file);
+  }
+
   function togglePlayer(player) {
+    clearPerformanceScan();
     setMessage("");
     setMessageType("");
 
@@ -556,6 +711,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         setTeamPlayers([]);
         setSelectedPlayers([]);
         setPlayerStats({});
+        clearPerformanceScan();
         await loadRecentMatches();
       }
 
@@ -852,6 +1008,102 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
           {/* STEP 04 - RESULT + PERFORMANCE */}
           <section className="panel">
             <SectionTitle number="04" small="PLAYER STATS & PLACEMENT" title="PLAYER PERFORMANCE & PLACEMENT" />
+
+            {/* AI SCREENSHOT PERFORMANCE SCANNER */}
+            {selectedPlayers.length > 0 && (
+              <div className="op-screenshot-scanner">
+                <div className="scanner-heading">
+                  <div>
+                    <span className="scanner-eyebrow">AI-POWERED MATCH TOOL</span>
+                    <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
+                    <p>Upload this match's Free Fire scoreboard. AI will read the IGN and visible stats, match them with the four selected players, and fill the fields below.</p>
+                  </div>
+                  <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
+                </div>
+
+                <div className="scanner-upload-row">
+                  <label className={`scanner-upload ${scanLoading ? "is-busy" : ""}`}>
+                    <input
+                      ref={scanInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={handleScreenshotSelect}
+                      disabled={scanLoading || (moderatorMode && !canFinalize)}
+                    />
+                    <span className="scanner-upload-icon">＋</span>
+                    <span className="scanner-upload-copy">
+                      <strong>{scanFile ? "Choose another scoreboard" : "Upload match scoreboard"}</strong>
+                      <small>JPG · PNG · WEBP · up to 12 MB (optimized automatically)</small>
+                    </span>
+                    <span className="scanner-upload-action">CHOOSE IMAGE</span>
+                  </label>
+                  {scanFile && (
+                    <button type="button" className="scanner-clear-button" onClick={clearPerformanceScan} disabled={scanLoading}>
+                      REMOVE
+                    </button>
+                  )}
+                </div>
+
+                {scanPreviewUrl && (
+                  <div className="scanner-preview">
+                    <img src={scanPreviewUrl} alt="Selected match scoreboard preview" />
+                    <span>{scanLoading ? "AI IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · SENT TO AI FOR SCANNING"}</span>
+                  </div>
+                )}
+
+                {scanLoading && (
+                  <div className="scanner-progress" role="status">
+                    <span className="scanner-spinner" />
+                    <span>Reading player names and performance…</span>
+                  </div>
+                )}
+
+                {scanError && (
+                  <p className={scanResult ? "scanner-feedback scanner-feedback-info" : "scanner-feedback scanner-feedback-error"} role="status">
+                    {scanError}
+                  </p>
+                )}
+
+                {scanResult && (
+                  <div className="scanner-results">
+                    <div className="scanner-results-head">
+                      <strong>{scanResult.matched_count} / 4 PLAYERS MATCHED</strong>
+                      <span>{(scanResult.columns_detected || []).join(" · ") || "Scoreboard data detected"}</span>
+                    </div>
+                    <div className="scanner-result-grid">
+                      {scanResult.rows.map((row) => (
+                        <div className="scanner-result-card" key={row.player_id}>
+                          <div>
+                            <strong>{row.ign}</strong>
+                            <small>Screenshot: {row.recognized_ign || "—"}</small>
+                          </div>
+                          <div className="scanner-result-values">
+                            <span>K <b>{row.kills ?? "—"}</b></span>
+                            <span>A <b>{row.assists ?? "—"}</b></span>
+                            <span>D <b>{row.damage ?? "—"}</b></span>
+                            <span className="scanner-confidence">{Math.round((row.confidence || 0) * 100)}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {scanResult.unmatched_rows?.length > 0 && (
+                      <div className="scanner-unmatched">
+                        <strong>Needs manual checking</strong>
+                        {scanResult.unmatched_rows.map((row, index) => (
+                          <span key={`${row.recognized_ign}-${index}`}>{row.recognized_ign}: {row.reason}</span>
+                        ))}
+                      </div>
+                    )}
+                    <p className="scanner-footnote">Only values visible in the screenshot are filled. If the scoreboard has no Assists column, that field stays unchanged for manual entry. MVP remains manually selectable.</p>
+                    <button type="button" className="scanner-rescan-button" onClick={() => scanPerformanceScreenshot(scanFile)} disabled={scanLoading || !scanFile}>
+                      SCAN AGAIN
+                    </button>
+                  </div>
+                )}
+
+                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. The website does not save the image; it is sent to AI Gateway for processing with prompt-training disabled.</p>
+              </div>
+            )}
 
             {/* PLAYER PERFORMANCE */}
             {selectedPlayers.length > 0 && (
@@ -2150,6 +2402,293 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
           .op-match-page .result-grid {
             grid-template-columns: 1fr;
           }
+        }
+      `}</style>
+      <style jsx global>{`
+        .op-match-page .op-screenshot-scanner {
+          margin: 8px 0 20px;
+          padding: 20px;
+          border: 1px solid rgba(83, 206, 255, .30);
+          border-radius: 18px;
+          background: linear-gradient(145deg, rgba(8, 46, 68, .62), rgba(9, 15, 29, .94));
+          box-shadow: inset 0 1px rgba(255,255,255,.06), 0 12px 32px rgba(0,0,0,.18);
+        }
+        .op-match-page .scanner-heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 14px;
+          margin-bottom: 16px;
+        }
+        .op-match-page .scanner-eyebrow {
+          color: #69dfff;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: 1.8px;
+        }
+        .op-match-page .scanner-heading h3 {
+          margin: 5px 0 7px;
+          color: #e7f8ff;
+          font-size: 16px;
+          letter-spacing: .35px;
+        }
+        .op-match-page .scanner-heading p {
+          max-width: 700px;
+          margin: 0;
+          color: #a9c6d7;
+          font-size: 12px;
+          line-height: 1.6;
+        }
+        .op-match-page .scanner-storage-note {
+          flex: none;
+          padding: 7px 10px;
+          border: 1px solid rgba(67, 231, 177, .28);
+          border-radius: 999px;
+          background: rgba(25, 184, 130, .10);
+          color: #82f0c8;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: .7px;
+        }
+        .op-match-page .scanner-upload-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .op-match-page .scanner-upload {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex: 1;
+          min-width: 0;
+          padding: 13px 14px;
+          border: 1px dashed rgba(103, 211, 255, .45);
+          border-radius: 13px;
+          background: rgba(0, 12, 24, .58);
+          cursor: pointer;
+          transition: border-color .2s ease, background .2s ease;
+        }
+        .op-match-page .scanner-upload:hover {
+          border-color: #70e4ff;
+          background: rgba(17, 65, 88, .48);
+        }
+        .op-match-page .scanner-upload input {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          opacity: 0;
+          pointer-events: none;
+        }
+        .op-match-page .scanner-upload-icon {
+          display: grid;
+          place-items: center;
+          width: 38px;
+          height: 38px;
+          flex: none;
+          border-radius: 11px;
+          background: rgba(57, 190, 245, .14);
+          color: #75e5ff;
+          font-size: 25px;
+          font-weight: 500;
+        }
+        .op-match-page .scanner-upload-copy {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          min-width: 0;
+          gap: 4px;
+        }
+        .op-match-page .scanner-upload-copy strong {
+          color: #effaff;
+          font-size: 12px;
+        }
+        .op-match-page .scanner-upload-copy small {
+          color: #91b3c8;
+          font-size: 10px;
+          line-height: 1.4;
+        }
+        .op-match-page .scanner-upload-action,
+        .op-match-page .scanner-clear-button,
+        .op-match-page .scanner-rescan-button {
+          border: 1px solid rgba(97, 213, 255, .28);
+          border-radius: 9px;
+          padding: 10px 12px;
+          background: rgba(32, 146, 193, .14);
+          color: #9beaff;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: .8px;
+        }
+        .op-match-page .scanner-clear-button {
+          flex: none;
+          cursor: pointer;
+          color: #ff9bad;
+          border-color: rgba(255, 92, 122, .28);
+          background: rgba(255, 50, 90, .08);
+        }
+        .op-match-page .scanner-preview {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-top: 12px;
+          padding: 10px;
+          border-radius: 12px;
+          background: rgba(0, 0, 0, .24);
+        }
+        .op-match-page .scanner-preview img {
+          width: 76px;
+          height: 90px;
+          object-fit: contain;
+          border-radius: 7px;
+          background: #03080d;
+        }
+        .op-match-page .scanner-preview span {
+          color: #91b9cc;
+          font-size: 9px;
+          font-weight: 800;
+          letter-spacing: .7px;
+        }
+        .op-match-page .scanner-progress {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 12px;
+          color: #b8eaff;
+          font-size: 12px;
+          font-weight: 700;
+        }
+        .op-match-page .scanner-spinner {
+          width: 17px;
+          height: 17px;
+          flex: none;
+          border: 2px solid rgba(114, 222, 255, .22);
+          border-top-color: #73e6ff;
+          border-radius: 50%;
+          animation: opScannerSpin .75s linear infinite;
+        }
+        @keyframes opScannerSpin { to { transform: rotate(360deg); } }
+        .op-match-page .scanner-feedback {
+          margin: 12px 0 0;
+          padding: 10px 12px;
+          border-radius: 10px;
+          font-size: 11px;
+          line-height: 1.5;
+        }
+        .op-match-page .scanner-feedback-info {
+          color: #b5eaff;
+          background: rgba(55, 155, 205, .10);
+          border: 1px solid rgba(86, 196, 245, .20);
+        }
+        .op-match-page .scanner-feedback-error {
+          color: #ffb3c1;
+          background: rgba(255, 45, 85, .09);
+          border: 1px solid rgba(255, 75, 108, .22);
+        }
+        .op-match-page .scanner-results {
+          margin-top: 13px;
+          padding: 13px;
+          border: 1px solid rgba(85, 220, 180, .20);
+          border-radius: 13px;
+          background: rgba(0, 15, 24, .42);
+        }
+        .op-match-page .scanner-results-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+        .op-match-page .scanner-results-head strong {
+          color: #8bf0c9;
+          font-size: 10px;
+          letter-spacing: .7px;
+        }
+        .op-match-page .scanner-results-head span {
+          color: #88aabc;
+          font-size: 9px;
+          text-align: right;
+        }
+        .op-match-page .scanner-result-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+        .op-match-page .scanner-result-card {
+          min-width: 0;
+          padding: 10px;
+          border: 1px solid rgba(130, 196, 220, .13);
+          border-radius: 10px;
+          background: rgba(10, 30, 44, .64);
+        }
+        .op-match-page .scanner-result-card > div:first-child {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 8px;
+          min-width: 0;
+        }
+        .op-match-page .scanner-result-card strong {
+          overflow-wrap: anywhere;
+          color: #e6f8ff;
+          font-size: 11px;
+        }
+        .op-match-page .scanner-result-card small {
+          color: #8daebe;
+          font-size: 9px;
+          text-align: right;
+        }
+        .op-match-page .scanner-result-values {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 8px;
+          color: #8eb3c7;
+          font-size: 10px;
+        }
+        .op-match-page .scanner-result-values b {
+          color: #b8f2ff;
+          font-size: 12px;
+        }
+        .op-match-page .scanner-result-values .scanner-confidence {
+          margin-left: auto;
+          color: #7fe8bd;
+          font-size: 9px;
+        }
+        .op-match-page .scanner-unmatched {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          margin-top: 10px;
+          color: #ffbe9d;
+          font-size: 10px;
+          line-height: 1.5;
+        }
+        .op-match-page .scanner-footnote,
+        .op-match-page .scanner-one-match-note {
+          margin: 10px 0 0;
+          color: #8eacbc;
+          font-size: 10px;
+          line-height: 1.55;
+        }
+        .op-match-page .scanner-rescan-button {
+          margin-top: 10px;
+          cursor: pointer;
+        }
+        .op-match-page .scanner-rescan-button:disabled,
+        .op-match-page .scanner-clear-button:disabled {
+          opacity: .45;
+          cursor: not-allowed;
+        }
+        @media (max-width: 650px) {
+          .op-match-page .op-screenshot-scanner { padding: 14px; }
+          .op-match-page .scanner-heading { flex-direction: column; }
+          .op-match-page .scanner-storage-note { align-self: flex-start; }
+          .op-match-page .scanner-upload-row { align-items: stretch; flex-direction: column; }
+          .op-match-page .scanner-upload { flex-wrap: wrap; }
+          .op-match-page .scanner-upload-action { margin-left: 50px; }
+          .op-match-page .scanner-result-grid { grid-template-columns: 1fr; }
+          .op-match-page .scanner-results-head { align-items: flex-start; flex-direction: column; }
+          .op-match-page .scanner-results-head span { text-align: left; }
         }
       `}</style>
     </main>
