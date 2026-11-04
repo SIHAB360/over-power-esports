@@ -135,7 +135,7 @@ function parsePastedPerformance(text) {
       parsed.push({ name: cells[0].replace(/^(?:player|ign|name)\s*[:=]\s*/i, ""), kills: +cells[1], assists: +cells[2], damage: +cells[3] });
       continue;
     }
-    const spaced = clean.match(/^(.+?)\s{2,}(\d+)\s+(\d+)\s+(\d+)\s*$/);
+    const spaced = clean.match(/^(.+?)\s+(\d+)\s+(\d+)\s+(\d+)\s*$/);
     if (spaced) parsed.push({ name: spaced[1], kills: +spaced[2], assists: +spaced[3], damage: +spaced[4] });
   }
   return parsed.filter((row) => row.name && row.kills <= 999 && row.assists <= 999 && row.damage <= 999999);
@@ -1252,7 +1252,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             />
 
             <div className="selection-counter">
-              <span>ACTIVE ROSTER · {teamPlayers.length} PLAYERS · AUTO-SELECTED FROM SCREENSHOT</span>
+              <span>ACTIVE ROSTER · {teamPlayers.length} PLAYERS · AUTO-SELECTED FROM TEXT</span>
               <strong>
                 {selectedPlayers.length} / 4
               </strong>
