@@ -52,6 +52,36 @@ async function prepareMatchScreenshot(file) {
   cropContext.imageSmoothingQuality = "high";
   cropContext.drawImage(source, 0, cropTop, width, cropHeight, 0, 0, crop.width, crop.height);
   variants.push({ name: "scoreboard-crop", file: await toFile(crop, "scoreboard-crop") });
+  // Free Fire landscape result screens place the table in the middle of the frame.
+  // Exclude decorative player icons, top banners, badges and the right-side lobby UI.
+  // Keep NAME/K/A/DMG headers and the four performance rows in one image.
+  if (width > height * 1.35) {
+    const tableX = Math.round(width * 0.16);
+    const tableY = Math.round(height * 0.365);
+    const tableW = Math.round(width * 0.52);
+    const tableH = Math.round(height * 0.43);
+    const tableScale = Math.min(3, 2500 / tableW);
+    const table = document.createElement("canvas");
+    table.width = Math.round(tableW * tableScale);
+    table.height = Math.round(tableH * tableScale);
+    const ctx = table.getContext("2d", { alpha: false, willReadFrequently: true });
+    if (ctx) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(source, tableX, tableY, tableW, tableH, 0, 0, table.width, table.height);
+      variants.push({ name: "free-fire-table", file: await toFile(table, "free-fire-table") });
+      const pixels = ctx.getImageData(0, 0, table.width, table.height);
+      for (let i = 0; i < pixels.data.length; i += 4) {
+        const gray = pixels.data[i] * 0.299 + pixels.data[i + 1] * 0.587 + pixels.data[i + 2] * 0.114;
+        const value = gray > 110 ? 255 : 0;
+        pixels.data[i] = value;
+        pixels.data[i + 1] = value;
+        pixels.data[i + 2] = value;
+      }
+      ctx.putImageData(pixels, 0, 0);
+      variants.push({ name: "free-fire-table-threshold", file: await toFile(table, "free-fire-table-threshold") });
+    }
+  }
 
   const enhanced = document.createElement("canvas");
   enhanced.width = crop.width;
@@ -535,7 +565,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       for (let passIndex = 0; passIndex < preparedVariants.length; passIndex += 1) {
         activePassIndex = passIndex;
         const variant = preparedVariants[passIndex];
-        const pageSegmentationMode = passIndex === 0 ? "6" : "11";
+        const pageSegmentationMode = variant.name.startsWith("free-fire-table") ? "6" : (passIndex === 0 ? "6" : "11");
         await worker.setParameters({
           tessedit_pageseg_mode: pageSegmentationMode,
           preserve_interword_spaces: "1",
