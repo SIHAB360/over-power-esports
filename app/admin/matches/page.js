@@ -1286,7 +1286,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
               </div>
             ) : (
               <>
-              <p className="squad-picker-help">{editMode ? "Current lineup players and active squad members are listed below. Historical inactive players can remain in this match, but only active approved players can be added as replacements." : "Players recognized in the uploaded screenshot are selected automatically. Check the lineup below and adjust manually if needed. Exactly four players must be selected to save the match."}</p>
+              <p className="squad-picker-help">{editMode ? "Current lineup players and active squad members are listed below. Historical inactive players can remain in this match, but only active approved players can be added as replacements." : "Players matched from the pasted text are selected automatically. Review their Kills, Assists and Damage below. Select or correct any unmatched player manually; exactly four players are required to save the match."}</p>
                <div className="player-grid">
                 {teamPlayers.map((player) => {
                   const selected = selectedPlayers.some(
