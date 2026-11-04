@@ -575,8 +575,6 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
       if (!ocrPasses.some((pass) => pass.lines.length)) {
         throw new Error("OCR could not detect readable scoreboard text. Upload the full result screen in a sharper resolution.");
-      }      if (!lines.length) {
-        throw new Error("OCR could not detect readable scoreboard text. Upload the full result screen in a sharper resolution.");
       }
 
       setScanProgress(94);
