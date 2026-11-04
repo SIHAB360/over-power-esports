@@ -15,39 +15,66 @@ async function prepareMatchScreenshot(file) {
     throw new Error("Screenshot is too large. Choose an image under 12 MB.");
   }
   if (typeof createImageBitmap !== "function") {
-    if (file.size <= 3.8 * 1024 * 1024) return file;
+    if (file.size <= 3.8 * 1024 * 1024) return [{ name: "full", file }];
     throw new Error("This browser cannot optimize large screenshots. Choose an image under 4 MB.");
   }
 
   const bitmap = await createImageBitmap(file);
-  let scale = Math.min(1, 2400 / Math.max(bitmap.width, bitmap.height));
-  let quality = 0.92;
-  let output = null;
+  const scale = Math.min(1, 2600 / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const source = document.createElement("canvas");
+  source.width = width;
+  source.height = height;
+  const sourceContext = source.getContext("2d", { alpha: false });
+  if (!sourceContext) { bitmap.close?.(); throw new Error("Could not prepare the screenshot for scanning."); }
+  sourceContext.imageSmoothingEnabled = true;
+  sourceContext.imageSmoothingQuality = "high";
+  sourceContext.drawImage(bitmap, 0, 0, width, height);
 
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
-    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-    const context = canvas.getContext("2d", { alpha: false });
-    if (!context) throw new Error("Could not prepare the screenshot for scanning.");
-    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  const toFile = async (canvas, name) => {
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
+    if (!blob) throw new Error("Could not prepare an OCR image variant.");
+    return new File([blob], `${name}.jpg`, { type: "image/jpeg", lastModified: Date.now() });
+  };
 
-    output = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
-    if (output && output.size <= 3.8 * 1024 * 1024) break;
+  const variants = [{ name: "full-screen", file: await toFile(source, "scoreboard-full") }];
+  const isPortrait = height > width * 1.12;
+  const cropTop = isPortrait ? Math.round(height * 0.16) : 0;
+  const cropHeight = isPortrait ? Math.max(1, Math.round(height * 0.68)) : height;
+  const cropScale = Math.min(2, 2800 / width);
+  const crop = document.createElement("canvas");
+  crop.width = Math.max(1, Math.round(width * cropScale));
+  crop.height = Math.max(1, Math.round(cropHeight * cropScale));
+  const cropContext = crop.getContext("2d", { alpha: false });
+  if (!cropContext) { bitmap.close?.(); throw new Error("Could not crop the scoreboard for OCR."); }
+  cropContext.imageSmoothingEnabled = true;
+  cropContext.imageSmoothingQuality = "high";
+  cropContext.drawImage(source, 0, cropTop, width, cropHeight, 0, 0, crop.width, crop.height);
+  variants.push({ name: "scoreboard-crop", file: await toFile(crop, "scoreboard-crop") });
 
-    quality = Math.max(0.68, quality - 0.07);
-    if (attempt >= 2) scale *= 0.88;
+  const enhanced = document.createElement("canvas");
+  enhanced.width = crop.width;
+  enhanced.height = crop.height;
+  const enhancedContext = enhanced.getContext("2d", { alpha: false, willReadFrequently: true });
+  if (enhancedContext) {
+    enhancedContext.drawImage(crop, 0, 0);
+    const pixels = enhancedContext.getImageData(0, 0, enhanced.width, enhanced.height);
+    const data = pixels.data;
+    for (let index = 0; index < data.length; index += 4) {
+      const gray = data[index] * 0.299 + data[index + 1] * 0.587 + data[index + 2] * 0.114;
+      const contrast = (gray - 112) * 1.55 + 128;
+      const value = Math.max(0, Math.min(255, contrast + 4));
+      data[index] = value;
+      data[index + 1] = value;
+      data[index + 2] = value;
+    }
+    enhancedContext.putImageData(pixels, 0, 0);
+    variants.push({ name: "high-contrast-crop", file: await toFile(enhanced, "scoreboard-contrast") });
   }
 
   bitmap.close?.();
-  if (!output || output.size > 3.8 * 1024 * 1024) {
-    throw new Error("Could not compress this screenshot enough. Try a smaller image.");
-  }
-
-  return new File([output], "match-scoreboard.jpg", {
-    type: "image/jpeg",
-    lastModified: Date.now(),
-  });
+  return variants;
 }
 
 export default function AdminMatchesPage({ moderatorMode = false } = {}) {
@@ -482,7 +509,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     let worker = null;
 
     try {
-      const prepared = await prepareMatchScreenshot(file);
+      const preparedVariants = await prepareMatchScreenshot(file);
+      let activePassIndex = 0;
       const { createWorker } = await import("tesseract.js");
       worker = await createWorker("eng", 1, {
         workerPath: "https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/worker.min.js",
@@ -494,48 +522,60 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
           if (message.status === "loading tesseract core") setScanProgress(3);
           else if (message.status === "loading language traineddata") setScanProgress(8);
           else if (message.status === "recognizing text") {
-            setScanProgress(Math.min(90, 10 + Math.round((Number(message.progress) || 0) * 80)));
+            const passProgress = Math.max(0, Math.min(1, Number(message.progress) || 0));
+            const overall = (activePassIndex + passProgress) / Math.max(1, preparedVariants.length);
+            setScanProgress(Math.min(92, 10 + Math.round(overall * 82)));
           }
         },
       });
       if (requestId !== scanRequestId.current) return;
       scanWorkerRef.current = worker;
 
-      await worker.setParameters({
-        tessedit_pageseg_mode: "6",
-        preserve_interword_spaces: "1",
-      });
+      const ocrPasses = [];
+      for (let passIndex = 0; passIndex < preparedVariants.length; passIndex += 1) {
+        activePassIndex = passIndex;
+        const variant = preparedVariants[passIndex];
+        const pageSegmentationMode = passIndex === 0 ? "6" : "11";
+        await worker.setParameters({
+          tessedit_pageseg_mode: pageSegmentationMode,
+          preserve_interword_spaces: "1",
+        });
 
-      const recognition = await worker.recognize(prepared, {}, { blocks: true });
-      if (requestId !== scanRequestId.current) return;
-
-      const data = recognition?.data || {};
-      const rawLines = Array.isArray(data.lines) && data.lines.length
-        ? data.lines
-        : (Array.isArray(data.blocks) ? data.blocks.flatMap((block) =>
-            (block.paragraphs || []).flatMap((paragraph) => paragraph.lines || [])
-          ) : []);
-
-      const lines = rawLines.map((line) => ({
-        bbox: {
-          x0: Number(line?.bbox?.x0) || 0,
-          y0: Number(line?.bbox?.y0) || 0,
-          x1: Number(line?.bbox?.x1) || 0,
-          y1: Number(line?.bbox?.y1) || 0,
-        },
-        words: (Array.isArray(line?.words) ? line.words : []).map((word) => ({
-          text: String(word?.text || "").slice(0, 100),
-          confidence: Math.max(0, Math.min(100, Number(word?.confidence) || 0)),
+        const recognition = await worker.recognize(variant.file, {}, { blocks: true });
+        if (requestId !== scanRequestId.current) return;
+        const data = recognition?.data || {};
+        const rawLines = Array.isArray(data.lines) && data.lines.length
+          ? data.lines
+          : (Array.isArray(data.blocks) ? data.blocks.flatMap((block) =>
+              (block.paragraphs || []).flatMap((paragraph) => paragraph.lines || [])
+            ) : []);
+        const lines = rawLines.map((line) => ({
           bbox: {
-            x0: Number(word?.bbox?.x0) || 0,
-            y0: Number(word?.bbox?.y0) || 0,
-            x1: Number(word?.bbox?.x1) || 0,
-            y1: Number(word?.bbox?.y1) || 0,
+            x0: Number(line?.bbox?.x0) || 0,
+            y0: Number(line?.bbox?.y0) || 0,
+            x1: Number(line?.bbox?.x1) || 0,
+            y1: Number(line?.bbox?.y1) || 0,
           },
-        })).filter((word) => word.text),
-      })).filter((line) => line.words.length);
+          words: (Array.isArray(line?.words) ? line.words : []).map((word) => ({
+            text: String(word?.text || "").slice(0, 100),
+            confidence: Math.max(0, Math.min(100, Number(word?.confidence) || 0)),
+            bbox: {
+              x0: Number(word?.bbox?.x0) || 0,
+              y0: Number(word?.bbox?.y0) || 0,
+              x1: Number(word?.bbox?.x1) || 0,
+              y1: Number(word?.bbox?.y1) || 0,
+            },
+          })).filter((word) => word.text),
+        })).filter((line) => line.words.length);
+        ocrPasses.push({
+          name: `${variant.name}-psm${pageSegmentationMode}`.slice(0, 48),
+          lines: lines.slice(0, 120),
+        });
+      }
 
-      if (!lines.length) {
+      if (!ocrPasses.some((pass) => pass.lines.length)) {
+        throw new Error("OCR could not detect readable scoreboard text. Upload the full result screen in a sharper resolution.");
+      }      if (!lines.length) {
         throw new Error("OCR could not detect readable scoreboard text. Upload the full result screen in a sharper resolution.");
       }
 
@@ -551,7 +591,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         },
         body: JSON.stringify({
           team_id: form.team1_id,
-          ocr_data: { lines },
+          ocr_data: { passes: ocrPasses, lines: ocrPasses[0]?.lines || [] },
         }),
         cache: "no-store",
       });
