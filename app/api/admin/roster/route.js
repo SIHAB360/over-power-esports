@@ -37,6 +37,13 @@ export async function POST(request){
   const db=await requireMainAdmin(request);
   const body=await request.json().catch(()=>null);
   if(!body||typeof body!=='object')return respond({message:'Invalid action payload.'},400);
+  if(body.action==='delete_player'){
+   if(!uuid.test(String(body.playerId||'')))return respond({message:'Valid player required.'},400);
+   const {data,error}=await db.from('players').delete().eq('id',body.playerId).select('id').maybeSingle();
+   if(error)return respond({message:error.message},400);
+   if(!data)return respond({message:'Player not found or already deleted.'},404);
+   return respond({deleted:data});
+  }
   if(body.action==='player_active'){
    if(!uuid.test(String(body.playerId||''))||typeof body.active!=='boolean')
     return respond({message:'Player and active state required.'},400);
