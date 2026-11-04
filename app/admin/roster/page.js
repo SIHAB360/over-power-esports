@@ -30,20 +30,24 @@ export default function RosterPage(){
  },[auth]);
  useEffect(()=>{reload()},[reload]);
  const change=async(action,id,payload)=>{
+  if(action==='delete_player'&&!window.confirm('Permanently remove this player from the roster? Their login account and historical match records are not intentionally deleted.'))return;
   setBusy(id);setNotice('');
   try{
    const body=action==='player_active'
     ? {action,playerId:id,active:payload}
     : action==='squad_visibility'
      ? {action,teamId:id,visible:payload}
-     : {action,playerId:id,teamId:payload};
+     : action==='delete_player'?{action,playerId:id}:{action,playerId:id,teamId:payload};
    const response=await fetch('/api/admin/roster',{
     method:'POST',headers:{...(await auth()),'Content-Type':'application/json'},
     body:JSON.stringify(body)
    });
    const json=await response.json();
    if(!response.ok)throw Error(json.message||'Update not saved');
-   if(action==='squad_visibility'){
+   if(action==='delete_player'){
+    setPlayers(current=>current.filter(p=>p.id!==id));
+    setNotice('Player removed from the roster.');
+   }else if(action==='squad_visibility'){
     setTeams(current=>current.map(t=>t.id===id?{...t,...json.updated}:t));
    }else{
     setPlayers(current=>current.map(p=>p.id===id?{...p,...json.updated}:p));
@@ -122,6 +126,7 @@ export default function RosterPage(){
        {teams.map(t=><option key={t.id} value={t.id}>{t.team_name}</option>)}
       </select>
      </label>
+     <button type="button" disabled={!!busy||loading} className="op-roster-delete" onClick={()=>change('delete_player',p.id)} aria-label={'Delete '+(p.ign||p.full_name||'player')+' from roster'}>Delete</button>
      <button type="button" disabled={!!busy||loading||!approved(p)}
       className={'op-roster-toggle '+(p.is_active!==false&&approved(p)?'is-on':'is-off')}
       aria-pressed={p.is_active!==false&&approved(p)}
