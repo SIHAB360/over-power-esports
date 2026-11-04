@@ -781,10 +781,30 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     const used = new Set();
     for (const row of parsed) {
       const normalized = normalizePastedIgn(row.name);
-      const candidates = teamPlayers.filter((player) => {
+      let candidates = teamPlayers.filter((player) => {
         const ign = normalizePastedIgn(player.ign || "");
         return ign && ign === normalized;
       });
+      // Accept a single-character omission/extra character only when there is
+      // exactly one unique roster candidate; never guess between similar IGNs.
+      if (!candidates.length && normalized.length >= 6) {
+        const oneEditApart = (a, b) => {
+          if (Math.abs(a.length - b.length) > 1) return false;
+          let i = 0, j = 0, edits = 0;
+          while (i < a.length && j < b.length) {
+            if (a[i] === b[j]) { i++; j++; continue; }
+            if (++edits > 1) return false;
+            if (a.length > b.length) i++;
+            else if (b.length > a.length) j++;
+            else { i++; j++; }
+          }
+          return edits + (a.length - i) + (b.length - j) <= 1;
+        };
+        candidates = teamPlayers.filter((player) => {
+          const ign = normalizePastedIgn(player.ign || "");
+          return ign.length >= 6 && oneEditApart(normalized, ign);
+        });
+      }
       if (candidates.length !== 1 || used.has(candidates[0].id)) {
         unmatched.push(row.name);
         continue;
