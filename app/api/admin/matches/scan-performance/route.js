@@ -129,23 +129,6 @@ function wordCenter(word, axis) {
   return ((Number.isFinite(start) ? start : 0) + (Number.isFinite(end) ? end : 0)) / 2;
 }
 
-function lineCenterY(line) {
-  if (line?.bbox) return wordCenter({ bbox: line.bbox }, "y");
-  const words = Array.isArray(line?.words) ? line.words : [];
-  if (!words.length) return 0;
-  return words.reduce((sum, word) => sum + wordCenter(word, "y"), 0) / words.length;
-}
-
-function parseOcrNumber(value) {
-  const cleaned = String(value || "")
-    .trim()
-    .replace(/[Oo]/g, "0")
-    .replace(/[Il|]/g, "1")
-    .replace(/[,.]/g, "");
-  if (!/^\d{1,6}$/.test(cleaned)) return null;
-  return parseCount(cleaned);
-}
-
 function nearestNumber(words, x, maxDistance) {
   if (x === null || x === undefined) return null;
   const candidates = words
@@ -170,33 +153,57 @@ function collectOcrLines(ocrData) {
   return collected;
 }
 
+function groupWordsByY(lines) {
+  const words = lines.flatMap((line) => Array.isArray(line?.words) ? line.words : [])
+    .filter((word) => String(word?.text || "").trim());
+  if (!words.length) return [];
+
+  const heights = words.map((word) => Math.abs(Number(word?.bbox?.y1) - Number(word?.bbox?.y0)))
+    .filter((height) => Number.isFinite(height) && height > 0)
+    .sort((a, b) => a - b);
+  const medianHeight = heights.length ? heights[Math.floor(heights.length / 2)] : 10;
+  const rowTolerance = Math.max(7, Math.min(36, medianHeight * 1.6));
+  const sorted = [...words].sort((a, b) => wordCenter(a, "y") - wordCenter(b, "y"));
+  const groups = [];
+
+  for (const word of sorted) {
+    const y = wordCenter(word, "y");
+    let group = groups[groups.length - 1];
+    if (!group || y - group.anchorY > rowTolerance) {
+      groups.push({ anchorY: y, words: [word] });
+    } else {
+      group.words.push(word);
+    }
+  }
+
+  return groups.map((group) => {
+    const centers = group.words.map((word) => wordCenter(word, "y"));
+    return {
+      words: group.words.sort((a, b) => wordCenter(a, "x") - wordCenter(b, "x")),
+      centerY: centers.reduce((sum, value) => sum + value, 0) / centers.length,
+    };
+  });
+}
+
 function extractScoreboard(ocrData) {
   const lines = collectOcrLines(ocrData);
+  const bands = groupWordsByY(lines);
   const killHeaders = new Set(["K", "KILL", "KILLS", "ELIM", "ELIMS", "ELIMINATION", "ELIMINATIONS"]);
   const assistHeaders = new Set(["A", "AST", "ASSIST", "ASSISTS"]);
   const damageHeaders = new Set(["DMG", "DAMAGE", "DAMG"]);
 
-  const headerCandidates = lines
-    .map((line) => {
-      const words = Array.isArray(line?.words) ? line.words : [];
-      const findHeader = (aliases) =>
-        words.find((word) => aliases.has(normalizeHeader(word.text))) || null;
-      const kills = findHeader(killHeaders);
-      const assists = findHeader(assistHeaders);
-      const damage = findHeader(damageHeaders);
-      return { line, kills, assists, damage, score: (kills ? 2 : 0) + (assists ? 1 : 0) + (damage ? 2 : 0) };
-    })
-    .filter((item) => item.kills && item.damage)
+  const headerCandidates = bands.map((band) => {
+    const findHeader = (aliases) => band.words.find((word) => aliases.has(normalizeHeader(word.text))) || null;
+    const kills = findHeader(killHeaders);
+    const assists = findHeader(assistHeaders);
+    const damage = findHeader(damageHeaders);
+    return { band, kills, assists, damage, score: (kills ? 2 : 0) + (assists ? 1 : 0) + (damage ? 2 : 0) };
+  }).filter((item) => item.kills && item.damage)
     .sort((a, b) => b.score - a.score);
 
   const header = headerCandidates[0];
   if (!header) {
-    return {
-      scoreboard_detected: false,
-      columns_detected: [],
-      rows: [],
-      notes: "Could not identify the Kills and Damage column headings clearly.",
-    };
+    return { scoreboard_detected: false, columns_detected: [], rows: [], header_score: 0, notes: "Could not identify the Kills and Damage column headings clearly." };
   }
 
   const killX = wordCenter(header.kills, "x");
@@ -205,20 +212,16 @@ function extractScoreboard(ocrData) {
   const sortedColumns = [killX, ...(assistX === null ? [] : [assistX]), damageX].sort((a, b) => a - b);
   const columnGaps = sortedColumns.slice(1).map((value, index) => value - sortedColumns[index]).filter((value) => value > 10);
   const maxDistance = Math.max(35, Math.min(100, columnGaps.length ? Math.min(...columnGaps) * 0.58 : 70));
-  const headerY = lineCenterY(header.line);
+  const headerY = header.band.centerY;
 
   const rows = [];
-  for (const line of lines) {
-    if (line === header.line || lineCenterY(line) <= headerY) continue;
-    const words = (Array.isArray(line?.words) ? line.words : [])
-      .filter((word) => String(word.text || "").trim() && (Number(word.confidence) || 0) >= 18);
+  for (const band of bands) {
+    if (band === header.band || band.centerY <= headerY) continue;
+    const words = band.words.filter((word) => (Number(word.confidence) || 0) >= 18);
     if (!words.length) continue;
 
-    // IGN text sits to the left of the Kills column. Keep digits and symbols
-    // in names; only the aligned numeric columns are parsed as statistics.
     const ignCutoff = killX - maxDistance;
-    const ignWords = words
-      .filter((word) => wordCenter(word, "x") < ignCutoff)
+    const ignWords = words.filter((word) => wordCenter(word, "x") < ignCutoff)
       .sort((a, b) => wordCenter(a, "x") - wordCenter(b, "x"));
     const recognizedIgn = ignWords.map((word) => String(word.text || "").trim()).filter(Boolean).join(" ").trim();
     if (recognizedIgn.replace(/\s/g, "").length < 2) continue;
@@ -260,10 +263,76 @@ function extractScoreboard(ocrData) {
       String(header.damage.text || "DMG").toUpperCase(),
     ],
     rows: rows.slice(0, 24),
+    header_score: header.score,
     notes: "Free OCR scan completed. Check the recognized names and values before saving.",
   };
 }
 
+function matchParsedRows(parsed, candidates) {
+  const matched = [];
+  const unmatched = [];
+  const usedPlayerIds = new Set();
+
+  for (const row of parsed.rows.slice(0, 24)) {
+    const recognizedIgn = String(row?.recognized_ign || "").trim().slice(0, 100);
+    const match = findRosterPlayer(recognizedIgn, candidates);
+    if (!match) {
+      const suggestion = suggestRosterPlayer(recognizedIgn, candidates);
+      unmatched.push({
+        recognized_ign: recognizedIgn || "Unreadable IGN",
+        reason: "Could not safely match this IGN to the selected squad.",
+        ...(suggestion ? { suggested_ign: suggestion.ign, suggestion_score: suggestion.score } : {}),
+      });
+      continue;
+    }
+    if (usedPlayerIds.has(match.player.id)) {
+      unmatched.push({ recognized_ign: recognizedIgn, reason: "More than one screenshot row matched this player; please check the screenshot." });
+      continue;
+    }
+    if (matched.length >= 4) {
+      unmatched.push({ recognized_ign: recognizedIgn, reason: "Four squad players have already been matched for this match." });
+      continue;
+    }
+
+    const values = {
+      kills: parseCount(row?.kills),
+      assists: parseCount(row?.assists),
+      damage: parseCount(row?.damage),
+    };
+    if (values.kills === null && values.assists === null && values.damage === null) {
+      unmatched.push({ recognized_ign: recognizedIgn, reason: "The player was recognized, but no performance numbers were readable." });
+      continue;
+    }
+
+    usedPlayerIds.add(match.player.id);
+    matched.push({
+      player_id: match.player.id,
+      ign: match.player.ign,
+      recognized_ign: recognizedIgn,
+      kills: values.kills,
+      assists: values.assists,
+      damage: values.damage,
+      mvp: null,
+      confidence: Math.max(Number(row.match_confidence) || 0, match.score),
+      match_method: match.method,
+    });
+  }
+
+  return { matched, unmatched };
+}
+
+function chooseBestScoreboardPasses(ocrData, incomingPasses, candidates) {
+  const parsedPasses = incomingPasses.map((pass, index) => {
+    const parsed = extractScoreboard({ lines: pass.lines });
+    const matchResult = parsed.scoreboard_detected ? matchParsedRows(parsed, candidates) : { matched: [], unmatched: [] };
+    const averageConfidence = parsed.rows.length
+      ? parsed.rows.reduce((sum, row) => sum + (Number(row.match_confidence) || 0), 0) / parsed.rows.length
+      : 0;
+    const score = matchResult.matched.length * 10000 + parsed.rows.length * 100 + averageConfidence * 10 + (Number(parsed.header_score) || 0);
+    return { name: String(pass.name || `pass-${index + 1}`).slice(0, 48), parsed, ...matchResult, score };
+  });
+  return parsedPasses.sort((a, b) => b.score - a.score)[0] || null;
+}
 async function authorize(request) {
   const token = request.headers.get("authorization")?.match(/^Bearer\s+(\S+)$/i)?.[1];
   if (!token) return { error: json({ message: "Sign in to use the performance scanner." }, 401) };
@@ -324,7 +393,11 @@ export async function POST(request) {
     const teamId = String(payload?.team_id || "");
     const ocrData = payload?.ocr_data;
     if (!UUID.test(teamId)) return json({ message: "Select a valid squad first." }, 400);
-    if (!ocrData || !Array.isArray(ocrData.lines) || ocrData.lines.length > 120) {
+    const incomingPasses = Array.isArray(ocrData?.passes) && ocrData.passes.length
+      ? ocrData.passes.slice(0, 4)
+      : [{ name: "full-screen", lines: ocrData?.lines }];
+    const totalOcrLines = incomingPasses.reduce((sum, pass) => sum + (Array.isArray(pass?.lines) ? pass.lines.length : 0), 0);
+    if (!ocrData || !incomingPasses.length || incomingPasses.some((pass) => !Array.isArray(pass?.lines) || pass.lines.length > 120) || totalOcrLines > 480) {
       return json({ message: "The on-device OCR result was incomplete. Please scan the screenshot again." }, 400);
     }
 
@@ -360,71 +433,23 @@ export async function POST(request) {
       return json({ message: "At least four active squad players need an in-game name before scanning." }, 400);
     }
 
-    const parsed = extractScoreboard(ocrData);
-
-    if (!parsed.scoreboard_detected) {
+    const bestPass = chooseBestScoreboardPasses(ocrData, incomingPasses, candidates);
+    if (!bestPass?.parsed?.scoreboard_detected) {
       return json({
         code: "OCR_SCOREBOARD_NOT_DETECTED",
         message: "The free OCR scanner could not clearly read the scoreboard headings or player rows. Upload the full result screen in a sharper resolution, or enter the stats manually.",
+        ocr_passes_checked: incomingPasses.length,
       }, 422);
     }
 
-    const matched = [];
-    const unmatched = [];
-    const usedPlayerIds = new Set();
-
-    for (const row of parsed.rows.slice(0, 24)) {
-      const recognizedIgn = String(row?.recognized_ign || "").trim().slice(0, 100);
-      const match = findRosterPlayer(recognizedIgn, candidates);
-
-      if (!match) {
-        const suggestion = suggestRosterPlayer(recognizedIgn, candidates);
-        unmatched.push({
-          recognized_ign: recognizedIgn || "Unreadable IGN",
-          reason: "Could not safely match this IGN to the selected squad.",
-          ...(suggestion ? { suggested_ign: suggestion.ign, suggestion_score: suggestion.score } : {}),
-        });
-        continue;
-      }
-      if (usedPlayerIds.has(match.player.id)) {
-        unmatched.push({ recognized_ign: recognizedIgn, reason: "More than one screenshot row matched this player; please check the screenshot." });
-        continue;
-      }
-      if (matched.length >= 4) {
-        unmatched.push({ recognized_ign: recognizedIgn, reason: "Four squad players have already been matched for this match." });
-        continue;
-      }
-
-      const values = {
-        kills: parseCount(row?.kills),
-        assists: parseCount(row?.assists),
-        damage: parseCount(row?.damage),
-      };
-      if (values.kills === null && values.assists === null && values.damage === null) {
-        unmatched.push({ recognized_ign: recognizedIgn, reason: "The player was recognized, but no performance numbers were readable." });
-        continue;
-      }
-
-      usedPlayerIds.add(match.player.id);
-      matched.push({
-        player_id: match.player.id,
-        ign: match.player.ign,
-        recognized_ign: recognizedIgn,
-        kills: values.kills,
-        assists: values.assists,
-        damage: values.damage,
-        mvp: null,
-        confidence: Math.max(Number(row.match_confidence) || 0, match.score),
-        match_method: match.method,
-      });
-    }
-
+    const { parsed, matched, unmatched, name: ocrPassUsed } = bestPass;
     if (!matched.length) {
       return json({
         message: "The scoreboard text was read, but no player names could be safely matched to this squad. Review the OCR-read names against the selected squad IGN list, then check the in-game names or enter unclear rows manually.",
         matched_count: 0,
         selected_count: 4,
         columns_detected: parsed.columns_detected,
+        ocr_pass_used: ocrPassUsed,
         recognized_rows: parsed.rows.map((row) => ({
           recognized_ign: String(row.recognized_ign || "").slice(0, 100),
           kills: parseCount(row.kills),
@@ -444,6 +469,7 @@ export async function POST(request) {
       selected_count: 4,
       rows: matched,
       unmatched_rows: unmatched,
+      ocr_pass_used: ocrPassUsed,
       notes: parsed.notes,
       image_stored: false,
       scanner: "tesseract.js-browser",
