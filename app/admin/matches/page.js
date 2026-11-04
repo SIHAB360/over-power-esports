@@ -42,7 +42,7 @@ async function prepareMatchScreenshot(file) {
   const isPortrait = height > width * 1.12;
   const cropTop = isPortrait ? Math.round(height * 0.16) : 0;
   const cropHeight = isPortrait ? Math.max(1, Math.round(height * 0.68)) : height;
-  const cropScale = Math.min(2, 2800 / width);
+  const cropScale = Math.min(1.6, 2200 / width);
   const crop = document.createElement("canvas");
   crop.width = Math.max(1, Math.round(width * cropScale));
   crop.height = Math.max(1, Math.round(cropHeight * cropScale));
