@@ -24,7 +24,7 @@ const menu=[
  {label:'Withdrawals',href:'/admin/dashboard?section=salary',Icon:FiCreditCard},
  {label:'Verification',href:'/admin/dashboard?section=verification',Icon:FiShield},
  {label:'Achievements',href:'/admin/achievements',Icon:FiImage},
- {label:'Admin Management',href:'/admin/moderators',Icon:FiShield},
+ {label:'Admin Management',href:'/admin/admin-management',Icon:FiShield},
  {label:'Visitor Analytics',href:'/admin/visitors',Icon:FiActivity}
 ];
 export default function AdminRouteSidebar(){
