@@ -37,3 +37,10 @@ html[data-op-admin-theme="light"] .op-roster-page .op-roster-toggle{color:#fff}
 @media(max-width:850px){.op-roster-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.op-roster-squads{grid-template-columns:minmax(0,1fr)}.op-roster-player{grid-template-columns:minmax(0,1fr) 110px}.op-roster-assign{grid-column:1/-1;grid-row:2}}
 @media(max-width:550px){.op-roster-page{padding:4px 8px 25px}.op-roster-stats{grid-template-columns:minmax(0,1fr)}.op-roster-toolbar{grid-template-columns:1fr}.op-roster-player{grid-template-columns:minmax(0,1fr) auto;padding:10px;gap:9px}.op-roster-squad{align-items:flex-start}.op-roster-hero{padding:22px 13px}}
 @media(prefers-reduced-motion:reduce){.op-roster-page *{transition:none!important}}
+
+
+.op-roster-delete{border:1px solid rgba(255,104,126,.48);background:linear-gradient(135deg,rgba(117,27,48,.88),rgba(72,20,39,.92));color:#ffdce3;border-radius:10px;padding:9px 13px;font-weight:800;font-size:12px;cursor:pointer;transition:filter .18s,transform .18s}
+.op-roster-delete:hover{filter:brightness(1.18);transform:translateY(-1px)}
+.op-roster-delete:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.op-roster-player{gap:12px}
+@media(max-width:620px){.op-roster-delete{width:100%;min-height:40px}}
