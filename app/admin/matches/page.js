@@ -107,6 +107,40 @@ async function prepareMatchScreenshot(file) {
   return variants;
 }
 
+function normalizePastedIgn(value) {
+  return String(value || "").normalize("NFKC").toLowerCase()
+    .replace(/[\u115f\u1160\u200b-\u200d\u3164\ufeff]/g, "")
+    .replace(/[^\p{L}\p{N}]/gu, "")
+    .replace(/ø/g, "o").replace(/[0o]/g, "o")
+    .replace(/[1il]/g, "i").replace(/[5s]/g, "s")
+    .replace(/[8b]/g, "b").replace(/[2z]/g, "z");
+}
+
+function parsePastedPerformance(text) {
+  const input = String(text || "").trim();
+  if (!input || input.length > 15000) return [];
+  const lines = input.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const parsed = [];
+  for (const line of lines) {
+    // Supports: IGN | 6 | 4 | 3085; IGN,6,4,3085; IGN - Kills: 6, Assists: 4, Damage: 3085.
+    const clean = line.replace(/^[-*•]\s*/, "").replace(/^\d+[.)]\s*/, "");
+    const labeled = clean.match(/\b(?:kills?|k)\s*[:=]\s*(\d+)\b[\s\S]*?\b(?:assists?|a)\s*[:=]\s*(\d+)\b[\s\S]*?\b(?:damage|dmg|d)\s*[:=]\s*(\d+)\b/i);
+    if (labeled) {
+      const name = clean.slice(0, labeled.index).replace(/[|,:;\-\s]+$/, "").replace(/^(?:player|ign|name)\s*[:=]\s*/i, "").trim();
+      if (name) parsed.push({ name, kills: +labeled[1], assists: +labeled[2], damage: +labeled[3] });
+      continue;
+    }
+    const cells = clean.split(/\s*[|\t,;]\s*/).filter(Boolean);
+    if (cells.length >= 4 && /^\d+$/.test(cells[1]) && /^\d+$/.test(cells[2]) && /^\d+$/.test(cells[3])) {
+      parsed.push({ name: cells[0].replace(/^(?:player|ign|name)\s*[:=]\s*/i, ""), kills: +cells[1], assists: +cells[2], damage: +cells[3] });
+      continue;
+    }
+    const spaced = clean.match(/^(.+?)\s{2,}(\d+)\s+(\d+)\s+(\d+)\s*$/);
+    if (spaced) parsed.push({ name: spaced[1], kills: +spaced[2], assists: +spaced[3], damage: +spaced[4] });
+  }
+  return parsed.filter((row) => row.name && row.kills <= 999 && row.assists <= 999 && row.damage <= 999999);
+}
+
 export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const router = useRouter();
 
@@ -127,6 +161,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const [recentMatches, setRecentMatches] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
+  const [pastedPerformance, setPastedPerformance] = useState("");
+  const [pasteFeedback, setPasteFeedback] = useState("");
   const [scanFile, setScanFile] = useState(null);
   const [scanPreviewUrl, setScanPreviewUrl] = useState("");
   const [scanLoading, setScanLoading] = useState(false);
@@ -724,6 +760,54 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     void scanPerformanceScreenshot(file);
   }
 
+
+  function applyPastedPerformance() {
+    setPasteFeedback("");
+    if (!form.team1_id || !teamPlayers.length) {
+      setPasteFeedback("Select a team and wait for the squad to load first.");
+      return;
+    }
+    if (moderatorMode && !canFinalize) {
+      setPasteFeedback("Match Results & Finance approval permission is required.");
+      return;
+    }
+    const parsed = parsePastedPerformance(pastedPerformance);
+    if (!parsed.length) {
+      setPasteFeedback("No valid rows found. Use: IGN | Kills | Assists | Damage (one player per line).");
+      return;
+    }
+    const matches = [];
+    const unmatched = [];
+    const used = new Set();
+    for (const row of parsed) {
+      const normalized = normalizePastedIgn(row.name);
+      const candidates = teamPlayers.filter((player) => {
+        const ign = normalizePastedIgn(player.ign || "");
+        return ign && ign === normalized;
+      });
+      if (candidates.length !== 1 || used.has(candidates[0].id)) {
+        unmatched.push(row.name);
+        continue;
+      }
+      const player = candidates[0];
+      used.add(player.id);
+      matches.push({ player, row });
+    }
+    if (matches.length > REQUIRED_PLAYERS) {
+      setPasteFeedback("More than four registered players matched. Check the pasted text.");
+      return;
+    }
+    if (matches.length) {
+      setSelectedPlayers(matches.map(({ player }) => player));
+      setPlayerStats(Object.fromEntries(matches.map(({ player, row }) => [player.id, {
+        kills: row.kills, assists: row.assists, damage: row.damage,
+      }])));
+    }
+    setPasteFeedback(matches.length
+      ? `${matches.length}/4 players auto-selected and performance filled. ${unmatched.length ? "Unmatched IGN: " + unmatched.join(", ") + ". " : ""}Review the lineup and numbers before saving.`
+      : `0/4 matched. Check registered IGN spelling: ${teamPlayers.map((p) => p.ign).filter(Boolean).join(", ")}`);
+  }
+
   function togglePlayer(player) {
     setMessage("");
     setMessageType("");
@@ -1124,124 +1208,39 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             </div>
           </section>
 
-          {/* STEP 03 - UPLOAD SCREENSHOT FIRST */}
+
+          {/* STEP 03 - PASTE AI-EXTRACTED MATCH RESULTS */}
           <section className="panel">
-            <SectionTitle number="03" small="FREE SCOREBOARD OCR" title="UPLOAD MATCH SCREENSHOT FIRST" />
-              <div className="op-screenshot-scanner">
-                <div className="scanner-heading">
-                  <div>
-                    <span className="scanner-eyebrow">FREE OCR-POWERED MATCH TOOL</span>
-                    <h3>📸 AUTOMATIC PERFORMANCE SCANNER</h3>
-                    <p>{form.team1_id ? "Upload the Free Fire result screenshot. The free OCR scanner will read visible IGNs and scoreboard numbers, compare them with this team's active roster, and fill the existing Kills, Assists and Damage fields." : "Select your team above first. Then upload the match screenshot here; the players shown in it will be selected automatically."}</p>
-                  </div>
-                  <span className="scanner-storage-note">NO WEBSITE STORAGE</span>
+            <SectionTitle number="03" small="FREE TEXT IMPORT" title="PASTE MATCH PERFORMANCE" />
+            <div className="op-screenshot-scanner">
+              <div className="scanner-heading">
+                <div>
+                  <span className="scanner-eyebrow">COPY FROM CHATGPT · NO API KEY</span>
+                  <h3>📋 AUTOMATIC PERFORMANCE IMPORT</h3>
+                  <p>Send your Free Fire screenshot to ChatGPT, copy the player results, and paste them here. Registered IGNs will be selected and Kills, Assists and Damage filled automatically.</p>
                 </div>
-
-                <div className="scanner-upload-row">
-                  <label className={`scanner-upload ${scanLoading ? "is-busy" : ""}`}>
-                    <input
-                      ref={scanInputRef}
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp"
-                      onChange={handleScreenshotSelect}
-                      disabled={!form.team1_id || !teamPlayers.length || scanLoading || (moderatorMode && !canFinalize)}
-                    />
-                    <span className="scanner-upload-icon">＋</span>
-                    <span className="scanner-upload-copy">
-                      <strong>{scanFile ? "Choose another scoreboard" : "Upload match scoreboard"}</strong>
-                      <small>JPG · PNG · WEBP · up to 12 MB (optimized automatically)</small>
-                    </span>
-                    <span className="scanner-upload-action">CHOOSE IMAGE</span>
-                  </label>
-                  {scanFile && (
-                    <button type="button" className="scanner-clear-button" onClick={clearPerformanceScan} disabled={scanLoading}>
-                      REMOVE
-                    </button>
-                  )}
-                </div>
-
-                {scanPreviewUrl && (
-                  <div className="scanner-preview">
-                    <img src={scanPreviewUrl} alt="Selected match scoreboard preview" />
-                    <span>{scanLoading ? "ON-DEVICE OCR IS READING THE SCOREBOARD…" : "LOCAL PREVIEW · PROCESSED ON THIS DEVICE"}</span>
-                  </div>
-                )}
-
-                {scanLoading && (
-                  <div className="scanner-progress" role="status">
-                    <span className="scanner-spinner" />
-                    <span>{scanProgress > 0 ? `Reading scoreboard on this device… ${scanProgress}%` : "Loading the free OCR engine on this device…"}</span>
-                  </div>
-                )}
-
-                {scanError && (
-                  <div className={scanResult ? "scanner-feedback scanner-feedback-info" : "scanner-feedback scanner-feedback-error"} role="status">
-                    <p>{scanError}</p>
-                    {scanFile && !scanLoading && (
-                      <button
-                        type="button"
-                        className="scanner-rescan-button"
-                        onClick={() => scanPerformanceScreenshot(scanFile)}
-                        disabled={!form.team1_id || (moderatorMode && !canFinalize)}
-                      >
-                        RETRY SAME SCREENSHOT
-                      </button>
-                    )}
-                  </div>
-                )}
-
-                {scanResult && (
-                  <div className="scanner-results">
-                    <div className="scanner-results-head">
-                      <strong>{scanResult.matched_count} / 4 PLAYERS MATCHED</strong>
-                      <span>{(scanResult.columns_detected || []).join(" · ") || "Scoreboard data detected"}</span>
-                    </div>
-                    <div className="scanner-result-grid">
-                      {scanResult.rows.map((row) => (
-                        <div className="scanner-result-card" key={row.player_id}>
-                          <div>
-                            <strong>{row.ign}</strong>
-                            <small>Screenshot: {row.recognized_ign || "—"}</small>
-                          </div>
-                          <div className="scanner-result-values">
-                            <span>K <b>{row.kills ?? "—"}</b></span>
-                            <span>A <b>{row.assists ?? "—"}</b></span>
-                            <span>D <b>{row.damage ?? "—"}</b></span>
-                            <span className="scanner-confidence">{Math.round((row.confidence || 0) * 100)}%</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {scanResult.recognized_rows?.length > 0 && (
-                      <div className="scanner-unmatched-roster">
-                        <strong>Detected scoreboard rows{scanResult.ocr_pass_used ? ` · ${scanResult.ocr_pass_used}` : ""}</strong>
-                        <span>{scanResult.recognized_rows.map((row) => `${row.recognized_ign} · K ${row.kills ?? "—"} · A ${row.assists ?? "—"} · D ${row.damage ?? "—"}`).join(" | ")}</span>
-                      </div>
-                    )}
-                    {scanResult.unmatched_rows?.length > 0 && (
-                      <div className="scanner-unmatched">
-                        <strong>OCR-read names · needs manual checking</strong>
-                        {scanResult.unmatched_rows.map((row, index) => (
-                          <span key={`${row.recognized_ign}-${index}`}>
-                            {row.recognized_ign}: {row.reason}
-                            {row.suggested_ign && <small className="scanner-suggestion"> Possible roster match: {row.suggested_ign} ({row.suggestion_score}%)</small>}
-                          </span>
-                        ))}
-                        <div className="scanner-unmatched-roster">
-                          <strong>Selected squad registered IGNs</strong>
-                          <span>{teamPlayers.map((player) => player.ign || player.full_name).filter(Boolean).join(" · ") || "No registered IGNs found"}</span>
-                        </div>
-                      </div>
-                    )}
-                    <p className="scanner-footnote">Only values visible in the screenshot are filled. If the scoreboard has no Assists column, that field stays unchanged for manual entry. MVP remains manually selectable.</p>
-                    <button type="button" className="scanner-rescan-button" onClick={() => scanPerformanceScreenshot(scanFile)} disabled={scanLoading || !scanFile}>
-                      SCAN AGAIN
-                    </button>
-                  </div>
-                )}
-
-                <p className="scanner-one-match-note">One scoreboard screenshot is for one match. For another tournament match, scan its screenshot in that match's own entry. Your screenshot stays on this device. Free OCR runs in your browser; only the recognized text and numbers are sent securely to match the selected squad. No AI Gateway key, payment method, or paid AI credits are required.</p>
+                <span className="scanner-storage-note">NO IMAGE UPLOAD</span>
               </div>
+              <p>Use this format (one player per line): <strong>IGN | Kills | Assists | Damage</strong></p>
+              <textarea
+                aria-label="Paste player performance"
+                value={pastedPerformance}
+                onChange={(event) => { setPastedPerformance(event.target.value); setPasteFeedback(""); }}
+                rows={7}
+                maxLength={15000}
+                placeholder={"ZF-SHDW007 | 6 | 4 | 3085\nAEC MJØ7 | 5 | 6 | 2230\nHS_FLAME | 2 | 8 | 1561\nAEC OV107 | 2 | 5 | 1150"}
+                style={{ width: "100%", minHeight: 165, padding: 14, borderRadius: 12, background: "#091728", color: "#f4f8ff", border: "1px solid #37627a", fontSize: 15, marginTop: 12 }}
+                disabled={!form.team1_id || (moderatorMode && !canFinalize)}
+              />
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+                <button type="button" className="scanner-rescan-button" onClick={applyPastedPerformance} disabled={!form.team1_id || !teamPlayers.length || (moderatorMode && !canFinalize)}>
+                  DETECT & AUTO-FILL PLAYERS
+                </button>
+                <button type="button" className="scanner-clear-button" onClick={() => { setPastedPerformance(""); setPasteFeedback(""); }}>CLEAR TEXT</button>
+              </div>
+              {pasteFeedback && <div className="scanner-feedback scanner-feedback-info" role="status" style={{ marginTop: 12 }}><p>{pasteFeedback}</p></div>}
+              <p className="scanner-one-match-note">Player names must match registered squad IGNs. Unknown names are never assigned to another player automatically. Verify the stats before saving the match.</p>
+            </div>
           </section>
 
           {/* STEP 04 */}
