@@ -403,10 +403,10 @@ export async function POST(request) {
     const ocrData = payload?.ocr_data;
     if (!UUID.test(teamId)) return json({ message: "Select a valid squad first." }, 400);
     const incomingPasses = Array.isArray(ocrData?.passes) && ocrData.passes.length
-      ? ocrData.passes.slice(0, 4)
+      ? ocrData.passes.slice(0, 6)
       : [{ name: "full-screen", lines: ocrData?.lines }];
     const totalOcrLines = incomingPasses.reduce((sum, pass) => sum + (Array.isArray(pass?.lines) ? pass.lines.length : 0), 0);
-    if (!ocrData || !incomingPasses.length || incomingPasses.some((pass) => !Array.isArray(pass?.lines) || pass.lines.length > 120) || totalOcrLines > 480) {
+    if (!ocrData || !incomingPasses.length || incomingPasses.some((pass) => !Array.isArray(pass?.lines) || pass.lines.length > 120) || totalOcrLines > 720) {
       return json({ message: "The on-device OCR result was incomplete. Please scan the screenshot again." }, 400);
     }
 
