@@ -129,6 +129,15 @@ function wordCenter(word, axis) {
   return ((Number.isFinite(start) ? start : 0) + (Number.isFinite(end) ? end : 0)) / 2;
 }
 
+function parseOcrNumber(value) {
+  const cleaned = String(value || "").trim()
+    .replace(/[Oo]/g, "0")
+    .replace(/[Il|]/g, "1")
+    .replace(/[,.]/g, "");
+  if (!/^\d{1,6}$/.test(cleaned)) return null;
+  return parseCount(cleaned);
+}
+
 function nearestNumber(words, x, maxDistance) {
   if (x === null || x === undefined) return null;
   const candidates = words
