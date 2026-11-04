@@ -604,6 +604,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
             rows: [],
             unmatched_rows: result.unmatched_rows,
             recognized_rows: result.recognized_rows || [],
+            ocr_pass_used: result.ocr_pass_used || "",
           });
         }
         throw new Error(result.message || "Unable to match the scanned scoreboard.");
@@ -1181,6 +1182,12 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                         </div>
                       ))}
                     </div>
+                    {scanResult.recognized_rows?.length > 0 && (
+                      <div className="scanner-unmatched-roster">
+                        <strong>Detected scoreboard rows{scanResult.ocr_pass_used ? ` · ${scanResult.ocr_pass_used}` : ""}</strong>
+                        <span>{scanResult.recognized_rows.map((row) => `${row.recognized_ign} · K ${row.kills ?? "—"} · A ${row.assists ?? "—"} · D ${row.damage ?? "—"}`).join(" | ")}</span>
+                      </div>
+                    )}
                     {scanResult.unmatched_rows?.length > 0 && (
                       <div className="scanner-unmatched">
                         <strong>OCR-read names · needs manual checking</strong>
