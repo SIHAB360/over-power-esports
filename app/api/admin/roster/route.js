@@ -39,10 +39,10 @@ export async function POST(request){
   if(!body||typeof body!=='object')return respond({message:'Invalid action payload.'},400);
   if(body.action==='delete_player'){
    if(!uuid.test(String(body.playerId||'')))return respond({message:'Valid player required.'},400);
-   const {data,error}=await db.from('players').delete().eq('id',body.playerId).select('id').maybeSingle();
-   if(error)return respond({message:error.message},400);
-   if(!data)return respond({message:'Player not found or already deleted.'},404);
-   return respond({deleted:data});
+   const {data,error}=await db.from('players').update({team_id:null,team_name:null,is_active:false}).eq('id',body.playerId).select('id,team_id,team_name,is_active').maybeSingle();
+   if(error)return respond({message:'Could not remove player from the active roster.'},400);
+   if(!data)return respond({message:'Player not found.'},404);
+   return respond({removed:data});
   }
   if(body.action==='player_active'){
    if(!uuid.test(String(body.playerId||''))||typeof body.active!=='boolean')
