@@ -160,6 +160,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   const squadRequestId=useRef(0);
   const [recentMatches, setRecentMatches] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [fifthPlayerEnabled, setFifthPlayerEnabled] = useState(false);
+  const [fifthPlayerId, setFifthPlayerId] = useState("");
   const [playerStats, setPlayerStats] = useState({});
   const [pastedPerformance, setPastedPerformance] = useState("");
   const [pasteFeedback, setPasteFeedback] = useState("");
@@ -360,6 +362,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
     const requestId=++squadRequestId.current;
     clearPerformanceScan();
     setSelectedPlayers([]);
+    setFifthPlayerEnabled(false);
+    setFifthPlayerId("");
     setTeamPlayers([]);
     setPlayerStats({});
 
@@ -855,10 +859,9 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
   // Signed values: the same 30/70 rule applies to profit and loss.
   const managementAmount = Math.round(netProfit * (MANAGEMENT_PERCENTAGE / 100) * 100) / 100;
   const playerPool = Math.round((netProfit - managementAmount) * 100) / 100;
-  const perPlayerAmount =
-    selectedPlayers.length === REQUIRED_PLAYERS
-      ? playerPool / REQUIRED_PLAYERS
-      : 0;
+  const perPlayerAmount = selectedPlayers.length === REQUIRED_PLAYERS ? (fifthPlayerEnabled ? Math.round(netProfit * 0.155 * 100) / 100 : playerPool / REQUIRED_PLAYERS) : 0;
+  const fifthPlayer = teamPlayers.find((player) => player.id === fifthPlayerId) || null;
+  const fifthPlayerAmount = fifthPlayerEnabled && fifthPlayer ? Math.round(netProfit * 0.08 * 100) / 100 : 0;
 
   function money(value) {
     return Number(value || 0).toLocaleString("en-BD", {
@@ -928,6 +931,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
       return;
     }
 
+    if (fifthPlayerEnabled && (!fifthPlayerId || !fifthPlayer || selectedPlayers.some((p) => p.id === fifthPlayerId))) { setMessage("Choose a separate fifth player who is not one of the four main players."); setMessageType("error"); return; }
+    if (editMode && fifthPlayerEnabled) { setMessage("Turn off the fifth-player option before editing an existing match. Fifth-player editing is not yet supported."); setMessageType("error"); return; }
     setSaving(true);
 
     try {
@@ -948,6 +953,7 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
         damage: Number(playerStats[selected.id]?.damage) || 0,
         mvp: Boolean(playerStats[selected.id]?.mvp),
       }));
+      if (fifthPlayerEnabled && fifthPlayer) participants.push({ player_id: fifthPlayer.id, kills: 0, assists: 0, damage: 0, mvp: false });
 
       if (editMode) {
         const { data: updateResult, error: saveError } = await supabase.rpc(
@@ -1001,6 +1007,8 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
 
         setTeamPlayers([]);
         setSelectedPlayers([]);
+        setFifthPlayerEnabled(false);
+        setFifthPlayerId("");
         setPlayerStats({});
         clearPerformanceScan();
         await loadRecentMatches();
@@ -1326,6 +1334,20 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                     </label>
                   );
                 })}
+              </div>
+              <div className="op-fifth-player-panel">
+                <label className="op-fifth-toggle">
+                  <input type="checkbox" checked={fifthPlayerEnabled} onChange={(event) => { setFifthPlayerEnabled(event.target.checked); if (!event.target.checked) setFifthPlayerId(""); }} />
+                  <span><strong>ADD 5TH PLAYER</strong><small>SPECIAL 8% SHARE FROM THE PLAYER POOL</small></span>
+                </label>
+                {fifthPlayerEnabled && <div className="op-fifth-select-wrap">
+                  <label htmlFor="op-fifth-player">Fifth player · separate from the four main players</label>
+                  <select id="op-fifth-player" value={fifthPlayerId} onChange={(event) => setFifthPlayerId(event.target.value)}>
+                    <option value="">Choose fifth player</option>
+                    {teamPlayers.filter((player) => !selectedPlayers.some((main) => main.id === player.id) && player.is_active && ["approved","active"].includes(String(player.status || "").toLowerCase())).map((player) => <option key={player.id} value={player.id}>{player.ign || player.full_name} · {player.full_name || ""}</option>)}
+                  </select>
+                  <p>Four main players receive 15.5% each. The fifth player receives 8%. Management remains 30%.</p>
+                </div>}
               </div>
               </>
             )}
