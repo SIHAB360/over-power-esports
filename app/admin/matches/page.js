@@ -1527,22 +1527,26 @@ export default function AdminMatchesPage({ moderatorMode = false } = {}) {
                 type="purple"
               />
               <FinanceCard
-                label="EACH PLAYER"
+                label={fifthPlayerEnabled ? "EACH MAIN PLAYER · 15.5%" : "EACH PLAYER"}
                 value={`৳${money(perPlayerAmount)}`}
                 type={perPlayerAmount >= 0 ? "green" : "red"}
               />
+              {fifthPlayerEnabled && <FinanceCard
+                label="5TH PLAYER · 8%"
+                value={`৳${money(fifthPlayerAmount)}`}
+                type={fifthPlayerAmount >= 0 ? "green" : "red"}
+              />}
             </div>
 
             <div className="rule-box">
               <div>
                 <span>ACTIVE PLAYERS</span>
                 <strong>
-                  {selectedPlayers.length} / 4
+                  {selectedPlayers.length} / 4 {fifthPlayerEnabled && fifthPlayer ? "+ 1 SPECIAL" : ""}
                 </strong>
               </div>
               <p>
-                Only the 4 players selected for this match receive the player
-                share. Players who did not participate receive no earning record
+                {fifthPlayerEnabled && fifthPlayer ? "Four main players receive 15.5% each and the selected fifth player receives 8% from the 70% player pool. Management remains 30%." : "Only the 4 players selected for this match receive the player share. Players who did not participate receive no earning record
                 for this match.
               </p>
             </div>
